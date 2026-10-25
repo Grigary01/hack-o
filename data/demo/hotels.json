@@ -1,0 +1,410 @@
+[
+  {
+    "id": "osm:node:10058556917",
+    "name": "Островок",
+    "lat": 43.428439,
+    "lon": 39.9153879,
+    "tags": {
+      "name": "Островок",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/10058556917",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:10759614195",
+    "name": "Golden Tennis Club",
+    "lat": 43.4244336,
+    "lon": 39.9162591,
+    "tags": {
+      "contact:email": "info@goldentennisclub.ru",
+      "contact:phone": "+7 800 7072448;+7 918 4192336",
+      "contact:website": "https://goldentennisclub.ru/",
+      "name": "Golden Tennis Club",
+      "opening_hours": "Mo-Su 00:00-00:00",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/10759614195",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:11138786325",
+    "name": "Черномор",
+    "lat": 43.4312708,
+    "lon": 39.9212828,
+    "tags": {
+      "contact:email": "chernomor.sochi@mail.ru",
+      "contact:phone": "+7 939 4444411",
+      "contact:website": "https://chernomor-sochi.ru/",
+      "name": "Черномор",
+      "opening_hours": "24/7",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/11138786325",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:11843545856",
+    "name": "Marco Polo",
+    "lat": 43.425054,
+    "lon": 39.917617,
+    "tags": {
+      "contact:email": "marcopolohotel@mail.ru",
+      "contact:phone": "+7 918 9190033",
+      "contact:website": "https://marcopolohotel.ru",
+      "name": "Marco Polo",
+      "opening_hours": "24/7",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/11843545856",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:11843553838",
+    "name": "Офелия",
+    "lat": 43.4363252,
+    "lon": 39.9151057,
+    "tags": {
+      "contact:email": "ofeliahotel@mail.ru",
+      "contact:phone": "+7 967 6426400",
+      "contact:website": "https://ofeliahotel.ru",
+      "name": "Офелия",
+      "opening_hours": "24/7",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/11843553838",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:11843553839",
+    "name": "Аркадия+",
+    "lat": 43.425955,
+    "lon": 39.917348,
+    "tags": {
+      "contact:email": "arcadia_plus@mail.ru",
+      "contact:phone": "+7 918 1062255",
+      "contact:website": "https://arcadiaplushotel.ru/",
+      "name": "Аркадия+",
+      "opening_hours": "24/7",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/11843553839",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:11866202895",
+    "name": "Cascade",
+    "lat": 43.4253046,
+    "lon": 39.9148089,
+    "tags": {
+      "check_date": "2024-04-29",
+      "name": "Cascade",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/11866202895",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:11878294031",
+    "name": "SM Royal",
+    "lat": 43.4288605,
+    "lon": 39.9184333,
+    "tags": {
+      "check_date": "2024-05-04",
+      "name": "SM Royal",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/11878294031",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:11878294032",
+    "name": "Bliss House",
+    "lat": 43.4291139,
+    "lon": 39.9170665,
+    "tags": {
+      "check_date": "2024-05-04",
+      "name": "Bliss House",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/11878294032",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:11958139262",
+    "name": "Гости Эльбрус",
+    "lat": 43.4286548,
+    "lon": 39.9154946,
+    "tags": {
+      "contact:email": "adler-2024@mail.ru",
+      "contact:phone": "+7 928 4470990;+7 928 4500990",
+      "contact:website": "https://sochi-elbrus.ru",
+      "name": "Гости Эльбрус",
+      "opening_hours": "24/7",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/11958139262",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:13301736402",
+    "name": "Lavicon club residence biarritz",
+    "lat": 43.4283976,
+    "lon": 39.9138515,
+    "tags": {
+      "addr:housenumber": "96/1",
+      "addr:street": "улица Просвещения",
+      "name": "Lavicon club residence biarritz",
+      "opening_hours": "Mo-Su 08:00-18:00",
+      "phone": "+78612057272",
+      "tourism": "hotel",
+      "website": "https://lavicon.ru/"
+    },
+    "source_url": "https://www.openstreetmap.org/node/13301736402",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:1449074195",
+    "name": "Корсар",
+    "lat": 43.4276924,
+    "lon": 39.9180891,
+    "tags": {
+      "name": "Корсар",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/1449074195",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:1589835176",
+    "name": "МиЛи",
+    "lat": 43.4250911,
+    "lon": 39.9245776,
+    "tags": {
+      "name": "МиЛи",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/1589835176",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:2857562133",
+    "name": "Огонёк",
+    "lat": 43.4354295,
+    "lon": 39.9081608,
+    "tags": {
+      "name": "Огонёк",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/2857562133",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:2862997459",
+    "name": "Грант",
+    "lat": 43.428172,
+    "lon": 39.9165655,
+    "tags": {
+      "name": "Грант",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/2862997459",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:4072901609",
+    "name": "Касабланка",
+    "lat": 43.426786,
+    "lon": 39.9154215,
+    "tags": {
+      "addr:city": "Сочи",
+      "addr:housenumber": "5",
+      "addr:postcode": "354340",
+      "addr:street": "улица 8 Марта",
+      "name": "Касабланка",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/4072901609",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:4118677615",
+    "name": "Shine",
+    "lat": 43.4299438,
+    "lon": 39.9181421,
+    "tags": {
+      "addr:housenumber": "63",
+      "addr:street": "улица Ленина",
+      "internet_access": "wlan",
+      "name": "Shine",
+      "opening_hours": "24/7",
+      "phone": "+7 862 2405777",
+      "tourism": "hotel",
+      "website": "https://www.shine-hotel.ru/"
+    },
+    "source_url": "https://www.openstreetmap.org/node/4118677615",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:4284096790",
+    "name": "Элона",
+    "lat": 43.4243045,
+    "lon": 39.9215364,
+    "tags": {
+      "contact:email": "elonahotel@mail.ru",
+      "contact:phone": "+7 989 1654144",
+      "contact:website": "https://elonahotel.ru",
+      "internet_access": "wlan",
+      "name": "Элона",
+      "opening_hours": "24/7",
+      "operator": "Буюклян Элона",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/4284096790",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:4327828193",
+    "name": "Михаил",
+    "lat": 43.4286617,
+    "lon": 39.9158027,
+    "tags": {
+      "name": "Михаил",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/4327828193",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:4348786790",
+    "name": "Маргарита",
+    "lat": 43.4250504,
+    "lon": 39.9216593,
+    "tags": {
+      "name": "Маргарита",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/4348786790",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:4931886321",
+    "name": "Марина",
+    "lat": 43.4261456,
+    "lon": 39.9175407,
+    "tags": {
+      "addr:housenumber": "12А",
+      "addr:street": "переулок Богдана Хмельницкого",
+      "beds": "30",
+      "contact:email": "hotelmarina@mail.ru",
+      "contact:fax": "+7 862240024",
+      "contact:phone": "+7 862 2400124;+7 918 9020781;+7 918 4052222",
+      "contact:website": "www.marina-sochi.ru",
+      "internet_access": "wlan",
+      "internet_access:fee": "yes",
+      "name": "Марина",
+      "name:ru": "Марина",
+      "opening_hours": "24/7",
+      "operator": "Тимохина Марина Николаевна",
+      "payment:cash": "yes",
+      "payment:coins": "yes",
+      "payment:contactless": "yes",
+      "payment:credit_cards": "yes",
+      "payment:mastercard": "yes",
+      "payment:visa": "yes",
+      "rooms": "15",
+      "smoking": "outside",
+      "stars": "3",
+      "tourism": "hotel",
+      "wheelchair": "no"
+    },
+    "source_url": "https://www.openstreetmap.org/node/4931886321",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:6494252594",
+    "name": "Отель Атрия",
+    "lat": 43.4474298,
+    "lon": 39.9321533,
+    "tags": {
+      "name": "Отель Атрия",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/6494252594",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:7115085741",
+    "name": "El Paraiso",
+    "lat": 43.4260269,
+    "lon": 39.9151498,
+    "tags": {
+      "addr:city": "Сочи",
+      "addr:housenumber": "70",
+      "addr:street": "улица Просвещения",
+      "contact:email": "elparaisohotel@mail.ru",
+      "contact:phone": "+7 988 2378009",
+      "contact:website": "https://elparaiso.ru",
+      "internet_access": "wlan",
+      "name": "El Paraiso",
+      "opening_hours": "24/7",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/7115085741",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:7115162128",
+    "name": "Center Plaza",
+    "lat": 43.4275197,
+    "lon": 39.9280934,
+    "tags": {
+      "addr:city": "Сочи",
+      "addr:housenumber": "1",
+      "addr:street": "Старонасыпная улица",
+      "name": "Center Plaza",
+      "phone": "+7 989 0879123;+7 988 1447800",
+      "tourism": "hotel",
+      "website": "https://centerplaza-sochi.ru/"
+    },
+    "source_url": "https://www.openstreetmap.org/node/7115162128",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  },
+  {
+    "id": "osm:node:7345928591",
+    "name": "Три Сезона",
+    "lat": 43.4273462,
+    "lon": 39.9357441,
+    "tags": {
+      "name": "Три Сезона",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/7345928591",
+    "collected_at": "2026-10-23T20:46:09.761121+00:00",
+    "region": "Adler"
+  }
+]

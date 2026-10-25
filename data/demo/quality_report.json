@@ -1,0 +1,29 @@
+{
+  "checked_at": "2026-10-24T10:43:39.863803+00:00",
+  "hotels": 25,
+  "osm_elements": 4895,
+  "graph_nodes": 12188,
+  "graph_edges": 27002,
+  "observations": 75,
+  "routes_computed": 23,
+  "route_coverage": 0.92,
+  "unknown_routes": [
+    {
+      "hotel_id": "osm:node:2862997459",
+      "reason": "hotel_too_far_from_graph"
+    },
+    {
+      "hotel_id": "osm:node:7345928591",
+      "reason": "no_path"
+    }
+  ],
+  "all_observations_recomputed": true,
+  "graph_checksum_valid": true,
+  "confidence_levels": {
+    "low": 73,
+    "unknown": 2
+  },
+  "ground_truth_accuracy": null,
+  "field_survey_done": false,
+  "note": "Проверены происхождение и воспроизводимость, не существование/проходимость на местности."
+}
