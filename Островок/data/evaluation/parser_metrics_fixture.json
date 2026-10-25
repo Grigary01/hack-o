@@ -1,0 +1,1028 @@
+{
+  "mode": "fixture",
+  "model": null,
+  "measured_at": "2026-10-24T10:43:37.335527+00:00",
+  "note": "Fixture exact-match на demo — проверка контракта, не качество NLP. Gold авторский, независимая разметка ещё нужна.",
+  "demo": {
+    "queries": 12,
+    "covered": 12,
+    "exact_match": 1.0,
+    "field_precision": 1.0,
+    "field_recall": 1.0,
+    "field_f1": 1.0,
+    "dimensions": {
+      "operators": {
+        "correct": 7,
+        "expected": 7,
+        "predicted": 7
+      },
+      "numbers": {
+        "correct": 5,
+        "expected": 5,
+        "predicted": 5
+      },
+      "negations": {
+        "correct": 2,
+        "expected": 2,
+        "predicted": 2
+      }
+    },
+    "errors": [],
+    "mismatches": []
+  },
+  "held_out": {
+    "queries": 32,
+    "covered": 0,
+    "exact_match": 0.0,
+    "field_precision": 0,
+    "field_recall": 0.0,
+    "field_f1": 0,
+    "dimensions": {
+      "operators": {
+        "correct": 0,
+        "expected": 18,
+        "predicted": 0
+      },
+      "numbers": {
+        "correct": 0,
+        "expected": 12,
+        "predicted": 0
+      },
+      "negations": {
+        "correct": 0,
+        "expected": 4,
+        "predicted": 0
+      }
+    },
+    "errors": [],
+    "mismatches": [
+      {
+        "text": "До пляжа максимум 300 метров пешком",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": "<=",
+              "value": 300,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "До пляжа максимум 300 метров пешком"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "До пляжа максимум 300 метров пешком"
+        }
+      },
+      {
+        "text": "Найди гостиницу менее чем в километре пешком от пляжа",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": "<",
+              "value": 1000,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Найди гостиницу менее чем в километре пешком от пляжа"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Найди гостиницу менее чем в километре пешком от пляжа"
+        }
+      },
+      {
+        "text": "Отель не ближе 200 метров пешком к пляжу",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": ">=",
+              "value": 200,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Отель не ближе 200 метров пешком к пляжу"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Отель не ближе 200 метров пешком к пляжу"
+        }
+      },
+      {
+        "text": "До пляжа больше 700 м пешком",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": ">",
+              "value": 700,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "До пляжа больше 700 м пешком"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "До пляжа больше 700 м пешком"
+        }
+      },
+      {
+        "text": "До пляжа ровно 500 метров по пешему пути",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": "=",
+              "value": 500,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "До пляжа ровно 500 метров по пешему пути"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "До пляжа ровно 500 метров по пешему пути"
+        }
+      },
+      {
+        "text": "Не больше 1,2 километра пешком до пляжа",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": "<=",
+              "value": 1200,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Не больше 1,2 километра пешком до пляжа"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Не больше 1,2 километра пешком до пляжа"
+        }
+      },
+      {
+        "text": "Между 300 и 800 метрами пешком от пляжа",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": ">=",
+              "value": 300,
+              "unit": "m",
+              "scope": "hotel"
+            },
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": "<=",
+              "value": 800,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Между 300 и 800 метрами пешком от пляжа"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Между 300 и 800 метрами пешком от пляжа"
+        }
+      },
+      {
+        "text": "Пляж близко, тишина желательна",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "desired": "near",
+              "importance": 0.8,
+              "scope": "hotel",
+              "weight_source": "default"
+            },
+            {
+              "feature_key": "quietness_proxy",
+              "desired": "high",
+              "importance": 0.9,
+              "scope": "hotel",
+              "weight_source": "default"
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Пляж близко, тишина желательна"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Пляж близко, тишина желательна"
+        }
+      },
+      {
+        "text": "Хочу шумоизоляцию в номере",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "soundproofing",
+              "desired": true,
+              "importance": 0.7,
+              "scope": "room",
+              "weight_source": "default"
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Хочу шумоизоляцию в номере"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Хочу шумоизоляцию в номере"
+        }
+      },
+      {
+        "text": "Нужен обязательно шумоизолированный номер",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "soundproofing",
+              "operator": "=",
+              "value": true,
+              "unit": null,
+              "scope": "room"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Нужен обязательно шумоизолированный номер"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Нужен обязательно шумоизолированный номер"
+        }
+      },
+      {
+        "text": "Обязательно вид на море и шумоизоляция в одном номере",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "sea_view",
+              "operator": "=",
+              "value": true,
+              "unit": null,
+              "scope": "room"
+            },
+            {
+              "feature_key": "soundproofing",
+              "operator": "=",
+              "value": true,
+              "unit": null,
+              "scope": "room"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Обязательно вид на море и шумоизоляция в одном номере"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Обязательно вид на море и шумоизоляция в одном номере"
+        }
+      },
+      {
+        "text": "Вид на море не нужен",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Вид на море не нужен"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Вид на море не нужен"
+        }
+      },
+      {
+        "text": "Никакого вида на море, он мешает",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "sea_view",
+              "operator": "=",
+              "value": false,
+              "unit": null,
+              "scope": "room"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Никакого вида на море, он мешает"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Никакого вида на море, он мешает"
+        }
+      },
+      {
+        "text": "Вид на море важнее тишины",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "sea_view",
+              "desired": true,
+              "importance": 1,
+              "scope": "room",
+              "weight_source": "relative_inferred"
+            },
+            {
+              "feature_key": "quietness_proxy",
+              "desired": "high",
+              "importance": 0.5,
+              "scope": "hotel",
+              "weight_source": "relative_inferred"
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Вид на море важнее тишины"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Вид на море важнее тишины"
+        }
+      },
+      {
+        "text": "Пляж важнее вида из окна",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "desired": "near",
+              "importance": 1,
+              "scope": "hotel",
+              "weight_source": "relative_inferred"
+            },
+            {
+              "feature_key": "sea_view",
+              "desired": true,
+              "importance": 0.5,
+              "scope": "room",
+              "weight_source": "relative_inferred"
+            }
+          ],
+          "unknown_or_ambiguous": [
+            "Не указано, какой вид из окна нужен"
+          ],
+          "clarification_question": "Какой вид из окна вы хотите?",
+          "original_text": "Пляж важнее вида из окна"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Пляж важнее вида из окна"
+        }
+      },
+      {
+        "text": "Бар минимум в 200 метрах по прямой",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "nightlife_distance_m",
+              "operator": ">=",
+              "value": 200,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Бар минимум в 200 метрах по прямой"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Бар минимум в 200 метрах по прямой"
+        }
+      },
+      {
+        "text": "Поближе к ночным клубам",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "nightlife_distance_m",
+              "desired": "near",
+              "importance": 0.7,
+              "scope": "hotel",
+              "weight_source": "default"
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Поближе к ночным клубам"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Поближе к ночным клубам"
+        }
+      },
+      {
+        "text": "Желательно подальше от баров и поближе к морю",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "nightlife_distance_m",
+              "desired": "far",
+              "importance": 0.7,
+              "scope": "hotel",
+              "weight_source": "default"
+            },
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "desired": "near",
+              "importance": 0.8,
+              "scope": "hotel",
+              "weight_source": "default"
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Желательно подальше от баров и поближе к морю"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Желательно подальше от баров и поближе к морю"
+        }
+      },
+      {
+        "text": "До пляжа не более 500 м, но по прямой",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Расстояние до пляжа по прямой не поддерживается поисковым фильтром"
+          ],
+          "clarification_question": "Подойдёт расстояние по пешему графу OSM?",
+          "original_text": "До пляжа не более 500 м, но по прямой"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "До пляжа не более 500 м, но по прямой"
+        }
+      },
+      {
+        "text": "Пять минут до моря",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Не указаны способ движения и скорость"
+          ],
+          "clarification_question": "Какое максимальное расстояние пешком в метрах подходит?",
+          "original_text": "Пять минут до моря"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Пять минут до моря"
+        }
+      },
+      {
+        "text": "Ищу отель в Москве",
+        "expected": {
+          "region": "Moscow",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Регион не поддерживается"
+          ],
+          "clarification_question": "Поиск доступен только в прибрежном Адлере. Выбрать Адлер?",
+          "original_text": "Ищу отель в Москве"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Ищу отель в Москве"
+        }
+      },
+      {
+        "text": "Ищу отель в центральном Сочи",
+        "expected": {
+          "region": "Sochi",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Регион не поддерживается"
+          ],
+          "clarification_question": "Поиск доступен только в прибрежном Адлере. Выбрать Адлер?",
+          "original_text": "Ищу отель в центральном Сочи"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Ищу отель в центральном Сочи"
+        }
+      },
+      {
+        "text": "Отель с бассейном до 5000 рублей",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Бассейн и цены отсутствуют в реестре"
+          ],
+          "clarification_question": "Данные о бассейне и ценах недоступны. Выбрать поддерживаемые характеристики?",
+          "original_text": "Отель с бассейном до 5000 рублей"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Отель с бассейном до 5000 рублей"
+        }
+      },
+      {
+        "text": "Доступен ли номер на завтра",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Нет данных о доступности бронирования"
+          ],
+          "clarification_question": "Этот прототип подбирает по характеристикам. Какой отель вы ищете?",
+          "original_text": "Доступен ли номер на завтра"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Доступен ли номер на завтра"
+        }
+      },
+      {
+        "text": "Хочу тихий район, шумоизоляция не обязательна",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "quietness_proxy",
+              "desired": "high",
+              "importance": 0.9,
+              "scope": "hotel",
+              "weight_source": "default"
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Хочу тихий район, шумоизоляция не обязательна"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Хочу тихий район, шумоизоляция не обязательна"
+        }
+      },
+      {
+        "text": "Закат из окна обязателен",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "sunset_view",
+              "operator": "=",
+              "value": true,
+              "unit": null,
+              "scope": "room"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Закат из окна обязателен"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Закат из окна обязателен"
+        }
+      },
+      {
+        "text": "Пляж максимум в 800 м пешком и вид на закат желателен",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": "<=",
+              "value": 800,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [
+            {
+              "feature_key": "sunset_view",
+              "desired": true,
+              "importance": 0.6,
+              "scope": "room",
+              "weight_source": "default"
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Пляж максимум в 800 м пешком и вид на закат желателен"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Пляж максимум в 800 м пешком и вид на закат желателен"
+        }
+      },
+      {
+        "text": "Тишина с весом 0.2, вид на море с весом 0.8",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "quietness_proxy",
+              "desired": "high",
+              "importance": 0.2,
+              "scope": "hotel",
+              "weight_source": "explicit"
+            },
+            {
+              "feature_key": "sea_view",
+              "desired": true,
+              "importance": 0.8,
+              "scope": "room",
+              "weight_source": "explicit"
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Тишина с весом 0.2, вид на море с весом 0.8"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Тишина с весом 0.2, вид на море с весом 0.8"
+        }
+      },
+      {
+        "text": "Хочу вид на море, но не на закат",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "sunset_view",
+              "operator": "=",
+              "value": false,
+              "unit": null,
+              "scope": "room"
+            }
+          ],
+          "soft_preferences": [
+            {
+              "feature_key": "sea_view",
+              "desired": true,
+              "importance": 0.6,
+              "scope": "room",
+              "weight_source": "default"
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Хочу вид на море, но не на закат"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Хочу вид на море, но не на закат"
+        }
+      },
+      {
+        "text": "Не хочу шумный район и бар под окнами",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "quietness_proxy",
+              "desired": "high",
+              "importance": 0.9,
+              "scope": "hotel",
+              "weight_source": "default"
+            },
+            {
+              "feature_key": "nightlife_distance_m",
+              "desired": "far",
+              "importance": 0.7,
+              "scope": "hotel",
+              "weight_source": "default"
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Не хочу шумный район и бар под окнами"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Не хочу шумный район и бар под окнами"
+        }
+      },
+      {
+        "text": "До пляжа не меньше 0,3 км и не больше 0,7 км пешком",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": ">=",
+              "value": 300,
+              "unit": "m",
+              "scope": "hotel"
+            },
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": "<=",
+              "value": 700,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "До пляжа не меньше 0,3 км и не больше 0,7 км пешком"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "До пляжа не меньше 0,3 км и не больше 0,7 км пешком"
+        }
+      },
+      {
+        "text": "Покажи гостиницы рядом с морем и аптекой",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "desired": "near",
+              "importance": 0.8,
+              "scope": "hotel",
+              "weight_source": "default"
+            }
+          ],
+          "unknown_or_ambiguous": [
+            "Аптеки не поддерживаются"
+          ],
+          "clarification_question": "Продолжить только с предпочтением близости пляжа?",
+          "original_text": "Покажи гостиницы рядом с морем и аптекой"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Запрос вне набора демо-парсера"
+          ],
+          "clarification_question": "Выберите пример демо или включите PARSER_MODE=ollama для свободного текста.",
+          "original_text": "Покажи гостиницы рядом с морем и аптекой"
+        }
+      }
+    ]
+  }
+}

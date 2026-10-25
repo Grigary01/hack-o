@@ -1,0 +1,24 @@
+[
+  {
+    "kind": "air_quality",
+    "hotel_id": "osm:node:10058556917",
+    "provider": "OpenAQ v3",
+    "collected_at": "2026-10-25T20:42:03.405536+00:00",
+    "status": "not_configured",
+    "notice": "Измерение станции поблизости, не непосредственно у окна гостиницы.",
+    "parameter": "pm25",
+    "radius_m": 25000,
+    "period_from": "2026-10-18T20:00:00+00:00",
+    "period_to": "2026-10-25T20:00:00+00:00",
+    "expected_hours": 168,
+    "stations": [],
+    "selected": null,
+    "policy": {
+      "min_coverage": 0.75,
+      "max_age_hours": 48,
+      "max_stations_checked": 10
+    },
+    "source_url": "https://explore.openaq.org/",
+    "reason": "Добавьте OPENAQ_API_KEY в локальный .env и перезапустите backend."
+  }
+]

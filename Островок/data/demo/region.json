@@ -1,0 +1,10 @@
+{
+  "id": "Adler",
+  "name": "Прибрежный Адлер",
+  "bbox_south_west_north_east": [43.418, 39.900, 43.457, 39.942],
+  "hotel_bbox_south_west_north_east": [43.424, 39.906, 43.450, 39.938],
+  "hotel_limit": 25,
+  "description": "Небольшая демонстрационная область западнее Мзымты. Не административная граница Сочи.",
+  "max_hotel_snap_m": 80,
+  "max_beach_snap_m": 30
+}
