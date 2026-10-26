@@ -17,6 +17,20 @@
 | sunset_view_min_floor | number floor / hotel | viewshed | 180 дней | .4 |
 | aircraft_noise_exposure | low/medium/high / hotel | aircraft_noise | 365 дней | .8 |
 | aircraft_path_distance_m | number m / hotel | aircraft_noise | 365 дней | .7 |
+| mountain_view_potential | none/partial/wide / hotel | viewshed | 180 дней | .5 |
+| mountain_view_min_floor | number floor / hotel | viewshed | 180 дней | .3 |
+| beach_route_climb_m | number m / hotel | route_quality | 365 дней | .5 |
+| beach_route_busy_crossings | number count / hotel | route_quality | 180 дней | .6 |
+| night_open_places_500m | number count / hotel | night_amenities | 90 дней | .5 |
+| nearest_night_pharmacy_m | number m / hotel | night_amenities | 90 дней | .5 |
+
+Горы — те же лучи viewshed, цель — видимый рельеф выше 300 м в пределах 20 км (главный хребет дальше
+не моделируется). Путь до пляжа — тот же маршрут, что для расстояния: набор высоты туда/обратно по
+Copernicus (гистерезис 1 м, точность рельефа 2–4 м), пересечения trunk/primary/secondary в одном уровне
+(мосты/тоннели не считаются, движение вдоль улицы — не переход), тип перехода по тегам OSM, лестницы.
+Ночь — `opening_hours`: открыто в 01:00 все 7 дней; непонятные формы (PH, сезоны) — «часы неизвестны».
+Офлайн-разбор запроса берёт синонимы из `query_patterns`/`query_negative_patterns`/`query_desired`
+(`query_negation_keeps: true` — «без подъёмов» тоже значит «поменьше»).
 
 Quietness: дороги motorway/trunk=1, primary=.9, secondary=.7, tertiary=.5,
 residential=.3, service=.15, unclassified=.4; decay scale=120 м.

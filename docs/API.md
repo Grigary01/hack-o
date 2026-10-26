@@ -8,7 +8,7 @@ JSON-контракты: `app/schemas/*`; примеры фактических 
 | GET /health | — | 200 `{"status":"ok","hotels":N}` при заполненной базе, иначе 503 `needs_seed`; healthcheck compose |
 | GET /api/health | — | DB/seed count, parser_mode, demo_mode; внешние API не проверяет |
 | GET /api/features | — | декларации YAML |
-| GET /api/demo-queries | — | 12 поддерживаемых demo-формулировок |
+| GET /api/demo-queries | — | 14 demo-формулировок (свободный текст тоже разбирается в режиме offline) |
 | POST /api/parse-query | `text` | ParsedHotelQuery |
 | POST /api/search | text **или** parsed, weights, include_simulated | matched / needs_verification / excluded + trace |
 | GET /api/hotels | — | список Hotel |
@@ -17,7 +17,10 @@ JSON-контракты: `app/schemas/*`; примеры фактических 
 | GET /api/hotelier/questions | — | очередь вопросов |
 | POST /api/hotelier/questions | hotel_id, feature_key | вопрос (идемпотентно) |
 | POST /api/hotelier/questions/{qid}/answer | text | pending answer + extraction |
-| POST /api/hotelier/answers/{aid}/confirm | accept: boolean | confirmed/rejected + IDs фактов и конфликты |
+| POST /api/hotelier/answers/{aid}/confirm | accept: boolean | confirmed/rejected + IDs фактов, конфликты, `model_review` (расхождения с расчётом) |
+| GET /api/hotelier/hotels/{id}/facts | — | расчётные факты об отеле с объяснением + конфликты с решениями |
+| POST /api/hotelier/facts/review | hotel_id, feature_key, verdict confirm/correct, value?, comment | новое свидетельство отельера; расхождение → конфликт `review:hotelier_correction` |
+| POST /api/hotelier/conflicts/{id}/resolve | chosen_observation_id, reason | решение оператора (`operator_decision`), история сохраняется |
 
 ## Пример
 
