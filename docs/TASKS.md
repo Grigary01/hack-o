@@ -47,8 +47,9 @@
   `scripts/collect_adler_osm.py`, `app/storage/repository.py`. Сейчас TTL учитывается, но автоматической загрузки нет.
 - **P1 / У3 / TODO** — Авторизация реального отельера, ownership, миграции SQLite и проверки конкурентных записей.
   `app/api/hotelier.py`, `app/storage/*`. Нельзя публиковать текущий симулятор как реальный кабинет.
-- **P2 / У2 / TODO** — DEM/buildings/facade/floor viewshed, только при достаточных источниках.
-  Будущий `app/geo/viewshed.py` пока намеренно не создан.
+- **P2 / У2 / DONE (MVP)** — DEM/buildings/facade/floor viewshed: `app/geo/viewshed.py`, `app/geo/solar.py`,
+  4 характеристики, 100 значений, `tests/test_viewshed.py`. Остаётся: сопоставление «вид на море/закат»
+  в fixture-парсере с `*_potential`, конфликт «расчёт против отельера» и сверка с фото (routes_gold-аналог).
 - **P2 / У1 / TODO** — Semantic retrieval описаний после детерминированных фильтров; embeddings сейчас не нужны.
 - **P2 / У4 / TODO** — React-клиент только при доказанной потребности; API позволяет заменить Streamlit.
 

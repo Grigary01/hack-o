@@ -30,6 +30,14 @@
 Демо-запросы и синтетические unit-test объекты отделены от реальных OSM-данных.
 Симулированные room facts записываются только в локальную runtime DB, не в реальный геодатасет.
 
+## Copernicus DEM
+
+`data/environment/dem_copernicus_glo30.npz` — окно Copernicus DEM GLO-30 (43.30–43.65° с.ш.,
+39.65–40.10° в.д.), прочитанное из публичных COG на AWS (`copernicus-dem-30m`), высоты в дециметрах.
+© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS
+by the European Union and ESA; all rights reserved. Использование по лицензии Copernicus DEM
+(бесплатно, с указанием источника). URL тайлов, SHA256 и дата — в `dem_copernicus_glo30.json`.
+
 ## Зависимости
 
 Зависимости устанавливаются из Python package index; версии, использованные при проверке, закреплены

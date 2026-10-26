@@ -9,11 +9,17 @@ from app.schemas.hotel import Observation, Evidence, Source
 from app.geo.osm_provider import fetch_osm_pois
 from app.geo.routing import PedestrianRouter, load_walking_graph
 from app.geo.quietness import calculate_quietness_proxy
+from app.geo.viewshed import ViewshedScene, analyze_hotel
+
+VIEWSHED_KEYS = ('sea_view_potential', 'sea_view_min_floor', 'sunset_view_potential', 'sunset_view_min_floor')
 
 
 class GeoService:
-    def __init__(self, directory=settings.demo_dir):
+    def __init__(self, directory=settings.demo_dir, environment_dir=settings.environment_dir):
         self.directory = directory
+        self.environment_dir = environment_dir
+        self.viewshed_scene = None
+        self.viewshed_cache = {}
         self.snapshot = json.loads((directory/'osm_snapshot.json').read_text())
         self.graph_metadata = json.loads((directory/'graph_metadata.json').read_text())
         self.region = json.loads((directory/'region.json').read_text())
@@ -27,7 +33,61 @@ class GeoService:
                                           self.region['max_hotel_snap_m'], self.region['max_beach_snap_m'])
         return self.router
 
+    def _viewshed(self, hotel):
+        """Один расчёт на отель даёт все четыре характеристики вида."""
+        if self.viewshed_scene is None:
+            self.viewshed_scene = ViewshedScene.load(self.environment_dir,
+                                                     self.region['hotel_bbox_south_west_north_east'])
+        if hotel.id not in self.viewshed_cache:
+            self.viewshed_cache[hotel.id] = analyze_hotel(self.viewshed_scene, hotel)
+        return self.viewshed_cache[hotel.id]
+
+    def compute_viewshed(self, hotel, feature_key):
+        definition = get_registry().get(feature_key)
+        result = self._viewshed(hotel)
+        scene = self.viewshed_scene
+        # Дата знания — состояние зданий OSM: именно их изменения закрывают вид.
+        observed = datetime.fromisoformat(scene.inputs['buildings']['osm_base'].replace('Z', '+00:00'))
+        collected = datetime.fromisoformat(scene.inputs['coastline']['osm_base'].replace('Z', '+00:00'))
+        collected = max(collected, observed)
+        flags = ['osm_coverage_not_field_verified', 'uncalibrated_model']
+        if result['status'] != 'computed':
+            value, details, level = None, result, 'unknown'
+            flags.append(result['reason'])
+            method_text = 'Расчёт невозможен: ' + result['reason']
+        else:
+            value = result['base'][feature_key]
+            flags += result['limits']
+            if result['building_match'] != 'osm_id' and result['building_match'] != 'contains_hotel_point':
+                flags.append('hotel_building_matched_by_proximity')
+            if not result['robust_to_unknown_heights']:
+                flags.append('sensitive_to_unknown_building_heights')
+            # medium только если вывод не меняется при любых допущениях о неизвестных высотах
+            # и этажность самого отеля известна из OSM. high без проверки на месте не ставим.
+            level = ('medium' if result['robust_to_unknown_heights'] and result['levels_source'] == 'osm_building_levels'
+                     and 'hotel_building_matched_by_proximity' not in flags else 'low')
+            if value is None:
+                level = 'unknown'
+            details = {k: v for k, v in result.items() if k != 'scenarios'} | {
+                'scenarios': result['scenarios'], 'summary': result['base']['summary']}
+            method_text = ('Перебор неизвестных высот соседних зданий (3, 6.5, 12 м): '
+                           + ('вывод одинаков во всех сценариях' if result['robust_to_unknown_heights']
+                              else 'вывод зависит от допущения') + '; этажность отеля: ' + result['levels_source']
+                           + '. Вероятность не оценивалась.')
+        digest = hashlib.sha256(json.dumps([hotel.id, feature_key, scene.fingerprint(), str(observed), value,
+                                            details], sort_keys=True, default=str).encode()).hexdigest()
+        return Observation(id=digest, hotel_id=hotel.id, subject_type='hotel', subject_id=hotel.id,
+            feature_key=feature_key, value=value, unit=definition.unit,
+            observed_at=observed, collected_at=collected, expires_at=observed+timedelta(days=definition.ttl_days),
+            status='estimated' if value is not None else 'unknown', confidence_level=level,
+            confidence_method=method_text, quality_flags=flags,
+            evidence=Evidence(source=Source(type='geo_model', name='OSM здания и coastline + Copernicus DEM GLO-30',
+                ref=scene.fingerprint(), url=hotel.source_url), method='viewshed_v1',
+                snapshot_path='data/environment/osm_buildings.json', details=details))
+
     def compute(self, hotel, feature_key):
+        if feature_key in VIEWSHED_KEYS:
+            return self.compute_viewshed(hotel, feature_key)
         definition = get_registry().get(feature_key)
         metadata = self.snapshot['metadata']
         observed = datetime.fromisoformat(metadata.get('osm_base') or metadata['collected_at'])

@@ -1,10 +1,10 @@
 {
-  "checked_at": "2026-10-26T16:27:37.114071+00:00",
+  "checked_at": "2026-10-26T18:18:03.744401+00:00",
   "hotels": 25,
   "osm_elements": 4895,
   "graph_nodes": 12188,
   "graph_edges": 27002,
-  "observations": 75,
+  "observations": 175,
   "routes_computed": 23,
   "route_coverage": 0.92,
   "unknown_routes": [
@@ -20,8 +20,9 @@
   "all_observations_recomputed": true,
   "graph_checksum_valid": true,
   "confidence_levels": {
-    "low": 73,
-    "unknown": 2
+    "low": 135,
+    "medium": 32,
+    "unknown": 8
   },
   "ground_truth_accuracy": null,
   "field_survey_done": false,

@@ -24,6 +24,7 @@ class Settings:
     parser_timeout_seconds: float = float(os.getenv('PARSER_TIMEOUT_SECONDS', '90'))
     ollama_num_ctx: int = int(os.getenv('OLLAMA_NUM_CTX', '8192'))
     demo_dir: Path = ROOT / 'data/demo'
+    environment_dir: Path = ROOT / 'data/environment'
     registry_path: Path = ROOT / 'app/features/registry.yaml'
     max_tool_calls: int = 100
 

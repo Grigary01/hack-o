@@ -1,3 +1,5 @@
+import json
+from app.core.config import settings
 from app.ml.query_parser import FixtureQueryParser
 
 
@@ -52,4 +54,5 @@ def test_seed_is_idempotent_without_erasing_answers(client,engine):
     client.post(f'/api/hotelier/answers/{answer["id"]}/confirm',json={'accept':True})
     seed(engine);seed(engine)
     rows=client.get(f'/api/hotels/{hotel["id"]}/evidence').json()['observations']
-    assert len(rows)==4
+    seeded=[o for o in json.loads((settings.demo_dir/'features.json').read_text()) if o['hotel_id']==hotel['id']]
+    assert len(rows)==len(seeded)+1

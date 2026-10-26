@@ -64,3 +64,47 @@ sunset_view:
   default_weight: 0.6
   aliases: [вид на закат, закат из окна]
   question: Из каких конкретно номеров виден закат? Для сложных условий по месяцам нужна ручная проверка.
+sea_view_potential:
+  label: Вид на море из окон (расчёт)
+  description: Видимость моря по рельефу Copernicus и высотам зданий OSM для точек фасада по этажам. Где именно окна, не проверено; деревья не учтены.
+  type: category
+  choices: [none, partial, wide]
+  unit: null
+  scope: hotel
+  provider: viewshed
+  ttl_days: 180
+  default_weight: 0.6
+  aliases: [вид на море, море из окна, панорама моря]
+sea_view_min_floor:
+  label: Море видно с этажа (расчёт)
+  description: Самый низкий этаж, с которого на каком-либо фасаде открыто ≥3% обзора окна на море. Этажность из OSM или допущение.
+  type: number
+  unit: floor
+  scope: hotel
+  provider: viewshed
+  ttl_days: 180
+  default_weight: 0.4
+  aliases: [с какого этажа море]
+  scale: 3
+sunset_view_potential:
+  label: Закат из окон (расчёт)
+  description: Видно ли низкое солнце (ниже 3°) по месяцам с учётом горизонта по рельефу и домам. Сезонно — меньше 10 месяцев.
+  type: category
+  choices: [none, seasonal, year_round]
+  unit: null
+  scope: hotel
+  provider: viewshed
+  ttl_days: 180
+  default_weight: 0.6
+  aliases: [закат, вид на закат, закат из окна]
+sunset_view_min_floor:
+  label: Закат виден с этажа (расчёт)
+  description: Самый низкий этаж, с которого закат виден хотя бы в одном месяце.
+  type: number
+  unit: floor
+  scope: hotel
+  provider: viewshed
+  ttl_days: 180
+  default_weight: 0.4
+  aliases: [с какого этажа закат]
+  scale: 3
