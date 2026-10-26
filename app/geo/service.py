@@ -1,6 +1,7 @@
 """Geo tools возвращают Observation с исходной датой snapshot, а не сегодняшним TTL."""
 import hashlib
 import json
+import numpy as np
 from dataclasses import asdict
 from datetime import datetime, timedelta
 from app.core.config import settings
@@ -10,8 +11,10 @@ from app.geo.osm_provider import fetch_osm_pois
 from app.geo.routing import PedestrianRouter, load_walking_graph
 from app.geo.quietness import calculate_quietness_proxy
 from app.geo.viewshed import ViewshedScene, analyze_hotel
+from app.geo.aircraft import runways, exposure
 
 VIEWSHED_KEYS = ('sea_view_potential', 'sea_view_min_floor', 'sunset_view_potential', 'sunset_view_min_floor')
+AIRCRAFT_KEYS = ('aircraft_noise_exposure', 'aircraft_path_distance_m')
 
 
 class GeoService:
@@ -33,13 +36,46 @@ class GeoService:
                                           self.region['max_hotel_snap_m'], self.region['max_beach_snap_m'])
         return self.router
 
-    def _viewshed(self, hotel):
-        """Один расчёт на отель даёт все четыре характеристики вида."""
+    def _scene(self):
         if self.viewshed_scene is None:
             self.viewshed_scene = ViewshedScene.load(self.environment_dir,
                                                      self.region['hotel_bbox_south_west_north_east'])
+        return self.viewshed_scene
+
+    def compute_aircraft(self, hotel, feature_key):
+        definition = get_registry().get(feature_key)
+        raw = json.loads((self.environment_dir/'osm_aeroways.json').read_text())
+        scene = self._scene()
+        ground = lambda x, y: float(scene.dem_grid.bilinear(scene.dtm, np.array([x]), np.array([y]))[0])
+        category, details = exposure(hotel.lat, hotel.lon, runways(raw['elements']), ground)
+        nearest = details.get('nearest')
+        value = category if feature_key == 'aircraft_noise_exposure' else (
+            float(nearest['slant_m']) if nearest else None)
+        metadata = raw['metadata']
+        observed = datetime.fromisoformat(metadata['osm_base'].replace('Z', '+00:00'))
+        collected = datetime.fromisoformat(metadata['collected_at'])
+        details = details | {'inputs': {'aeroways': {'path': 'data/environment/osm_aeroways.json',
+                                                    'query_sha256': metadata['query_sha256'],
+                                                    'osm_base': metadata['osm_base']},
+                                       'dem': scene.inputs['dem']}}
+        digest = hashlib.sha256(json.dumps([hotel.id, feature_key, metadata['query_sha256'], scene.inputs['dem']['sha256'],
+                                            value, details], sort_keys=True, default=str).encode()).hexdigest()
+        return Observation(id=digest, hotel_id=hotel.id, subject_type='hotel', subject_id=hotel.id,
+            feature_key=feature_key, value=value, unit=definition.unit,
+            observed_at=observed, collected_at=collected, expires_at=observed+timedelta(days=definition.ttl_days),
+            status='estimated' if value is not None else 'unknown',
+            confidence_level='low' if value is not None else 'unknown',
+            confidence_method=('Геометрия ВПП из OSM и прямые траектории с глиссадой 3°; без реальных треков, '
+                               'расписания и загрузки полос. Не дБ; вероятность не оценивалась.'),
+            quality_flags=['osm_coverage_not_field_verified', 'uncalibrated_model'] + details.get('limits', []),
+            evidence=Evidence(source=Source(type='geo_model', name='OSM ВПП аэропорта Сочи + Copernicus DEM GLO-30',
+                ref=metadata['query_sha256'], url=hotel.source_url), method='aircraft_track_proximity_v1',
+                snapshot_path='data/environment/osm_aeroways.json', details=details))
+
+    def _viewshed(self, hotel):
+        """Один расчёт на отель даёт все четыре характеристики вида."""
         if hotel.id not in self.viewshed_cache:
-            self.viewshed_cache[hotel.id] = analyze_hotel(self.viewshed_scene, hotel)
+            self.viewshed_cache[hotel.id] = analyze_hotel(self._scene(), hotel)
         return self.viewshed_cache[hotel.id]
 
     def compute_viewshed(self, hotel, feature_key):
@@ -88,6 +124,8 @@ class GeoService:
     def compute(self, hotel, feature_key):
         if feature_key in VIEWSHED_KEYS:
             return self.compute_viewshed(hotel, feature_key)
+        if feature_key in AIRCRAFT_KEYS:
+            return self.compute_aircraft(hotel, feature_key)
         definition = get_registry().get(feature_key)
         metadata = self.snapshot['metadata']
         observed = datetime.fromisoformat(metadata.get('osm_base') or metadata['collected_at'])

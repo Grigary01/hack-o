@@ -1,0 +1,134 @@
+{
+  "gold_hotels": 9,
+  "scored": 5,
+  "outcomes": {
+    "agree": 4,
+    "unconfirmed_positive": 1
+  },
+  "recall_on_confirmed_sea_view": 1.0,
+  "recall_on_guest_reviews_only": 1.0,
+  "precision": null,
+  "precision_note": "Не измеряется: нет надёжных отрицательных примеров (отсутствие упоминания ≠ нет вида).",
+  "floor_checks": {
+    "total": 1,
+    "consistent": 1
+  },
+  "rows": [
+    {
+      "hotel_id": "osm:node:10759614195",
+      "name": "Golden Tennis Club",
+      "label": "yes",
+      "evidence": "guest_review",
+      "identity": "matched",
+      "model": "wide",
+      "model_min_floor": 1,
+      "confidence_level": "medium",
+      "outcome": "agree",
+      "floors": []
+    },
+    {
+      "hotel_id": "osm:node:7115085741",
+      "name": "El Paraiso (сейчас Grace El Paraiso)",
+      "label": "yes",
+      "evidence": "guest_review",
+      "identity": "matched",
+      "model": "wide",
+      "model_min_floor": 3,
+      "confidence_level": "medium",
+      "outcome": "agree",
+      "floors": [
+        {
+          "floor": 9,
+          "sea_view": true,
+          "consistent": true
+        }
+      ]
+    },
+    {
+      "hotel_id": "osm:node:2857562133",
+      "name": "Огонёк",
+      "label": "yes",
+      "evidence": "guest_review",
+      "identity": "matched",
+      "model": "wide",
+      "model_min_floor": 1,
+      "confidence_level": "medium",
+      "outcome": "agree",
+      "floors": []
+    },
+    {
+      "hotel_id": "osm:node:11843553839",
+      "name": "Аркадия+",
+      "label": "yes",
+      "evidence": "hotel_description",
+      "identity": "probable",
+      "model": "wide",
+      "model_min_floor": 3,
+      "confidence_level": "low",
+      "outcome": "agree",
+      "floors": []
+    },
+    {
+      "hotel_id": "osm:node:7115162128",
+      "name": "Center Plaza",
+      "label": "no_claim",
+      "evidence": "absence",
+      "identity": "matched",
+      "model": "wide",
+      "model_min_floor": 4,
+      "confidence_level": "low",
+      "outcome": "unconfirmed_positive",
+      "floors": []
+    }
+  ],
+  "unscored": [
+    {
+      "hotel_id": "osm:node:4118677615",
+      "name": "Shine (Shine House)",
+      "label": "mixed",
+      "model": "wide",
+      "model_min_floor": 4
+    },
+    {
+      "hotel_id": "osm:node:4931886321",
+      "name": "Марина",
+      "label": "ambiguous",
+      "model": "partial",
+      "model_min_floor": 4
+    },
+    {
+      "hotel_id": "osm:node:4072901609",
+      "name": "Касабланка",
+      "label": "ambiguous",
+      "model": "partial",
+      "model_min_floor": 3
+    }
+  ],
+  "source_conflicts": [
+    {
+      "hotel_id": "osm:node:2857562133",
+      "name": "Огонёк",
+      "kind": "building_levels",
+      "osm_levels": 1,
+      "osm_levels_source": "osm_building_levels",
+      "evidence_min_levels": 4,
+      "url": "https://101hotels.com/main/cities/adler/gostevoy_dom_ogonek_2.html",
+      "action": "спросить отельера об этажности и пересчитать вид для верхних этажей"
+    }
+  ],
+  "aircraft_noise": {
+    "rows": [
+      {
+        "hotel_id": "osm:node:11843553838",
+        "name": "Офелия",
+        "label": "reported",
+        "model": "high",
+        "slant_m": 78,
+        "outcome": "agree"
+      }
+    ],
+    "agree": 1,
+    "total": 1
+  },
+  "note": "Малая ручная выборка; это проверка на грубые ошибки и источник конфликтов, не оценка точности."
+}

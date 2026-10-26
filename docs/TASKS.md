@@ -41,8 +41,11 @@
 - **P1 / У1+У3 / TODO** — Ollama structured extractor свободных ответов отельера с условиями/сезонностью;
   `app/hotelier/dialogue.py`, `app/schemas/hotelier.py`. Готово: gold replies, сохранённые цитаты,
   scope/условия не теряются, confirmation остаётся обязательным.
-- **P1 / У2 / TODO** — Добавить авиационный фактор/другой независимый источник шума и калибровку;
-  `app/geo/quietness.py`. Готово: источники, метод, метрика против размеченной проверки; не выдавать дБ без модели.
+- **P1 / У2 / DONE (MVP)** — Авиационный фактор: `app/geo/aircraft.py`, ВПП AER из OSM, глиссада 3°,
+  `aircraft_noise_exposure` + `aircraft_path_distance_m`; сверка с отзывами в `viewshed_metrics.json`.
+  Остаётся: реальные треки (ADS-B/AIP-схемы), загрузка полос, учёт в `quietness_proxy`; дБ не выдаются.
+- **P1 / У2 / IN_PROGRESS** — Эталон из отзывов `data/evaluation/view_gold.json` (9 отелей, ссылки и цитаты);
+  расширить до 20+ отелей и добавить твёрдые отрицательные примеры, чтобы мерить precision.
 - **P1 / У2+У3 / TODO** — Плановое обновление snapshot с версионированием и обработкой удалённых отелей.
   `scripts/collect_adler_osm.py`, `app/storage/repository.py`. Сейчас TTL учитывается, но автоматической загрузки нет.
 - **P1 / У3 / TODO** — Авторизация реального отельера, ownership, миграции SQLite и проверки конкурентных записей.

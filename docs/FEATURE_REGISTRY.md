@@ -15,6 +15,8 @@
 | sea_view_min_floor | number floor / hotel | viewshed | 180 дней | .4 |
 | sunset_view_potential | none/seasonal/year_round / hotel | viewshed | 180 дней | .6 |
 | sunset_view_min_floor | number floor / hotel | viewshed | 180 дней | .4 |
+| aircraft_noise_exposure | low/medium/high / hotel | aircraft_noise | 365 дней | .8 |
+| aircraft_path_distance_m | number m / hotel | aircraft_noise | 365 дней | .7 |
 
 Quietness: дороги motorway/trunk=1, primary=.9, secondary=.7, tertiary=.5,
 residential=.3, service=.15, unclassified=.4; decay scale=120 м.
@@ -47,6 +49,14 @@ High quietness при risk<.25, medium при <.6, иначе low. Это экс
    Если категории моря и заката совпадают во всех и этажность отеля из OSM — `medium`, иначе `low`.
    В evidence: сценарии, сводка по этажам, лучшая точка фасада, ID зданий, закрывающих горизонт,
    SHA256 входов и человекочитаемый `summary` («Закат из окон стороны З, с 2-го этажа, апрель–август»).
+
+## Авиашум (`app/geo/aircraft.py`, provider `aircraft_noise`)
+
+ВПП 06/24 и 02/20 аэропорта Сочи из OSM. От каждого торца — прямая по продолжению оси, глиссада 3°,
+порог на 15 м, 12 км. Тот же профиль для взлётов (консервативно: реальный набор круче).
+Наблюдатель на 10 м над землёй (DEM). Кратчайшее наклонное расстояние до траектории или до ВПП:
+< 800 м — `high`, < 2 км — `medium`, иначе `low`. Пороги — по ориентиру Lmax A320 ~85–90 дБА на 300 м
+и −6 дБ на удвоение; дБ не выдаются. Все отели выборки в 0.1–1.2 км от траекторий: Адлер под заходом на 06.
 
 Не моделируются: деревья, балконы и козырьки, самозатенение сложного контура своего здания,
 реальные окна и планировка номеров. DEM снят в 2011–2015 гг.

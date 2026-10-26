@@ -108,3 +108,25 @@ sunset_view_min_floor:
   default_weight: 0.4
   aliases: [с какого этажа закат]
   scale: 3
+aircraft_noise_exposure:
+  label: Воздействие авиашума (расчёт)
+  description: По наклонному расстоянию до продолженных осей ВПП Сочи с глиссадой 3°. high < 800 м, medium < 2 км. Не дБ; реальные треки и загрузка полос не учтены.
+  type: category
+  choices: [low, medium, high]
+  unit: null
+  scope: hotel
+  provider: aircraft_noise
+  ttl_days: 365
+  default_weight: 0.8
+  aliases: [самолёты, авиашум, шум самолётов, аэропорт]
+aircraft_path_distance_m:
+  label: До траектории самолётов (расчёт)
+  description: Кратчайшее наклонное расстояние от 3-го этажа до траектории захода/взлёта по продолжению оси ВПП.
+  type: number
+  unit: m
+  scope: hotel
+  provider: aircraft_noise
+  ttl_days: 365
+  default_weight: 0.7
+  aliases: [подальше от самолётов, далеко от аэропорта]
+  scale: 1000

@@ -1,0 +1,165 @@
+{
+  "metadata": {
+    "purpose": "Ручная эталонная разметка для проверки viewshed и шума самолётов по открытым страницам отзывов и описаний.",
+    "collected_at": "2026-10-26",
+    "collector": "ручной просмотр страниц, без автоматического скрейпинга; только видимые на странице отзывы",
+    "identity_check": "адрес со страницы геокодирован Nominatim и сравнён с точкой OSM; учитываются совпадения ≤ 50 м",
+    "quote_policy": "короткие цитаты (≤ 15 слов) со ссылкой для проверки; полный текст отзывов не хранится",
+    "label_values": {
+      "sea_view": "yes — хотя бы из части номеров видно море; no_claim — ни в номерах, ни в отзывах моря нет, видны город/двор (слабое отрицание); mixed — отель заявляет вид, гости жалуются на вид; ambiguous — источники неоднозначны",
+      "aircraft_noise": "reported — гости пишут, что слышно самолёты"
+    },
+    "evidence_strength": ["guest_review", "hotel_room_category", "hotel_description", "amenity_list", "absence"],
+    "limits": [
+      "видны 5–20 последних отзывов из сотен; отсутствие упоминания не означает отсутствие вида",
+      "описания и подборки отзывов на сайте отеля пишет сам отель",
+      "отзыв относится к одному номеру, а модель оценивает здание целиком"
+    ]
+  },
+  "hotels": [
+    {
+      "hotel_id": "osm:node:10759614195",
+      "name": "Golden Tennis Club",
+      "identity": {"listing": "https://101hotels.com/main/cities/adler/otel_golden_tennis_club_1.html",
+                   "address": "Адлер, ул. Просвещения, д. 17", "geocode_distance_m": 5, "status": "matched"},
+      "labels": {"sea_view": "yes", "aircraft_noise": null},
+      "floor_evidence": [],
+      "evidence": [
+        {"url": "https://goldentennisclub.ru/", "source_type": "guest_review", "date": "2026-08-21",
+         "quote": "Снял номер с видом на море, из окна отлично видно и корт.",
+         "note": "отзыв с Яндекса, перепубликован на сайте отеля", "supports": "sea_view=yes"},
+        {"url": "https://goldentennisclub.ru/", "source_type": "guest_review", "date": null,
+         "quote": "Номер у нас был с балконом с боковым видом на море",
+         "note": "перепубликован на сайте отеля", "supports": "sea_view=yes"},
+        {"url": "https://101hotels.com/main/cities/adler/otel_golden_tennis_club_1.html", "source_type": "hotel_room_category",
+         "date": null, "quote": "Стандарт с видом на море без балкона", "note": "подпись фото номера",
+         "supports": "sea_view=yes"}
+      ]
+    },
+    {
+      "hotel_id": "osm:node:7115085741",
+      "name": "El Paraiso (сейчас Grace El Paraiso)",
+      "identity": {"listing": "https://101hotels.com/main/cities/adler/otel_el_paraiso.html",
+                   "address": "Адлер, ул. Просвещения, д. 70", "geocode_distance_m": 14, "status": "matched"},
+      "labels": {"sea_view": "yes", "aircraft_noise": null},
+      "floor_evidence": [{"floor": 9, "sea_view": true, "url": "https://otello.ru/hotel/70000001094608202/reviews"}],
+      "evidence": [
+        {"url": "https://otello.ru/hotel/70000001094608202/reviews", "source_type": "guest_review", "date": "2026-09-09",
+         "quote": "Это шикарный 9 этаж с видом на море", "supports": "sea_view=yes, floor 9"},
+        {"url": "https://otello.ru/hotel/70000001094608202/reviews", "source_type": "guest_review", "date": "2026-10-11",
+         "quote": "вид из окна шикарный - на море", "supports": "sea_view=yes"},
+        {"url": "https://101hotels.com/main/cities/adler/otel_el_paraiso.html", "source_type": "hotel_room_category",
+         "date": null, "quote": "Семейный (Море): вид на море", "supports": "sea_view=yes"}
+      ]
+    },
+    {
+      "hotel_id": "osm:node:2857562133",
+      "name": "Огонёк",
+      "identity": {"listing": "https://101hotels.com/main/cities/adler/gostevoy_dom_ogonek_2.html",
+                   "address": "Сочи, ул. Просвещения, д. 108/2", "geocode_distance_m": 25, "status": "matched",
+                   "rejected": [{"listing": "https://101hotels.com/main/cities/adler/gostevoy_dom_ogonek.html",
+                                 "address": "Адлер, ул. Гоголя, д. 23а", "geocode_distance_m": 631,
+                                 "reason": "другой объект с тем же названием"}]},
+      "labels": {"sea_view": "yes", "aircraft_noise": null},
+      "floor_evidence": [],
+      "levels_evidence": {"min_levels": 4, "url": "https://101hotels.com/main/cities/adler/gostevoy_dom_ogonek_2.html",
+                          "note": "на странице описаны номера на 2, 3 и 4 этажах; в OSM building:levels=1"},
+      "evidence": [
+        {"url": "https://101hotels.com/main/cities/adler/gostevoy_dom_ogonek_2.html", "source_type": "guest_review",
+         "date": "2026-06-03", "quote": "прямо из окна видно море", "supports": "sea_view=yes"},
+        {"url": "https://101hotels.com/main/cities/adler/gostevoy_dom_ogonek_2.html", "source_type": "hotel_room_category",
+         "date": null, "quote": "Стандарт с балконом и видом на горы", "supports": "часть номеров смотрит от моря"}
+      ]
+    },
+    {
+      "hotel_id": "osm:node:11843553839",
+      "name": "Аркадия+",
+      "identity": {"listing": "https://101hotels.com/main/cities/adler/gostinitsa_arkadiya.html",
+                   "address": "Адлер, пер. Богдана Хмельницкого, д. 11", "geocode_distance_m": 40,
+                   "status": "probable", "note": "на агрегаторе название «Аркадия», в OSM «Аркадия+»"},
+      "labels": {"sea_view": "yes", "aircraft_noise": null},
+      "floor_evidence": [],
+      "evidence": [
+        {"url": "https://101hotels.com/main/cities/adler/gostinitsa_arkadiya.html", "source_type": "hotel_description",
+         "date": null, "quote": "Из окон открывается прекрасный вид на бескрайнее море", "supports": "sea_view=yes"}
+      ]
+    },
+    {
+      "hotel_id": "osm:node:7115162128",
+      "name": "Center Plaza",
+      "identity": {"listing": "https://101hotels.com/main/cities/adler/apart-otel_apart-hotel_center_plaza.html",
+                   "address": "Адлер, ул. Старонасыпная, д. 1", "geocode_distance_m": 15, "status": "matched"},
+      "labels": {"sea_view": "no_claim", "aircraft_noise": null},
+      "floor_evidence": [],
+      "evidence": [
+        {"url": "https://101hotels.com/main/cities/adler/apart-otel_apart-hotel_center_plaza.html", "source_type": "absence",
+         "date": null, "quote": "Апартаменты (LOFT), (SUITE), (DUPLEX)",
+         "supports": "в категориях вида на море нет; в услугах только «Вид на сад»"},
+        {"url": "https://otello.ru/hotel/70000001036973972/reviews", "source_type": "guest_review", "date": "2026-10-09",
+         "quote": "из панорамных окон виден центр", "supports": "вид на город"}
+      ]
+    },
+    {
+      "hotel_id": "osm:node:4118677615",
+      "name": "Shine (Shine House)",
+      "identity": {"listing": "https://101hotels.com/main/cities/adler/otel_shine_house.html",
+                   "address": "Адлер, ул. Ленина, д. 63", "geocode_distance_m": 15, "status": "matched"},
+      "labels": {"sea_view": "mixed", "aircraft_noise": null},
+      "floor_evidence": [],
+      "evidence": [
+        {"url": "https://101hotels.com/main/cities/adler/otel_shine_house.html", "source_type": "hotel_description",
+         "date": null, "quote": "живописным видом на черноморское побережье или город", "supports": "sea_view=yes (часть категорий)"},
+        {"url": "https://otello.ru/hotel/70000001006577490/reviews", "source_type": "guest_review", "date": "2026-01-26",
+         "quote": "вид из окна на стену соседнего здания", "supports": "в номере 403 вида нет"},
+        {"url": "https://otello.ru/hotel/70000001006577490/reviews", "source_type": "guest_review", "date": "2025-12-14",
+         "quote": "вид из окон не очень", "supports": "вид из части номеров плохой"}
+      ]
+    },
+    {
+      "hotel_id": "osm:node:4931886321",
+      "name": "Марина",
+      "identity": {"listing": "https://101hotels.com/main/cities/adler/otel_marina.html",
+                   "address": "Сочи, Адлер, пер. Богдана Хмельницкого, д. 12А", "geocode_distance_m": 1, "status": "matched"},
+      "labels": {"sea_view": "ambiguous", "aircraft_noise": null},
+      "floor_evidence": [],
+      "evidence": [
+        {"url": "https://101hotels.com/main/cities/adler/otel_marina.html", "source_type": "hotel_room_category",
+         "date": null, "quote": "вид на город, вид во внутренний дворик, вид на горы",
+         "supports": "в категориях номеров вида на море нет"},
+        {"url": "https://101hotels.com/main/cities/adler/otel_marina.html", "source_type": "amenity_list",
+         "date": null, "quote": "Красивый вид на море", "supports": "общий список услуг, не номера"}
+      ]
+    },
+    {
+      "hotel_id": "osm:node:4072901609",
+      "name": "Касабланка",
+      "identity": {"listing": "https://101hotels.com/main/cities/adler/gostevoy_dom_kasablanka.html",
+                   "address": "Сочи, Адлер, ул. 8 Марта, д. 5", "geocode_distance_m": 2, "status": "matched"},
+      "labels": {"sea_view": "ambiguous", "aircraft_noise": null},
+      "floor_evidence": [],
+      "evidence": [
+        {"url": "https://101hotels.com/main/cities/adler/gostevoy_dom_kasablanka.html", "source_type": "hotel_description",
+         "date": null, "quote": "из окон номеров открывается вид на знаменитый адлерский маяк",
+         "supports": "вид в сторону берега, море прямо не названо"},
+        {"url": "https://101hotels.com/main/cities/adler/gostevoy_dom_kasablanka.html", "source_type": "amenity_list",
+         "date": null, "quote": "Вид на море", "supports": "общий список услуг"}
+      ]
+    },
+    {
+      "hotel_id": "osm:node:11843553838",
+      "name": "Офелия",
+      "identity": {"listing": "https://otello.ru/hotel/70000001075189121/reviews",
+                   "address": "Адлер, ул. Куйбышева, 38", "geocode_distance_m": 13, "status": "matched"},
+      "labels": {"sea_view": null, "aircraft_noise": "reported"},
+      "floor_evidence": [],
+      "evidence": [
+        {"url": "https://otello.ru/hotel/70000001075189121/reviews", "source_type": "guest_review", "date": "2026-09-15",
+         "quote": "взлетают самолеты и это слышно, ночью мешает спать", "supports": "aircraft_noise=reported"},
+        {"url": "https://otello.ru/hotel/70000001075189121/reviews", "source_type": "guest_review", "date": "2026-07-21",
+         "quote": "от самолётов есть шум, но это легко решается", "supports": "aircraft_noise=reported"},
+        {"url": "https://otello.ru/hotel/70000001075189121/reviews", "source_type": "guest_review", "date": "2026-07-21",
+         "quote": "высокие окна с хорошей панорамой можно наблюдать за самолётами", "supports": "видны взлёты"}
+      ]
+    }
+  ]
+}
