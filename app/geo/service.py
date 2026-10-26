@@ -11,7 +11,7 @@ from app.geo.osm_provider import fetch_osm_pois
 from app.geo.routing import PedestrianRouter, load_walking_graph
 from app.geo.quietness import calculate_quietness_proxy
 from app.geo.viewshed import ViewshedScene, analyze_hotel
-from app.geo.aircraft import runways, exposure
+from app.geo.aircraft import runways, exposure, explanation as aircraft_explanation
 
 VIEWSHED_KEYS = ('sea_view_potential', 'sea_view_min_floor', 'sunset_view_potential', 'sunset_view_min_floor')
 AIRCRAFT_KEYS = ('aircraft_noise_exposure', 'aircraft_path_distance_m')
@@ -54,6 +54,8 @@ class GeoService:
         metadata = raw['metadata']
         observed = datetime.fromisoformat(metadata['osm_base'].replace('Z', '+00:00'))
         collected = datetime.fromisoformat(metadata['collected_at'])
+        if nearest:
+            details['explanation'] = aircraft_explanation(nearest)
         details = details | {'inputs': {'aeroways': {'path': 'data/environment/osm_aeroways.json',
                                                     'query_sha256': metadata['query_sha256'],
                                                     'osm_base': metadata['osm_base']},
@@ -105,7 +107,9 @@ class GeoService:
             if value is None:
                 level = 'unknown'
             details = {k: v for k, v in result.items() if k != 'scenarios'} | {
-                'scenarios': result['scenarios'], 'summary': result['base']['summary']}
+                'scenarios': result['scenarios'], 'summary': result['base']['summary'],
+                'explanation': result['base']['summary_sea' if feature_key.startswith('sea')
+                                              else 'summary_sunset']}
             method_text = ('Перебор неизвестных высот соседних зданий (3, 6.5, 12 м): '
                            + ('вывод одинаков во всех сценариях' if result['robust_to_unknown_heights']
                               else 'вывод зависит от допущения') + '; этажность отеля: ' + result['levels_source']

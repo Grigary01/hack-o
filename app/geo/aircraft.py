@@ -91,3 +91,11 @@ def exposure(lat, lon, runway_list, ground_at):
                    'track_length_m': TRACK_LENGTH_M, 'observer_above_ground_m': OBSERVER_ABOVE_GROUND_M},
         'limits': LIMITS,
     }
+
+
+def explanation(nearest):
+    """Текст для гостя по ближайшей траектории."""
+    if nearest['kind'] == 'runway':
+        return f'До ВПП {nearest["runway"]} аэропорта Сочи ≈ {nearest["horizontal_m"]} м.'
+    return (f'Траектория захода/взлёта по оси ВПП {nearest["runway"]} (посадочный курс {nearest["landing_heading"]}°) '
+            f'проходит ≈ в {nearest["slant_m"]} м от окна 3-го этажа; самолёт там на высоте ≈ {nearest["aircraft_height_m"]} м.')

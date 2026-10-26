@@ -496,12 +496,13 @@ def summarize(floors):
                     'sunset_over_sea_months': f['sunset']['sunset_over_sea_months'],
                     'sunset_facade_azimuth': f['sunset']['azimuth']} for f in floors],
     }
-    result['summary'] = explain(result)
+    result['summary_sea'], result['summary_sunset'] = explain(result)
+    result['summary'] = result['summary_sea'] + ' ' + result['summary_sunset']
     return result
 
 
 def explain(summary):
-    """Человеческий текст: «закат из окон З стороны, с 5-го этажа, апрель–август»."""
+    """Тексты (море, закат): «закат из окон стороны З, с 5-го этажа, апрель–август»."""
     parts = []
     sea = summary['best_sea']
     if summary['sea_view_min_floor'] is None:
@@ -520,4 +521,4 @@ def explain(summary):
         if sun['sunset_over_sea_months']:
             text += f'; солнце садится в море: {month_ranges(sun["sunset_over_sea_months"])}'
         parts.append(text + '.')
-    return ' '.join(parts)
+    return parts[0], parts[1]

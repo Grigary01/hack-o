@@ -16,7 +16,9 @@ def test_search_and_hotelier_screen(client,monkeypatch):
     next(b for b in ui.button if b.label=='Найти отели').click().run()
     assert not ui.exception
     assert any('Соответствуют по имеющимся данным · 12' in h.value for h in ui.subheader)
-    assert len(ui.slider)==2
+    # Тишина и вид из запроса + расчётные спутники: авиашум и вид из окон здания.
+    assert [s.key for s in ui.slider]==['weight_quietness_proxy','weight_sea_view',
+                                        'weight_aircraft_path_distance_m','weight_sea_view_potential']
     ui.slider[0].set_value(.2).run()
     assert not ui.exception
     next(b for b in ui.button if b.label=='Сформировать вопрос').click().run()

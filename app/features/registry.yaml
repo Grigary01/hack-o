@@ -20,6 +20,11 @@ quietness_proxy:
   ttl_days: 90
   default_weight: 0.9
   aliases: [тихо, тишина, тихий]
+  ordinal: true
+  choice_labels: {low: низкий, medium: средний, high: высокий}
+  # В Адлере тишину определяет и аэропорт: OSM-proxy его не учитывает.
+  companions:
+    - {feature_key: aircraft_path_distance_m, desired: far, weight_factor: 0.8}
 nightlife_distance_m:
   label: До отмеченного в OSM бара или клуба по прямой
   description: До ближайшего известного заведения; неполнота OSM не доказывает отсутствие баров.
@@ -42,6 +47,9 @@ sea_view:
   default_weight: 0.6
   aliases: [вид на море, море из окна]
   question: В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.
+  companions:
+    - {feature_key: sea_view_potential, desired_if_true: wide, desired_if_false: none}
+  model_check: {potential: sea_view_potential, none_value: none, min_floor: sea_view_min_floor}
 soundproofing:
   label: Шумоизоляция номера
   description: Утверждение отельера, не акустическое измерение.
@@ -64,6 +72,9 @@ sunset_view:
   default_weight: 0.6
   aliases: [вид на закат, закат из окна]
   question: Из каких конкретно номеров виден закат? Для сложных условий по месяцам нужна ручная проверка.
+  companions:
+    - {feature_key: sunset_view_potential, desired_if_true: year_round, desired_if_false: none}
+  model_check: {potential: sunset_view_potential, none_value: none, min_floor: sunset_view_min_floor}
 sea_view_potential:
   label: Вид на море из окон (расчёт)
   description: Видимость моря по рельефу Copernicus и высотам зданий OSM для точек фасада по этажам. Где именно окна, не проверено; деревья не учтены.
@@ -75,6 +86,8 @@ sea_view_potential:
   ttl_days: 180
   default_weight: 0.6
   aliases: [вид на море, море из окна, панорама моря]
+  ordinal: true
+  choice_labels: {none: моря не видно, partial: море в просвете, wide: широкий вид}
 sea_view_min_floor:
   label: Море видно с этажа (расчёт)
   description: Самый низкий этаж, с которого на каком-либо фасаде открыто ≥3% обзора окна на море. Этажность из OSM или допущение.
@@ -97,6 +110,8 @@ sunset_view_potential:
   ttl_days: 180
   default_weight: 0.6
   aliases: [закат, вид на закат, закат из окна]
+  ordinal: true
+  choice_labels: {none: заката не видно, seasonal: по сезонам, year_round: круглый год}
 sunset_view_min_floor:
   label: Закат виден с этажа (расчёт)
   description: Самый низкий этаж, с которого закат виден хотя бы в одном месяце.
@@ -119,6 +134,8 @@ aircraft_noise_exposure:
   ttl_days: 365
   default_weight: 0.8
   aliases: [самолёты, авиашум, шум самолётов, аэропорт]
+  ordinal: true
+  choice_labels: {low: слабое, medium: заметное, high: сильное}
 aircraft_path_distance_m:
   label: До траектории самолётов (расчёт)
   description: Кратчайшее наклонное расстояние от 3-го этажа до траектории захода/взлёта по продолжению оси ВПП.

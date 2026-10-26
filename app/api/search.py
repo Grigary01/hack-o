@@ -4,6 +4,7 @@ from app.agent.feature_agent import FeatureAgent
 from app.schemas.search import ParseRequest, SearchRequest, SearchResponse
 from app.schemas.query import ParsedHotelQuery
 from app.ml.ranking import rank_hotels
+from app.ml.companions import expand
 
 router = APIRouter(prefix='/api',tags=['search'])
 
@@ -22,6 +23,9 @@ def search(payload: SearchRequest,request: Request,repo=Depends(repository)):
         return SearchResponse(parsed=parsed,parser_mode=mode,status='needs_clarification',ranking_method=payload.ranking_method)
     if payload.include_simulated and not request.app.state.config.demo_mode:
         raise HTTPException(403,'Симуляция доступна только в DEMO_MODE')
+    # Расчётные спутники («вид на море» → вид из окон здания) добавляются до весов:
+    # их тоже можно настроить слайдером. Повторный вызов с parsed их не дублирует.
+    parsed = expand(parsed)
     preferences = {p.feature_key:p for p in parsed.soft_preferences}
     if set(payload.weights)-preferences.keys():
         raise HTTPException(422,'Вес можно менять только у распознанного мягкого предпочтения')

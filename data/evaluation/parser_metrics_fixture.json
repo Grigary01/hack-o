@@ -1,11 +1,11 @@
 {
   "mode": "fixture",
   "model": null,
-  "measured_at": "2026-10-26T16:19:46.103369+00:00",
+  "measured_at": "2026-10-26T18:54:12.469321+00:00",
   "note": "Fixture exact-match на demo — проверка контракта, не качество NLP. Gold авторский, независимая разметка ещё нужна.",
   "demo": {
-    "queries": 12,
-    "covered": 12,
+    "queries": 14,
+    "covered": 14,
     "exact_match": 1.0,
     "field_precision": 1.0,
     "field_recall": 1.0,
@@ -278,7 +278,8 @@
               "importance": 0.8,
               "weight_source": "default",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             },
             {
               "feature_key": "quietness_proxy",
@@ -286,7 +287,8 @@
               "importance": 0.9,
               "weight_source": "default",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [],
@@ -316,7 +318,8 @@
               "importance": 0.7,
               "weight_source": "default",
               "scope": "room",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [],
@@ -461,7 +464,8 @@
               "importance": 1.0,
               "weight_source": "relative_inferred",
               "scope": "room",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             },
             {
               "feature_key": "quietness_proxy",
@@ -469,7 +473,8 @@
               "importance": 0.5,
               "weight_source": "relative_inferred",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [],
@@ -499,7 +504,8 @@
               "importance": 1.0,
               "weight_source": "relative_inferred",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             },
             {
               "feature_key": "sea_view",
@@ -507,7 +513,8 @@
               "importance": 0.5,
               "weight_source": "relative_inferred",
               "scope": "room",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [
@@ -568,7 +575,8 @@
               "importance": 0.7,
               "weight_source": "default",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [],
@@ -598,7 +606,8 @@
               "importance": 0.7,
               "weight_source": "default",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             },
             {
               "feature_key": "walking_distance_to_beach_m",
@@ -606,7 +615,8 @@
               "importance": 0.8,
               "weight_source": "default",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [],
@@ -774,7 +784,8 @@
               "importance": 0.9,
               "weight_source": "default",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [],
@@ -841,7 +852,8 @@
               "importance": 0.6,
               "weight_source": "default",
               "scope": "room",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [],
@@ -871,7 +883,8 @@
               "importance": 0.2,
               "weight_source": "explicit",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             },
             {
               "feature_key": "sea_view",
@@ -879,7 +892,8 @@
               "importance": 0.8,
               "weight_source": "explicit",
               "scope": "room",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [],
@@ -917,7 +931,8 @@
               "importance": 0.6,
               "weight_source": "default",
               "scope": "room",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [],
@@ -947,7 +962,8 @@
               "importance": 0.9,
               "weight_source": "default",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             },
             {
               "feature_key": "nightlife_distance_m",
@@ -955,7 +971,8 @@
               "importance": 0.7,
               "weight_source": "default",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [],
@@ -1021,7 +1038,8 @@
               "importance": 0.8,
               "weight_source": "default",
               "scope": "hotel",
-              "utility": null
+              "utility": null,
+              "derived_from": null
             }
           ],
           "unknown_or_ambiguous": [

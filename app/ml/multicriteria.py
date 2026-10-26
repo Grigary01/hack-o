@@ -20,7 +20,10 @@ from collections import defaultdict
 
 GROUPS = {'quietness_proxy':'quietness', 'nightlife_distance_m':'quietness',
           'soundproofing':'quietness', 'sea_view':'view', 'sunset_view':'view',
-          'walking_distance_to_beach_m':'beach_access'}
+          'walking_distance_to_beach_m':'beach_access',
+          'sea_view_potential':'view', 'sea_view_min_floor':'view',
+          'sunset_view_potential':'view', 'sunset_view_min_floor':'view',
+          'aircraft_noise_exposure':'quietness', 'aircraft_path_distance_m':'quietness'}
 LABELS = {'quietness':'Тишина и сон','view':'Вид из номера','beach_access':'Доступ к пляжу'}
 
 

@@ -290,5 +290,57 @@
       "clarification_question": null,
       "original_text": "Хочу тихий отель не дальше 500 метров пешком от пляжа, желательно номер с видом на море"
     }
+  },
+  {
+    "text": "Хочу тихий отель подальше от самолётов",
+    "expected": {
+      "region": "Adler",
+      "hard_constraints": [],
+      "soft_preferences": [
+        {
+          "feature_key": "quietness_proxy",
+          "desired": "high",
+          "importance": 0.9,
+          "scope": "hotel",
+          "weight_source": "default"
+        },
+        {
+          "feature_key": "aircraft_path_distance_m",
+          "desired": "far",
+          "importance": 0.7,
+          "scope": "hotel",
+          "weight_source": "default"
+        }
+      ],
+      "unknown_or_ambiguous": [],
+      "clarification_question": null,
+      "original_text": "Хочу тихий отель подальше от самолётов"
+    }
+  },
+  {
+    "text": "Номер с видом на закат и без шума самолётов",
+    "expected": {
+      "region": "Adler",
+      "hard_constraints": [],
+      "soft_preferences": [
+        {
+          "feature_key": "sunset_view",
+          "desired": true,
+          "importance": 0.6,
+          "scope": "room",
+          "weight_source": "default"
+        },
+        {
+          "feature_key": "aircraft_path_distance_m",
+          "desired": "far",
+          "importance": 0.7,
+          "scope": "hotel",
+          "weight_source": "default"
+        }
+      ],
+      "unknown_or_ambiguous": [],
+      "clarification_question": null,
+      "original_text": "Номер с видом на закат и без шума самолётов"
+    }
   }
 ]

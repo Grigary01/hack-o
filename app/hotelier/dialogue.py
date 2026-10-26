@@ -13,6 +13,7 @@ from app.schemas.hotelier import RoomClaim, ReplyExtraction
 from app.schemas.hotel import Observation, Evidence, Source
 from app.storage.models import RoomRow, AnswerRow
 from app.storage.repository import now_utc, row_dict
+from app.features.cross_check import model_disagreements
 
 ROOMS = re.compile(r'(?:номер(?:ах|ами|ов|ом|а|е)?|комнат(?:ах|ы|е))\s*№?\s*(\d{1,5}(?:\s*[-–—]\s*\d{1,5})?(?:\s*,\s*\d{1,5})*)',re.I)
 
@@ -79,7 +80,16 @@ def ask_hotelier(repo,hotel_id,feature_key):
     definition = get_registry().get(feature_key)
     if definition.provider != 'hotelier':
         raise ValueError('Для этой характеристики нужен Geo-инструмент')
-    return row_dict(repo.ensure_question(hotel_id,feature_key,definition.question))
+    text = definition.question
+    check = definition.model_check
+    if check:
+        # Агент спрашивает предметно: показывает отельеру, что уже посчитал по зданию.
+        computed = [o for o in repo.observations(hotel_id, check.potential) if o.value is not None]
+        if computed:
+            hint = max(computed, key=lambda o: o.collected_at).evidence.details.get('explanation')
+            if hint:
+                text += ' Наш расчёт по рельефу и соседним домам: ' + hint + ' Подтвердите или поправьте.'
+    return row_dict(repo.ensure_question(hotel_id,feature_key,text))
 
 
 def submit_answer(repo,qid,text):
@@ -136,5 +146,14 @@ def confirm_answer(repo,answer_id,accept):
         ids.append(repo.save_observation(observation))
     question.status = 'answered'
     repo.session.flush()
-    return {'answer_id':answer_id,'status':target,'observation_ids':ids,
+    # Сверка с расчётом по зданию: значение отельера остаётся, расхождение помечается.
+    observations = repo.observations(question.hotel_id)
+    review = []
+    for room_id in sorted({f'{question.hotel_id}:room:{c.room_number}' for c in extraction.claims}):
+        for item in model_disagreements(observations, question.hotel_id, room_id, question.feature_key,
+                                        include_simulated=True):
+            repo.add_review_conflict(question.hotel_id, room_id, question.feature_key,
+                                     item['hotelier_observation_id'], item['model_observation_id'], item['reason'])
+            review.append(item | {'room_id': room_id})
+    return {'answer_id':answer_id,'status':target,'observation_ids':ids,'model_review':review,
             'conflicts':repo.conflicts(question.hotel_id),'source_type':'hotelier_simulated'}

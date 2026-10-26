@@ -23,6 +23,8 @@ def query_messages(text, schema):
 "рядом/недалеко" означает near, никогда не выдумывай метры. Отрицания сохраняй.
 "Не дальше/не более" <=; "меньше" <; "не ближе/минимум" >=; "больше" >.
 0.5 км = 500 м. walking_distance — путь до пляжа, sea_view — вид из конкретного номера.
+Вид на море/закат — sea_view/sunset_view; расчётные *_potential/*_min_floor не выводи,
+их добавляет backend. Самолёты/аэропорт/авиашум — aircraft_path_distance_m far.
 Не рядом с барами = nightlife_distance_m far. Важнее = relative_inferred weights 1 и .5.
 При default importance бери default_weight реестра. Явные численные веса = explicit.
 utility задавай только для явно названной числовой цели И допустимого отклонения.

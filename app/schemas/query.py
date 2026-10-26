@@ -85,9 +85,12 @@ class SoftPreference(Contract):
     feature_key: str
     desired: Value
     importance: float = Field(default=0.5, ge=0, le=1)
-    weight_source: Literal['default', 'explicit', 'relative_inferred'] = 'default'
+    weight_source: Literal['default', 'explicit', 'relative_inferred', 'companion'] = 'default'
     scope: Literal['hotel', 'room'] = 'hotel'
     utility: UtilityCurve | None = None
+    # Заполняет только backend (app/ml/companions.py): из какого желания гостя
+    # выведено это расчётное пожелание. Парсер/LLM это поле не задаёт.
+    derived_from: str | None = None
 
     @model_validator(mode='after')
     def check_feature(self):
@@ -105,6 +108,8 @@ class SoftPreference(Contract):
             pass
         else:
             registry.validate_value(self.feature_key, self.desired)
+        if (self.weight_source == 'companion') != (self.derived_from is not None):
+            raise ValueError('companion-вес требует derived_from, и наоборот')
         if self.weight_source == 'default':
             # Модель не может выдать случайный вес за «стандартный»:
             # доверяем default_weight из нашего YAML, не её числу.

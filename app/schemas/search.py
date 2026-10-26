@@ -35,6 +35,7 @@ class CriterionResult(Contract):
     match: float | None = None
     explanation: str
     evidence: list[Observation] = Field(default_factory=list)
+    model_conflicts: list[dict] = Field(default_factory=list)
 
 
 class HotelSearchResult(Contract):

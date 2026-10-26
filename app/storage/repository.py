@@ -74,6 +74,17 @@ class Repository:
         self.session.flush()
         return observation.id
 
+    def add_review_conflict(self, hotel_id, subject_id, feature_key, left_id, right_id, reason):
+        """Расхождение разных источников (отельер против расчёта): значение не скрывается,
+        конфликт виден в кабинете с политикой review:<причина>."""
+        ids = sorted([left_id, right_id])
+        conflict_id = hashlib.sha256(('|'.join(ids) + '|' + reason).encode()).hexdigest()
+        self.session.execute(insert(ConflictRow).values(id=conflict_id, hotel_id=hotel_id, subject_id=subject_id,
+            feature_key=feature_key, left_id=ids[0], right_id=ids[1], created_at=now_utc().isoformat(),
+            policy='review:' + reason).on_conflict_do_nothing())
+        self.session.flush()
+        return conflict_id
+
     def conflicts(self, hotel_id=None):
         query = select(ConflictRow)
         if hotel_id:

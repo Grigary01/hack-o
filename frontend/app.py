@@ -63,10 +63,14 @@ def show_result(result,index):
                 value='Да' if c['actual'] else 'Нет'
             elif definitions[c['feature_key']]['unit']=='m':
                 value=f'≈ {round(c["actual"]/10)*10:.0f} м'
+            elif definitions[c['feature_key']]['unit']=='floor':
+                value=f'с {c["actual"]:g}-го этажа'
             else:
-                value={'high':'высокий','medium':'средний','low':'низкий'}.get(c['actual'],str(c['actual']))
+                value=definitions[c['feature_key']].get('choice_labels',{}).get(c['actual'],str(c['actual']))
             st.write(f'**{label}: {value}**')
             st.caption(c['explanation'])
+            for conflict in c.get('model_conflicts',[]):
+                st.warning('Расхождение источников: '+conflict['text'])
         for warning in result['warnings']:
             st.warning(warning)
         with st.expander('Источники, даты и уверенность'):
@@ -90,7 +94,7 @@ with search_tab:
     if health['parser_mode']=='groq':
         st.caption('Облачная модель Groq: текст запроса отправляется провайдеру. Действуют квоты вашего аккаунта.')
     if health['parser_mode']=='fixture':
-        st.info('Без модели доступны 12 проверенных формулировок. Для произвольного текста включите Ollama; незнакомый запрос потребует уточнения.')
+        st.info(f'Без модели доступны {len(examples)} проверенных формулировок. Для произвольного текста включите Ollama; незнакомый запрос потребует уточнения.')
     example=st.selectbox('Попробовать сценарий',examples)
     text=st.text_area('Что важно в поездке?',value=example,key=f'query_{examples.index(example)}',height=95)
     simulated=st.checkbox('Учитывать симулированные ответы отельера',value=False,
@@ -115,6 +119,8 @@ with search_tab:
                 for column,pref in zip(columns,response['parsed']['soft_preferences']):
                     key=pref['feature_key']
                     weights[key]=column.slider(definitions[key]['label'],0.,1.,float(pref['importance']),.1,key='weight_'+key)
+                    if pref.get('derived_from'):
+                        column.caption('Расчёт по геоданным к пожеланию «'+definitions[pref['derived_from']]['label'].lower()+'»')
             signature=(tuple(sorted(weights.items())),simulated,ranking_method)
             if signature!=st.session_state.get('weight_signature'):
                 updated=call(api.post,'/api/search',{'parsed':response['parsed'],'weights':weights,'include_simulated':simulated,'ranking_method':ranking_method})

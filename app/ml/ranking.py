@@ -11,6 +11,7 @@ import operator
 
 from app.features.registry import get_registry
 from app.features.service import resolve_feature
+from app.features.cross_check import model_disagreements
 from app.schemas.hotel import Hotel, Observation
 from app.schemas.query import ParsedHotelQuery, SoftPreference
 from app.schemas.search import CriterionResult, HotelSearchResult
@@ -33,7 +34,9 @@ def soft_match(value, preference: SoftPreference) -> float:
 
     Для близости: distance=0 → 1; distance=scale → .5. scale=1000 означает
     «характерный масштаб 1 км», а не строгий порог. При желании far всё наоборот.
-    Для тишины: high → 1, medium → .5, low → 0. Это явная эвристика команды.
+    Для упорядоченных категорий (ordinal в реестре) соседние значения частично
+    совпадают: 1 - |позиция value - позиция desired| / (число вариантов - 1).
+    Тишина high: high → 1, medium → .5, low → 0; вид wide: partial → .5.
     Для bool: True/False сравниваются с желанием, включая desired=False.
 
     None сюда не передаётся: неизвестное обрабатывается до вызова функции.
@@ -44,9 +47,29 @@ def soft_match(value, preference: SoftPreference) -> float:
     if definition.type == 'number' and preference.desired in ('near', 'far'):
         near = 1 / (1 + value / definition.scale)
         return near if preference.desired == 'near' else 1 - near
-    if definition.type == 'category' and preference.desired == 'high':
-        return {'low': 0., 'medium': .5, 'high': 1.}.get(value, 0.)
+    if definition.type == 'category' and definition.ordinal and value in definition.choices:
+        distance = abs(definition.choices.index(value) - definition.choices.index(preference.desired))
+        return 1 - distance / (len(definition.choices) - 1)
     return float(value == preference.desired)
+
+
+def describe(definition, state, fallback):
+    """Текст для гостя: значение по-русски + объяснение источника.
+
+    Расчётные характеристики кладут в evidence.details.explanation конкретику:
+    сторону, этаж, месяцы, расстояние до траектории. Её и показываем вместо
+    общего описания — так видно, в чём отель не дотягивает («только с 5-го этажа»).
+    """
+    if state.value is None:
+        return f'{definition.label}: {fallback}. {definition.description}'
+    newest = max((o for o in state.observations if o.value == state.value), key=lambda o: o.collected_at)
+    detail = newest.evidence.details.get('explanation') if isinstance(newest.evidence.details, dict) else None
+    value = definition.display(state.value)
+    if definition.unit == 'm' and isinstance(state.value, (int, float)):
+        value = f'≈ {round(state.value / 10) * 10:.0f} м'
+    confidence = {'medium': 'средняя', 'low': 'низкая', 'high': 'высокая'}.get(newest.confidence_level)
+    text = f'{definition.label}: {value}. {detail or definition.description}'
+    return text + (f' Уверенность: {confidence}.' if confidence and detail else '')
 
 
 def rank_variant(
@@ -82,8 +105,11 @@ def rank_variant(
         result = None if state.value is None else OPS[hard.operator](state.value, hard.value)
         outcome = 'unknown' if result is None else 'matched' if result else 'violated'
         outcomes.append(result)
-        label = get_registry().get(hard.feature_key).label
-        actual_text = state.value if state.value is not None else 'нет надёжных данных'
+        definition = get_registry().get(hard.feature_key)
+        conflicts = model_disagreements(observations, hotel.id, subject, hard.feature_key, include_simulated) \
+            if hard.scope == 'room' else []
+        explanation = describe(definition, state, 'нет надёжных данных') + \
+            f' Условие: {hard.operator} {definition.display(hard.value)} {hard.unit or ""}.'.rstrip()
         criteria.append(CriterionResult(
             feature_key=hard.feature_key,
             requested=f'{hard.operator} {hard.value}',
@@ -91,8 +117,9 @@ def rank_variant(
             outcome=outcome,
             status=state.status,
             subject_id=subject,
-            explanation=f'{label}: {actual_text}; условие {hard.operator} {hard.value} {hard.unit or ""}.',
+            explanation=explanation + ''.join(' ⚠ ' + c['text'] for c in conflicts),
             evidence=state.observations,
+            model_conflicts=conflicts,
         ))
 
     # Блок B. Мягкие пожелания задают порядок среди кандидатов.
@@ -110,7 +137,11 @@ def rank_variant(
             score_sum += preference.importance * match
 
         definition = get_registry().get(preference.feature_key)
-        actual_text = state.value if state.value is not None else 'требует уточнения'
+        conflicts = model_disagreements(observations, hotel.id, subject, preference.feature_key, include_simulated) \
+            if preference.scope == 'room' else []
+        explanation = describe(definition, state, 'требует уточнения')
+        if preference.derived_from:
+            explanation += f' (добавлено к пожеланию «{get_registry().get(preference.derived_from).label.lower()}»)'
         criteria.append(CriterionResult(
             feature_key=preference.feature_key,
             requested=str(preference.utility.model_dump(exclude_none=True)) if preference.utility else str(preference.desired),
@@ -119,8 +150,9 @@ def rank_variant(
             status=state.status,
             subject_id=subject,
             match=match,
-            explanation=f'{definition.label}: {actual_text}. {definition.description}',
+            explanation=explanation + ''.join(' ⚠ ' + c['text'] for c in conflicts),
             evidence=state.observations,
+            model_conflicts=conflicts,
         ))
 
     # Блок C. Считаем две отдельные величины; score без coverage вводил бы в заблуждение.
@@ -136,6 +168,8 @@ def rank_variant(
     warnings = []
     if any(criterion.status == 'estimated' for criterion in criteria):
         warnings.append('Соответствие рассчитано по оценкам; входы и доступность на местности не подтверждены.')
+    if any(criterion.model_conflicts for criterion in criteria):
+        warnings.append('Ответ отельера расходится с расчётом по зданию; нужна перепроверка.')
     if any(
         observation.evidence.source.type == 'hotelier_simulated'
         for criterion in criteria

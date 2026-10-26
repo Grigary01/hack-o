@@ -48,6 +48,23 @@ def normalize(text: str) -> str:
     return ' '.join(text.lower().strip().rstrip('.!?').split())
 
 
+def llm_schema() -> dict:
+    """JSON Schema для LLM: контракт ParsedHotelQuery минус поля, которые задаёт backend.
+
+    enum ограничивает имена фич текущим YAML-реестром: модель не должна
+    придумывать sea_view_probability или несуществующий инструмент.
+    Расчётных спутников (derived_from, weight_source=companion) добавляет
+    app/ml/companions.py после разбора, модель их не выводит.
+    """
+    schema = ParsedHotelQuery.model_json_schema()
+    for name in ('HardConstraint', 'SoftPreference'):
+        schema['$defs'][name]['properties']['feature_key']['enum'] = list(get_registry().definitions)
+    soft = schema['$defs']['SoftPreference']['properties']
+    soft.pop('derived_from', None)
+    soft['weight_source']['enum'] = [v for v in soft['weight_source']['enum'] if v != 'companion']
+    return schema
+
+
 class FixtureQueryParser:
     """Детерминированный офлайн-провайдер для воспроизводимой демонстрации."""
     mode = 'fixture'
@@ -99,14 +116,7 @@ class OllamaQueryParser:
 
         # Шаг 1. Получаем JSON Schema автоматически из Pydantic-класса.
         # Так описание для LLM и контракт backend не расходятся вручную.
-        schema = ParsedHotelQuery.model_json_schema()
-
-        # JSON Schema $defs содержит определения вложенных классов.
-        # enum ограничивает имена фич текущим YAML-реестром: модель не должна
-        # придумывать sea_view_probability или несуществующий инструмент.
-        for name in ('HardConstraint', 'SoftPreference'):
-            feature_schema = schema['$defs'][name]['properties']['feature_key']
-            feature_schema['enum'] = list(get_registry().definitions)
+        schema = llm_schema()
 
         # Шаг 2. Готовим запрос Ollama /api/chat.
         # format=schema ограничивает структуру ответа; сообщения объясняют смысл.
@@ -170,9 +180,7 @@ JSON-schema best-effort сохраняет необязательные поля
         from app.ml.prompts import query_messages
         if not self.config.groq_api_key:
             raise ParserError('Добавьте GROQ_API_KEY в локальный .env; облачная модель ещё не подключена.')
-        schema = ParsedHotelQuery.model_json_schema()
-        for name in ('HardConstraint','SoftPreference'):
-            schema['$defs'][name]['properties']['feature_key']['enum'] = list(get_registry().definitions)
+        schema = llm_schema()
         payload = {'model':self.config.groq_model, 'messages':query_messages(text,schema),
                    'temperature':0, 'max_completion_tokens':3000,
                    'reasoning_effort':'low',
