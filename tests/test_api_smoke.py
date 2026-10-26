@@ -6,6 +6,7 @@ from app.ml.query_parser import FixtureQueryParser
 def test_offline_api_pipeline_and_errors(client):
     health=client.get('/api/health')
     assert health.status_code==200 and health.json()['hotels']==25
+    assert client.get('/health').json()=={'status':'ok','hotels':25}
     text=FixtureQueryParser().examples[0]['text']
     parsed=client.post('/api/parse-query',json={'text':text})
     assert parsed.status_code==200
@@ -56,3 +57,12 @@ def test_seed_is_idempotent_without_erasing_answers(client,engine):
     rows=client.get(f'/api/hotels/{hotel["id"]}/evidence').json()['observations']
     seeded=[o for o in json.loads((settings.demo_dir/'features.json').read_text()) if o['hotel_id']==hotel['id']]
     assert len(rows)==len(seeded)+1
+
+
+def test_health_reports_empty_database():
+    from fastapi.testclient import TestClient
+    from app.main import create_app
+    from app.storage.db import create_db
+    with TestClient(create_app(engine=create_db('sqlite://'),parser=FixtureQueryParser())) as c:
+        response=c.get('/health')
+    assert response.status_code==503 and response.json()['status']=='needs_seed'

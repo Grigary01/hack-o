@@ -1,4 +1,80 @@
-# О!дин шаг · прибрежный Адлер
+# О!дин шаг · прибрежный Адлер (трек «О!дин шаг до идеального отеля»)
+
+Агентная система подбора отелей Адлера по характеристикам, которых нет в карточках: вид на море
+и закат по этажам (рельеф + здания OSM), путь до пляжа по пешеходному графу, шум дорог, баров и самолётов,
+с источником, датой и уверенностью у каждого значения, диалогом с отельером и объяснением выбора.
+
+- Видео-скринкаст: **TODO — ссылка будет добавлена** (обязательно до сдачи)
+- Развёрнутый сервис: нет (запуск локальный)
+
+## Быстрый старт
+
+```bash
+git clone git@github.com:Grigary01/hack-o.git
+cd hack-o
+cp .env.example .env   # необязательно: без .env берутся значения из .env.example
+docker compose up --build
+# открыть http://localhost:8080
+```
+
+Первая сборка — несколько минут (скачиваются образы и Python-колёса). Демо-данные уже лежат
+в репозитории, загрузка OSM/DEM при старте не выполняется. Остановка: `Ctrl+C` или `docker compose down`;
+`docker compose down -v` дополнительно удалит базу с ответами отельера.
+
+## Зависимости и переменные окружения
+
+Рекомендованные ресурсы: 2 CPU, 2 GB RAM, ~2 GB диска под образы.
+
+Сервисы в `docker-compose.yml` (общий образ из `Dockerfile`, multi-stage, пользователь без root):
+
+- `app` — nginx (`nginxinc/nginx-unprivileged`), единственный проброшенный порт **8080:8080**;
+  `/` → Streamlit, `/health`, `/api/*`, `/docs` → FastAPI. Конфиг: `deploy/nginx.conf`.
+- `api` — FastAPI (uvicorn, порт 8000 внутри сети); при старте идемпотентный seed в SQLite.
+- `ui` — Streamlit (порт 8501 внутри сети), ходит в `api` по `API_URL`.
+- База: SQLite в томе `adler-data` (`/app/runtime/adler.db`); отдельный сервер БД и кеш не нужны.
+
+Порядок старта: `api` healthy → `ui` healthy → `app`. У всех трёх есть healthcheck.
+
+Переменные (`.env.example`; `.env` переопределяет, compose задаёт `DATABASE_URL` и `API_URL` для контейнеров):
+
+| Переменная | По умолчанию | Назначение |
+|---|---|---|
+| `PARSER_MODE` | `fixture` | `fixture` — 14 проверенных формулировок офлайн; `ollama`/`groq` — свободный текст через LLM |
+| `DATABASE_URL` | `sqlite:///runtime/adler.db` (в compose `sqlite:////app/runtime/adler.db`) | база фактов и ответов |
+| `API_URL` | `http://127.0.0.1:8000` (в compose `http://api:8000`) | адрес API для Streamlit |
+| `DEMO_MODE` | `true` | разрешает учёт симулированных ответов отельера |
+| `MODEL_NAME`, `OLLAMA_URL`, `OLLAMA_NUM_CTX` | `gemma3:12b`, `http://127.0.0.1:11434`, `8192` | локальная LLM (необязательно) |
+| `GROQ_API_KEY`, `GROQ_MODEL` | пусто, `openai/gpt-oss-120b` | облачная LLM, OpenAI-совместимый API (необязательно) |
+| `PARSER_TIMEOUT_SECONDS` | `90` | таймаут LLM-парсера |
+| `OPENAQ_API_KEY` | пусто | качество воздуха OpenAQ (необязательно) |
+| `OVERPASS_URL` | `https://overpass-api.de/api/interpreter` | только для офлайн-пересбора данных |
+| `NOISEMODELLING_HOME`, `NOISE_JAVA_HOME` | пусто | только для отдельной CLI-команды акустики |
+
+Ключ LLM не нужен: по умолчанию работает офлайн-парсер. Для Ollama внутри Docker укажите
+`OLLAMA_URL=http://host.docker.internal:11434` в `.env`.
+
+## Сидирование
+
+Выполняется автоматически при старте `api` (`python -m scripts.seed_demo`, идемпотентно: ответы отельера
+не стираются, дубликатов нет). Вручную:
+
+```bash
+docker compose exec api python -m scripts.seed_demo
+```
+
+Демо-данные — `data/demo/` (отели, маршруты, 225 наблюдений) и `data/environment/` (здания, береговая линия,
+рельеф Copernicus, ВПП). Пересбор из интернета (не нужен для демо) — раздел «Проверки и обновление данных».
+
+## Маршруты/доступ
+
+- `/` — UI (поиск, кабинет отельера, среда вокруг отеля)
+- `/health` — `200 OK`, JSON `{"status": "ok", "hotels": 25}` (`503 {"status": "needs_seed"}`, если база пуста)
+- `/api/health`, `/api/search`, `/api/parse-query`, `/api/hotels`, `/api/hotels/{id}/evidence`,
+  `/api/hotelier/...` — REST API, подробно в [docs/API.md](docs/API.md)
+- `/docs` — Swagger UI
+- Авторизации нет: кабинет отельера — локальная демонстрация, тестовые учётные данные не нужны.
+
+## О проекте
 
 Обновление 26 октября: [NoiseModelling/OpenAQ и проверка Адлера](docs/ENVIRONMENT.md),
 [облачные модели и ранжирование v2](docs/MODELS_AND_RANKING.md).
@@ -22,7 +98,7 @@
 (`python -m scripts.evaluate_viewshed`, см. [VALIDATION](docs/VALIDATION.md)). Все ответы локального кабинета — **симуляция**
 и по умолчанию исключены из подбора. Это не сервис бронирования и не интеграция с API Островка.
 
-## Запуск
+## Локальный запуск без Docker (разработка)
 
 Проверено на macOS arm64, Python **3.13.5**. Используйте Python 3.12+; для полного повторения — 3.13.
 Запускайте команды из корня проекта. При первой установке нужен интернет; для поиска после установки — нет.

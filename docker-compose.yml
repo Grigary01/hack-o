@@ -1,0 +1,68 @@
+# Запуск: docker compose up --build → http://localhost:8080
+name: ostrovok-adler
+
+x-app: &app
+  build: .
+  image: ostrovok-adler:local
+  platform: linux/amd64
+  env_file:
+    - path: .env.example
+      required: true
+    - path: .env          # необязателен: cp .env.example .env, чтобы переопределить значения
+      required: false
+  restart: unless-stopped
+
+services:
+  api:
+    <<: *app
+    environment:
+      DATABASE_URL: sqlite:////app/runtime/adler.db
+    volumes:
+      - adler-data:/app/runtime
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).status == 200 else 1)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  ui:
+    <<: *app
+    command: ["python", "-m", "streamlit", "run", "frontend/app.py", "--server.address", "0.0.0.0", "--server.port", "8501", "--server.headless", "true", "--browser.gatherUsageStats", "false"]
+    environment:
+      API_URL: http://api:8000
+    expose:
+      - "8501"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=3).status == 200 else 1)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  app:
+    image: nginxinc/nginx-unprivileged:1.27.5-alpine
+    platform: linux/amd64
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      api:
+        condition: service_healthy
+      ui:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+
+volumes:
+  adler-data:

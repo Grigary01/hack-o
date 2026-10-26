@@ -28,6 +28,14 @@ def create_app(engine=None,parser=None,config=settings):
         return JSONResponse(status_code=502 if isinstance(exc,ParserError) else 422,
                             content={'detail':str(exc)})
 
+    @api.get('/health')
+    def liveness(repo=Depends(repository)):
+        """Проверка для docker compose и жюри: 200 {"status":"ok"} только при живой и заполненной базе."""
+        count = len(repo.hotels())
+        if not count:
+            return JSONResponse(status_code=503, content={'status':'needs_seed','hotels':0})
+        return {'status':'ok','hotels':count}
+
     @api.get('/api/health')
     def health(repo=Depends(repository)):
         count = len(repo.hotels())

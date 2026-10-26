@@ -5,6 +5,7 @@ JSON-контракты: `app/schemas/*`; примеры фактических 
 
 | Метод и путь | Вход | Результат |
 |---|---|---|
+| GET /health | — | 200 `{"status":"ok","hotels":N}` при заполненной базе, иначе 503 `needs_seed`; healthcheck compose |
 | GET /api/health | — | DB/seed count, parser_mode, demo_mode; внешние API не проверяет |
 | GET /api/features | — | декларации YAML |
 | GET /api/demo-queries | — | 12 поддерживаемых demo-формулировок |
