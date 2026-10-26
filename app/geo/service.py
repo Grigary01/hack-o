@@ -12,11 +12,12 @@ from app.geo.routing import PedestrianRouter, load_walking_graph
 from app.geo.quietness import calculate_quietness_proxy
 from app.geo.viewshed import ViewshedScene, analyze_hotel
 from app.geo.aircraft import runways, exposure, explanation as aircraft_explanation
-from app.geo import route_quality
+from app.geo import route_quality, night
 
 VIEWSHED_KEYS = ('sea_view_potential', 'sea_view_min_floor', 'sunset_view_potential', 'sunset_view_min_floor')
 AIRCRAFT_KEYS = ('aircraft_noise_exposure', 'aircraft_path_distance_m')
 ROUTE_KEYS = ('beach_route_climb_m', 'beach_route_busy_crossings')
+NIGHT_KEYS = ('night_open_places_500m', 'nearest_night_pharmacy_m')
 
 
 class GeoService:
@@ -75,6 +76,34 @@ class GeoService:
             evidence=Evidence(source=Source(type='geo_model', name='OSM ВПП аэропорта Сочи + Copernicus DEM GLO-30',
                 ref=metadata['query_sha256'], url=hotel.source_url), method='aircraft_track_proximity_v1',
                 snapshot_path='data/environment/osm_aeroways.json', details=details))
+
+    def compute_night(self, hotel, feature_key):
+        definition = get_registry().get(feature_key)
+        raw = json.loads((self.environment_dir/'osm_amenities.json').read_text())
+        summary = night.summarize(hotel, raw['elements'])
+        if feature_key == 'night_open_places_500m':
+            value, text = summary['night_count'], night.explain_places(summary)
+        else:
+            nearest = summary['nearest_night_pharmacy']
+            value, text = (float(nearest['distance_m']) if nearest else None), night.explain_pharmacy(summary)
+        metadata = raw['metadata']
+        observed = datetime.fromisoformat(metadata['osm_base'].replace('Z', '+00:00'))
+        collected = datetime.fromisoformat(metadata['collected_at'])
+        details = summary | {'explanation': text}
+        digest = hashlib.sha256(json.dumps([hotel.id, feature_key, metadata['query_sha256'], value, details],
+                                           sort_keys=True, default=str).encode()).hexdigest()
+        return Observation(id=digest, hotel_id=hotel.id, subject_type='hotel', subject_id=hotel.id,
+            feature_key=feature_key, value=value, unit=definition.unit,
+            observed_at=observed, collected_at=collected, expires_at=observed+timedelta(days=definition.ttl_days),
+            status='estimated' if value is not None else 'unknown',
+            confidence_level='low' if value is not None else 'unknown',
+            confidence_method=('Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); '
+                               'расстояние по прямой. Вероятность не оценивалась.'),
+            quality_flags=['osm_coverage_not_field_verified', 'opening_hours_may_be_outdated', 'straight_line_distance'] +
+                          (['many_places_without_hours'] if summary['unknown_hours_in_radius'] > summary['places_in_radius'] / 2 else []),
+            evidence=Evidence(source=Source(type='openstreetmap', name='OpenStreetMap contributors',
+                ref=metadata['query_sha256'], url=hotel.source_url), method='opening_hours_v1',
+                snapshot_path='data/environment/osm_amenities.json', details=details))
 
     def compute_route_quality(self, hotel, feature_key):
         """Тот же маршрут, что для расстояния до пляжа, плюс рельеф и дороги OSM."""
@@ -168,6 +197,8 @@ class GeoService:
             return self.compute_aircraft(hotel, feature_key)
         if feature_key in ROUTE_KEYS:
             return self.compute_route_quality(hotel, feature_key)
+        if feature_key in NIGHT_KEYS:
+            return self.compute_night(hotel, feature_key)
         definition = get_registry().get(feature_key)
         metadata = self.snapshot['metadata']
         observed = datetime.fromisoformat(metadata.get('osm_base') or metadata['collected_at'])

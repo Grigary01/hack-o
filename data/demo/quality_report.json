@@ -1,10 +1,10 @@
 {
-  "checked_at": "2026-10-26T19:22:31.018041+00:00",
+  "checked_at": "2026-10-26T19:25:40.672152+00:00",
   "hotels": 25,
   "osm_elements": 4895,
   "graph_nodes": 12188,
   "graph_edges": 27002,
-  "observations": 275,
+  "observations": 325,
   "routes_computed": 23,
   "route_coverage": 0.92,
   "unknown_routes": [
@@ -20,7 +20,7 @@
   "all_observations_recomputed": true,
   "graph_checksum_valid": true,
   "confidence_levels": {
-    "low": 231,
+    "low": 281,
     "medium": 32,
     "unknown": 12
   },

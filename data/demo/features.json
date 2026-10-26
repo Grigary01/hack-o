@@ -1900,6 +1900,182 @@
     }
   },
   {
+    "id": "2766e7aba7320944d16ebd4cb6ef922f32fc29a1cab32328480b8f0ad0169682",
+    "hotel_id": "osm:node:10058556917",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:10058556917",
+    "feature_key": "night_open_places_500m",
+    "value": 4,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/10058556917"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 291,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 388,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 391,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 496,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 4,
+        "places_in_radius": 78,
+        "unknown_hours_in_radius": 52,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 521,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Гастроном» 291 м, ресторан «Ассорти» 388 м, кафе «Сувлачная» 391 м, магазин «Магнит-Устиновка» 496 м. У 52 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "819a79e4684e880ca27a73552926bf52d23f73731daa267c74fc24472c465f21",
+    "hotel_id": "osm:node:10058556917",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:10058556917",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 521.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/10058556917"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 291,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 388,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 391,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 496,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 4,
+        "places_in_radius": 78,
+        "unknown_hours_in_radius": 52,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 521,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 521 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "12ce65c5edc30756537b184db6aebc040148c8b46f8564dd8ba5854d498337dc",
     "hotel_id": "osm:node:10759614195",
     "subject_type": "hotel",
@@ -3914,6 +4090,164 @@
     }
   },
   {
+    "id": "9b36f1b04412ee60fa23471522eb4492bb36ab3988270552b2adfe99266ef9b1",
+    "hotel_id": "osm:node:10759614195",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:10759614195",
+    "feature_key": "night_open_places_500m",
+    "value": 3,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/10759614195"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 84,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 175,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 439,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 3,
+        "places_in_radius": 79,
+        "unknown_hours_in_radius": 46,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 600,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: магазин «Магнит-Устиновка» 84 м, супермаркет «Гастроном» 175 м, фастфуд «Шаурма King Size» 439 м. У 46 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "d2947ab13a573bff362e11d99c558713bf4d46dfb275acdb2745f4dbcf74840c",
+    "hotel_id": "osm:node:10759614195",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:10759614195",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 600.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/10759614195"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 84,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 175,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 439,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 3,
+        "places_in_radius": 79,
+        "unknown_hours_in_radius": 46,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 600,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 600 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "3109712e25dbe431069f036d1639a1789d27fea7b0633b5a9cbb9011db354422",
     "hotel_id": "osm:node:11138786325",
     "subject_type": "hotel",
@@ -5631,6 +5965,200 @@
     }
   },
   {
+    "id": "cfb0fe826baa18a36301feee6bc479f9c0af33205465a2c88cc3062f1415ee5d",
+    "hotel_id": "osm:node:11138786325",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11138786325",
+    "feature_key": "night_open_places_500m",
+    "value": 5,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11138786325"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 251,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 340,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 354,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 363,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:way:235368455",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": "Сеть аптек",
+            "distance_m": 481,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 5,
+        "places_in_radius": 90,
+        "unknown_hours_in_radius": 68,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 363,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: кафе «Сувлачная» 251 м, ресторан «Ассорти» 340 м, бар «Бамбу лаундж» 354 м, аптека 363 м и ещё 1. У 68 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "bd45704a14d08fc935d55a6e4f9acc17cc90fffab634cb9d740c4cf638cd7ca2",
+    "hotel_id": "osm:node:11138786325",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11138786325",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 363.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11138786325"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 251,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 340,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 354,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 363,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:way:235368455",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": "Сеть аптек",
+            "distance_m": 481,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 5,
+        "places_in_radius": 90,
+        "unknown_hours_in_radius": 68,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 363,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 363 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "868b1a2633c75b7cb40b93294cb1731e08fb29871bc3fbe6e3b18260c11919ff",
     "hotel_id": "osm:node:11843545856",
     "subject_type": "hotel",
@@ -7245,6 +7773,218 @@
         "beach_id": "osm:way:53086451",
         "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
         "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "5088ce6667277fe91c0ff9bb030c4ca5c1a82680ce5c40c1ac5606287ffdbad1",
+    "hotel_id": "osm:node:11843545856",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843545856",
+    "feature_key": "night_open_places_500m",
+    "value": 6,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11843545856"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 102,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 212,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 405,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 473,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5123957524",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Магнит",
+            "distance_m": 475,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 493,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 6,
+        "places_in_radius": 101,
+        "unknown_hours_in_radius": 56,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 473,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: магазин «Магнит-Устиновка» 102 м, супермаркет «Гастроном» 212 м, фастфуд «Шаурма King Size» 405 м, аптека 473 м и ещё 2. У 56 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "cbb11f852bda3483f65602e17ac534bf5a8aef6febd6dca0388162c527b02ae8",
+    "hotel_id": "osm:node:11843545856",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843545856",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 473.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11843545856"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 102,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 212,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 405,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 473,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5123957524",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Магнит",
+            "distance_m": 475,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 493,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 6,
+        "places_in_radius": 101,
+        "unknown_hours_in_radius": 56,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 473,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 473 м по прямой (24/7)."
       }
     }
   },
@@ -9081,6 +9821,146 @@
     }
   },
   {
+    "id": "8c97cb9020817984513b2eac9ac8ea9440c50ba04fbe1e27491559982107726f",
+    "hotel_id": "osm:node:11843553838",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843553838",
+    "feature_key": "night_open_places_500m",
+    "value": 2,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11843553838"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4267285489",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Энос",
+            "distance_m": 229,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:way:235368455",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": "Сеть аптек",
+            "distance_m": 427,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 2,
+        "places_in_radius": 35,
+        "unknown_hours_in_radius": 24,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:way:235368455",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": "Сеть аптек",
+          "distance_m": 427,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: фастфуд «Энос» 229 м, аптека «Сеть аптек» 427 м. У 24 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "6defc9745d15d887f6d4145566f9fd92c30d8e7c90a95e026577a12c2689d5b2",
+    "hotel_id": "osm:node:11843553838",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843553838",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 427.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11843553838"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4267285489",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Энос",
+            "distance_m": 229,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:way:235368455",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": "Сеть аптек",
+            "distance_m": 427,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 2,
+        "places_in_radius": 35,
+        "unknown_hours_in_radius": 24,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:way:235368455",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": "Сеть аптек",
+          "distance_m": 427,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: Сеть аптек, 427 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "c7bd03c89019554f47291769edd988d467b585b5af93c26b7263e0af459a7bce",
     "hotel_id": "osm:node:11843553839",
     "subject_type": "hotel",
@@ -10805,6 +11685,218 @@
         "beach_id": "osm:way:53086451",
         "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
         "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "ef2a83f6bc574220ef4ae9367784f65fffb232b9dfe427f649676ffd2211a062",
+    "hotel_id": "osm:node:11843553839",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843553839",
+    "feature_key": "night_open_places_500m",
+    "value": 6,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11843553839"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 173,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 198,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 423,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 428,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 447,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 500,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 6,
+        "places_in_radius": 98,
+        "unknown_hours_in_radius": 57,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 428,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Гастроном» 173 м, магазин «Магнит-Устиновка» 198 м, кафе «Сувлачная» 423 м, аптека 428 м и ещё 2. У 57 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "0013a3aa3d1f8db1acfc81d8f810e6cbbaf11082e14a8bdd3fe7331995926ca3",
+    "hotel_id": "osm:node:11843553839",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843553839",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 428.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11843553839"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 173,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 198,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 423,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 428,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 447,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 500,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 6,
+        "places_in_radius": 98,
+        "unknown_hours_in_radius": 57,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 428,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 428 м по прямой (24/7)."
       }
     }
   },
@@ -12611,6 +13703,146 @@
         "beach_id": "osm:way:53086451",
         "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
         "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "561c5bf596371ae9f3f65a608ae6b23a20b074e579eabfde7739dec9671dc1bc",
+    "hotel_id": "osm:node:11866202895",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11866202895",
+    "feature_key": "night_open_places_500m",
+    "value": 2,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11866202895"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 66,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 233,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 2,
+        "places_in_radius": 63,
+        "unknown_hours_in_radius": 41,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 642,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Гастроном» 66 м, магазин «Магнит-Устиновка» 233 м. У 41 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "53687a1674721987945cfcb346dc9e1e7c5c4ac8d5cb5b329316f91045a46938",
+    "hotel_id": "osm:node:11866202895",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11866202895",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 642.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11866202895"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 66,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 233,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 2,
+        "places_in_radius": 63,
+        "unknown_hours_in_radius": 41,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 642,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 642 м по прямой (24/7)."
       }
     }
   },
@@ -14513,6 +15745,200 @@
     }
   },
   {
+    "id": "a7cf5737cb490b6615f6f7d5a0f9f127356a261cc462876651d8b7982d8f43a9",
+    "hotel_id": "osm:node:11878294031",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11878294031",
+    "feature_key": "night_open_places_500m",
+    "value": 5,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11878294031"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 141,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 288,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 300,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 332,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 427,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 5,
+        "places_in_radius": 101,
+        "unknown_hours_in_radius": 70,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 288,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: кафе «Сувлачная» 141 м, аптека 288 м, бар «Бамбу лаундж» 300 м, ресторан «Ассорти» 332 м и ещё 1. У 70 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "9caa573d7f7882aa3cb81138808128d4c7cf7c0a8347839b50b7a26d67385581",
+    "hotel_id": "osm:node:11878294031",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11878294031",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 288.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11878294031"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 141,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 288,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 300,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 332,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 427,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 5,
+        "places_in_radius": 101,
+        "unknown_hours_in_radius": 70,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 288,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 288 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "2c2d77036bd14ec87fb5b69880b123c2ae115c2b85f67e0dc24b5622ce939e6f",
     "hotel_id": "osm:node:11878294032",
     "subject_type": "hotel",
@@ -16231,6 +17657,200 @@
     }
   },
   {
+    "id": "7306ab9b99cbc3d0d8efb2f7e90d909210ee3c292991b7ddf0a25f3a665a715f",
+    "hotel_id": "osm:node:11878294032",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11878294032",
+    "feature_key": "night_open_places_500m",
+    "value": 5,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11878294032"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 247,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 287,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 396,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 402,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 414,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 5,
+        "places_in_radius": 90,
+        "unknown_hours_in_radius": 63,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 402,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: кафе «Сувлачная» 247 м, ресторан «Ассорти» 287 м, супермаркет «Гастроном» 396 м, аптека 402 м и ещё 1. У 63 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "5058870159c58b98e572a76b33be1ef61692eaf8ff84a3167b57a3994c6e081f",
+    "hotel_id": "osm:node:11878294032",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11878294032",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 402.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11878294032"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 247,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 287,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 396,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 402,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 414,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 5,
+        "places_in_radius": 90,
+        "unknown_hours_in_radius": 63,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 402,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 402 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "c392fed751ddbaacc855212963ef170331867bdf50ee25f83f2d59bc16a34085",
     "hotel_id": "osm:node:11958139262",
     "subject_type": "hotel",
@@ -17889,6 +19509,164 @@
         "beach_id": "osm:way:53086451",
         "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
         "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "99bd29a0e8afe41bb98809a02bb15a424e407453a4a478aa36e2ce5ef0c56e15",
+    "hotel_id": "osm:node:11958139262",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11958139262",
+    "feature_key": "night_open_places_500m",
+    "value": 3,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11958139262"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 316,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 363,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 378,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 3,
+        "places_in_radius": 77,
+        "unknown_hours_in_radius": 54,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 515,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Гастроном» 316 м, ресторан «Ассорти» 363 м, кафе «Сувлачная» 378 м. У 54 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "9f940c7a3110dc7ca6caf5c75a2f1447492c679fa5959eeed4151e7f2a16fcbf",
+    "hotel_id": "osm:node:11958139262",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11958139262",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 515.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/11958139262"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 316,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 363,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 378,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 3,
+        "places_in_radius": 77,
+        "unknown_hours_in_radius": 54,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 515,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 515 м по прямой (24/7)."
       }
     }
   },
@@ -19563,6 +21341,146 @@
     }
   },
   {
+    "id": "fe7bef71df4bdb1552c2a8f3c0c9297db923099f419272d76ce0fc27970a1f66",
+    "hotel_id": "osm:node:13301736402",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:13301736402",
+    "feature_key": "night_open_places_500m",
+    "value": 2,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/13301736402"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 307,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 452,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 2,
+        "places_in_radius": 53,
+        "unknown_hours_in_radius": 35,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 645,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Гастроном» 307 м, ресторан «Ассорти» 452 м. У 35 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "7dac1097314ba8e829862692c6500be5f0008e74363a7f7c12437861e4096b5b",
+    "hotel_id": "osm:node:13301736402",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:13301736402",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 645.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/13301736402"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 307,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 452,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 2,
+        "places_in_radius": 53,
+        "unknown_hours_in_radius": 35,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 645,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 645 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "3e4d3af8a93b838f1e6e1eadfbff9be392b4695a308977ff0c7ee66810b6511f",
     "hotel_id": "osm:node:1449074195",
     "subject_type": "hotel",
@@ -21115,6 +23033,218 @@
     }
   },
   {
+    "id": "704e59a1784eade03a8249a324f13b54c912268a1a662bb4a5a0439c929a0082",
+    "hotel_id": "osm:node:1449074195",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:1449074195",
+    "feature_key": "night_open_places_500m",
+    "value": 6,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/1449074195"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 233,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 303,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 312,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 321,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 396,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 451,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 6,
+        "places_in_radius": 96,
+        "unknown_hours_in_radius": 62,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 303,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: кафе «Сувлачная» 233 м, аптека 303 м, супермаркет «Гастроном» 312 м, бар «Бамбу лаундж» 321 м и ещё 2. У 62 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "a5576b9a6afed67eeb3e73b474b4a2af2ab55fadbf46e0b20f59fade4a4c0534",
+    "hotel_id": "osm:node:1449074195",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:1449074195",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 303.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/1449074195"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 233,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 303,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 312,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 321,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 396,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 451,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 6,
+        "places_in_radius": 96,
+        "unknown_hours_in_radius": 62,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 303,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 303 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "669ed0d6cfec8fe33544910cccda1a472edfd0b4f1841b3a2c8432ccdf627b9b",
     "hotel_id": "osm:node:1589835176",
     "subject_type": "hotel",
@@ -22629,6 +24759,236 @@
         "beach_id": "osm:way:510343733",
         "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
         "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "5c3287d4ac13413d07667cf7b54bae83f2362167ea5f2704120e578539fa391c",
+    "hotel_id": "osm:node:1589835176",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:1589835176",
+    "feature_key": "night_open_places_500m",
+    "value": 7,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/1589835176"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:2427696788",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Продукты",
+            "distance_m": 172,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:1275639195",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Рок-бар Треугольник",
+            "distance_m": 175,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5123957524",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Магнит",
+            "distance_m": 238,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:way:761980805",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Обед & Буфет",
+            "distance_m": 266,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 396,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 396,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 450,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 7,
+        "places_in_radius": 116,
+        "unknown_hours_in_radius": 63,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 396,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: магазин «Продукты» 172 м, бар «Рок-бар Треугольник» 175 м, супермаркет «Магнит» 238 м, кафе «Обед & Буфет» 266 м и ещё 3. У 63 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "af4cfbfbafed48146f1fd6d6fc2d99f2e416f474e4b72d18ebaba4213c79f69e",
+    "hotel_id": "osm:node:1589835176",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:1589835176",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 396.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/1589835176"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:2427696788",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Продукты",
+            "distance_m": 172,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:1275639195",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Рок-бар Треугольник",
+            "distance_m": 175,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5123957524",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Магнит",
+            "distance_m": 238,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:way:761980805",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Обед & Буфет",
+            "distance_m": 266,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 396,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 396,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 450,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 7,
+        "places_in_radius": 116,
+        "unknown_hours_in_radius": 63,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 396,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 396 м по прямой (24/7)."
       }
     }
   },
@@ -24220,6 +26580,128 @@
     }
   },
   {
+    "id": "f51fdf864f911f229358e9b65d14ed2ca041747ee992acc750ba6792ee1b045f",
+    "hotel_id": "osm:node:2857562133",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:2857562133",
+    "feature_key": "night_open_places_500m",
+    "value": 1,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/2857562133"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4267285489",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Энос",
+            "distance_m": 398,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 1,
+        "places_in_radius": 14,
+        "unknown_hours_in_radius": 11,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:way:235368455",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": "Сеть аптек",
+          "distance_m": 980,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: фастфуд «Энос» 398 м. У 11 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "b27b7620818942495828368faf66e94201c14d7761120d6f1d72acad6ba31005",
+    "hotel_id": "osm:node:2857562133",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:2857562133",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 980.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/2857562133"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4267285489",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Энос",
+            "distance_m": 398,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 1,
+        "places_in_radius": 14,
+        "unknown_hours_in_radius": 11,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:way:235368455",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": "Сеть аптек",
+          "distance_m": 980,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: Сеть аптек, 980 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "6ce4dab8cbcf6cca29813fc2e76214fb5528dc7d721b61f88c49b4dbeed32fa1",
     "hotel_id": "osm:node:2862997459",
     "subject_type": "hotel",
@@ -25682,6 +28164,218 @@
       "snapshot_path": "data/demo/osm_snapshot.json",
       "details": {
         "reason": "hotel_too_far_from_graph"
+      }
+    }
+  },
+  {
+    "id": "ae8b562af6f73f511b5b01dfce45e4d15dc7d803f716db13c57f7e28263d3d92",
+    "hotel_id": "osm:node:2862997459",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:2862997459",
+    "feature_key": "night_open_places_500m",
+    "value": 6,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/2862997459"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 283,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 308,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 394,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 424,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 440,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 447,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 6,
+        "places_in_radius": 87,
+        "unknown_hours_in_radius": 56,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 424,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Гастроном» 283 м, кафе «Сувлачная» 308 м, ресторан «Ассорти» 394 м, аптека 424 м и ещё 2. У 56 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "9bf74de4587a73d090c6182bb6b7b80aedb6313cb784d624350390ea945071d4",
+    "hotel_id": "osm:node:2862997459",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:2862997459",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 424.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/2862997459"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 283,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 308,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 394,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 424,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 440,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 447,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 6,
+        "places_in_radius": 87,
+        "unknown_hours_in_radius": 56,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 424,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 424 м по прямой (24/7)."
       }
     }
   },
@@ -27165,6 +29859,164 @@
         "beach_id": "osm:way:53086451",
         "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
         "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "7ab0914fccf52712a73e549d41eda14d3bb9c382ce69e058beea064901725cd5",
+    "hotel_id": "osm:node:4072901609",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4072901609",
+    "feature_key": "night_open_places_500m",
+    "value": 3,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4072901609"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 109,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 325,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 464,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 3,
+        "places_in_radius": 70,
+        "unknown_hours_in_radius": 45,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 534,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Гастроном» 109 м, магазин «Магнит-Устиновка» 325 м, кафе «Сувлачная» 464 м. У 45 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "61b1e904a36b43733fae89db79604e13ccde970fc86bb8c2509e15673c6746cd",
+    "hotel_id": "osm:node:4072901609",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4072901609",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 534.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4072901609"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 109,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 325,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 464,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 3,
+        "places_in_radius": 70,
+        "unknown_hours_in_radius": 45,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 534,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 534 м по прямой (24/7)."
       }
     }
   },
@@ -29126,6 +31978,182 @@
     }
   },
   {
+    "id": "f95ab97a21917a2a27c96e52d22c31cdc9b67a58d9c0760e2b86874461857f4a",
+    "hotel_id": "osm:node:4118677615",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4118677615",
+    "feature_key": "night_open_places_500m",
+    "value": 4,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4118677615"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 181,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 211,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 365,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 372,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 4,
+        "places_in_radius": 88,
+        "unknown_hours_in_radius": 64,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 365,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: кафе «Сувлачная» 181 м, ресторан «Ассорти» 211 м, аптека 365 м, бар «Бамбу лаундж» 372 м. У 64 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "3f10b9ddd958066bb7dd40f27dccf9ccaaa3bcf3101ef0615283840d1d6841e5",
+    "hotel_id": "osm:node:4118677615",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4118677615",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 365.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4118677615"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 181,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 211,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 365,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 372,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 4,
+        "places_in_radius": 88,
+        "unknown_hours_in_radius": 64,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 365,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 365 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "bf57fb8bf7152458de7b658c5d311b974b6cccdb84bd09a6f630ecffe8349981",
     "hotel_id": "osm:node:4284096790",
     "subject_type": "hotel",
@@ -30503,6 +33531,254 @@
         "beach_id": "osm:way:510343733",
         "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
         "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "806b3410f32310a1b631a8f46e53bc3411f93fd8e78dd7f494891c5a8814903c",
+    "hotel_id": "osm:node:4284096790",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4284096790",
+    "feature_key": "night_open_places_500m",
+    "value": 8,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4284096790"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:5123957524",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Магнит",
+            "distance_m": 161,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 245,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:11138786370",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Синий Пони",
+            "distance_m": 336,
+            "opening_hours": "Mo-Su 14:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 349,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:1275639195",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Рок-бар Треугольник",
+            "distance_m": 398,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 414,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 426,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:2427696788",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Продукты",
+            "distance_m": 433,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 8,
+        "places_in_radius": 124,
+        "unknown_hours_in_radius": 73,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 414,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Магнит» 161 м, фастфуд «Шаурма King Size» 245 м, бар «Синий Пони» 336 м, магазин «Магнит-Устиновка» 349 м и ещё 4. У 73 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "787daa3301b055c969cc41570ae50dd09172a4114f4340d858b12a4af8fc7646",
+    "hotel_id": "osm:node:4284096790",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4284096790",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 414.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4284096790"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:5123957524",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Магнит",
+            "distance_m": 161,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 245,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:11138786370",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Синий Пони",
+            "distance_m": 336,
+            "opening_hours": "Mo-Su 14:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 349,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:1275639195",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Рок-бар Треугольник",
+            "distance_m": 398,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 414,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 426,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:2427696788",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Продукты",
+            "distance_m": 433,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 8,
+        "places_in_radius": 124,
+        "unknown_hours_in_radius": 73,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 414,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 414 м по прямой (24/7)."
       }
     }
   },
@@ -32119,6 +35395,182 @@
         "beach_id": "osm:way:53086451",
         "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
         "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "f570102a0e30ac05a42769dafe762a35fd66f1c7d10b808b5941d8865a7685a6",
+    "hotel_id": "osm:node:4327828193",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4327828193",
+    "feature_key": "night_open_places_500m",
+    "value": 4,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4327828193"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 319,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 353,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 354,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 491,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 4,
+        "places_in_radius": 78,
+        "unknown_hours_in_radius": 54,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 491,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Гастроном» 319 м, ресторан «Ассорти» 353 м, кафе «Сувлачная» 354 м, аптека 491 м. У 54 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "f6cfe63b92ae1018aca0116ba7b6a7933e6258be26bf6f6866341644ba35ce77",
+    "hotel_id": "osm:node:4327828193",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4327828193",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 491.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4327828193"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 319,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4174127685",
+            "kind": "restaurant",
+            "label": "ресторан",
+            "name": "Ассорти",
+            "distance_m": 353,
+            "opening_hours": "Mo-Su 17:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 354,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 491,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 4,
+        "places_in_radius": 78,
+        "unknown_hours_in_radius": 54,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 491,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 491 м по прямой (24/7)."
       }
     }
   },
@@ -33865,6 +37317,290 @@
     }
   },
   {
+    "id": "c036145f259e81cee9d17eaf20ffce3d9ca4839be6b34179d19d478abcd57497",
+    "hotel_id": "osm:node:4348786790",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4348786790",
+    "feature_key": "night_open_places_500m",
+    "value": 10,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4348786790"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:5123957524",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Магнит",
+            "distance_m": 222,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 328,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 331,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:1275639195",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Рок-бар Треугольник",
+            "distance_m": 343,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 343,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 371,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:2427696788",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Продукты",
+            "distance_m": 399,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:11138786370",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Синий Пони",
+            "distance_m": 420,
+            "opening_hours": "Mo-Su 14:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:way:761980805",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Обед & Буфет",
+            "distance_m": 466,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 476,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 10,
+        "places_in_radius": 132,
+        "unknown_hours_in_radius": 75,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 331,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Магнит» 222 м, фастфуд «Шаурма King Size» 328 м, аптека 331 м, бар «Рок-бар Треугольник» 343 м и ещё 6. У 75 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "3f2909d648f66203239a6c7f941d7ee67607f3f44682cc59b8a55284f82ecec3",
+    "hotel_id": "osm:node:4348786790",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4348786790",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 331.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4348786790"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:5123957524",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Магнит",
+            "distance_m": 222,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:11745354777",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Шаурма King Size",
+            "distance_m": 328,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 331,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:1275639195",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Рок-бар Треугольник",
+            "distance_m": 343,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 343,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 371,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:2427696788",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Продукты",
+            "distance_m": 399,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:11138786370",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Синий Пони",
+            "distance_m": 420,
+            "opening_hours": "Mo-Su 14:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:way:761980805",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Обед & Буфет",
+            "distance_m": 466,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 476,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 10,
+        "places_in_radius": 132,
+        "unknown_hours_in_radius": 75,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 331,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 331 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "e5d63d67a7052b26ab86958af3c84c420557293c3d75585751daa60abd732ade",
     "hotel_id": "osm:node:4931886321",
     "subject_type": "hotel",
@@ -35559,6 +39295,200 @@
         "beach_id": "osm:way:53086451",
         "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
         "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "3177baff04d5b12726c79958cccc6c684998b424e0f63adc81c76498e64996ca",
+    "hotel_id": "osm:node:4931886321",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4931886321",
+    "feature_key": "night_open_places_500m",
+    "value": 5,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4931886321"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 192,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 220,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 396,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 403,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 423,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 5,
+        "places_in_radius": 98,
+        "unknown_hours_in_radius": 57,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 403,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Гастроном» 192 м, магазин «Магнит-Устиновка» 220 м, кафе «Сувлачная» 396 м, аптека 403 м и ещё 1. У 57 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "fc9f48778c659e2d715ee96166c12a046aac4f50ea3c8356ce8f30e2936a384a",
+    "hotel_id": "osm:node:4931886321",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4931886321",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 403.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/4931886321"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 192,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 220,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:4118864990",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Сувлачная",
+            "distance_m": 396,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:5033456927",
+            "kind": "pharmacy",
+            "label": "аптека",
+            "name": null,
+            "distance_m": 403,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 423,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 5,
+        "places_in_radius": 98,
+        "unknown_hours_in_radius": 57,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 403,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 403 м по прямой (24/7)."
       }
     }
   },
@@ -38330,6 +42260,126 @@
     }
   },
   {
+    "id": "26e5ee9a2fdc74c8105a10bec66a5f34e18c55e269d90da14cf604b7593e1f8e",
+    "hotel_id": "osm:node:6494252594",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:6494252594",
+    "feature_key": "night_open_places_500m",
+    "value": 1,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/6494252594"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:10759613921",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Food&mood",
+            "distance_m": 91,
+            "opening_hours": "Mo-Su 00:00-00:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 1,
+        "places_in_radius": 8,
+        "unknown_hours_in_radius": 4,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:11332848301",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": "36,6",
+          "distance_m": 743,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: фастфуд «Food&mood» 91 м. У 4 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "f3770a8596fcea1fdb283446745f622deab93e731e738c4df0cb4c20555beb6a",
+    "hotel_id": "osm:node:6494252594",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:6494252594",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 743.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/6494252594"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:10759613921",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Food&mood",
+            "distance_m": 91,
+            "opening_hours": "Mo-Su 00:00-00:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 1,
+        "places_in_radius": 8,
+        "unknown_hours_in_radius": 4,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:11332848301",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": "36,6",
+          "distance_m": 743,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: 36,6, 743 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "f8f00d7247f357b11a8dcae6bdaa4d552272e6ac6a0585a35d37bf7b77dfad1c",
     "hotel_id": "osm:node:7115085741",
     "subject_type": "hotel",
@@ -40818,6 +44868,146 @@
     }
   },
   {
+    "id": "aa760649c8593419e44e584af44f7f1af9d6fd30af044f8652a718bd5bbfe87e",
+    "hotel_id": "osm:node:7115085741",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7115085741",
+    "feature_key": "night_open_places_500m",
+    "value": 2,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/7115085741"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 24,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 266,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 2,
+        "places_in_radius": 62,
+        "unknown_hours_in_radius": 41,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 582,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: супермаркет «Гастроном» 24 м, магазин «Магнит-Устиновка» 266 м. У 41 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "78fef0bbe88c447f824bde650b82f222f0cce517b90b0b67e0afdfd0554d518d",
+    "hotel_id": "osm:node:7115085741",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7115085741",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 582.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/7115085741"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7115085742",
+            "kind": "supermarket",
+            "label": "супермаркет",
+            "name": "Гастроном",
+            "distance_m": 24,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:4332018502",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Магнит-Устиновка",
+            "distance_m": 266,
+            "opening_hours": "00:00-03:00,04:00-24:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 2,
+        "places_in_radius": 62,
+        "unknown_hours_in_radius": 41,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 582,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 582 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "6c38d1fc5db82cef3d76050acb2a27f2eddc1ce83ede471682889753b5b0a449",
     "hotel_id": "osm:node:7115162128",
     "subject_type": "hotel",
@@ -43224,6 +47414,218 @@
     }
   },
   {
+    "id": "74a847ca1f3c2a51b571680fed00b745e28347e23ebfc6154627fcdd60c5712e",
+    "hotel_id": "osm:node:7115162128",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7115162128",
+    "feature_key": "night_open_places_500m",
+    "value": 6,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/7115162128"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:way:761980805",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Обед & Буфет",
+            "distance_m": 126,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:10144993886",
+            "kind": "fuel",
+            "label": "АЗС",
+            "name": "Лукойл",
+            "distance_m": 162,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:2510415666",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Mealway",
+            "distance_m": 219,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:2427696788",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Продукты",
+            "distance_m": 233,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:1275639195",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Рок-бар Треугольник",
+            "distance_m": 246,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 498,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 6,
+        "places_in_radius": 96,
+        "unknown_hours_in_radius": 58,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 513,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: кафе «Обед & Буфет» 126 м, АЗС «Лукойл» 162 м, фастфуд «Mealway» 219 м, магазин «Продукты» 233 м и ещё 2. У 58 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "f0c8f1e47b41d620aee7be89e36259729b11826e035b525556065864df522642",
+    "hotel_id": "osm:node:7115162128",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7115162128",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 513.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/7115162128"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:way:761980805",
+            "kind": "cafe",
+            "label": "кафе",
+            "name": "Обед & Буфет",
+            "distance_m": 126,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:10144993886",
+            "kind": "fuel",
+            "label": "АЗС",
+            "name": "Лукойл",
+            "distance_m": 162,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:2510415666",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Mealway",
+            "distance_m": 219,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:2427696788",
+            "kind": "convenience",
+            "label": "магазин",
+            "name": "Продукты",
+            "distance_m": 233,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:1275639195",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Рок-бар Треугольник",
+            "distance_m": 246,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          },
+          {
+            "osm_id": "osm:node:6558660885",
+            "kind": "bar",
+            "label": "бар",
+            "name": "Бамбу лаундж",
+            "distance_m": 498,
+            "opening_hours": "Mo-Su 16:00-04:00",
+            "night": "night"
+          }
+        ],
+        "night_count": 6,
+        "places_in_radius": 96,
+        "unknown_hours_in_radius": 58,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 513,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 513 м по прямой (24/7)."
+      }
+    }
+  },
+  {
     "id": "1e53c585dfd0bfd1706b13c9ff430df37a029497c0ea0f93d827c3f290330bb0",
     "hotel_id": "osm:node:7345928591",
     "subject_type": "hotel",
@@ -44658,6 +49060,146 @@
       "snapshot_path": "data/demo/osm_snapshot.json",
       "details": {
         "reason": "no_path"
+      }
+    }
+  },
+  {
+    "id": "334e93f296d4e7dcb7726f12057d9dae89de2c10b11ec80799da7154157b671f",
+    "hotel_id": "osm:node:7345928591",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7345928591",
+    "feature_key": "night_open_places_500m",
+    "value": 2,
+    "unit": "count",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/7345928591"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7070405514",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Бургер Кинг",
+            "distance_m": 419,
+            "opening_hours": "Mo-Su 08:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:10144993886",
+            "kind": "fuel",
+            "label": "АЗС",
+            "name": "Лукойл",
+            "distance_m": 472,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 2,
+        "places_in_radius": 12,
+        "unknown_hours_in_radius": 9,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 1131,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ночью открыто в 500 м: фастфуд «Бургер Кинг» 419 м, АЗС «Лукойл» 472 м. У 9 заведений рядом часы в OSM не указаны."
+      }
+    }
+  },
+  {
+    "id": "023e1aadb04dbeb8d0ee962aa03f8c8da9348852e84153e9e208a85c5d35f8ec",
+    "hotel_id": "osm:node:7345928591",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7345928591",
+    "feature_key": "nearest_night_pharmacy_m",
+    "value": 1131.0,
+    "unit": "m",
+    "observed_at": "2026-10-26T19:21:51Z",
+    "collected_at": "2026-10-26T19:23:27.752461Z",
+    "expires_at": "2027-01-24T19:21:51Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Часы работы из OSM opening_hours (их ведут волонтёры, могут устареть); расстояние по прямой. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "opening_hours_may_be_outdated",
+      "straight_line_distance",
+      "many_places_without_hours"
+    ],
+    "evidence": {
+      "source": {
+        "type": "openstreetmap",
+        "name": "OpenStreetMap contributors",
+        "ref": "acfe40b489e32d4951f5188d42fdd9df86889d3d4af98d266758f7002a98573f",
+        "url": "https://www.openstreetmap.org/node/7345928591"
+      },
+      "method": "opening_hours_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/environment/osm_amenities.json",
+      "details": {
+        "radius_m": 500,
+        "night_places": [
+          {
+            "osm_id": "osm:node:7070405514",
+            "kind": "fast_food",
+            "label": "фастфуд",
+            "name": "Бургер Кинг",
+            "distance_m": 419,
+            "opening_hours": "Mo-Su 08:00-02:00",
+            "night": "night"
+          },
+          {
+            "osm_id": "osm:node:10144993886",
+            "kind": "fuel",
+            "label": "АЗС",
+            "name": "Лукойл",
+            "distance_m": 472,
+            "opening_hours": "24/7",
+            "night": "24/7"
+          }
+        ],
+        "night_count": 2,
+        "places_in_radius": 12,
+        "unknown_hours_in_radius": 9,
+        "nearest_night_pharmacy": {
+          "osm_id": "osm:node:5033456927",
+          "kind": "pharmacy",
+          "label": "аптека",
+          "name": null,
+          "distance_m": 1131,
+          "opening_hours": "24/7",
+          "night": "24/7"
+        },
+        "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
+        "explanation": "Ближайшая аптека, открытая ночью: без названия, 1131 м по прямой (24/7)."
       }
     }
   }

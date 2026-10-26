@@ -194,3 +194,30 @@ beach_route_busy_crossings:
   query_patterns: ['переход\w* (через )?(трасс|дорог|улиц|магистрал)\w*', 'переходить (трасс|дорог|улиц)\w*', 'через трасс\w*', 'через дорог\w*', 'светофор\w*']
   query_desired: near
   query_negation_keeps: true
+night_open_places_500m:
+  label: Открыто ночью в 500 м (OSM)
+  description: Аптеки, магазины, кафе, АЗС в 500 м по прямой, открытые в 01:00 все 7 дней по opening_hours OSM. Заведения без часов не учтены.
+  type: number
+  unit: count
+  scope: hotel
+  provider: night_amenities
+  ttl_days: 90
+  default_weight: 0.5
+  aliases: [круглосуточно рядом]
+  scale: 3
+  query_patterns: ['круглосуточн\w*', '\bночью\b', 'ночн\w* (магазин|кафе|ед[аыу]|перекус|доставк)\w*', '24/7', 'поздно вечером', 'перекусить ночью']
+  query_desired: far
+  query_negation_keeps: true
+nearest_night_pharmacy_m:
+  label: До аптеки, открытой ночью (OSM)
+  description: Ближайшая аптека, открытая в 01:00 все дни, по прямой. Отсутствие в OSM не доказывает отсутствие аптеки.
+  type: number
+  unit: m
+  scope: hotel
+  provider: night_amenities
+  ttl_days: 90
+  default_weight: 0.5
+  aliases: [аптека рядом]
+  scale: 500
+  query_patterns: ['аптек\w*', 'лекарств\w*']
+  query_desired: near
