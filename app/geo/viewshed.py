@@ -44,6 +44,7 @@ LOW_STRUCTURES = {'garage', 'garages', 'shed', 'carport', 'kiosk', 'hut', 'roof'
 SEA_PARTIAL_SHARE = 0.03  # ≥ ~4° моря из 121° сектора окна — «просвет»
 SEA_WIDE_SHARE = 0.25
 SUNSET_LOW_ALTITUDE = 3.0  # солнце видно ниже 3° — «закат виден»
+MOUNTAIN_MIN_M = 300.  # видимый рельеф выше 300 м — «горы» (отроги Кавказа, Ахун)
 SUNSET_SEA_ALTITUDE = 1.0  # и опускается к морскому горизонту
 MONTHS_RU = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль',
              'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь']
@@ -373,9 +374,11 @@ class ViewshedScene:
         kind = np.where(profile['sea'][rows, horizon_index], 'sea',
                         np.where(profile['other'][rows, horizon_index], 'building', 'terrain'))
         first_sea = np.where(visible & profile['sea'], DISTANCES_M, np.inf).min(axis=1)
+        mountain = visible & ~profile['sea'] & ~profile['other'] & (np.nan_to_num(profile['ground']) >= MOUNTAIN_MIN_M)
         return {'sea_rays': sea_rays, 'horizon_deg': np.degrees(np.arctan(running[:, -1])),
                 'horizon_kind': kind, 'horizon_building': profile['building'][rows, horizon_index],
-                'first_sea_m': first_sea}
+                'first_sea_m': first_sea, 'mountain_rays': mountain.any(axis=1),
+                'mountain_peak_m': float(np.where(mountain, profile['ground'], 0).max())}
 
 
 def sunset_months(azimuths, result, tracks):
@@ -431,7 +434,7 @@ def analyze_hotel(scene: ViewshedScene, hotel, spacing=12., tracks=None):
     for name, unknown_height in UNKNOWN_HEIGHT_SCENARIOS.items():
         floors = []
         for floor in range(1, building.levels + 1):
-            best_sea, best_sun = None, None
+            best_sea, best_sun, best_mountain = None, None, None
             for receiver, profile in zip(receivers, profiles):
                 eye = profile['eye_ground'] + EYE_ABOVE_FLOOR_M + FLOOR_HEIGHT_M * (floor - 1)
                 result = scene.evaluate(profile, eye, unknown_height)
@@ -443,6 +446,8 @@ def analyze_hotel(scene: ViewshedScene, hotel, spacing=12., tracks=None):
                          'sea_share': round(share, 3),
                          'nearest_visible_sea_m': (None if not np.isfinite(result['first_sea_m']).any()
                                                    else round(float(result['first_sea_m'].min()))),
+                         'mountain_share': round(float(result['mountain_rays'].mean()), 3),
+                         'mountain_peak_m': round(result['mountain_peak_m']),
                          'sunset_months': visible,
                          'sunset_over_sea_months': [m for m, s in months.items() if s == 'sea'],
                          'blocking_buildings': sorted({scene.buildings[i]['osm_id'] for i in
@@ -452,20 +457,25 @@ def analyze_hotel(scene: ViewshedScene, hotel, spacing=12., tracks=None):
                 if best_sun is None or (len(visible), len(entry['sunset_over_sea_months'])) > \
                         (len(best_sun['sunset_months']), len(best_sun['sunset_over_sea_months'])):
                     best_sun = entry
-            floors.append({'floor': floor, 'sea': best_sea, 'sunset': best_sun})
+                if best_mountain is None or entry['mountain_share'] > best_mountain['mountain_share']:
+                    best_mountain = entry
+            floors.append({'floor': floor, 'sea': best_sea, 'sunset': best_sun, 'mountain': best_mountain})
         scenarios[name] = summarize(floors)
     base = scenarios['base']
-    robust = all(s['sea_view_potential'] == base['sea_view_potential'] and
-                 s['sunset_view_potential'] == base['sunset_view_potential'] for s in scenarios.values())
+    robust_by_family = {family: all(s[f'{family}_view_potential'] == base[f'{family}_view_potential']
+                                    for s in scenarios.values()) for family in ('sea', 'sunset', 'mountain')}
+    robust = all(robust_by_family.values())
     near = shapely.Point(building.polygon.centroid).buffer(300)
     neighbours = [b for b in scene.buildings if b['polygon'].intersects(near) and b['osm_id'] != building.osm_id]
     return {'status': 'computed', 'building_osm_id': building.osm_id, 'building_match': building.match,
             'levels': building.levels, 'levels_source': building.levels_source,
             'receivers': len(receivers), 'robust_to_unknown_heights': robust,
+            'robust_by_family': robust_by_family,
             'neighbour_height_coverage_300m': round(sum(b['height'] is not None for b in neighbours)
                                                     / max(1, len(neighbours)), 3),
             'base': base, 'scenarios': {k: {key: v[key] for key in ('sea_view_potential', 'sea_view_min_floor',
-                                                                     'sunset_view_potential', 'sunset_view_min_floor')}
+                                                                     'sunset_view_potential', 'sunset_view_min_floor',
+                                                                     'mountain_view_potential', 'mountain_view_min_floor')}
                                         for k, v in scenarios.items()},
             'inputs': scene.inputs, 'inputs_sha256': scene.fingerprint(),
             'method': {'window_half_fov_deg': WINDOW_HALF_FOV, 'azimuth_step_deg': 1,
@@ -482,6 +492,9 @@ def summarize(floors):
     """Сводка по этажам: минимальный этаж и лучшая точка для текста объяснения."""
     sea_floors = [f for f in floors if f['sea']['sea_share'] >= SEA_PARTIAL_SHARE]
     sun_floors = [f for f in floors if f['sunset']['sunset_months']]
+    mountain_floors = [f for f in floors if f['mountain']['mountain_share'] >= SEA_PARTIAL_SHARE]
+    best_mountain = max((f['mountain'] | {'floor': f['floor']} for f in floors),
+                        key=lambda x: (x['mountain_share'], -x['floor']))
     best_sea = max((f['sea'] | {'floor': f['floor']} for f in floors), key=lambda x: (x['sea_share'], -x['floor']))
     best_sun = max((f['sunset'] | {'floor': f['floor']} for f in floors),
                    key=lambda x: (len(x['sunset_months']), len(x['sunset_over_sea_months']), -x['floor']))
@@ -490,15 +503,28 @@ def summarize(floors):
         'sea_view_min_floor': sea_floors[0]['floor'] if sea_floors else None,
         'sunset_view_potential': sunset_category(best_sun['sunset_months']),
         'sunset_view_min_floor': sun_floors[0]['floor'] if sun_floors else None,
-        'best_sea': best_sea, 'best_sunset': best_sun,
+        'mountain_view_potential': sea_category(best_mountain['mountain_share']),
+        'mountain_view_min_floor': mountain_floors[0]['floor'] if mountain_floors else None,
+        'best_sea': best_sea, 'best_sunset': best_sun, 'best_mountain': best_mountain,
         'floors': [{'floor': f['floor'], 'sea_share': f['sea']['sea_share'],
                     'sea_facade_azimuth': f['sea']['azimuth'], 'sunset_months': f['sunset']['sunset_months'],
                     'sunset_over_sea_months': f['sunset']['sunset_over_sea_months'],
-                    'sunset_facade_azimuth': f['sunset']['azimuth']} for f in floors],
+                    'sunset_facade_azimuth': f['sunset']['azimuth'], 'mountain_share': f['mountain']['mountain_share'],
+                    'mountain_facade_azimuth': f['mountain']['azimuth']} for f in floors],
     }
     result['summary_sea'], result['summary_sunset'] = explain(result)
+    result['summary_mountain'] = explain_mountain(result)
     result['summary'] = result['summary_sea'] + ' ' + result['summary_sunset']
     return result
+
+
+def explain_mountain(summary):
+    best = summary['best_mountain']
+    if summary['mountain_view_min_floor'] is None:
+        return 'Гор выше 300 м из окон не видно (по модели).'
+    width = 'широкий вид' if summary['mountain_view_potential'] == 'wide' else 'горы в просвете'
+    return (f'Горы: {width} из окон стороны {compass(best["azimuth"])}, с {summary["mountain_view_min_floor"]}-го этажа; '
+            f'лучше всего на {best["floor"]}-м ({best["mountain_share"]*100:.0f}% обзора окна, видны вершины до ≈ {best["mountain_peak_m"]} м).')
 
 
 def explain(summary):

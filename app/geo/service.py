@@ -14,7 +14,8 @@ from app.geo.viewshed import ViewshedScene, analyze_hotel
 from app.geo.aircraft import runways, exposure, explanation as aircraft_explanation
 from app.geo import route_quality, night
 
-VIEWSHED_KEYS = ('sea_view_potential', 'sea_view_min_floor', 'sunset_view_potential', 'sunset_view_min_floor')
+VIEWSHED_KEYS = ('sea_view_potential', 'sea_view_min_floor', 'sunset_view_potential', 'sunset_view_min_floor',
+                 'mountain_view_potential', 'mountain_view_min_floor')
 AIRCRAFT_KEYS = ('aircraft_noise_exposure', 'aircraft_path_distance_m')
 ROUTE_KEYS = ('beach_route_climb_m', 'beach_route_busy_crossings')
 NIGHT_KEYS = ('night_open_places_500m', 'nearest_night_pharmacy_m')
@@ -161,22 +162,23 @@ class GeoService:
         else:
             value = result['base'][feature_key]
             flags += result['limits']
+            # Устойчивость считаем по своей «семье» (море/закат/горы), а не по всем сразу.
+            robust = result['robust_by_family'][feature_key.split('_view')[0]]
             if result['building_match'] != 'osm_id' and result['building_match'] != 'contains_hotel_point':
                 flags.append('hotel_building_matched_by_proximity')
-            if not result['robust_to_unknown_heights']:
+            if not robust:
                 flags.append('sensitive_to_unknown_building_heights')
             # medium только если вывод не меняется при любых допущениях о неизвестных высотах
             # и этажность самого отеля известна из OSM. high без проверки на месте не ставим.
-            level = ('medium' if result['robust_to_unknown_heights'] and result['levels_source'] == 'osm_building_levels'
+            level = ('medium' if robust and result['levels_source'] == 'osm_building_levels'
                      and 'hotel_building_matched_by_proximity' not in flags else 'low')
             if value is None:
                 level = 'unknown'
             details = {k: v for k, v in result.items() if k != 'scenarios'} | {
                 'scenarios': result['scenarios'], 'summary': result['base']['summary'],
-                'explanation': result['base']['summary_sea' if feature_key.startswith('sea')
-                                              else 'summary_sunset']}
+                'explanation': result['base']['summary_' + feature_key.split('_view')[0]]}
             method_text = ('Перебор неизвестных высот соседних зданий (3, 6.5, 12 м): '
-                           + ('вывод одинаков во всех сценариях' if result['robust_to_unknown_heights']
+                           + ('вывод одинаков во всех сценариях' if robust
                               else 'вывод зависит от допущения') + '; этажность отеля: ' + result['levels_source']
                            + '. Вероятность не оценивалась.')
         digest = hashlib.sha256(json.dumps([hotel.id, feature_key, scene.fingerprint(), str(observed), value,

@@ -221,3 +221,29 @@ nearest_night_pharmacy_m:
   scale: 500
   query_patterns: ['аптек\w*', 'лекарств\w*']
   query_desired: near
+mountain_view_potential:
+  label: Вид на горы из окон (расчёт)
+  description: Видимость рельефа выше 300 м (отроги Кавказа, Ахун) в пределах 20 км по Copernicus и зданиям OSM. Главный хребет дальше 20 км не моделируется.
+  type: category
+  choices: [none, partial, wide]
+  unit: null
+  scope: hotel
+  provider: viewshed
+  ttl_days: 180
+  default_weight: 0.5
+  aliases: [вид на горы]
+  ordinal: true
+  choice_labels: {none: гор не видно, partial: горы в просвете, wide: широкий вид}
+  query_patterns: ['вид\w* на гор(ы|у|ах)\b', '\bгор(ы|ах|ам)\b', 'горн\w* (вид|пейзаж|панорам)\w*', 'панорам\w* гор\w*']
+  query_desired: wide
+mountain_view_min_floor:
+  label: Горы видны с этажа (расчёт)
+  description: Самый низкий этаж, с которого на каком-либо фасаде открыто ≥3% обзора окна на рельеф выше 300 м.
+  type: number
+  unit: floor
+  scope: hotel
+  provider: viewshed
+  ttl_days: 180
+  default_weight: 0.3
+  aliases: [с какого этажа горы]
+  scale: 3

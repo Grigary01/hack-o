@@ -96,3 +96,14 @@ def test_tall_wall_blocks_everything_and_low_wall_opens_first_floor():
     assert tall['sunset_view_min_floor'] is None
     low = analyze_hotel(synthetic_scene(1.), hotel())['base']
     assert low['sea_view_min_floor'] == 1
+
+
+def test_ridge_to_the_east_gives_mountain_view_with_peak_height():
+    scene = synthetic_scene(6.)
+    xs, _ = scene.dem_grid.centers()
+    hx, _ = PROJECT(LON, LAT)
+    scene.dtm[(xs > hx + 8000) & (xs < hx + 12000)] = 800.  # хребет 800 м в 8–12 км к востоку
+    base = analyze_hotel(scene, hotel())['base']
+    assert base['mountain_view_potential'] != 'none' and base['mountain_view_min_floor'] == 1
+    assert base['best_mountain']['mountain_peak_m'] == 800 and 'стороны В' in base['summary_mountain']
+    assert analyze_hotel(synthetic_scene(6.), hotel())['base']['mountain_view_potential'] == 'none'
