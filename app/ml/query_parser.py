@@ -61,6 +61,7 @@ def llm_schema() -> dict:
         schema['$defs'][name]['properties']['feature_key']['enum'] = list(get_registry().definitions)
     soft = schema['$defs']['SoftPreference']['properties']
     soft.pop('derived_from', None)
+    schema['properties'].pop('ignored_terms', None)
     soft['weight_source']['enum'] = [v for v in soft['weight_source']['enum'] if v != 'companion']
     return schema
 

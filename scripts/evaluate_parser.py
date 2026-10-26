@@ -98,6 +98,9 @@ def measure(rows, parser) -> dict:
                 'region': 'unknown', 'unknown_or_ambiguous': ['parser_error'],
             }
 
+        # ignored_terms — подсказка интерфейсу («не учтено: …»), на подбор не влияет.
+        expected.pop('ignored_terms', None)
+        actual.pop('ignored_terms', None)
         unsupported = 'Запрос вне набора демо-парсера' in actual.get('unknown_or_ambiguous', [])
         parser_failed = actual.get('unknown_or_ambiguous') == ['parser_error']
         covered += not unsupported and not parser_failed

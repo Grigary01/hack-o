@@ -1,7 +1,7 @@
 {
   "mode": "fixture",
   "model": null,
-  "measured_at": "2026-10-26T18:54:12.469321+00:00",
+  "measured_at": "2026-10-26T19:37:38.721631+00:00",
   "note": "Fixture exact-match на demo — проверка контракта, не качество NLP. Gold авторский, независимая разметка ещё нужна.",
   "demo": {
     "queries": 14,

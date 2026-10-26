@@ -40,8 +40,10 @@ def test_numbers_operators_ranges_and_walking_minutes():
     assert parse('пляж от 200 до 600 метров')[1] == [('walking_distance_to_beach_m', '>=', 200),
                                                      ('walking_distance_to_beach_m', '<=', 600)]
     assert parse('бары не ближе полкилометра')[1] == [('nightlife_distance_m', '>=', 500)]
-    _, hard, soft = parse('Отель в десяти минутах пешком от пляжа')
-    assert not hard  # «десяти» — не в словаре чисел: число не выдумываем, остаётся near
+    _, hard, soft = parse('Отель в десяти минутах пешком от пляжа')  # числа словами в косвенном падеже
+    assert not hard and soft['walking_distance_to_beach_m'].utility.ideal_max == 800
+    assert parse('До моря полтора километра максимум')[1] == [('walking_distance_to_beach_m', '<=', 1500)]
+    assert parse('бары 300 м и не ближе')[1] == [('nightlife_distance_m', '>=', 300)]
     _, hard, soft = parse('Отель в 10 минутах пешком от пляжа')
     utility = soft['walking_distance_to_beach_m'].utility
     assert not hard and utility.kind == 'lower' and utility.ideal_max == 800  # 10 мин × 80 м/мин
@@ -91,3 +93,10 @@ def test_free_text_search_end_to_end():
         next(c for c in r['criteria'] if c['feature_key'] == 'walking_distance_to_beach_m')['actual'] <= 400
         for r in body['matched'])
     engine.dispose()
+
+
+def test_unmatched_content_words_are_reported_not_dropped():
+    result = RulesQueryParser().parse('Уютный семейный отель с балконом и видом на горы')
+    assert result.ignored_terms == ['уютный', 'семейный', 'балконом']
+    assert not result.unknown_or_ambiguous  # не блокирует поиск
+    assert RulesQueryParser().parse('Тихий отель у моря, без баров').ignored_terms == []

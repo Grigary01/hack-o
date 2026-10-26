@@ -133,6 +133,9 @@ with search_tab:
                     st.session_state['response']=updated
                     st.session_state['weight_signature']=signature
             st.caption('Оценка — соответствие известным мягким пожеланиям; это не вероятность и не рейтинг гостиницы. Порядок учитывает покрытие данных.')
+            if response['parsed'].get('ignored_terms'):
+                st.warning('Не учтено при подборе (система пока не знает этих характеристик): '
+                           + ', '.join(response['parsed']['ignored_terms']))
             with st.expander('Распознанный запрос и решения агента'):
                 st.json(response['parsed'])
                 st.json(response['trace'],expanded=False)

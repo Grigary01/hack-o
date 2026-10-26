@@ -32,9 +32,22 @@ VERB_NEGATION = re.compile(r'\bне\s+(хоч|хот|нуж|надо|люб)\w*'
 IRRELEVANT = re.compile(r'^\s*(\S+\s+){0,2}?(не\s+важ\w*|неважн\w*|все равно|без разницы|не принципиальн\w*|'
                         r'не\s+нуж\w*|не\s+обязател\w*|необязател\w*)')
 EXPLICIT_WEIGHT = re.compile(r'^\s*(\S+\s+){0,2}?с?\s*вес\w*\s*(0?[.,]\d+|1(?:[.,]0+)?|0)\b')
-WORD_NUMBERS = {'один': 1, 'одну': 1, 'две': 2, 'два': 2, 'три': 3, 'четыре': 4, 'пять': 5, 'шесть': 6, 'семь': 7,
-                'восемь': 8, 'девять': 9, 'десять': 10, 'пятнадцать': 15, 'двадцать': 20, 'тридцать': 30,
-                'сорок': 40, 'пятьдесят': 50, 'сто': 100, 'двести': 200, 'триста': 300, 'пятьсот': 500}
+WORD_NUMBERS = {'один': 1, 'одну': 1, 'одной': 1, 'одного': 1, 'две': 2, 'два': 2, 'двух': 2, 'три': 3, 'трех': 3,
+                'четыре': 4, 'четырех': 4, 'пять': 5, 'пяти': 5, 'шесть': 6, 'шести': 6, 'семь': 7, 'семи': 7,
+                'восемь': 8, 'восьми': 8, 'девять': 9, 'девяти': 9, 'десять': 10, 'десяти': 10,
+                'пятнадцать': 15, 'пятнадцати': 15, 'двадцать': 20, 'двадцати': 20, 'тридцать': 30, 'тридцати': 30,
+                'сорок': 40, 'сорока': 40, 'пятьдесят': 50, 'пятидесяти': 50, 'сто': 100, 'ста': 100,
+                'двести': 200, 'двухсот': 200, 'триста': 300, 'трехсот': 300, 'пятьсот': 500, 'пятисот': 500,
+                'полтора': 1.5, 'полутора': 1.5}
+# Служебные и общие слова запроса: их отсутствие в разборе — не потеря смысла.
+FILLER = set('''хочу хотим хотелось хотела хотел нужен нужна нужно нужны надо ищу ищем найди найдите покажи покажите
+подбери подберите посоветуй посоветуйте отель отеля отели отелей отелю гостиница гостиницу гостиницы гостиниц номер
+номера номере номером чтобы было были была быть есть рядом недалеко поближе подальше близко далеко очень пожалуйста
+желательно обязательно главное важно важнее можно вариант варианты варианта поездки поездку отдых отдыха отдыхать
+жить пожить остановиться адлер адлере адлера сочи район районе района место места месте где который которая
+которые чтоб тоже также просто всего более менее минимум максимум ровно примерно около пешком минут минуты метров
+метра километр километра километре километров дорога дороги путь пути нас мне меня нам себя хорошо хороший хорошая
+будет было бы лучше самый самая самое так этот эта это'''.split())
 # Запятая/точка внутри числа («1,2 км») фразу не делят.
 CLAUSE_SPLIT = re.compile(r'(?:[;!?\n]|(?<!\d)[,.]|[,.](?!\d))+|\s(?:но|однако|зато|а также)\s')
 NUMBER = re.compile(r'(\d+(?:[.,]\d+)?)\s*(км|километр\w*|метр\w*|м\b|мин\w*)|(полкилометра|километр[еау]?\b|полчаса)')
@@ -45,6 +58,10 @@ OPERATORS = [  # проверяются на тексте между преды�
     (re.compile(r'(меньше|ближе|менее)\s*(чем)?\s*(в)?\s*$'), '<'),
     (re.compile(r'(больше|дальше|более)\s*(чем)?\s*(в)?\s*$'), '>'),
     (re.compile(r'ровно\s*$'), '='),
+]
+SUFFIX_OPERATORS = [
+    (re.compile(r'^\s*(и\s+)?(максимум|не\s+(дальше|далее|больше|более)|в\s+пределах)'), '<='),
+    (re.compile(r'^\s*(и\s+)?(минимум|не\s+(ближе|меньше|менее)|как\s+минимум)'), '>='),
 ]
 OTHER_REGIONS = re.compile(
     r'\b(москв\w*|питер\w*|петербург\w*|спб|анап\w*|геленджик\w*|ялт\w*|крым\w*|казан\w*|красн\w* полян\w*|'
@@ -114,13 +131,30 @@ class RulesQueryParser:
         self._relative_importance(lowered, mentions, soft)
         if not hard and not soft and not unknown and not mentions and not GENERAL.search(lowered):
             unknown.append('Не нашёл поддерживаемых пожеланий')
+        ignored = self._ignored_terms(lowered, mentions)
         question = None
         if unknown:
             supported = ', '.join(sorted({self.registry.get(k).label.lower() for k in self.compiled}))
             question = ('Уточните запрос: ' + '; '.join(unknown) + '. Уберите эти условия, чтобы искать по остальным. '
                         'Сейчас система проверяет: ' + supported + '.')
         return ParsedHotelQuery(region=region, hard_constraints=hard, soft_preferences=soft,
-                                unknown_or_ambiguous=unknown, clarification_question=question, original_text=text)
+                                unknown_or_ambiguous=unknown, clarification_question=question, original_text=text,
+                                ignored_terms=ignored)
+
+    def _ignored_terms(self, lowered, mentions):
+        """Содержательные слова вне найденных характеристик, модификаторов и неподдерживаемых тем."""
+        covered = [(m['start'], m['end']) for m in mentions]
+        for pattern in list(UNSUPPORTED.values()) + [OTHER_REGIONS.pattern, NUMBER.pattern, RANGE.pattern]:
+            covered += [(m.start(), m.end()) for m in re.finditer(pattern, lowered)]
+        result = []
+        for m in WORD.finditer(lowered):
+            word = m.group()
+            if (len(word) < 4 or word.isdigit() or word in FILLER or word in NEGATIONS or NEAR_WORDS.match(word)
+                    or FAR_WORDS.match(word) or HARD_MARKERS.match(word) or SOFT_MARKERS.match(word)
+                    or any(a <= m.start() < b for a, b in covered) or word in result):
+                continue
+            result.append(word)
+        return result[:30]
 
     def _find_mentions(self, lowered):
         """Все совпадения; перекрывающиеся — в пользу более длинного (потом порядка реестра)."""
@@ -228,6 +262,9 @@ class RulesQueryParser:
             prefix = clause[previous_end:match.start()]
             previous_end = match.end()
             operator = next((op for pattern, op in OPERATORS if pattern.search(prefix[-40:])), None)
+            if operator is None:  # «1,5 км максимум», «300 м и не ближе»
+                suffix = clause[match.end():match.end() + 20]
+                operator = next((op for pattern, op in SUFFIX_OPERATORS if pattern.match(suffix)), None)
             if operator:
                 result.append(HardConstraint(feature_key=key, operator=operator, value=clean(value),
                                              unit=definition.unit, scope=definition.scope))

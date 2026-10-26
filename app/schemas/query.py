@@ -129,6 +129,9 @@ class ParsedHotelQuery(Contract):
     unknown_or_ambiguous: list[str] = Field(default_factory=list)
     clarification_question: str | None = None
     original_text: str = ''
+    # Слова запроса, которые офлайн-разбор не сопоставил ни с одной характеристикой.
+    # Не блокируют поиск, но показываются гостю: ничего не теряется молча.
+    ignored_terms: list[str] = Field(default_factory=list, max_length=30)
 
     @model_validator(mode='after')
     def unique_preferences(self):
