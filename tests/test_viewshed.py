@@ -107,3 +107,17 @@ def test_ridge_to_the_east_gives_mountain_view_with_peak_height():
     assert base['mountain_view_potential'] != 'none' and base['mountain_view_min_floor'] == 1
     assert base['best_mountain']['mountain_peak_m'] == 800 and 'стороны В' in base['summary_mountain']
     assert analyze_hotel(synthetic_scene(6.), hotel())['base']['mountain_view_potential'] == 'none'
+
+
+def test_photo_verified_levels_override_osm_and_trees_block_low_floors():
+    scene = synthetic_scene(1.)
+    scene.levels_verified = {'osm:way:1': {'levels': 5, 'certainty': 'exact'}}
+    result = analyze_hotel(scene, hotel())
+    assert result['levels'] == 5 and result['levels_source'] == 'photo_verified'
+    # Полоса деревьев 10 м (в базовом сценарии 0.6 → 6 м, верх 11 м) закрывает 1–2 этажи, но не 3-й (глаза 12.6 м).
+    trees = synthetic_scene(1.)
+    hx, hy = PROJECT(LON, LAT)
+    xs, ys = trees.bgrid.centers()
+    trees.trees = np.where((xs > hx - 120) & (xs < hx - 100), 10., 0.).astype(np.float32)
+    base = analyze_hotel(trees, hotel())['base']
+    assert base['sea_view_min_floor'] == 3 and base['vegetation_horizon_share_floor1'] > 0.3

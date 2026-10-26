@@ -104,18 +104,7 @@
       "model_min_floor": 3
     }
   ],
-  "source_conflicts": [
-    {
-      "hotel_id": "osm:node:2857562133",
-      "name": "Огонёк",
-      "kind": "building_levels",
-      "osm_levels": 1,
-      "osm_levels_source": "osm_building_levels",
-      "evidence_min_levels": 4,
-      "url": "https://101hotels.com/main/cities/adler/gostevoy_dom_ogonek_2.html",
-      "action": "спросить отельера об этажности и пересчитать вид для верхних этажей"
-    }
-  ],
+  "source_conflicts": [],
   "aircraft_noise": {
     "rows": [
       {

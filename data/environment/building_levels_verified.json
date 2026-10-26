@@ -1,0 +1,42 @@
+{
+  "metadata": {
+    "purpose": "Этажность зданий отелей, проверенная по фото фасада, где OSM ошибается или молчит.",
+    "policy": "Приоритет над OSM building:levels и над допущением 3 этажа. Только сосчитанные на фото этажи; at_least — нижняя граница.",
+    "osm_note": "Расхождения стоит внести в OSM после проверки на месте."
+  },
+  "buildings": [
+    {
+      "hotel_id": "osm:node:2857562133",
+      "name": "Огонёк",
+      "levels": 4,
+      "certainty": "exact",
+      "osm_levels": 1,
+      "evidence_url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/650300/6341736.jpg",
+      "method": "photo_count",
+      "checked_at": "2026-10-26",
+      "note": "Снято с набережной: 4 этажа, на трёх верхних балконы в сторону моря. В OSM building:levels=1."
+    },
+    {
+      "hotel_id": "osm:node:1449074195",
+      "name": "Корсар",
+      "levels": 3,
+      "certainty": "at_least",
+      "osm_levels": 1,
+      "evidence_url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/432/722420.jpg",
+      "method": "photo_count",
+      "checked_at": "2026-10-26",
+      "note": "Над входом видны минимум 2 этажа с балконами. В OSM building:levels=1."
+    },
+    {
+      "hotel_id": "osm:node:11138786325",
+      "name": "Черномор",
+      "levels": 4,
+      "certainty": "exact",
+      "osm_levels": null,
+      "evidence_url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/658820/5171045.jpg",
+      "method": "photo_count",
+      "checked_at": "2026-10-26",
+      "note": "Гаражный этаж + 2 этажа + мансардный этаж. В OSM этажности нет (модель брала 3)."
+    }
+  ]
+}

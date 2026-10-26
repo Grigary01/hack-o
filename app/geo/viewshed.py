@@ -40,22 +40,32 @@ WINDOW_HALF_FOV = 60  # насколько в сторону можно смот
 ASSUMED_HOTEL_LEVELS = 3
 # Неизвестная высота соседа: low/base/high. 6.5 м ~ два этажа частного сектора Адлера.
 UNKNOWN_HEIGHT_SCENARIOS = {'low': 3.0, 'base': 6.5, 'high': 12.0}
+# Кроны деревьев: Copernicus — модель поверхности, разница с открытым рельефом вдали от домов OSM —
+# растительность (и неотмеченные постройки). Ячейка 30 м размазывает отдельные деревья,
+# листва редеет зимой — поэтому доля высоты кроны тоже перебирается по сценариям.
+CANOPY_SCENARIOS = {'low': 0.0, 'base': 0.6, 'high': 1.0}
+CANOPY_MIN_M, CANOPY_MAX_M = 2.5, 30.
+BUILDING_MASK_M = 15.  # рядом с домом OSM разница DSM — это сам дом, а не дерево
+# Деревья OSM без высоты: типовые высоты (тоже умножаются на сценарий крон) и радиусы крон.
+OSM_TREES = {'tree': (12., 3.), 'tree_row': (10., 3.), 'wood': (15., 0.), 'forest': (15., 0.), 'scrub': (3., 0.)}
 LOW_STRUCTURES = {'garage', 'garages', 'shed', 'carport', 'kiosk', 'hut', 'roof', 'toilets', 'service'}
 SEA_PARTIAL_SHARE = 0.03  # ≥ ~4° моря из 121° сектора окна — «просвет»
 SEA_WIDE_SHARE = 0.25
 SUNSET_LOW_ALTITUDE = 3.0  # солнце видно ниже 3° — «закат виден»
 MOUNTAIN_MIN_M = 300.  # видимый рельеф выше 300 м — «горы» (отроги Кавказа, Ахун)
+SNOW_PEAKS_M = 2000.  # выше — вершины Главного хребта, большую часть года в снегу
 SUNSET_SEA_ALTITUDE = 1.0  # и опускается к морскому горизонту
 MONTHS_RU = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль',
              'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь']
 COMPASS_RU = ['С', 'СВ', 'В', 'ЮВ', 'Ю', 'ЮЗ', 'З', 'СЗ']
-LIMITS = ['facade_points_not_actual_windows', 'vegetation_not_modeled', 'self_occlusion_not_modeled',
+LIMITS = ['facade_points_not_actual_windows', 'vegetation_from_dsm_30m_coarse', 'self_occlusion_not_modeled',
           'balconies_and_awnings_not_modeled', 'dem_acquired_2011_2015', 'osm_building_heights_incomplete',
           'floor_height_assumed_3m']
 
 # Шаг вдоль луча растёт с расстоянием: вблизи важны узкие просветы между домами.
+# До 50 км: Главный Кавказский хребет (Ачишхо, Аибга) в ~40 км к северо-востоку.
 DISTANCES_M = np.concatenate([np.arange(2., 400., 2.), np.arange(400., 2000., 6.),
-                              np.arange(2000., 20000., 30.)])
+                              np.arange(2000., 20000., 30.), np.arange(20000., 50000., 60.)])
 
 
 def building_height(tags):
@@ -163,6 +173,18 @@ class Grid:
         return int(mask.sum())
 
 
+def _max_fill(grid, geometry, out, value):
+    """Как Grid.rasterize, но сохраняет большее значение (перекрывающиеся кроны)."""
+    minx, miny, maxx, maxy = geometry.bounds
+    c0, c1 = max(0, int((minx-grid.x0)//grid.step)), min(grid.shape[1], int((maxx-grid.x0)//grid.step)+1)
+    r0, r1 = max(0, int((miny-grid.y0)//grid.step)), min(grid.shape[0], int((maxy-grid.y0)//grid.step)+1)
+    if c0 >= c1 or r0 >= r1:
+        return
+    xs, ys = grid.centers(slice(r0, r1), slice(c0, c1))
+    window = out[r0:r1, c0:c1]
+    window[shapely.contains_xy(geometry, xs, ys) & (window < value)] = value
+
+
 def sea_polygon(coastline_elements, bounds):
     """Море = части прямоугольника справа от coastline (в OSM суша всегда слева)."""
     lines = [element_shape(e) for e in coastline_elements if e.get('tags', {}).get('natural') == 'coastline']
@@ -216,6 +238,9 @@ class ViewshedScene:
     buildings: list
     inputs: dict
     by_osm_id: dict = field(default_factory=dict)
+    canopy: np.ndarray | None = None  # высота растительности на сетке рельефа, м
+    trees: np.ndarray | None = None  # деревья OSM на сетке зданий (2 м), м
+    levels_verified: dict = field(default_factory=dict)  # hotel_id → этажность, проверенная по фото
 
     @classmethod
     def load(cls, environment_dir: Path, hotel_bbox, dem_step=30., near_step=10., building_step=2.,
@@ -246,13 +271,17 @@ class ViewshedScene:
         c0 = np.clip(np.floor(fc).astype(np.int64), 0, cols-2)
         r0 = np.clip(np.floor(fr).astype(np.int64), 0, rows-2)
         tx, ty = np.clip(fc-c0, 0, 1), np.clip(fr-r0, 0, 1)
-        dtm = (ground[r0, c0]*(1-tx)*(1-ty) + ground[r0, c0+1]*tx*(1-ty)
-               + ground[r0+1, c0]*(1-tx)*ty + ground[r0+1, c0+1]*tx*ty).astype(np.float32)
+        sample = lambda g: (g[r0, c0]*(1-tx)*(1-ty) + g[r0, c0+1]*tx*(1-ty)
+                            + g[r0+1, c0]*(1-tx)*ty + g[r0+1, c0+1]*tx*ty).astype(np.float32)
+        dtm = sample(ground)
+        canopy = np.clip(sample(dem) - dtm, 0, CANOPY_MAX_M)
+        canopy[canopy < CANOPY_MIN_M] = 0
 
         # 2. Море: грубая сетка на всю область и точная 10 м вокруг отелей (±2 км).
         sea = sea_polygon(coast_raw['elements'], inner)
         shapely.prepare(sea)
         far_sea = shapely.contains_xy(sea, xs, ys)
+        canopy[far_sea] = 0
         s, w, n, e_ = hotel_bbox
         (hx0, hy0), (hx1, hy1) = PROJECT(w, s), PROJECT(e_, n)
         near_grid = Grid.around((hx0-2000, hy0-2000, hx1+2000, hy1+2000), near_step)
@@ -290,6 +319,7 @@ class ViewshedScene:
             else:
                 bgrid.rasterize(item['polygon'], bheight, item['height'])
             item['cells'] = bid_written
+            dem_grid.rasterize(item['polygon'].buffer(BUILDING_MASK_M), canopy, 0.)
         inputs = {
             'buildings': {'path': 'data/environment/osm_buildings.json',
                           'osm_base': buildings_raw['metadata'].get('osm_base'),
@@ -302,9 +332,35 @@ class ViewshedScene:
             'dem': {'path': 'data/environment/dem_copernicus_glo30.npz', 'sha256': dem_meta['sha256'],
                     'product': dem_meta['product'], 'attribution': dem_meta['attribution']},
         }
+        trees = np.zeros(bgrid.shape, np.float32)
+        vegetation_path = environment_dir/'osm_vegetation.json'
+        vegetation_raw = json.loads(vegetation_path.read_text()) if vegetation_path.exists() else None
+        for item in (vegetation_raw or {}).get('elements', []):
+            tags = item.get('tags', {})
+            kind = tags.get('natural') if tags.get('natural') in OSM_TREES else tags.get('landuse')
+            if kind not in OSM_TREES:
+                continue
+            height, radius = OSM_TREES[kind]
+            shape = building_polygon(item) if kind in ('wood', 'forest', 'scrub') else element_shape(item)
+            if shape is None or shape.is_empty:
+                continue
+            area = shape.buffer(radius) if radius else shape
+            if area.area > 0:
+                _max_fill(bgrid, area, trees, height)
+        inputs['vegetation'] = {'source': 'Copernicus DSM − открытый рельеф; деревья, рядки и лес OSM',
+                                'min_m': CANOPY_MIN_M, 'masked_near_osm_buildings_m': BUILDING_MASK_M,
+                                'osm_path': 'data/environment/osm_vegetation.json' if vegetation_raw else None,
+                                'osm_query_sha256': vegetation_raw['metadata']['query_sha256'] if vegetation_raw else None,
+                                'osm_typical_heights_m': {k: v[0] for k, v in OSM_TREES.items()}}
         scene = cls(dem_grid, dtm, far_sea, near_grid, near_sea, bgrid, bheight, bunknown, bid,
-                    buildings, inputs)
+                    buildings, inputs, canopy=canopy, trees=trees)
         scene.by_osm_id = {x['osm_id']: i for i, x in enumerate(buildings)}
+        verified_path = environment_dir/'building_levels_verified.json'
+        if verified_path.exists():
+            verified = json.loads(verified_path.read_text())
+            scene.levels_verified = {x['hotel_id']: x for x in verified['buildings']}
+            scene.inputs['levels_verified'] = {'path': 'data/environment/building_levels_verified.json',
+                                               'sha256': hashlib.sha256(verified_path.read_bytes()).hexdigest()}
         return scene
 
     def fingerprint(self):
@@ -329,6 +385,10 @@ class ViewshedScene:
                 index, match = min(near)[1], 'nearest_within_5m'
         item = self.buildings[index]
         levels, source = None, 'assumed'
+        verified = self.levels_verified.get(hotel.id)
+        if verified:
+            # Сосчитано по фото фасада — надёжнее OSM, где у гостиниц бывает «1 этаж».
+            return HotelBuilding(item['osm_id'], item['polygon'], int(verified['levels']), 'photo_verified', match), index
         for tags in (item['tags'], hotel.tags):
             try:
                 levels = int(float(tags['building:levels']))
@@ -357,13 +417,18 @@ class ViewshedScene:
         known = np.where(other, self.bheight[brow, bcol], 0.)
         unknown = other & self.bunknown[brow, bcol]
         ground = np.where(sea, 0., ground)
-        return {'azimuths': azimuths, 'ground': ground, 'sea': sea, 'known': known,
+        canopy = (np.where(inside & (ids < 0) & ~sea, self.canopy[row, col], 0.) if self.canopy is not None
+                  else np.zeros_like(known))
+        if self.trees is not None:
+            canopy = np.maximum(canopy, np.where(binside & (ids < 0) & ~sea, self.trees[brow, bcol], 0.))
+        return {'azimuths': azimuths, 'ground': ground, 'sea': sea, 'known': known, 'canopy': canopy,
                 'unknown': unknown, 'building': ids, 'other': other,
                 'eye_ground': float(self.dem_grid.bilinear(self.dtm, np.array([x0]), np.array([y0]))[0])}
 
-    def evaluate(self, profile, eye_z, unknown_height):
-        """Видимость для одной высоты глаза и одного сценария неизвестных высот."""
-        top = profile['ground'] + profile['known'] + profile['unknown'] * unknown_height
+    def evaluate(self, profile, eye_z, unknown_height, canopy_factor=0.):
+        """Видимость для одной высоты глаза и одного сценария неизвестных высот и крон."""
+        trees = profile.get('canopy', 0.) * canopy_factor
+        top = profile['ground'] + profile['known'] + profile['unknown'] * unknown_height + trees
         drop = DISTANCES_M**2 / (2*EFFECTIVE_RADIUS_M)
         slope = (top - eye_z - drop) / DISTANCES_M
         slope = np.where(np.isnan(slope), -np.inf, slope)
@@ -373,8 +438,10 @@ class ViewshedScene:
         sea_rays = (visible & profile['sea']).any(axis=1)
         horizon_index = slope.argmax(axis=1)
         rows = np.arange(slope.shape[0])
+        trees_at = (np.broadcast_to(trees, slope.shape)[rows, horizon_index] > 0)
         kind = np.where(profile['sea'][rows, horizon_index], 'sea',
-                        np.where(profile['other'][rows, horizon_index], 'building', 'terrain'))
+                        np.where(profile['other'][rows, horizon_index], 'building',
+                                 np.where(trees_at, 'vegetation', 'terrain')))
         first_sea = np.where(visible & profile['sea'], DISTANCES_M, np.inf).min(axis=1)
         mountain = visible & ~profile['sea'] & ~profile['other'] & (np.nan_to_num(profile['ground']) >= MOUNTAIN_MIN_M)
         return {'sea_rays': sea_rays, 'horizon_deg': np.degrees(np.arctan(running[:, -1])),
@@ -434,12 +501,14 @@ def analyze_hotel(scene: ViewshedScene, hotel, spacing=12., tracks=None):
     profiles = [scene.profile(r['x'], r['y'], r['azimuth'], own_index) for r in receivers]
     scenarios = {}
     for name, unknown_height in UNKNOWN_HEIGHT_SCENARIOS.items():
-        floors = []
+        floors, vegetation_floor1 = [], []
         for floor in range(1, building.levels + 1):
             best_sea, best_sun, best_mountain = None, None, None
             for receiver, profile in zip(receivers, profiles):
                 eye = profile['eye_ground'] + EYE_ABOVE_FLOOR_M + FLOOR_HEIGHT_M * (floor - 1)
-                result = scene.evaluate(profile, eye, unknown_height)
+                result = scene.evaluate(profile, eye, unknown_height, CANOPY_SCENARIOS[name])
+                if floor == 1:
+                    vegetation_floor1.append(float((result['horizon_kind'] == 'vegetation').mean()))
                 share = float(result['sea_rays'].mean())
                 months = sunset_months(profile['azimuths'], result, tracks)
                 visible = [m for m, s in months.items() if s != 'none']
@@ -463,6 +532,8 @@ def analyze_hotel(scene: ViewshedScene, hotel, spacing=12., tracks=None):
                     best_mountain = entry
             floors.append({'floor': floor, 'sea': best_sea, 'sunset': best_sun, 'mountain': best_mountain})
         scenarios[name] = summarize(floors)
+        # Доля лучей, где горизонт с 1-го этажа закрывают кроны (в среднем по точкам фасада).
+        scenarios[name]['vegetation_horizon_share_floor1'] = round(float(np.mean(vegetation_floor1)), 3)
     base = scenarios['base']
     robust_by_family = {family: all(s[f'{family}_view_potential'] == base[f'{family}_view_potential']
                                     for s in scenarios.values()) for family in ('sea', 'sunset', 'mountain')}
@@ -484,6 +555,7 @@ def analyze_hotel(scene: ViewshedScene, hotel, spacing=12., tracks=None):
                        'max_distance_m': float(DISTANCES_M[-1]), 'floor_height_m': FLOOR_HEIGHT_M,
                        'eye_above_floor_m': EYE_ABOVE_FLOOR_M, 'refraction_k': REFRACTION_K,
                        'unknown_height_scenarios_m': UNKNOWN_HEIGHT_SCENARIOS,
+                       'canopy_scenarios': CANOPY_SCENARIOS,
                        'sea_partial_share': SEA_PARTIAL_SHARE, 'sea_wide_share': SEA_WIDE_SHARE,
                        'sunset_low_altitude_deg': SUNSET_LOW_ALTITUDE, 'receiver_spacing_m': spacing,
                        'sun': 'NOAA solar position, 15-е число месяца'},
@@ -525,8 +597,11 @@ def explain_mountain(summary):
     if summary['mountain_view_min_floor'] is None:
         return 'Гор выше 300 м из окон не видно (по модели).'
     width = 'широкий вид' if summary['mountain_view_potential'] == 'wide' else 'горы в просвете'
-    return (f'Горы: {width} из окон стороны {compass(best["azimuth"])}, с {summary["mountain_view_min_floor"]}-го этажа; '
-            f'лучше всего на {best["floor"]}-м ({best["mountain_share"]*100:.0f}% обзора окна, видны вершины до ≈ {best["mountain_peak_m"]} м).')
+    text = (f'Горы: {width} из окон стороны {compass(best["azimuth"])}, с {summary["mountain_view_min_floor"]}-го этажа; '
+            f'лучше всего на {best["floor"]}-м ({best["mountain_share"]*100:.0f}% обзора окна, видны вершины до ≈ {best["mountain_peak_m"]} м)')
+    if best['mountain_peak_m'] >= SNOW_PEAKS_M:
+        text += '; виден Главный Кавказский хребет, зимой и весной в снегу'
+    return text + '.'
 
 
 def explain(summary):

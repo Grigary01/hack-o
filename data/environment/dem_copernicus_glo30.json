@@ -8,13 +8,13 @@
     null,
     null
   ],
-  "collected_at": "2026-10-26T17:58:12.167899+00:00",
+  "collected_at": "2026-10-26T20:59:20.825051+00:00",
   "crs": "EPSG:4326",
   "bounds": {
-    "south": 43.3,
     "west": 39.65,
-    "north": 43.65,
-    "east": 40.1
+    "north": 43.8,
+    "east": 40.44972222222222,
+    "south": 43.3
   },
   "transform": [
     0.0002777777777777778,
@@ -22,15 +22,15 @@
     39.65,
     0.0,
     -0.0002777777777777778,
-    43.65
+    43.8
   ],
   "shape": [
-    1260,
-    1620
+    1800,
+    2879
   ],
   "unit": "decimetre",
   "vertical_datum": "EGM2008",
-  "sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e",
+  "sha256": "30e53303dffb4607fc4eb315d224aad137efd0da488671230807bf9ef2f5520f",
   "license": "Copernicus DEM licence (free use with attribution)",
   "attribution": "Copernicus DEM GLO-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved",
   "limits": [

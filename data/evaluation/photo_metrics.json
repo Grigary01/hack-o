@@ -1,0 +1,192 @@
+{
+  "checks": {
+    "levels": {
+      "passed": 4,
+      "total": 4
+    },
+    "trees_on_horizon": {
+      "passed": 0,
+      "total": 4
+    },
+    "sea_upper_floor": {
+      "passed": 4,
+      "total": 4
+    },
+    "sunset_over_sea": {
+      "passed": 1,
+      "total": 1
+    },
+    "mountains": {
+      "passed": 3,
+      "total": 3
+    },
+    "snow_peaks_height": {
+      "passed": 3,
+      "total": 3
+    },
+    "levels_fixed_from_photo": {
+      "passed": 3,
+      "total": 3
+    }
+  },
+  "passed": 15,
+  "total": 19,
+  "fixed_inputs": 3,
+  "rows": [
+    {
+      "hotel": "Golden Tennis Club",
+      "check": "levels",
+      "ok": true,
+      "note": "модель 5 (osm_building_levels), фото 5 (exact)",
+      "url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/650910/1218639.jpg"
+    },
+    {
+      "hotel": "Golden Tennis Club",
+      "check": "trees_on_horizon",
+      "ok": false,
+      "note": "по модели кроны закрывают 4% горизонта 1-го этажа",
+      "url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/650910/1218639.jpg"
+    },
+    {
+      "hotel": "Golden Tennis Club",
+      "check": "sea_upper_floor",
+      "ok": true,
+      "note": "модель: wide",
+      "url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/650910/1218631.jpg"
+    },
+    {
+      "hotel": "El Paraiso",
+      "check": "levels",
+      "ok": true,
+      "note": "модель 9 (osm_building_levels), фото 9 (approx)",
+      "url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/5933/5713689.jpg"
+    },
+    {
+      "hotel": "El Paraiso",
+      "check": "sea_upper_floor",
+      "ok": true,
+      "note": "модель: wide",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_65/2079405/58174086.jpg"
+    },
+    {
+      "hotel": "El Paraiso",
+      "check": "sunset_over_sea",
+      "ok": true,
+      "note": "месяцев заката в море по модели: 12",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_65/2079405/58174086.jpg"
+    },
+    {
+      "hotel": "El Paraiso",
+      "check": "sea_upper_floor",
+      "ok": true,
+      "note": "модель: wide",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_60/1917468/58085810.jpg"
+    },
+    {
+      "hotel": "El Paraiso",
+      "check": "mountains",
+      "ok": true,
+      "note": "модель: wide",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_60/1917468/58085811.jpg"
+    },
+    {
+      "hotel": "El Paraiso",
+      "check": "snow_peaks_height",
+      "ok": true,
+      "note": "видимая высота по модели ≈ 2942 м",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_60/1917468/58085811.jpg"
+    },
+    {
+      "hotel": "El Paraiso",
+      "check": "sea_upper_floor",
+      "ok": true,
+      "note": "модель: wide",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_60/1916988/58085500.jpg"
+    },
+    {
+      "hotel": "Shine",
+      "check": "levels",
+      "ok": true,
+      "note": "модель 6 (osm_building_levels), фото 6 (approx)",
+      "url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/5898/5600259.jpg"
+    },
+    {
+      "hotel": "Shine",
+      "check": "mountains",
+      "ok": true,
+      "note": "модель: wide",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_59/1867494/58059461.jpg"
+    },
+    {
+      "hotel": "Shine",
+      "check": "snow_peaks_height",
+      "ok": true,
+      "note": "видимая высота по модели ≈ 2973 м",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_59/1867494/58059461.jpg"
+    },
+    {
+      "hotel": "Shine",
+      "check": "trees_on_horizon",
+      "ok": false,
+      "note": "по модели кроны закрывают 0% горизонта 1-го этажа",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_59/1867494/58059461.jpg"
+    },
+    {
+      "hotel": "Shine",
+      "check": "mountains",
+      "ok": true,
+      "note": "модель: wide",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_56/1769555/58018153.jpg"
+    },
+    {
+      "hotel": "Shine",
+      "check": "snow_peaks_height",
+      "ok": true,
+      "note": "видимая высота по модели ≈ 2973 м",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_56/1769555/58018153.jpg"
+    },
+    {
+      "hotel": "Shine",
+      "check": "trees_on_horizon",
+      "ok": false,
+      "note": "по модели кроны закрывают 0% горизонта 1-го этажа",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_56/1769555/58018153.jpg"
+    },
+    {
+      "hotel": "Shine",
+      "check": "trees_on_horizon",
+      "ok": false,
+      "note": "по модели кроны закрывают 0% горизонта 1-го этажа",
+      "url": "https://s.101hotelscdn.ru/uploads/image/review_56/1769555/58018160.jpg"
+    },
+    {
+      "hotel": "Огонёк",
+      "check": "levels_fixed_from_photo",
+      "ok": true,
+      "note": "исправлено по фото: 4 этажа (OSM ошибался)",
+      "url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/650300/6341736.jpg"
+    },
+    {
+      "hotel": "Марина",
+      "check": "levels",
+      "ok": true,
+      "note": "модель 4 (osm_building_levels), фото 4 (exact)",
+      "url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/6732/751718.jpg"
+    },
+    {
+      "hotel": "Корсар",
+      "check": "levels_fixed_from_photo",
+      "ok": true,
+      "note": "исправлено по фото: 3 этажа (OSM ошибался)",
+      "url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/432/722420.jpg"
+    },
+    {
+      "hotel": "Черномор",
+      "check": "levels_fixed_from_photo",
+      "ok": true,
+      "note": "исправлено по фото: 4 этажа (OSM ошибался)",
+      "url": "https://s.101hotelscdn.ru/uploads/image/hotel_image/658820/5171045.jpg"
+    }
+  ],
+  "note": "Ручная проверка по фото, малая выборка; это поиск системных ошибок, не оценка точности."
+}

@@ -26,7 +26,7 @@ def facts(client, hotel_id=OFELIA):
 
 def test_hotelier_sees_computed_facts_with_explanations(client):
     current = facts(client)
-    assert current['sea_view_potential']['display'] == 'широкий вид'
+    assert current['sea_view_potential']['display'] == 'море в просвете'
     assert 'с 3-го этажа' in current['sea_view_potential']['explanation']
     assert 'от окна' in current['aircraft_path_distance_m']['explanation']
 
@@ -38,7 +38,7 @@ def test_confirm_keeps_value_correct_creates_conflict_and_operator_resolves(clie
     assert confirmed['value'] == 'year_round' and not confirmed['conflicts']
     tick(clock)
     corrected = client.post('/api/hotelier/facts/review', json={
-        'hotel_id': OFELIA, 'feature_key': 'sea_view_potential', 'verdict': 'correct', 'value': 'partial',
+        'hotel_id': OFELIA, 'feature_key': 'sea_view_potential', 'verdict': 'correct', 'value': 'none',
         'comment': 'Перед отелем растут высокие кипарисы'}).json()
     assert len(corrected['conflicts']) == 1
     after = facts(client)['sea_view_potential']
@@ -47,16 +47,16 @@ def test_confirm_keeps_value_correct_creates_conflict_and_operator_resolves(clie
     tick(clock)
     decision = client.post(f'/api/hotelier/conflicts/{conflict["id"]}/resolve', json={
         'chosen_observation_id': corrected['observation_id'], 'reason': 'Деревья модель не учитывает'}).json()
-    assert decision['value'] == 'partial'
+    assert decision['value'] == 'none'
     resolved = facts(client)['sea_view_potential']
-    assert resolved['value'] == 'partial' and resolved['status'] != 'conflicted'
+    assert resolved['value'] == 'none' and resolved['status'] != 'conflicted'
     listed = client.get(f'/api/hotelier/hotels/{OFELIA}/facts').json()['conflicts']
     assert next(c for c in listed if c['id'] == conflict['id'])['resolution']['reason'] == 'Деревья модель не учитывает'
     # Решение по демо-ответу в реальный поиск не попадает: там остаётся расчёт.
     text = 'Ищу тихий отель в Адлере, не дальше 500 метров пешком от пляжа, хотелось бы вид на море'
     real = client.post('/api/search', json={'text': text}).json()
     ofelia = next(r for g in ('matched', 'needs_verification', 'excluded') for r in real[g] if r['hotel']['id'] == OFELIA)
-    assert next(c for c in ofelia['criteria'] if c['feature_key'] == 'sea_view_potential')['actual'] == 'wide'
+    assert next(c for c in ofelia['criteria'] if c['feature_key'] == 'sea_view_potential')['actual'] == 'partial'
 
 
 def test_resolution_validates_choice_and_correction_needs_value(client):

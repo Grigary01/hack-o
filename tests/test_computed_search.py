@@ -10,7 +10,7 @@ from app.ml.ranking import soft_match
 # Расчёт вида датирован состоянием OSM на 25.10.2026; общий TEST_NOW (23.10) раньше.
 LATER = datetime(2026, 10, 27, 12, tzinfo=timezone.utc)
 OFELIA = 'osm:node:11843553838'      # море с 3-го этажа, под глиссадой ВПП 06
-CHERNOMOR = 'osm:node:11138786325'   # моря не видно ни с одного этажа
+MILI = 'osm:node:1589835176'   # моря не видно ни с одного этажа (по модели)
 
 
 @pytest.fixture(autouse=True)
@@ -48,9 +48,9 @@ def test_search_explains_floor_side_and_aircraft(client):
     rows = body['matched'] + body['needs_verification'] + body['excluded']  # Офелия дальше 500 м от пляжа
     ofelia = next(r for r in rows if r['hotel']['id'] == OFELIA)
     by_key = {c['feature_key']: c for c in ofelia['criteria']}
-    assert by_key['sea_view_potential']['actual'] == 'wide'
+    assert by_key['sea_view_potential']['actual'] == 'partial'  # кроны перед отелем сужают вид
     assert 'с 3-го этажа' in by_key['sea_view_potential']['explanation']
-    assert 'стороны ЮЗ' in by_key['sea_view_potential']['explanation']
+    assert 'из окон стороны' in by_key['sea_view_potential']['explanation']
     assert 'от окна 3-го этажа' in by_key['aircraft_path_distance_m']['explanation']
     assert by_key['aircraft_path_distance_m']['match'] < .1  # 78 м до траектории — почти ноль
     # Вес спутника настраивается, повторный поиск по parsed не дублирует его.
@@ -80,9 +80,9 @@ def test_hotelier_floor_below_model_is_flagged_not_hidden(client):
 
 
 def test_hotelier_claim_where_model_sees_no_sea(client):
-    _, confirmed = answer(client, CHERNOMOR, 'В номере 305 вид на море.')
+    _, confirmed = answer(client, MILI, 'В номере 305 вид на море.')
     assert [r['reason'] for r in confirmed['model_review']] == ['model_sees_none']
-    _, negative = answer(client, CHERNOMOR, 'В номере 306 нет вида на море.')
+    _, negative = answer(client, MILI, 'В номере 306 нет вида на море.')
     assert negative['model_review'] == []  # «нет вида» расчёту не противоречит
 
 

@@ -17,8 +17,9 @@ from app.geo.osm_provider import fetch_snapshot
 
 OUT = Path('data/environment')
 # Область рельефа шире области отелей: на северо-западе (~15 км) хребет Ахун,
-# он может закрывать летний закат; восток нужен для «вида на горы».
-DEM_BOUNDS = dict(south=43.30, west=39.65, north=43.65, east=40.10)
+# он может закрывать летний закат; на северо-востоке (~40 км) Главный Кавказский
+# хребет (Ачишхо, Аибга, >2300 м) — его снежные вершины видны с верхних этажей.
+DEM_BOUNDS = dict(south=43.30, west=39.65, north=43.80, east=40.45)
 # Береговая линия: лучи к морю идут до ~10 км, плюс запас для полигона моря.
 COAST_BBOX = (43.25, 39.60, 43.70, 40.15)
 COG = ('https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N{lat:02d}_00_E{lon:03d}_00_DEM/'
@@ -31,6 +32,15 @@ def collect_coastline(refresh):
     s, w, n, e = COAST_BBOX
     query = f'[out:json][timeout:90];(way["natural"="coastline"]({s},{w},{n},{e}););out body geom;'
     snapshot = fetch_snapshot(settings.overpass_url, query, OUT/'osm_coastline.json', refresh)
+    return {'elements': len(snapshot['elements']), 'collected_at': snapshot['metadata']['collected_at']}
+
+
+def collect_vegetation(refresh):
+    """Деревья, рядки, лес и кустарник OSM в той же области, что и здания."""
+    s, w, n, e = 43.414, 39.893, 43.46, 39.951
+    query = ('[out:json][timeout:90];(nwr["natural"~"^(tree|tree_row|wood|scrub)$"]'
+             f'({s},{w},{n},{e});nwr["landuse"="forest"]({s},{w},{n},{e}););out body geom;')
+    snapshot = fetch_snapshot(settings.overpass_url, query, OUT/'osm_vegetation.json', refresh)
     return {'elements': len(snapshot['elements']), 'collected_at': snapshot['metadata']['collected_at']}
 
 
@@ -53,6 +63,12 @@ def collect_dem():
             for s in sources:
                 s.close()
     elevation = mosaic[0].astype(np.float32)
+    # merge может оставить пустой крайний столбец/строку справа и снизу (округление границы);
+    # их обрезка не меняет привязку (левый верхний угол тот же).
+    while np.all(elevation[:, -1] <= -1000):
+        elevation = elevation[:, :-1]
+    while np.all(elevation[-1, :] <= -1000):
+        elevation = elevation[:-1, :]
     if np.any(elevation <= -1000):
         raise ValueError('В окне DEM есть пропуски nodata: проверить тайлы, не заполнять выдумкой')
     # Дециметры в int16 (до 3276 м) — без потери значимой точности GLO-30 (~2-4 м).
@@ -62,7 +78,11 @@ def collect_dem():
     metadata = {
         'product': 'Copernicus DEM GLO-30 (DSM)', 'urls': urls, 'nodata': nodata_tiles,
         'collected_at': datetime.now(timezone.utc).isoformat(),
-        'crs': 'EPSG:4326', 'bounds': b,
+        'crs': 'EPSG:4326',
+        # Фактические границы после обрезки пустых краёв.
+        'bounds': {'west': transform.c, 'north': transform.f,
+                   'east': transform.c + transform.a * decimetres.shape[1],
+                   'south': transform.f + transform.e * decimetres.shape[0]},
         # Аффинное преобразование rasterio: lon = c + a*col, lat = f + e*row (центр пикселя +0.5).
         'transform': [transform.a, transform.b, transform.c, transform.d, transform.e, transform.f],
         'shape': list(decimetres.shape), 'unit': 'decimetre', 'vertical_datum': 'EGM2008',
@@ -82,7 +102,7 @@ def main():
     parser.add_argument('--skip-dem', action='store_true')
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
-    report = {'coastline': collect_coastline(args.refresh)}
+    report = {'coastline': collect_coastline(args.refresh), 'vegetation': collect_vegetation(args.refresh)}
     if not args.skip_dem:
         report['dem'] = collect_dem()
     print(json.dumps(report, ensure_ascii=False, indent=2))

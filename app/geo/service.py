@@ -170,7 +170,7 @@ class GeoService:
                 flags.append('sensitive_to_unknown_building_heights')
             # medium только если вывод не меняется при любых допущениях о неизвестных высотах
             # и этажность самого отеля известна из OSM. high без проверки на месте не ставим.
-            level = ('medium' if robust and result['levels_source'] == 'osm_building_levels'
+            level = ('medium' if robust and result['levels_source'] in ('osm_building_levels', 'photo_verified')
                      and 'hotel_building_matched_by_proximity' not in flags else 'low')
             if value is None:
                 level = 'unknown'

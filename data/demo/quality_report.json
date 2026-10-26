@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-26T19:39:31.200015+00:00",
+  "checked_at": "2026-10-26T21:08:26.880607+00:00",
   "hotels": 25,
   "osm_elements": 4895,
   "graph_nodes": 12188,
@@ -20,9 +20,9 @@
   "all_observations_recomputed": true,
   "graph_checksum_valid": true,
   "confidence_levels": {
-    "low": 301,
-    "medium": 60,
-    "unknown": 14
+    "low": 295,
+    "medium": 69,
+    "unknown": 11
   },
   "ground_truth_accuracy": null,
   "field_survey_done": false,
