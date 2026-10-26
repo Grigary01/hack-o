@@ -63,7 +63,9 @@ class Repository:
             overlap = max(old.observed_at,observation.observed_at) < min(old.expires_at,observation.expires_at)
             # Симулированное сообщение не создаёт конфликт с реальным источником.
             same_world = (old.evidence.source.type == 'hotelier_simulated') == (observation.evidence.source.type == 'hotelier_simulated')
-            if (old.subject_id == observation.subject_id and overlap and same_world and
+            from app.features.service import supersedes
+            refresh = supersedes(observation, old) or supersedes(old, observation)
+            if (old.subject_id == observation.subject_id and overlap and same_world and not refresh and
                 old.value is not None and observation.value is not None and old.value != observation.value):
                 ids = sorted([old.id,observation.id])
                 conflict_id = hashlib.sha256('|'.join(ids).encode()).hexdigest()

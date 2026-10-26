@@ -218,8 +218,10 @@ class ViewshedScene:
     by_osm_id: dict = field(default_factory=dict)
 
     @classmethod
-    def load(cls, environment_dir: Path, hotel_bbox, dem_step=30., near_step=10., building_step=2.):
-        buildings_raw = json.loads((environment_dir/'osm_buildings.json').read_text())
+    def load(cls, environment_dir: Path, hotel_bbox, dem_step=30., near_step=10., building_step=2.,
+             buildings_raw=None):
+        """buildings_raw — другой снимок зданий (актуализация); по умолчанию osm_buildings.json."""
+        buildings_raw = buildings_raw or json.loads((environment_dir/'osm_buildings.json').read_text())
         coast_raw = json.loads((environment_dir/'osm_coastline.json').read_text())
         dem_meta = json.loads((environment_dir/'dem_copernicus_glo30.json').read_text())
         dem_path = environment_dir/'dem_copernicus_glo30.npz'

@@ -44,7 +44,8 @@ class FeatureAgent:
             entry.update(action='read_evidence',reason='fresh_known_observation')
         elif definition.scope=='hotel' and observations:
             # Повтор старого snapshot не создаёт свежих данных; unknown тоже не лечится пересчётом.
-            entry.update(action='request_snapshot_refresh',reason='stale_unknown_or_conflicted_snapshot')
+            entry.update(action='request_snapshot_refresh',reason='stale_unknown_or_conflicted_snapshot',
+                         command='python -m scripts.refresh_geo --refresh')
         else:
             try:
                 result = self.tools.execute(definition.provider,{'hotel_id':hotel_id,'feature_key':feature_key})
