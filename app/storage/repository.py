@@ -65,6 +65,8 @@ class Repository:
             same_world = (old.evidence.source.type == 'hotelier_simulated') == (observation.evidence.source.type == 'hotelier_simulated')
             from app.features.service import supersedes
             refresh = supersedes(observation, old) or supersedes(old, observation)
+            # Решение оператора само разрешает конфликт и новых не создаёт.
+            refresh = refresh or 'operator_decision' in (old.evidence.source.type, observation.evidence.source.type)
             if (old.subject_id == observation.subject_id and overlap and same_world and not refresh and
                 old.value is not None and observation.value is not None and old.value != observation.value):
                 ids = sorted([old.id,observation.id])
@@ -91,7 +93,30 @@ class Repository:
         query = select(ConflictRow)
         if hotel_id:
             query = query.where(ConflictRow.hotel_id==hotel_id)
-        return [row_dict(r) for r in self.session.scalars(query)]
+        rows = [row_dict(r) for r in self.session.scalars(query)]
+        decisions = {}
+        for row in self.session.scalars(select(ObservationRow).where(ObservationRow.feature_key.in_({r['feature_key'] for r in rows}))):
+            payload = row.payload
+            if payload['evidence']['source']['type'] == 'operator_decision':
+                decisions[payload['evidence']['details'].get('conflict_id')] = {
+                    'observation_id': payload['id'], 'value': payload['value'],
+                    'chosen_observation_id': payload['evidence']['details'].get('chosen_observation_id'),
+                    'reason': payload['evidence']['details'].get('reason'), 'decided_at': payload['collected_at']}
+        for row in rows:
+            row['resolution'] = decisions.get(row['id'])
+        return rows
+
+    def conflict(self, conflict_id):
+        row = self.session.get(ConflictRow, conflict_id)
+        if row is None:
+            raise LookupError('Конфликт не найден')
+        return row_dict(row)
+
+    def observation(self, observation_id):
+        row = self.session.get(ObservationRow, observation_id)
+        if row is None:
+            raise LookupError('Свидетельство не найдено')
+        return Observation.model_validate(row.payload)
 
     def ensure_question(self, hotel_id, feature_key, text):
         self.hotel(hotel_id)

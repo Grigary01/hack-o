@@ -169,6 +169,63 @@ with search_tab:
 with owner_tab:
     st.warning('Симулятор: вы подтверждаете корректность разбора учебного ответа. Это не подтверждение реального свойства гостиницы.')
     hotel_id=st.selectbox('Отель',list(names),format_func=lambda k:names[k])
+    cabinet=call(api.get,f'/api/hotelier/hotels/{hotel_id}/facts') or {'facts':[],'conflicts':[]}
+    st.subheader('Что система узнала о вашем отеле')
+    st.caption('Подтвердите или исправьте. Исправление не перезаписывает расчёт: если версии расходятся, решает оператор.')
+    for fact in cabinet['facts']:
+        value='нужно уточнить' if fact['value'] is None else (
+            f'≈ {round(fact["value"]/10)*10:.0f} м' if fact['unit']=='m' else fact['display'])
+        mark=' · ✔ проверено отельером' if fact['reviewed_by_hotelier'] else ''
+        with st.expander(f'{fact["label"]}: {value} · уверенность {fact["confidence_level"]}{mark}'):
+            st.caption(fact['explanation'])
+            with st.form(f'review_{fact["feature_key"]}'):
+                key=fact['feature_key']
+                verdict={'Верно':'confirm','Исправить':'correct'}[st.radio('Ваш ответ',['Верно','Исправить'],horizontal=True,
+                                                                          key='verdict_'+key)]
+                if fact['type']=='category':
+                    labels=definitions[fact['feature_key']].get('choice_labels',{})
+                    shown={labels.get(c,c):c for c in fact['choices']}
+                    new_value=shown[st.selectbox('Правильное значение',list(shown),key='value_'+key)]
+                elif fact['type']=='number':
+                    new_value=st.number_input('Правильное значение',min_value=0.,value=float(fact['value'] or 0))
+                else:
+                    new_value=st.checkbox('Да',value=bool(fact['value']))
+                comment=st.text_input('Комментарий (например, «перед отелем высокие деревья»)',key='comment_'+key)
+                if st.form_submit_button('Отправить',key='submit_'+key):
+                    payload={'hotel_id':hotel_id,'feature_key':fact['feature_key'],'verdict':verdict,'comment':comment}
+                    if verdict=='correct':
+                        payload['value']=new_value
+                    result=call(api.post,'/api/hotelier/facts/review',payload)
+                    if result:
+                        st.success('Сохранено.' + (' Есть расхождение с расчётом — оно передано оператору.' if result['conflicts'] else ''))
+                        st.rerun()
+    open_conflicts=[c for c in cabinet['conflicts'] if not c.get('resolution')]
+    if cabinet['conflicts']:
+        st.subheader(f'Конфликты источников · открыто {len(open_conflicts)}')
+        evidence=call(api.get,f'/api/hotels/{hotel_id}/evidence') or {'observations':[]}
+        by_id={o['id']:o for o in evidence['observations']}
+        for conflict in cabinet['conflicts']:
+            label=definitions[conflict['feature_key']]['label']
+            subject=conflict['subject_id'].split(':room:')[-1] if ':room:' in conflict['subject_id'] else 'отель'
+            with st.expander(f'{label} · {subject} · {conflict["policy"]}' + (' · решён' if conflict.get('resolution') else '')):
+                versions=[by_id[i] for i in (conflict['left_id'],conflict['right_id']) if i in by_id]
+                describe=lambda o:(f'{o["evidence"]["source"]["name"]}: {o["value"]} · {o["evidence"]["method"]} · '
+                                   f'{o["collected_at"][:10]}')
+                for o in versions:
+                    st.write('• '+describe(o))
+                    st.caption(o['evidence']['details'].get('explanation') or o['evidence'].get('raw_excerpt') or '')
+                if conflict.get('resolution'):
+                    st.success(f'Решение: {conflict["resolution"]["value"]} — {conflict["resolution"]["reason"]}')
+                elif versions:
+                    with st.form(f'resolve_{conflict["id"]}'):
+                        shown={describe(o):o['id'] for o in versions}
+                        chosen=shown[st.radio('Какая версия верна',list(shown))]
+                        reason=st.text_input('Причина решения')
+                        if st.form_submit_button('Разрешить конфликт'):
+                            if call(api.post,f'/api/hotelier/conflicts/{conflict["id"]}/resolve',
+                                    {'chosen_observation_id':chosen,'reason':reason}):
+                                st.rerun()
+    st.subheader('Вопросы агента о номерах')
     keys=[k for k,d in definitions.items() if d['provider']=='hotelier']
     feature_key=st.selectbox('О чём спросить',keys,format_func=lambda k:definitions[k]['label'])
     if st.button('Сформировать вопрос'):

@@ -24,6 +24,13 @@ def model_disagreements(observations, hotel_id, room_subject_id, feature_key,
     claim = resolve_feature(observations, room_subject_id, feature_key, include_simulated, now)
     if claim.value is not True:
         return []
+    decisions = [o for o in claim.observations if o.evidence.source.type == 'operator_decision']
+    if decisions:
+        decision = max(decisions, key=lambda o: o.collected_at)
+        newer = [o for o in claim.observations if o.collected_at > decision.collected_at
+                 and o.evidence.source.type != 'operator_decision']
+        if decision.value == claim.value and not newer:
+            return []  # оператор уже разобрал расхождение и оставил значение отельера
     potential = resolve_feature(observations, hotel_id, check.potential, include_simulated, now)
     if potential.value is None:
         return []

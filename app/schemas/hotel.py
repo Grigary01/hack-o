@@ -6,7 +6,7 @@ from app.features.registry import get_registry
 
 
 class Source(Contract):
-    type: Literal['openstreetmap', 'geo_model', 'hotelier', 'hotelier_simulated']
+    type: Literal['openstreetmap', 'geo_model', 'hotelier', 'hotelier_simulated', 'operator_decision']
     name: str
     ref: str
     url: str | None = None
