@@ -9,6 +9,10 @@ walking_distance_to_beach_m:
   default_weight: 0.8
   aliases: [пляж, море рядом, пешком до моря]
   scale: 1000
+  # «Рядом с пляжем» — это ещё и путь без трасс и подъёмов.
+  companions:
+    - {feature_key: beach_route_busy_crossings, desired: near, weight_factor: 0.6}
+    - {feature_key: beach_route_climb_m, desired: near, weight_factor: 0.4}
   query_patterns: ['пляж\w*', '\bмор(е|я|ю|ем)\b', 'перв\w* (берегов\w* )?лини\w*', 'набережн\w*', 'берег\w*']
   query_desired: near
 quietness_proxy:
@@ -162,3 +166,31 @@ aircraft_path_distance_m:
   scale: 1000
   query_patterns: ['самол[её]т\w*', 'авиашум\w*', 'аэропорт\w*', 'взл[её]т\w*', 'авиаци\w*']
   query_desired: far
+beach_route_climb_m:
+  label: Подъёмы по пути к пляжу (расчёт)
+  description: Набор высоты туда или обратно (что больше) по пешему маршруту, рельеф Copernicus GLO-30. Погрешность 2–4 м.
+  type: number
+  unit: m
+  scope: hotel
+  provider: route_quality
+  ttl_days: 365
+  default_weight: 0.5
+  aliases: [без подъёмов, ровная дорога]
+  scale: 10
+  query_patterns: ['подъ[её]м\w*', 'в гору', 'в горку', 'горк\w*', 'перепад\w* высот\w*', 'лестниц\w*', 'ровн\w* дорог\w*', 'коляск\w*']
+  query_desired: near
+  query_negation_keeps: true
+beach_route_busy_crossings:
+  label: Переходы через трассы по пути к пляжу (расчёт)
+  description: Сколько раз пеший маршрут пересекает trunk/primary/secondary в одном уровне; тип перехода по OSM.
+  type: number
+  unit: count
+  scope: hotel
+  provider: route_quality
+  ttl_days: 180
+  default_weight: 0.6
+  aliases: [без перехода трассы]
+  scale: 1
+  query_patterns: ['переход\w* (через )?(трасс|дорог|улиц|магистрал)\w*', 'переходить (трасс|дорог|улиц)\w*', 'через трасс\w*', 'через дорог\w*', 'светофор\w*']
+  query_desired: near
+  query_negation_keeps: true

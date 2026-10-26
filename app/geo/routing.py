@@ -20,6 +20,7 @@ class RouteResult:
     connector_distance_m: float = 0
     coordinates: list = field(default_factory=list)
     way_ids: list = field(default_factory=list)
+    node_ids: list = field(default_factory=list)
     beach_id: str | None = None
     beach_name: str | None = None
     flags: list[str] = field(default_factory=list)
@@ -118,7 +119,7 @@ class PedestrianRouter:
         connectors = start_gap + target['connector']
         return RouteResult(lengths[target['node']] + connectors,
                            network_distance_m=lengths[target['node']], connector_distance_m=connectors,
-                           coordinates=coords, way_ids=list(dict.fromkeys(way_ids)),
+                           coordinates=coords, way_ids=list(dict.fromkeys(way_ids)), node_ids=list(route),
                            beach_id=target['beach_id'], beach_name=target['name'],
                            flags=['hotel_entry_approximate','beach_access_candidate',
                                   'connectors_not_surveyed','osm_access_incomplete',

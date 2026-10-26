@@ -1,6 +1,6 @@
 [
   {
-    "id": "a75f4c10d9809a06569d40e44d65d3d6d855dc346ad0d3c76800f739142b3d43",
+    "id": "afa7a62d3704fa1fd75c515cef42eada2c9195ab42bb094b6f492554f23019cb",
     "hotel_id": "osm:node:10058556917",
     "subject_type": "hotel",
     "subject_id": "osm:node:10058556917",
@@ -75,6 +75,14 @@
           "38894475",
           "578748130",
           "783340764"
+        ],
+        "node_ids": [
+          674059119,
+          11866202889,
+          7315616180,
+          7315616179,
+          7207836476,
+          7207836475
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -1780,7 +1788,119 @@
     }
   },
   {
-    "id": "1fdc2114ae13ab21aec98829fc67805f88e0e9eb3a2293a305b65294e954fd2b",
+    "id": "d13fbf9a445176ea0de3f091ff6129c7e0ca5c050e65338ce1c65ce449f2383f",
+    "hotel_id": "osm:node:10058556917",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:10058556917",
+    "feature_key": "beach_route_climb_m",
+    "value": 2.4,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/10058556917"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 2.4,
+        "climb_m": 2.4,
+        "max_grade_pct": 4.4,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 246,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 2.4 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "5399236daeeaa0989d9007d7e87a811656a038c3289332008356c7b81168b589",
+    "hotel_id": "osm:node:10058556917",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:10058556917",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/10058556917"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 2.4,
+        "climb_m": 2.4,
+        "max_grade_pct": 4.4,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 246,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "12ce65c5edc30756537b184db6aebc040148c8b46f8564dd8ba5854d498337dc",
     "hotel_id": "osm:node:10759614195",
     "subject_type": "hotel",
     "subject_id": "osm:node:10759614195",
@@ -1850,6 +1970,13 @@
         "way_ids": [
           "578746973",
           "875837669"
+        ],
+        "node_ids": [
+          5544526737,
+          8151806160,
+          8151806163,
+          8151806162,
+          8151806161
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -3675,7 +3802,119 @@
     }
   },
   {
-    "id": "8ac4162ceef7744d668ac09e17f3827cc419cdc8722fee130f80306d3528a44c",
+    "id": "ae4d0d281435f553bbe2c1628607c474bd8e2585235524b06dc7d16a1a7b58df",
+    "hotel_id": "osm:node:10759614195",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:10759614195",
+    "feature_key": "beach_route_climb_m",
+    "value": 1.1,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/10759614195"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.1,
+        "climb_m": 1.1,
+        "max_grade_pct": 2.7,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 105,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 1.1 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "afb6348823a94f84b9efe360c5e405059c5045c4e9cd0c7e1549cf69c94b2594",
+    "hotel_id": "osm:node:10759614195",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:10759614195",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/10759614195"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.1,
+        "climb_m": 1.1,
+        "max_grade_pct": 2.7,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 105,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "3109712e25dbe431069f036d1639a1789d27fea7b0633b5a9cbb9011db354422",
     "hotel_id": "osm:node:11138786325",
     "subject_type": "hotel",
     "subject_id": "osm:node:11138786325",
@@ -3910,6 +4149,51 @@
           "772093896",
           "772093894",
           "170899506"
+        ],
+        "node_ids": [
+          461904763,
+          7208416332,
+          10161611909,
+          7208416333,
+          7208416342,
+          7208416341,
+          7208416340,
+          7208416339,
+          7208416338,
+          7208416337,
+          7208416336,
+          7308906372,
+          1428991695,
+          3112911523,
+          933830846,
+          7308906314,
+          7308906332,
+          7308906331,
+          7308906330,
+          7308906329,
+          7308906334,
+          877653601,
+          874312360,
+          7308906201,
+          1146781789,
+          874312122,
+          874310869,
+          874310868,
+          9689165164,
+          1770778273,
+          874310530,
+          5431502228,
+          5431502229,
+          873720618,
+          1820286259,
+          7315616184,
+          7315616183,
+          1820286261,
+          1820286262,
+          1820286264,
+          1820286260,
+          1820286268,
+          7812435893
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -5215,7 +5499,139 @@
     }
   },
   {
-    "id": "0ccdb256e7a89e6b14fb44d748026d983a59678a5cfab8dd05ce3a9979c660a6",
+    "id": "3a45740ddc2a120d0ffc2d854e8934daef422b0bbbd31d326250ed9898741ab9",
+    "hotel_id": "osm:node:11138786325",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11138786325",
+    "feature_key": "beach_route_climb_m",
+    "value": 5.6,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11138786325"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.0,
+        "ascent_back_m": 5.6,
+        "climb_m": 5.6,
+        "max_grade_pct": 4.1,
+        "busy_crossings": 1,
+        "crossings": [
+          {
+            "road_osm_id": "osm:way:727716532",
+            "name": "улица Ленина",
+            "highway": "secondary",
+            "class": "улица районного значения",
+            "crossing": "нерегулируемый",
+            "x": 574192.6,
+            "y": 4809112.1
+          }
+        ],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 960,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 1 м, обратно ≈ 5.6 м. Самый крутой участок ≈ 4.1%.",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "5188ad1c56a3c61cc623735749d084cc40419ca4b4bd68b5118ce306389f8236",
+    "hotel_id": "osm:node:11138786325",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11138786325",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 1,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11138786325"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.0,
+        "ascent_back_m": 5.6,
+        "climb_m": 5.6,
+        "max_grade_pct": 4.1,
+        "busy_crossings": 1,
+        "crossings": [
+          {
+            "road_osm_id": "osm:way:727716532",
+            "name": "улица Ленина",
+            "highway": "secondary",
+            "class": "улица районного значения",
+            "crossing": "нерегулируемый",
+            "x": 574192.6,
+            "y": 4809112.1
+          }
+        ],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 960,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "1 переход через оживлённые дороги: улица Ленина (нерегулируемый).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "868b1a2633c75b7cb40b93294cb1731e08fb29871bc3fbe6e3b18260c11919ff",
     "hotel_id": "osm:node:11843545856",
     "subject_type": "hotel",
     "subject_id": "osm:node:11843545856",
@@ -5311,6 +5727,19 @@
           "80043571",
           "131292562",
           "834993478"
+        ],
+        "node_ids": [
+          1445331138,
+          1445331112,
+          1445331097,
+          7115085721,
+          1445331095,
+          11871098914,
+          1445331093,
+          1445270808,
+          5544526735,
+          1445270806,
+          583485322
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -6708,7 +7137,119 @@
     }
   },
   {
-    "id": "24e9dae5c9d49a61c913cb4f12d28ba52ef597ae5884bf65d631a6e6fb4adc94",
+    "id": "1e9720cae4a6a73cac28964f6e6868efba0d58c762f54aad764135f9a7cdd9e0",
+    "hotel_id": "osm:node:11843545856",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843545856",
+    "feature_key": "beach_route_climb_m",
+    "value": 1.1,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11843545856"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.1,
+        "climb_m": 1.1,
+        "max_grade_pct": 3.2,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 186,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 1.1 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "a60dc2eaa32f19890df926de521e39212e15c6cd38479ec6f807ce8fae879dc9",
+    "hotel_id": "osm:node:11843545856",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843545856",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11843545856"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.1,
+        "climb_m": 1.1,
+        "max_grade_pct": 3.2,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 186,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "50b6f07125ffbfc049bd11ce139155aacc65a2e092e5eef209b6f4815b5694fa",
     "hotel_id": "osm:node:11843553838",
     "subject_type": "hotel",
     "subject_id": "osm:node:11843553838",
@@ -6815,6 +7356,22 @@
           "53351213",
           "38894474",
           "55340119"
+        ],
+        "node_ids": [
+          8510330963,
+          1768604539,
+          462015339,
+          681286657,
+          1565810030,
+          462015337,
+          3112912168,
+          7315953149,
+          7169170218,
+          6809945148,
+          7315953167,
+          5102743563,
+          5129364852,
+          292200395
         ],
         "beach_id": "osm:way:53087011",
         "beach_name": "Охотник",
@@ -8392,7 +8949,139 @@
     }
   },
   {
-    "id": "32f92ea6e53289a42a4482f7a6d0dc910e3c4410de0f859acfaf4938b9515207",
+    "id": "795ae2bf4cb3f01eb3ab9dc079bef162ba07cdf8550b7cbbd46d9c9c941253a9",
+    "hotel_id": "osm:node:11843553838",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843553838",
+    "feature_key": "beach_route_climb_m",
+    "value": 3.3,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11843553838"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 3.3,
+        "climb_m": 3.3,
+        "max_grade_pct": 3.8,
+        "busy_crossings": 1,
+        "crossings": [
+          {
+            "road_osm_id": "osm:way:55340118",
+            "name": "улица Ленина",
+            "highway": "secondary",
+            "class": "улица районного значения",
+            "crossing": "светофор",
+            "x": 573835.7,
+            "y": 4809750.0
+          }
+        ],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 675,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 3.3 м. Самый крутой участок ≈ 3.8%.",
+        "beach_id": "osm:way:53087011",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "eb72140c9cc11c4c92aa9d3b2359e2a1c33fecd44535379ba142c08893af1694",
+    "hotel_id": "osm:node:11843553838",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843553838",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 1,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11843553838"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 3.3,
+        "climb_m": 3.3,
+        "max_grade_pct": 3.8,
+        "busy_crossings": 1,
+        "crossings": [
+          {
+            "road_osm_id": "osm:way:55340118",
+            "name": "улица Ленина",
+            "highway": "secondary",
+            "class": "улица районного значения",
+            "crossing": "светофор",
+            "x": 573835.7,
+            "y": 4809750.0
+          }
+        ],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 675,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "1 переход через оживлённые дороги: улица Ленина (светофор).",
+        "beach_id": "osm:way:53087011",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "c7bd03c89019554f47291769edd988d467b585b5af93c26b7263e0af459a7bce",
     "hotel_id": "osm:node:11843553839",
     "subject_type": "hotel",
     "subject_id": "osm:node:11843553839",
@@ -8506,6 +9195,23 @@
           "1278996039",
           "578746973",
           "202411728"
+        ],
+        "node_ids": [
+          7988678296,
+          7207766060,
+          7207766059,
+          7207766064,
+          7207766058,
+          8044568376,
+          8044594896,
+          935444586,
+          5544474942,
+          461889550,
+          7207901825,
+          11873505381,
+          11873505382,
+          5544526740,
+          2123824714
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -9991,7 +10697,119 @@
     }
   },
   {
-    "id": "5f729bad769f6fab8902a307177439992cbbbd4844bee36bf8f203faa578fa8f",
+    "id": "9311a0ca1532be539bf864b8d68d1a27b832df46fe09ed5d85eb2e73589aca5a",
+    "hotel_id": "osm:node:11843553839",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843553839",
+    "feature_key": "beach_route_climb_m",
+    "value": 1.3,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11843553839"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.3,
+        "ascent_back_m": 0.0,
+        "climb_m": 1.3,
+        "max_grade_pct": 3.6,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 255,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 1.3 м, обратно ≈ 0 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "22ce2c6fb3e01ba6a13943265e5d80758110d06347287f5996a04aa930e7a146",
+    "hotel_id": "osm:node:11843553839",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843553839",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11843553839"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.3,
+        "ascent_back_m": 0.0,
+        "climb_m": 1.3,
+        "max_grade_pct": 3.6,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 255,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "c3727f90b406f48c91a17e2927e186638b44aabc256f041dff0ce4804571bf8f",
     "hotel_id": "osm:node:11866202895",
     "subject_type": "hotel",
     "subject_id": "osm:node:11866202895",
@@ -10048,6 +10866,10 @@
         ],
         "way_ids": [
           "679416880"
+        ],
+        "node_ids": [
+          6362059904,
+          6362059905
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -11681,7 +12503,119 @@
     }
   },
   {
-    "id": "053b15bf979ea4c0f2f61684a4ac49cb0a79974a5cb0395885839e9b599fbcbc",
+    "id": "d82c01bb14738d9d6b0861badce78fa7d357357e13fd052407115756d465f76e",
+    "hotel_id": "osm:node:11866202895",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11866202895",
+    "feature_key": "beach_route_climb_m",
+    "value": 1.0,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11866202895"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.0,
+        "climb_m": 1.0,
+        "max_grade_pct": 3.5,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 26,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 1 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "6d8f82c39df3853148aaf74e8472fc5e4df43a8bc6c2698e0423289f49ce495e",
+    "hotel_id": "osm:node:11866202895",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11866202895",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11866202895"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.0,
+        "climb_m": 1.0,
+        "max_grade_pct": 3.5,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 26,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "b73e8630467a9b2cd9bf3fde936f8ccb6a8dfb83938a84c017dbe8c2df0fee00",
     "hotel_id": "osm:node:11878294031",
     "subject_type": "hotel",
     "subject_id": "osm:node:11878294031",
@@ -11845,6 +12779,35 @@
           "1278996039",
           "578746973",
           "202411728"
+        ],
+        "node_ids": [
+          7207856265,
+          1215841152,
+          7207856264,
+          7207856276,
+          7207856277,
+          7207856262,
+          7207856263,
+          11878294038,
+          8151609212,
+          461904631,
+          8151609213,
+          11878294041,
+          8151503608,
+          461904623,
+          7207856290,
+          11873417082,
+          11873417081,
+          11869514643,
+          8310553138,
+          5544474940,
+          461889510,
+          7207856187,
+          7315616177,
+          11873505381,
+          11873505382,
+          5544526740,
+          2123824714
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -13438,7 +14401,119 @@
     }
   },
   {
-    "id": "b34ac8692c21d2132a2e95b37054b8319b963438037e1d82b7138d47882644c5",
+    "id": "df5241937566e2eac76f25e552e31aee2f0707dab567423a9a7d50694f7651a1",
+    "hotel_id": "osm:node:11878294031",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11878294031",
+    "feature_key": "beach_route_climb_m",
+    "value": 2.1,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11878294031"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 2.1,
+        "climb_m": 2.1,
+        "max_grade_pct": 2.3,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 588,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 2.1 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "cb9564ffbd93db9d9bff912c0c23bd66e666d75c17a8d841d21fe4914adf56a9",
+    "hotel_id": "osm:node:11878294031",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11878294031",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11878294031"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 2.1,
+        "climb_m": 2.1,
+        "max_grade_pct": 2.3,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 588,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "2c2d77036bd14ec87fb5b69880b123c2ae115c2b85f67e0dc24b5622ce939e6f",
     "hotel_id": "osm:node:11878294032",
     "subject_type": "hotel",
     "subject_id": "osm:node:11878294032",
@@ -13541,6 +14616,20 @@
           "772093885",
           "578748130",
           "783340764"
+        ],
+        "node_ids": [
+          7207856246,
+          7207856204,
+          7315616181,
+          7207856205,
+          7207856190,
+          7207856191,
+          7207856189,
+          7207836477,
+          7315616180,
+          7315616179,
+          7207836476,
+          7207836475
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -15030,7 +16119,119 @@
     }
   },
   {
-    "id": "97ef86925d1deeb3463332668b50acf4800fcfba4030a6205295d7c866bad380",
+    "id": "97061e897731597bd2717fcf6b670d2b1d33f8ee1d5e2d3121d61b16347532c0",
+    "hotel_id": "osm:node:11878294032",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11878294032",
+    "feature_key": "beach_route_climb_m",
+    "value": 3.6,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11878294032"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 3.6,
+        "climb_m": 3.6,
+        "max_grade_pct": 4.5,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 439,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 3.6 м. Самый крутой участок ≈ 4.5%.",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "b4bd583ecba1be6bd05d64eda39cf96e6dfa034cd704d96e4da6b41c95c8eb1a",
+    "hotel_id": "osm:node:11878294032",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11878294032",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11878294032"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 3.6,
+        "climb_m": 3.6,
+        "max_grade_pct": 4.5,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 439,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "c392fed751ddbaacc855212963ef170331867bdf50ee25f83f2d59bc16a34085",
     "hotel_id": "osm:node:11958139262",
     "subject_type": "hotel",
     "subject_id": "osm:node:11958139262",
@@ -15120,6 +16321,17 @@
           "772093885",
           "578748130",
           "783340764"
+        ],
+        "node_ids": [
+          2434350041,
+          2434350043,
+          7207856191,
+          7207856189,
+          7207836477,
+          7315616180,
+          7315616179,
+          7207836476,
+          7207836475
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -16569,7 +17781,119 @@
     }
   },
   {
-    "id": "63328a9027e117cfc38db21f3ca019a307004932a8386d3f41321d55e7004b3e",
+    "id": "7fd899394a534126c84ec207540b5638069307d72d71afd3e417ed4a9158fa80",
+    "hotel_id": "osm:node:11958139262",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11958139262",
+    "feature_key": "beach_route_climb_m",
+    "value": 2.3,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11958139262"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 2.3,
+        "climb_m": 2.3,
+        "max_grade_pct": 4.4,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 316,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 2.3 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "ab5bedae7a3d1aba759e77f02d599adce0656bb7c5117c0f69244c94a99b82c9",
+    "hotel_id": "osm:node:11958139262",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11958139262",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11958139262"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 2.3,
+        "climb_m": 2.3,
+        "max_grade_pct": 4.4,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 316,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "1c978880bdf0ddb64178cfe2ae4aed1509fca08718d9b4ce43211a1192c84dc3",
     "hotel_id": "osm:node:13301736402",
     "subject_type": "hotel",
     "subject_id": "osm:node:13301736402",
@@ -16626,6 +17950,10 @@
         ],
         "way_ids": [
           "1278984830"
+        ],
+        "node_ids": [
+          11873349263,
+          11873349262
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -18123,7 +19451,119 @@
     }
   },
   {
-    "id": "d57e4c815b32dd034e4974e2c36b398686b905122b0526b1c6c7edc442a4e3b3",
+    "id": "470a2ba1fc3c2443a3c38c31e44d37ac3b191e8d727a7f776eea221187a0949c",
+    "hotel_id": "osm:node:13301736402",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:13301736402",
+    "feature_key": "beach_route_climb_m",
+    "value": 1.1,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/13301736402"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.1,
+        "climb_m": 1.1,
+        "max_grade_pct": 3.0,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 38,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 1.1 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "32f4939586ae6eb3b343e657035921fc69ffd5ad986f96e015909e9dd0c24247",
+    "hotel_id": "osm:node:13301736402",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:13301736402",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/13301736402"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.1,
+        "climb_m": 1.1,
+        "max_grade_pct": 3.0,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 38,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "3e4d3af8a93b838f1e6e1eadfbff9be392b4695a308977ff0c7ee66810b6511f",
     "hotel_id": "osm:node:1449074195",
     "subject_type": "hotel",
     "subject_id": "osm:node:1449074195",
@@ -18256,6 +19696,28 @@
           "1278996039",
           "578746973",
           "202411728"
+        ],
+        "node_ids": [
+          11878294038,
+          8151609212,
+          461904631,
+          8151609213,
+          11878294041,
+          8151503608,
+          461904623,
+          7207856290,
+          11873417082,
+          11873417081,
+          11869514643,
+          8310553138,
+          5544474940,
+          461889510,
+          7207856187,
+          7315616177,
+          11873505381,
+          11873505382,
+          5544526740,
+          2123824714
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -19541,7 +21003,119 @@
     }
   },
   {
-    "id": "0f6980e1dcba9550be073a94941dc428b189394fa5c0025874afe6793ab6a612",
+    "id": "10d9368299234ec447957af7d08d683c11148e23f4c2185a966c9328f6945409",
+    "hotel_id": "osm:node:1449074195",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:1449074195",
+    "feature_key": "beach_route_climb_m",
+    "value": 1.1,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/1449074195"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.1,
+        "climb_m": 1.1,
+        "max_grade_pct": 2.3,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 487,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 1.1 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "6b8921a5b7629e1673226c5e971078ddb22479ce2ad1a9eabf1282bcd2583ebd",
+    "hotel_id": "osm:node:1449074195",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:1449074195",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/1449074195"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.1,
+        "climb_m": 1.1,
+        "max_grade_pct": 2.3,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 487,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "669ed0d6cfec8fe33544910cccda1a472edfd0b4f1841b3a2c8432ccdf627b9b",
     "hotel_id": "osm:node:1589835176",
     "subject_type": "hotel",
     "subject_id": "osm:node:1589835176",
@@ -19689,6 +21263,31 @@
           "85998572",
           "875851667",
           "772103424"
+        ],
+        "node_ids": [
+          7115034335,
+          5544451625,
+          7115034344,
+          7115034345,
+          674226424,
+          461904640,
+          11738509298,
+          7207901872,
+          292205846,
+          1262004613,
+          11738509302,
+          4728913617,
+          418762926,
+          6564427653,
+          3046787802,
+          674059115,
+          8151957881,
+          5544528081,
+          4728913612,
+          5544528083,
+          4728913610,
+          4728913609,
+          7207901837
         ],
         "beach_id": "osm:way:510343733",
         "beach_name": "Пляж OSM",
@@ -20922,7 +22521,119 @@
     }
   },
   {
-    "id": "648addcce085f3876dba2a119364a76ad32a6962a85721099cf92f2b504b5e18",
+    "id": "a0f3591f5a433ff70ab0a42638eed3a56b7b16c85633d84079e80dd236ce44e9",
+    "hotel_id": "osm:node:1589835176",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:1589835176",
+    "feature_key": "beach_route_climb_m",
+    "value": 5.0,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/1589835176"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.0,
+        "ascent_back_m": 5.0,
+        "climb_m": 5.0,
+        "max_grade_pct": 7.8,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 705,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 1 м, обратно ≈ 5 м. Самый крутой участок ≈ 7.8%.",
+        "beach_id": "osm:way:510343733",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "06b03f83dd63f436209a9f888747f7ee303e05661144574c17d7027fbed8b159",
+    "hotel_id": "osm:node:1589835176",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:1589835176",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/1589835176"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.0,
+        "ascent_back_m": 5.0,
+        "climb_m": 5.0,
+        "max_grade_pct": 7.8,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 705,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:510343733",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "03a624e0da50b8861462a24f88a26959ce79103afb8968fc34ff7644485bb8b2",
     "hotel_id": "osm:node:2857562133",
     "subject_type": "hotel",
     "subject_id": "osm:node:2857562133",
@@ -20974,6 +22685,9 @@
           ]
         ],
         "way_ids": [],
+        "node_ids": [
+          292200396
+        ],
         "beach_id": "osm:way:53087011",
         "beach_name": "Охотник",
         "flags": [
@@ -22394,7 +24108,119 @@
     }
   },
   {
-    "id": "21d3d206e990edcbc825537baa2c466751246269812569c564cee5648c609f3d",
+    "id": "3136dfcc787e202c36967856464559afc00c71f765559b8b2d7526d25eeecd73",
+    "hotel_id": "osm:node:2857562133",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:2857562133",
+    "feature_key": "beach_route_climb_m",
+    "value": 0.0,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/2857562133"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 0.0,
+        "climb_m": 0.0,
+        "max_grade_pct": 0.0,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 23,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 0 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53087011",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "63c1df2645c0049342a4c66fc9d861d0974acb05893387867698200d982dcddc",
+    "hotel_id": "osm:node:2857562133",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:2857562133",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/2857562133"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 0.0,
+        "climb_m": 0.0,
+        "max_grade_pct": 0.0,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 23,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53087011",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "6ce4dab8cbcf6cca29813fc2e76214fb5528dc7d721b61f88c49b4dbeed32fa1",
     "hotel_id": "osm:node:2862997459",
     "subject_type": "hotel",
     "subject_id": "osm:node:2862997459",
@@ -22429,6 +24255,7 @@
         "connector_distance_m": 0,
         "coordinates": [],
         "way_ids": [],
+        "node_ids": [],
         "beach_id": null,
         "beach_name": null,
         "flags": [],
@@ -23791,7 +25618,75 @@
     }
   },
   {
-    "id": "47faf4dda70a0ef728b42fce90f73da1e79cffbe614f38dbfd959ee93e2704c2",
+    "id": "cf406f80194ea157936c8065074a5c2c3185eb21ea4652d3e1ff168840e64b23",
+    "hotel_id": "osm:node:2862997459",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:2862997459",
+    "feature_key": "beach_route_climb_m",
+    "value": null,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "unknown",
+    "confidence_level": "unknown",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "hotel_too_far_from_graph"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/2862997459"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "reason": "hotel_too_far_from_graph"
+      }
+    }
+  },
+  {
+    "id": "835a0e4f01d5b9e4287f62664113cb0a78aa26f1c7c85fff3a74f89eb49b24d8",
+    "hotel_id": "osm:node:2862997459",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:2862997459",
+    "feature_key": "beach_route_busy_crossings",
+    "value": null,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "unknown",
+    "confidence_level": "unknown",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "hotel_too_far_from_graph"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/2862997459"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "reason": "hotel_too_far_from_graph"
+      }
+    }
+  },
+  {
+    "id": "af9f38829c973f3fa6ca3f483fbc7eb7c9eb353cb3c9081836788a23f739e0c0",
     "hotel_id": "osm:node:4072901609",
     "subject_type": "hotel",
     "subject_id": "osm:node:4072901609",
@@ -23878,6 +25773,17 @@
           "38894475",
           "578748130",
           "783340764"
+        ],
+        "node_ids": [
+          11869514647,
+          11868498231,
+          11866202888,
+          674059119,
+          11866202889,
+          7315616180,
+          7315616179,
+          7207836476,
+          7207836475
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -25151,7 +27057,119 @@
     }
   },
   {
-    "id": "8edf75f020827635db98300859a0a7b9ee3e5f716e1e06ffde6afa7377ea4f9f",
+    "id": "0d3a7e032b445ef181fb89753d6aafd4256f54e5c0b69e9dd6b545d99981c8f5",
+    "hotel_id": "osm:node:4072901609",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4072901609",
+    "feature_key": "beach_route_climb_m",
+    "value": 2.2,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4072901609"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 2.2,
+        "climb_m": 2.2,
+        "max_grade_pct": 4.7,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 361,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 2.2 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "08a5582018950520c1a900a6d892fa68fc1ae6148c2af37e1980f8b360bf358b",
+    "hotel_id": "osm:node:4072901609",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4072901609",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4072901609"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 2.2,
+        "climb_m": 2.2,
+        "max_grade_pct": 4.7,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 361,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "b6a2259792c45f19939d8c5d033cb75693308aab5fc0d563bc23a07745c73296",
     "hotel_id": "osm:node:4118677615",
     "subject_type": "hotel",
     "subject_id": "osm:node:4118677615",
@@ -25263,6 +27281,22 @@
           "772093885",
           "578748130",
           "783340764"
+        ],
+        "node_ids": [
+          873720619,
+          7207856206,
+          7315616182,
+          7207856204,
+          7315616181,
+          7207856205,
+          7207856190,
+          7207856191,
+          7207856189,
+          7207836477,
+          7315616180,
+          7315616179,
+          7207836476,
+          7207836475
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -26980,7 +29014,119 @@
     }
   },
   {
-    "id": "fa599e78c5c1ee0e723cda6566ffb695076ccc57e762afb1e9f0bbaac0249d80",
+    "id": "2778c0b17c4319b35a56b41f3bee824f0b92f359337e3ecfa955fb42fc066475",
+    "hotel_id": "osm:node:4118677615",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4118677615",
+    "feature_key": "beach_route_climb_m",
+    "value": 4.7,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4118677615"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.1,
+        "ascent_back_m": 4.7,
+        "climb_m": 4.7,
+        "max_grade_pct": 4.5,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 574,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 1.1 м, обратно ≈ 4.7 м. Самый крутой участок ≈ 4.5%.",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "fd4ac0b3c5e72b5e59615eb7a0636dea9106f459b67014cf2421c760b0b1014a",
+    "hotel_id": "osm:node:4118677615",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4118677615",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4118677615"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.1,
+        "ascent_back_m": 4.7,
+        "climb_m": 4.7,
+        "max_grade_pct": 4.5,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 574,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "bf57fb8bf7152458de7b658c5d311b974b6cccdb84bd09a6f630ecffe8349981",
     "hotel_id": "osm:node:4284096790",
     "subject_type": "hotel",
     "subject_id": "osm:node:4284096790",
@@ -27104,6 +29250,26 @@
           "578734548",
           "772103432",
           "772103424"
+        ],
+        "node_ids": [
+          11878649950,
+          5544455040,
+          13524234154,
+          5544455036,
+          7114892972,
+          5544455035,
+          7207901873,
+          4728913616,
+          4728913615,
+          7207901842,
+          4728913614,
+          4728913613,
+          5544528081,
+          4728913612,
+          5544528083,
+          4728913610,
+          4728913609,
+          7207901837
         ],
         "beach_id": "osm:way:510343733",
         "beach_name": "Пляж OSM",
@@ -28229,7 +30395,119 @@
     }
   },
   {
-    "id": "8346d21ae5d5956bb3f143a752cc499f541637f94eb66a14e7dc4a1a50c1e1a4",
+    "id": "7f37cc87c1fc683aae52843994ff492c05b62d9e7d5dbd3c9f6cf90e45e6ef9e",
+    "hotel_id": "osm:node:4284096790",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4284096790",
+    "feature_key": "beach_route_climb_m",
+    "value": 3.8,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4284096790"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.1,
+        "ascent_back_m": 3.8,
+        "climb_m": 3.8,
+        "max_grade_pct": 7.9,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 560,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 1.1 м, обратно ≈ 3.8 м. Самый крутой участок ≈ 7.9%.",
+        "beach_id": "osm:way:510343733",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "7e9856f7020a1cb1d43c56ad667c1f19909c81603d4617427f043cc4e9149997",
+    "hotel_id": "osm:node:4284096790",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4284096790",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4284096790"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.1,
+        "ascent_back_m": 3.8,
+        "climb_m": 3.8,
+        "max_grade_pct": 7.9,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 560,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:510343733",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "d10cd224d48eb2d4642c1b2cad3356c2943b8c80bd6fd93e7e5ec90fe40d352d",
     "hotel_id": "osm:node:4327828193",
     "subject_type": "hotel",
     "subject_id": "osm:node:4327828193",
@@ -28314,6 +30592,16 @@
           "772093885",
           "578748130",
           "783340764"
+        ],
+        "node_ids": [
+          2434350043,
+          7207856191,
+          7207856189,
+          7207836477,
+          7315616180,
+          7315616179,
+          7207836476,
+          7207836475
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -29723,7 +32011,119 @@
     }
   },
   {
-    "id": "a63935c96904ab805b4a8f50880d12110b16d0c778a0ad028721fb46e5f292ac",
+    "id": "6fc86581be32b4946377592f9443520d67aef48565201b049dd7f40d6b2c812a",
+    "hotel_id": "osm:node:4327828193",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4327828193",
+    "feature_key": "beach_route_climb_m",
+    "value": 2.5,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4327828193"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 2.5,
+        "climb_m": 2.5,
+        "max_grade_pct": 4.7,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 272,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 2.5 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "9373c884e50914d4c90b55703dab7537f6fa85f543bb2936ff3b03b3860bc683",
+    "hotel_id": "osm:node:4327828193",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4327828193",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4327828193"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 2.5,
+        "climb_m": 2.5,
+        "max_grade_pct": 4.7,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 272,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "a62d4ca380c377d1117aad9c6875ddc7251d1a559c82711fb34af6b3a76d4604",
     "hotel_id": "osm:node:4348786790",
     "subject_type": "hotel",
     "subject_id": "osm:node:4348786790",
@@ -29851,6 +32251,27 @@
           "578734548",
           "772103432",
           "772103424"
+        ],
+        "node_ids": [
+          8151987611,
+          11878649950,
+          5544455040,
+          13524234154,
+          5544455036,
+          7114892972,
+          5544455035,
+          7207901873,
+          4728913616,
+          4728913615,
+          7207901842,
+          4728913614,
+          4728913613,
+          5544528081,
+          4728913612,
+          5544528083,
+          4728913610,
+          4728913609,
+          7207901837
         ],
         "beach_id": "osm:way:510343733",
         "beach_name": "Пляж OSM",
@@ -31332,7 +33753,119 @@
     }
   },
   {
-    "id": "30abcd8d9b95d27d8d23b03442ddd0b92329db059cabc968a529938884291e7d",
+    "id": "92df1abf9b00297cbfb8fbab669aad41603f7916f41351a2abdd4f795252167d",
+    "hotel_id": "osm:node:4348786790",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4348786790",
+    "feature_key": "beach_route_climb_m",
+    "value": 4.1,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4348786790"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.2,
+        "ascent_back_m": 4.1,
+        "climb_m": 4.1,
+        "max_grade_pct": 7.5,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 576,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 1.2 м, обратно ≈ 4.1 м. Самый крутой участок ≈ 7.5%.",
+        "beach_id": "osm:way:510343733",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "fdbc046f0d561cddaac545a7cda1a0df7daa44884d7fc3ffed2181267e467125",
+    "hotel_id": "osm:node:4348786790",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4348786790",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4348786790"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.2,
+        "ascent_back_m": 4.1,
+        "climb_m": 4.1,
+        "max_grade_pct": 7.5,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 576,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:510343733",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "e5d63d67a7052b26ab86958af3c84c420557293c3d75585751daa60abd732ade",
     "hotel_id": "osm:node:4931886321",
     "subject_type": "hotel",
     "subject_id": "osm:node:4931886321",
@@ -31438,6 +33971,21 @@
           "1278996039",
           "578746973",
           "202411728"
+        ],
+        "node_ids": [
+          1445331258,
+          462015333,
+          7207766058,
+          8044568376,
+          8044594896,
+          935444586,
+          5544474942,
+          461889550,
+          7207901825,
+          11873505381,
+          11873505382,
+          5544526740,
+          2123824714
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -32903,7 +35451,119 @@
     }
   },
   {
-    "id": "09b73a9f91568dfaf88dae9f6e2ab05965e55edb82dcde56c835e2f073d70e7a",
+    "id": "0005379dfdcf329a71d1825f9cec27d97cbdaabb7e10c62c740d5a6a7c799d49",
+    "hotel_id": "osm:node:4931886321",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4931886321",
+    "feature_key": "beach_route_climb_m",
+    "value": 0.0,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4931886321"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 0.0,
+        "climb_m": 0.0,
+        "max_grade_pct": 2.8,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 329,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 0 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "034c598e220cd5c1c954b709bac7ea1bf32cd44ad312dd757673815dc9cef132",
+    "hotel_id": "osm:node:4931886321",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4931886321",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4931886321"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 0.0,
+        "climb_m": 0.0,
+        "max_grade_pct": 2.8,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 329,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "240a2a2b989e4964a770640ee622ddd8f4e6c096eab28e1e7b1b1dece93421ec",
     "hotel_id": "osm:node:6494252594",
     "subject_type": "hotel",
     "subject_id": "osm:node:6494252594",
@@ -33704,6 +36364,187 @@
           "38894480",
           "38894474",
           "55340119"
+        ],
+        "node_ids": [
+          7223185109,
+          7223185222,
+          7223185110,
+          7223185111,
+          7223185112,
+          7223185113,
+          7223185114,
+          7223185115,
+          7223185116,
+          7223185117,
+          7223185118,
+          7223185119,
+          9254359294,
+          9254359295,
+          7223185243,
+          7223185244,
+          7223185245,
+          7223185246,
+          7223185247,
+          9254359297,
+          9254359296,
+          9254359298,
+          7223185248,
+          7223185249,
+          7223185250,
+          7223185251,
+          7223185252,
+          7223185253,
+          7223185254,
+          7223185255,
+          7223185256,
+          7223185268,
+          9254359299,
+          9254359301,
+          9254359305,
+          9254359302,
+          9254359303,
+          9254359304,
+          2789814273,
+          6074108991,
+          3397866970,
+          3397866972,
+          3753739173,
+          3397866976,
+          3397866977,
+          3397866979,
+          3397866981,
+          3397866982,
+          3397866984,
+          3397866986,
+          2989462217,
+          2989462219,
+          8731854387,
+          2989462226,
+          2989462228,
+          2989462230,
+          2989462232,
+          2989466934,
+          2989466936,
+          2989466937,
+          2989466935,
+          2989466933,
+          5003444140,
+          5003444138,
+          5003444137,
+          5003444136,
+          5003444134,
+          5003444133,
+          5003444131,
+          8731827302,
+          5003444123,
+          5003444124,
+          11565657752,
+          8731827322,
+          8731827321,
+          11565657751,
+          5003444130,
+          8731827320,
+          5003444129,
+          5003444128,
+          5003444127,
+          8731827334,
+          5003444126,
+          8731827340,
+          5003444125,
+          8731827341,
+          5003444122,
+          11565657760,
+          8731827342,
+          11565657761,
+          5003444121,
+          5003433520,
+          5003433519,
+          5003433518,
+          5005002723,
+          5005002722,
+          9890186843,
+          5005002721,
+          5005002413,
+          5005002412,
+          5005002410,
+          5005002411,
+          5005002409,
+          5005002408,
+          5005002407,
+          5005002406,
+          5005002405,
+          5005002404,
+          5005002403,
+          5005002402,
+          5005002392,
+          5005002393,
+          5005002394,
+          5005002398,
+          5005002399,
+          2139420159,
+          2139420161,
+          2139420167,
+          2139420168,
+          2139420166,
+          2139420157,
+          3112927338,
+          2139420165,
+          2139420175,
+          8494784003,
+          2139420172,
+          2139420179,
+          2139420170,
+          2139420174,
+          8494784007,
+          2139420177,
+          8494784008,
+          2139420164,
+          2139420173,
+          2139420178,
+          2139420176,
+          2139420180,
+          2139420169,
+          2139420171,
+          2139420163,
+          2139420155,
+          2139420154,
+          2139420153,
+          10612354106,
+          7195171008,
+          10612312902,
+          7195171009,
+          7195171007,
+          8494784011,
+          1143686391,
+          1143685805,
+          8494784012,
+          1143686448,
+          1143686361,
+          2123824950,
+          2123824949,
+          3112926620,
+          4036545351,
+          8151971267,
+          7703010436,
+          674059124,
+          4036545346,
+          8151971266,
+          8151971259,
+          8151971260,
+          681286825,
+          462015347,
+          462015339,
+          681286657,
+          1565810030,
+          462015337,
+          3112912168,
+          7315953149,
+          7169170218,
+          6809945148,
+          7315953167,
+          5102743563,
+          5129364852,
+          292200395
         ],
         "beach_id": "osm:way:53087011",
         "beach_name": "Охотник",
@@ -35357,7 +38198,139 @@
     }
   },
   {
-    "id": "ef7b29b0c8284320131f8d590649733623bd8c6b47c8818014d69187032882bb",
+    "id": "33b4c5a3e7628260298cf4337b91fbcc5f284822c248df59bb10e265801c2047",
+    "hotel_id": "osm:node:6494252594",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:6494252594",
+    "feature_key": "beach_route_climb_m",
+    "value": 20.6,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/6494252594"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 8.7,
+        "ascent_back_m": 20.6,
+        "climb_m": 20.6,
+        "max_grade_pct": 6.2,
+        "busy_crossings": 1,
+        "crossings": [
+          {
+            "road_osm_id": "osm:way:55340118",
+            "name": "улица Ленина",
+            "highway": "secondary",
+            "class": "улица районного значения",
+            "crossing": "светофор",
+            "x": 573835.7,
+            "y": 4809750.0
+          }
+        ],
+        "stairs_segments": 6,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 4561,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 8.7 м, обратно ≈ 20.6 м. Самый крутой участок ≈ 6.2%. На маршруте есть лестница.",
+        "beach_id": "osm:way:53087011",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "e4dc191eee90b99c34ae4b52e7abd685357adea3df70ec6db2bd8cf407a6a5b1",
+    "hotel_id": "osm:node:6494252594",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:6494252594",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 1,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/6494252594"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 8.7,
+        "ascent_back_m": 20.6,
+        "climb_m": 20.6,
+        "max_grade_pct": 6.2,
+        "busy_crossings": 1,
+        "crossings": [
+          {
+            "road_osm_id": "osm:way:55340118",
+            "name": "улица Ленина",
+            "highway": "secondary",
+            "class": "улица районного значения",
+            "crossing": "светофор",
+            "x": 573835.7,
+            "y": 4809750.0
+          }
+        ],
+        "stairs_segments": 6,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 4561,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "1 переход через оживлённые дороги: улица Ленина (светофор).",
+        "beach_id": "osm:way:53087011",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "f8f00d7247f357b11a8dcae6bdaa4d552272e6ac6a0585a35d37bf7b77dfad1c",
     "hotel_id": "osm:node:7115085741",
     "subject_type": "hotel",
     "subject_id": "osm:node:7115085741",
@@ -35455,6 +38428,19 @@
           "1278996039",
           "578746973",
           "202411728"
+        ],
+        "node_ids": [
+          7315616178,
+          5544474939,
+          7207856293,
+          5544474940,
+          461889510,
+          7207856187,
+          7315616177,
+          11873505381,
+          11873505382,
+          5544526740,
+          2123824714
         ],
         "beach_id": "osm:way:53086451",
         "beach_name": "Пляж OSM",
@@ -37720,7 +40706,119 @@
     }
   },
   {
-    "id": "75e0dedb464ecfb928f5c64fce054c21c511c1414dba28ae30472b3c2a48bb17",
+    "id": "94cf380a654c10b45566622a51662ad77ac915f87da1ad970dbaab087fc70189",
+    "hotel_id": "osm:node:7115085741",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7115085741",
+    "feature_key": "beach_route_climb_m",
+    "value": 0.0,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/7115085741"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 0.0,
+        "climb_m": 0.0,
+        "max_grade_pct": 2.3,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 208,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 0 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "84f8f3cfa71b0ee9b5ea3ea28a8ccd154d8a271cfec56295eba2160a1b814ea3",
+    "hotel_id": "osm:node:7115085741",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7115085741",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/7115085741"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 0.0,
+        "climb_m": 0.0,
+        "max_grade_pct": 2.3,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 208,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "6c38d1fc5db82cef3d76050acb2a27f2eddc1ce83ede471682889753b5b0a449",
     "hotel_id": "osm:node:7115162128",
     "subject_type": "hotel",
     "subject_id": "osm:node:7115162128",
@@ -37999,6 +41097,60 @@
           "772103438",
           "320430632",
           "300599374"
+        ],
+        "node_ids": [
+          674273767,
+          10049115041,
+          7115162127,
+          674273747,
+          7663214975,
+          7663214974,
+          7366801821,
+          7366801825,
+          933761647,
+          7366801824,
+          933761633,
+          7366801823,
+          933761656,
+          933761617,
+          1137176797,
+          7366815118,
+          7118859220,
+          1137182815,
+          7366815120,
+          7394265998,
+          950068712,
+          292202571,
+          7115034365,
+          292202572,
+          1276839656,
+          7208415062,
+          7208415061,
+          7208415060,
+          7312615444,
+          7208415059,
+          7115034339,
+          7115034337,
+          5544451624,
+          7115034340,
+          13495045439,
+          8151957691,
+          5544451623,
+          5544455832,
+          5544450012,
+          5544454298,
+          4728913620,
+          5544402890,
+          5544418489,
+          4728913619,
+          7207901878,
+          7207901875,
+          5544516204,
+          5544460190,
+          5544463164,
+          3046787794,
+          3734570244,
+          3046783663
         ],
         "beach_id": "osm:way:510343734",
         "beach_name": "Пляж OSM",
@@ -39960,7 +43112,119 @@
     }
   },
   {
-    "id": "b55a5cad3eab6dfb9494128fe391b07a339c29c8c7ad7d828f1f4e5163f37710",
+    "id": "b06ca22d6d9eaf315ddd728cb8a069b8290319b8b245de84bd7939eb43780fd9",
+    "hotel_id": "osm:node:7115162128",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7115162128",
+    "feature_key": "beach_route_climb_m",
+    "value": 4.7,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/7115162128"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.1,
+        "ascent_back_m": 4.7,
+        "climb_m": 4.7,
+        "max_grade_pct": 6.6,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 2,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 1138,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 1.1 м, обратно ≈ 4.7 м. Самый крутой участок ≈ 6.6%. На маршруте есть лестница.",
+        "beach_id": "osm:way:510343734",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "16e1379cdfc5670d9ab67a984d154b6e4082c220cdad35408d7d4dded68bba42",
+    "hotel_id": "osm:node:7115162128",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7115162128",
+    "feature_key": "beach_route_busy_crossings",
+    "value": 0,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/7115162128"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "ascent_to_beach_m": 1.1,
+        "ascent_back_m": 4.7,
+        "climb_m": 4.7,
+        "max_grade_pct": 6.6,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 2,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 1138,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:510343734",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "a214752876fd999b18aad857115efbf659a8bcb07ea8cdfa0cd848650ebdd92e"
+      }
+    }
+  },
+  {
+    "id": "1e53c585dfd0bfd1706b13c9ff430df37a029497c0ea0f93d827c3f290330bb0",
     "hotel_id": "osm:node:7345928591",
     "subject_type": "hotel",
     "subject_id": "osm:node:7345928591",
@@ -39995,6 +43259,7 @@
         "connector_distance_m": 0,
         "coordinates": [],
         "way_ids": [],
+        "node_ids": [],
         "beach_id": null,
         "beach_name": null,
         "flags": [],
@@ -41325,6 +44590,74 @@
             "attribution": "Copernicus DEM GLO-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved"
           }
         }
+      }
+    }
+  },
+  {
+    "id": "5b174c22d9bee870d21203550fbee309be830eca43c4906cc4d43d6cd0ef1a7f",
+    "hotel_id": "osm:node:7345928591",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7345928591",
+    "feature_key": "beach_route_climb_m",
+    "value": null,
+    "unit": "m",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-10-23T20:44:21Z",
+    "status": "unknown",
+    "confidence_level": "unknown",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "no_path"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/7345928591"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "reason": "no_path"
+      }
+    }
+  },
+  {
+    "id": "b2f7cec5d1c32ef302e6b9e8c3715a6b9988e2ef58aa1c03a3fe0ac996b316e3",
+    "hotel_id": "osm:node:7345928591",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7345928591",
+    "feature_key": "beach_route_busy_crossings",
+    "value": null,
+    "unit": "count",
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-04-21T20:44:21Z",
+    "status": "unknown",
+    "confidence_level": "unknown",
+    "confidence": null,
+    "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "no_path"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM пешеходный граф и дороги + Copernicus DEM GLO-30",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/7345928591"
+      },
+      "method": "route_quality_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "reason": "no_path"
       }
     }
   }

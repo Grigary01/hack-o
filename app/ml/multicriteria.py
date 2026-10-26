@@ -23,7 +23,8 @@ GROUPS = {'quietness_proxy':'quietness', 'nightlife_distance_m':'quietness',
           'walking_distance_to_beach_m':'beach_access',
           'sea_view_potential':'view', 'sea_view_min_floor':'view',
           'sunset_view_potential':'view', 'sunset_view_min_floor':'view',
-          'aircraft_noise_exposure':'quietness', 'aircraft_path_distance_m':'quietness'}
+          'aircraft_noise_exposure':'quietness', 'aircraft_path_distance_m':'quietness',
+          'beach_route_climb_m':'beach_access', 'beach_route_busy_crossings':'beach_access'}
 LABELS = {'quietness':'Тишина и сон','view':'Вид из номера','beach_access':'Доступ к пляжу'}
 
 

@@ -180,6 +180,8 @@ class RulesQueryParser:
             # Для мест и источников шума отрицание значит «держаться подальше»:
             # «без баров», «чтобы не было слышно самолётов» → far.
             desired = 'near' if near else 'far' if far or not positive else definition.query_desired
+            if definition.query_negation_keeps:
+                desired = definition.query_desired  # «без подъёмов», «не переходить трассу» — тоже «поменьше»
             if key == 'aircraft_path_distance_m' and desired == 'near':
                 unknown.append('Близость к аэропорту ради трансфера пока не поддерживается')
                 return None

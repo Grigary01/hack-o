@@ -12,9 +12,11 @@ from app.geo.routing import PedestrianRouter, load_walking_graph
 from app.geo.quietness import calculate_quietness_proxy
 from app.geo.viewshed import ViewshedScene, analyze_hotel
 from app.geo.aircraft import runways, exposure, explanation as aircraft_explanation
+from app.geo import route_quality
 
 VIEWSHED_KEYS = ('sea_view_potential', 'sea_view_min_floor', 'sunset_view_potential', 'sunset_view_min_floor')
 AIRCRAFT_KEYS = ('aircraft_noise_exposure', 'aircraft_path_distance_m')
+ROUTE_KEYS = ('beach_route_climb_m', 'beach_route_busy_crossings')
 
 
 class GeoService:
@@ -74,6 +76,40 @@ class GeoService:
                 ref=metadata['query_sha256'], url=hotel.source_url), method='aircraft_track_proximity_v1',
                 snapshot_path='data/environment/osm_aeroways.json', details=details))
 
+    def compute_route_quality(self, hotel, feature_key):
+        """Тот же маршрут, что для расстояния до пляжа, плюс рельеф и дороги OSM."""
+        definition = get_registry().get(feature_key)
+        scene = self._scene()
+        ground = lambda x, y: float(scene.dem_grid.bilinear(scene.dtm, np.array([x]), np.array([y]))[0])
+        route = self._router().distance_to_beach(hotel)
+        result = route_quality.analyze(route, self._router().graph, self.snapshot['elements'], ground)
+        metadata = self.snapshot['metadata']
+        observed = datetime.fromisoformat(metadata.get('osm_base') or metadata['collected_at'])
+        collected = datetime.fromisoformat(metadata['collected_at'])
+        if result is None:
+            value, details = None, {'reason': route.reason or 'no_route'}
+        else:
+            value = result['climb_m'] if feature_key == 'beach_route_climb_m' else result['busy_crossings']
+            details = result | {'explanation': route_quality.explain_climb(result) if feature_key == 'beach_route_climb_m'
+                                else route_quality.explain_crossings(result),
+                                'beach_id': route.beach_id, 'graph_sha256': self.graph_metadata['sha256'],
+                                'dem_sha256': scene.inputs['dem']['sha256']}
+        digest = hashlib.sha256(json.dumps([hotel.id, feature_key, metadata['query_sha256'], self.graph_metadata['sha256'],
+                                            scene.inputs['dem']['sha256'], value, details], sort_keys=True,
+                                           default=str).encode()).hexdigest()
+        return Observation(id=digest, hotel_id=hotel.id, subject_type='hotel', subject_id=hotel.id,
+            feature_key=feature_key, value=value, unit=definition.unit,
+            observed_at=observed, collected_at=collected, expires_at=observed+timedelta(days=definition.ttl_days),
+            status='estimated' if value is not None else 'unknown',
+            confidence_level='low' if value is not None else 'unknown',
+            confidence_method=('Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; '
+                               'на местности не проверено. Вероятность не оценивалась.'),
+            quality_flags=['osm_coverage_not_field_verified'] + (result or {}).get('limits', []) +
+                          ([route.reason] if route.reason else []),
+            evidence=Evidence(source=Source(type='geo_model', name='OSM пешеходный граф и дороги + Copernicus DEM GLO-30',
+                ref=metadata['query_sha256'], url=hotel.source_url), method='route_quality_v1',
+                snapshot_path='data/demo/osm_snapshot.json', details=details))
+
     def _viewshed(self, hotel):
         """Один расчёт на отель даёт все четыре характеристики вида."""
         if hotel.id not in self.viewshed_cache:
@@ -130,6 +166,8 @@ class GeoService:
             return self.compute_viewshed(hotel, feature_key)
         if feature_key in AIRCRAFT_KEYS:
             return self.compute_aircraft(hotel, feature_key)
+        if feature_key in ROUTE_KEYS:
+            return self.compute_route_quality(hotel, feature_key)
         definition = get_registry().get(feature_key)
         metadata = self.snapshot['metadata']
         observed = datetime.fromisoformat(metadata.get('osm_base') or metadata['collected_at'])

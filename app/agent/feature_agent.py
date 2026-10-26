@@ -21,6 +21,7 @@ class FeatureAgent:
             ToolSpec('nightlife_distance',self._compute),
             ToolSpec('viewshed',self._compute),
             ToolSpec('aircraft_noise',self._compute),
+            ToolSpec('route_quality',self._compute),
             ToolSpec('hotelier',lambda p:ask_hotelier(repo,p.hotel_id,p.feature_key)),
         ],max_calls=max_calls)
 

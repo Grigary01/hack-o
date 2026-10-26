@@ -55,6 +55,8 @@ class FeatureDefinition(BaseModel):
     query_patterns: list[str] = Field(default_factory=list)
     query_negative_patterns: list[str] = Field(default_factory=list)
     query_desired: str | bool | None = None
+    # True: отрицание не переворачивает желание («без подъёмов» — тоже поменьше подъёмов).
+    query_negation_keeps: bool = False
 
     @model_validator(mode='after')
     def coherent(self):
