@@ -1,0 +1,357 @@
+{
+  "mode": "offline",
+  "model": null,
+  "measured_at": "2026-10-26T19:15:16.518721+00:00",
+  "note": "Fixture exact-match на demo — проверка контракта, не качество NLP. Gold авторский, независимая разметка ещё нужна.",
+  "demo": {
+    "queries": 14,
+    "covered": 14,
+    "exact_match": 1.0,
+    "field_precision": 1.0,
+    "field_recall": 1.0,
+    "field_f1": 1.0,
+    "dimensions": {
+      "operators": {
+        "correct": 7,
+        "expected": 7,
+        "predicted": 7
+      },
+      "numbers": {
+        "correct": 5,
+        "expected": 5,
+        "predicted": 5
+      },
+      "negations": {
+        "correct": 2,
+        "expected": 2,
+        "predicted": 2
+      }
+    },
+    "errors": [],
+    "mismatches": []
+  },
+  "held_out": {
+    "queries": 32,
+    "covered": 32,
+    "exact_match": 0.71875,
+    "field_precision": 0.9424460431654677,
+    "field_recall": 0.9492753623188406,
+    "field_f1": 0.9458483754512634,
+    "dimensions": {
+      "operators": {
+        "correct": 17,
+        "expected": 18,
+        "predicted": 18
+      },
+      "numbers": {
+        "correct": 12,
+        "expected": 12,
+        "predicted": 13
+      },
+      "negations": {
+        "correct": 4,
+        "expected": 4,
+        "predicted": 4
+      }
+    },
+    "errors": [],
+    "mismatches": [
+      {
+        "text": "Пляж важнее вида из окна",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "desired": "near",
+              "importance": 1.0,
+              "weight_source": "relative_inferred",
+              "scope": "hotel",
+              "utility": null,
+              "derived_from": null
+            },
+            {
+              "feature_key": "sea_view",
+              "desired": true,
+              "importance": 0.5,
+              "weight_source": "relative_inferred",
+              "scope": "room",
+              "utility": null,
+              "derived_from": null
+            }
+          ],
+          "unknown_or_ambiguous": [
+            "Не указано, какой вид из окна нужен"
+          ],
+          "clarification_question": "Какой вид из окна вы хотите?",
+          "original_text": "Пляж важнее вида из окна"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "desired": "near",
+              "importance": 1.0,
+              "weight_source": "relative_inferred",
+              "scope": "hotel",
+              "utility": null,
+              "derived_from": null
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Пляж важнее вида из окна"
+        }
+      },
+      {
+        "text": "До пляжа не более 500 м, но по прямой",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Расстояние до пляжа по прямой не поддерживается поисковым фильтром"
+          ],
+          "clarification_question": "Подойдёт расстояние по пешему графу OSM?",
+          "original_text": "До пляжа не более 500 м, но по прямой"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "operator": "<=",
+              "value": 500,
+              "unit": "m",
+              "scope": "hotel"
+            }
+          ],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Пока не поддерживается: расстояние по прямой"
+          ],
+          "clarification_question": "Уточните запрос: Пока не поддерживается: расстояние по прямой. Уберите эти условия, чтобы искать по остальным. Сейчас система проверяет: вид на закат из номера, вид на море из номера, до отмеченного в osm бара или клуба по прямой, до траектории самолётов (расчёт), потенциал тишины снаружи, путь до пляжа, шумоизоляция номера.",
+          "original_text": "До пляжа не более 500 м, но по прямой"
+        }
+      },
+      {
+        "text": "Пять минут до моря",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Не указаны способ движения и скорость"
+          ],
+          "clarification_question": "Какое максимальное расстояние пешком в метрах подходит?",
+          "original_text": "Пять минут до моря"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Время в пути без «пешком» неоднозначно"
+          ],
+          "clarification_question": "Уточните запрос: Время в пути без «пешком» неоднозначно. Уберите эти условия, чтобы искать по остальным. Сейчас система проверяет: вид на закат из номера, вид на море из номера, до отмеченного в osm бара или клуба по прямой, до траектории самолётов (расчёт), потенциал тишины снаружи, путь до пляжа, шумоизоляция номера.",
+          "original_text": "Пять минут до моря"
+        }
+      },
+      {
+        "text": "Ищу отель в Москве",
+        "expected": {
+          "region": "Moscow",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Регион не поддерживается"
+          ],
+          "clarification_question": "Поиск доступен только в прибрежном Адлере. Выбрать Адлер?",
+          "original_text": "Ищу отель в Москве"
+        },
+        "actual": {
+          "region": "other",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Поддерживается только прибрежный Адлер"
+          ],
+          "clarification_question": "Уточните запрос: Поддерживается только прибрежный Адлер. Уберите эти условия, чтобы искать по остальным. Сейчас система проверяет: вид на закат из номера, вид на море из номера, до отмеченного в osm бара или клуба по прямой, до траектории самолётов (расчёт), потенциал тишины снаружи, путь до пляжа, шумоизоляция номера.",
+          "original_text": "Ищу отель в Москве"
+        }
+      },
+      {
+        "text": "Ищу отель в центральном Сочи",
+        "expected": {
+          "region": "Sochi",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Регион не поддерживается"
+          ],
+          "clarification_question": "Поиск доступен только в прибрежном Адлере. Выбрать Адлер?",
+          "original_text": "Ищу отель в центральном Сочи"
+        },
+        "actual": {
+          "region": "other",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Поддерживается только прибрежный Адлер"
+          ],
+          "clarification_question": "Уточните запрос: Поддерживается только прибрежный Адлер. Уберите эти условия, чтобы искать по остальным. Сейчас система проверяет: вид на закат из номера, вид на море из номера, до отмеченного в osm бара или клуба по прямой, до траектории самолётов (расчёт), потенциал тишины снаружи, путь до пляжа, шумоизоляция номера.",
+          "original_text": "Ищу отель в центральном Сочи"
+        }
+      },
+      {
+        "text": "Отель с бассейном до 5000 рублей",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Бассейн и цены отсутствуют в реестре"
+          ],
+          "clarification_question": "Данные о бассейне и ценах недоступны. Выбрать поддерживаемые характеристики?",
+          "original_text": "Отель с бассейном до 5000 рублей"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Пока не поддерживается: цена",
+            "Пока не поддерживается: бассейн"
+          ],
+          "clarification_question": "Уточните запрос: Пока не поддерживается: цена; Пока не поддерживается: бассейн. Уберите эти условия, чтобы искать по остальным. Сейчас система проверяет: вид на закат из номера, вид на море из номера, до отмеченного в osm бара или клуба по прямой, до траектории самолётов (расчёт), потенциал тишины снаружи, путь до пляжа, шумоизоляция номера.",
+          "original_text": "Отель с бассейном до 5000 рублей"
+        }
+      },
+      {
+        "text": "Доступен ли номер на завтра",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Нет данных о доступности бронирования"
+          ],
+          "clarification_question": "Этот прототип подбирает по характеристикам. Какой отель вы ищете?",
+          "original_text": "Доступен ли номер на завтра"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [],
+          "unknown_or_ambiguous": [
+            "Пока не поддерживается: наличие мест и бронирование"
+          ],
+          "clarification_question": "Уточните запрос: Пока не поддерживается: наличие мест и бронирование. Уберите эти условия, чтобы искать по остальным. Сейчас система проверяет: вид на закат из номера, вид на море из номера, до отмеченного в osm бара или клуба по прямой, до траектории самолётов (расчёт), потенциал тишины снаружи, путь до пляжа, шумоизоляция номера.",
+          "original_text": "Доступен ли номер на завтра"
+        }
+      },
+      {
+        "text": "Хочу вид на море, но не на закат",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [
+            {
+              "feature_key": "sunset_view",
+              "operator": "=",
+              "value": false,
+              "unit": null,
+              "scope": "room"
+            }
+          ],
+          "soft_preferences": [
+            {
+              "feature_key": "sea_view",
+              "desired": true,
+              "importance": 0.6,
+              "weight_source": "default",
+              "scope": "room",
+              "utility": null,
+              "derived_from": null
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Хочу вид на море, но не на закат"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "sea_view",
+              "desired": true,
+              "importance": 0.6,
+              "weight_source": "default",
+              "scope": "room",
+              "utility": null,
+              "derived_from": null
+            },
+            {
+              "feature_key": "sunset_view",
+              "desired": false,
+              "importance": 0.6,
+              "weight_source": "default",
+              "scope": "room",
+              "utility": null,
+              "derived_from": null
+            }
+          ],
+          "unknown_or_ambiguous": [],
+          "clarification_question": null,
+          "original_text": "Хочу вид на море, но не на закат"
+        }
+      },
+      {
+        "text": "Покажи гостиницы рядом с морем и аптекой",
+        "expected": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "desired": "near",
+              "importance": 0.8,
+              "weight_source": "default",
+              "scope": "hotel",
+              "utility": null,
+              "derived_from": null
+            }
+          ],
+          "unknown_or_ambiguous": [
+            "Аптеки не поддерживаются"
+          ],
+          "clarification_question": "Продолжить только с предпочтением близости пляжа?",
+          "original_text": "Покажи гостиницы рядом с морем и аптекой"
+        },
+        "actual": {
+          "region": "Adler",
+          "hard_constraints": [],
+          "soft_preferences": [
+            {
+              "feature_key": "walking_distance_to_beach_m",
+              "desired": "near",
+              "importance": 0.8,
+              "weight_source": "default",
+              "scope": "hotel",
+              "utility": null,
+              "derived_from": null
+            }
+          ],
+          "unknown_or_ambiguous": [
+            "Пока не поддерживается: аптеки, магазины, кафе рядом"
+          ],
+          "clarification_question": "Уточните запрос: Пока не поддерживается: аптеки, магазины, кафе рядом. Уберите эти условия, чтобы искать по остальным. Сейчас система проверяет: вид на закат из номера, вид на море из номера, до отмеченного в osm бара или клуба по прямой, до траектории самолётов (расчёт), потенциал тишины снаружи, путь до пляжа, шумоизоляция номера.",
+          "original_text": "Покажи гостиницы рядом с морем и аптекой"
+        }
+      }
+    ]
+  }
+}

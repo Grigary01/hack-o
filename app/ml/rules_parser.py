@@ -1,0 +1,259 @@
+"""Офлайн-разбор свободного русского запроса по правилам и словарю из реестра.
+
+Нужен, чтобы произвольный запрос работал без ключа LLM. Это не NLP-модель:
+регулярные выражения по основам слов (registry.query_patterns) плюс небольшой
+набор правил для отрицаний, близости, чисел и важности. Выход — тот же
+ParsedHotelQuery, что у LLM, с той же проверкой Pydantic.
+
+Принципы те же, что в промпте LLM:
+- отрицание сохраняется: «без баров» → far, «без вида на море» → False;
+- числа не выдумываются: нет числа — только near/far;
+- неподдерживаемое (цена, бассейн, другой город) не отбрасывается молча,
+  а попадает в unknown_or_ambiguous с вопросом на уточнение.
+
+Новая характеристика понимается после добавления query_patterns в YAML.
+"""
+import re
+from app.features.registry import get_registry
+from app.schemas.query import ParsedHotelQuery, HardConstraint, SoftPreference, UtilityCurve
+
+WALK_M_PER_MINUTE = 80  # ~4.8 км/ч; «5 минут пешком» → 400 м
+WORD = re.compile(r'[a-zа-я0-9]+(?:[.,][0-9]+)?')
+NEGATIONS = {'не', 'без', 'нет', 'никаких', 'никакого', 'никакой', 'ни'}
+# «не» перед этими словами — оператор («не дальше 500 м»), а не отрицание желания.
+OPERATOR_AFTER_NE = re.compile(r'^(дальше|далее|более|больше|ближе|менее|меньше|выше|ниже)$')
+NEAR_WORDS = re.compile(r'^(рядом|поближе|ближе|недалеко|близко|возле|около|вблизи|шаговой|самого|берегу|у|к|до)$')
+FAR_WORDS = re.compile(r'^(подальше|далеко|вдали|вдалеке|дальше|далее)$')
+HARD_MARKERS = re.compile(r'\b(обязател\w*|только|строго|непременно|точно|гарантированно|исключительно|никак\w*)\b')
+SOFT_MARKERS = re.compile(r'\b(желательно|хотелось бы|по возможности|неплохо бы|было бы|можно|не обязател\w*|необязател\w*|если получится)\b')
+POST_NEGATION = re.compile(r'^\s*(\S+\s+){0,2}?не\s+(надо|хочу|хотим|интересн\w*|люблю)')
+# «не хочу рядом с барами»: отрицание глагола переворачивает «рядом» в «подальше».
+VERB_NEGATION = re.compile(r'\bне\s+(хоч|хот|нуж|надо|люб)\w*')
+IRRELEVANT = re.compile(r'^\s*(\S+\s+){0,2}?(не\s+важ\w*|неважн\w*|все равно|без разницы|не принципиальн\w*|'
+                        r'не\s+нуж\w*|не\s+обязател\w*|необязател\w*)')
+EXPLICIT_WEIGHT = re.compile(r'^\s*(\S+\s+){0,2}?с?\s*вес\w*\s*(0?[.,]\d+|1(?:[.,]0+)?|0)\b')
+WORD_NUMBERS = {'один': 1, 'одну': 1, 'две': 2, 'два': 2, 'три': 3, 'четыре': 4, 'пять': 5, 'шесть': 6, 'семь': 7,
+                'восемь': 8, 'девять': 9, 'десять': 10, 'пятнадцать': 15, 'двадцать': 20, 'тридцать': 30,
+                'сорок': 40, 'пятьдесят': 50, 'сто': 100, 'двести': 200, 'триста': 300, 'пятьсот': 500}
+# Запятая/точка внутри числа («1,2 км») фразу не делят.
+CLAUSE_SPLIT = re.compile(r'(?:[;!?\n]|(?<!\d)[,.]|[,.](?!\d))+|\s(?:но|однако|зато|а также)\s')
+NUMBER = re.compile(r'(\d+(?:[.,]\d+)?)\s*(км|километр\w*|метр\w*|м\b|мин\w*)|(полкилометра|километр[еау]?\b|полчаса)')
+RANGE = re.compile(r'(между|от)\s+(\d+(?:[.,]\d+)?)\s*(км|м|метр\w*|километр\w*)?\s+(и|до)\s+(\d+(?:[.,]\d+)?)\s*(км|километр\w*|метр\w*|м\b)')
+OPERATORS = [  # проверяются на тексте между предыдущим и текущим числом; длинные формы раньше
+    (re.compile(r'не\s+(дальше|далее|более|больше)|максимум|в пределах|не превыша\w*|\bдо\s*$'), '<='),
+    (re.compile(r'не\s+(ближе|менее|меньше)|минимум|хотя бы|как минимум|\bот\s*$'), '>='),
+    (re.compile(r'(меньше|ближе|менее)\s*(чем)?\s*(в)?\s*$'), '<'),
+    (re.compile(r'(больше|дальше|более)\s*(чем)?\s*(в)?\s*$'), '>'),
+    (re.compile(r'ровно\s*$'), '='),
+]
+OTHER_REGIONS = re.compile(
+    r'\b(москв\w*|питер\w*|петербург\w*|спб|анап\w*|геленджик\w*|ялт\w*|крым\w*|казан\w*|красн\w* полян\w*|'
+    r'роз\w* хутор\w*|лазаревск\w*|хост\w*|туапсе|кисловодск\w*|абхази\w*|гагр\w*|пицунд\w*|турци\w*|сириус\w*|'
+    r'имеретинск\w*|евпатори\w*|калининград\w*|минск\w*|центр\w* сочи|сочи[- ]центр\w*)\b')
+UNSUPPORTED = {
+    'цена': r'руб\w*|₽|\bр\.|дешев\w*|недорог\w*|бюджет\w*|\bцен[аыу]\b|стоимост\w*|эконом\w*|скидк\w*',
+    'звёздность': r'звезд\w*|звёзд\w*|\b\d\s*\*',
+    'питание': r'завтрак\w*|питани\w*|вс[её] включено|ужин\w*',
+    'бассейн': r'бассейн\w*|аквапарк\w*',
+    'питомцы': r'собак\w*|кошк\w*|питом\w*|животн\w*',
+    'парковка': r'парковк\w*|машин\w*|автомобил\w*|\bавто\b',
+    'дети': r'\bдет(и|ей|ям|ьми|ский|ская|ское|ские)\b|реб[её]н\w*|малыш\w*',
+    'интернет': r'wi-?fi|вайфай\w*|интернет\w*',
+    'даты поездки': r'\b\d+\s*(ноч\w*|дн(я|ей)|суток)\b|\bдат[аыу]\b|заезд\w*|выезд\w*',
+    'спа и сауна': r'\bспа\b|spa|саун\w*|массаж\w*',
+    'отзывы и рейтинг': r'отзыв\w*|рейтинг\w*',
+    'наличие мест и бронирование': r'бронир\w*|свободн\w* номер\w*|доступ\w* ли|наличи\w* мест|\bзавтра\b|\bсегодня\b',
+    'аптеки, магазины, кафе рядом': r'аптек\w*|магазин\w*|супермаркет\w*|\bкафе\b|ресторан\w*|столов\w*',
+    'расстояние по прямой': r'по прямой',
+}
+GENERAL = re.compile(r'отел\w*|гостиниц\w*|гостев\w*|покажи|подбери|найди|ищу|вариант\w*|жиль\w*|номер\w*|адлер\w*')
+
+
+def normalize(text):
+    """Нижний регистр, ё → е, числа словами → цифры («пять минут» → «5 минут»)."""
+    text = text.lower().replace('ё', 'е')
+    return re.sub(r'\b(' + '|'.join(WORD_NUMBERS) + r')\b', lambda m: str(WORD_NUMBERS[m[1]]), text)
+
+
+class RulesQueryParser:
+    mode = 'rules'
+
+    def __init__(self, registry=None):
+        self.registry = registry or get_registry()
+        self.compiled = {
+            key: ([re.compile(p.replace('ё', 'е')) for p in d.query_patterns],
+                  [re.compile(p.replace('ё', 'е')) for p in d.query_negative_patterns])
+            for key, d in self.registry.definitions.items() if d.query_patterns
+        }
+
+    def parse(self, text: str) -> ParsedHotelQuery:
+        lowered = normalize(text)
+        unknown = []
+        region = 'Adler'
+        if OTHER_REGIONS.search(lowered):
+            region = 'other'
+            unknown.append('Поддерживается только прибрежный Адлер')
+        mentions = self._find_mentions(lowered)
+        sunset = any(m['key'] == 'sunset_view' for m in mentions)
+        for topic, pattern in UNSUPPORTED.items():
+            if topic == 'даты поездки' and sunset:
+                continue  # «закат в июле» — месяцы уже в объяснении расчёта
+            if topic == 'расстояние по прямой' and not any(m['key'] == 'walking_distance_to_beach_m' for m in mentions):
+                continue  # до баров расстояние и так по прямой; не поддерживается только для пляжа
+            if re.search(pattern, lowered):
+                unknown.append(f'Пока не поддерживается: {topic}')
+        hard, soft = [], []
+        for mention in mentions:
+            items = self._interpret(mention, unknown, lowered)
+            for item in items if isinstance(items, list) else [items]:
+                if item is not None:
+                    (hard if isinstance(item, HardConstraint) else soft).append(item)
+        soft = self._dedupe(soft, hard)
+        self._relative_importance(lowered, mentions, soft)
+        if not hard and not soft and not unknown and not mentions and not GENERAL.search(lowered):
+            unknown.append('Не нашёл поддерживаемых пожеланий')
+        question = None
+        if unknown:
+            supported = ', '.join(sorted({self.registry.get(k).label.lower() for k in self.compiled}))
+            question = ('Уточните запрос: ' + '; '.join(unknown) + '. Уберите эти условия, чтобы искать по остальным. '
+                        'Сейчас система проверяет: ' + supported + '.')
+        return ParsedHotelQuery(region=region, hard_constraints=hard, soft_preferences=soft,
+                                unknown_or_ambiguous=unknown, clarification_question=question, original_text=text)
+
+    def _find_mentions(self, lowered):
+        """Все совпадения; перекрывающиеся — в пользу более длинного (потом порядка реестра)."""
+        found = []
+        order = list(self.registry.definitions)
+        for key, (positive, negative) in self.compiled.items():
+            for polarity, patterns in ((True, positive), (False, negative)):
+                for pattern in patterns:
+                    for m in pattern.finditer(lowered):
+                        found.append({'key': key, 'start': m.start(), 'end': m.end(), 'positive': polarity})
+        found.sort(key=lambda m: (-(m['end'] - m['start']), order.index(m['key']), m['start']))
+        taken, result = [], []
+        for m in found:
+            if any(m['start'] < e and s < m['end'] for s, e in taken):
+                continue
+            taken.append((m['start'], m['end']))
+            result.append(m)
+        return sorted(result, key=lambda m: m['start'])
+
+    @staticmethod
+    def _clause(lowered, start, end):
+        bounds = [0] + [m.end() for m in CLAUSE_SPLIT.finditer(lowered)] + [len(lowered)]
+        left = max(b for b in bounds if b <= start)
+        right = min((m.start() for m in CLAUSE_SPLIT.finditer(lowered) if m.start() >= end), default=len(lowered))
+        return lowered[left:start], lowered[end:right], lowered[left:right]
+
+    def _interpret(self, mention, unknown, lowered):
+        key = mention['key']
+        definition = self.registry.get(key)
+        before, after, clause = self._clause(lowered, mention['start'], mention['end'])
+        if IRRELEVANT.match(after):
+            return None  # «шумоизоляция не важна» — не учитывать, а не «нужно без неё»
+        weight = EXPLICIT_WEIGHT.match(after)
+        pre = WORD.findall(before)[-6:]
+        negated = any(word in NEGATIONS and not (i + 1 < len(pre) and OPERATOR_AFTER_NE.match(pre[i + 1]))
+                      and not (i + 1 < len(pre) and pre[i + 1].startswith('обязател'))
+                      for i, word in enumerate(pre))
+        # «без шумоизоляции не надо» — двойное отрицание, желание остаётся.
+        negated ^= bool(POST_NEGATION.match(after))
+        near = far = False
+        window = pre[-4:]
+        for i, word in enumerate(window):
+            prev_ne = i > 0 and window[i - 1] == 'не'
+            if NEAR_WORDS.match(word):
+                near, far = (False, True) if prev_ne else (True, False)
+            elif FAR_WORDS.match(word):
+                near, far = (True, False) if prev_ne else (False, True)
+        if near and VERB_NEGATION.search(before):
+            near, far = False, True
+        if far or near:
+            negated = False  # «не рядом» уже учтено как far
+        hard = bool(HARD_MARKERS.search(clause)) and not SOFT_MARKERS.search(clause)
+        positive = mention['positive'] != negated
+
+        if definition.type == 'number':
+            numbers = self._numbers(clause, key, unknown)
+            if numbers:
+                return numbers
+            # Для мест и источников шума отрицание значит «держаться подальше»:
+            # «без баров», «чтобы не было слышно самолётов» → far.
+            desired = 'near' if near else 'far' if far or not positive else definition.query_desired
+            if key == 'aircraft_path_distance_m' and desired == 'near':
+                unknown.append('Близость к аэропорту ради трансфера пока не поддерживается')
+                return None
+            return SoftPreference(feature_key=key, desired=desired, scope=definition.scope)
+        if definition.type == 'boolean':
+            value = positive
+        else:  # category: желаемое значение или противоположный край шкалы
+            value = definition.query_desired if positive else definition.choices[0]
+        if hard:
+            return HardConstraint(feature_key=key, operator='=', value=value, scope=definition.scope)
+        if weight:
+            return SoftPreference(feature_key=key, desired=value, scope=definition.scope,
+                                  importance=float(weight[2].replace(',', '.')), weight_source='explicit')
+        return SoftPreference(feature_key=key, desired=value, scope=definition.scope)
+
+    def _numbers(self, clause, key, unknown):
+        """Числа фразы: «не дальше 500 м» → hard <=; «между 300 и 800 м» → два hard;
+        «в 300 м от моря» без оператора → мягкая цель «идеально до 300 м»."""
+        definition = self.registry.get(key)
+        to_m = lambda raw, unit: float(raw.replace(',', '.')) * (1000 if unit and unit.startswith('к') else 1)
+        clean = lambda v: int(v) if float(v).is_integer() else round(v, 1)
+        span = RANGE.search(clause)
+        if span:
+            unit = span[6]
+            low, high = to_m(span[2], span[3] or unit), to_m(span[5], unit)
+            return [HardConstraint(feature_key=key, operator='>=', value=clean(low), unit=definition.unit,
+                                   scope=definition.scope),
+                    HardConstraint(feature_key=key, operator='<=', value=clean(high), unit=definition.unit,
+                                   scope=definition.scope)]
+        result, previous_end = [], 0
+        for match in NUMBER.finditer(clause):
+            if match[3]:  # число словом: «в километре», «полкилометра», «полчаса»
+                word = match[3]
+                value, unit = (500., 'м') if word == 'полкилометра' else (30., 'мин') if word == 'полчаса' else (1000., 'м')
+            else:
+                value, unit = to_m(match[1], match[2]), match[2]
+            if unit.startswith('мин'):
+                if not re.search(r'пешк\w*|ходьб\w*|пешеход\w*', clause):
+                    unknown.append('Время в пути без «пешком» неоднозначно')
+                    return [None]
+                value *= WALK_M_PER_MINUTE
+            prefix = clause[previous_end:match.start()]
+            previous_end = match.end()
+            operator = next((op for pattern, op in OPERATORS if pattern.search(prefix[-40:])), None)
+            if operator:
+                result.append(HardConstraint(feature_key=key, operator=operator, value=clean(value),
+                                             unit=definition.unit, scope=definition.scope))
+            elif not result:
+                # Число без оператора — пожелание, а не запрет: идеально до N, к 2N уже неудобно.
+                result.append(SoftPreference(feature_key=key, desired='near', scope=definition.scope,
+                                             utility=UtilityCurve(kind='lower', ideal_max=clean(value),
+                                                                  tolerance=clean(value))))
+        return result
+
+    @staticmethod
+    def _dedupe(soft, hard):
+        """Одна характеристика — одно пожелание; hard важнее soft того же ключа."""
+        hard_keys = {h.feature_key for h in hard}
+        result, seen = [], set()
+        for pref in soft:
+            if pref.feature_key in hard_keys or pref.feature_key in seen:
+                continue
+            seen.add(pref.feature_key)
+            result.append(pref)
+        return result
+
+    def _relative_importance(self, lowered, mentions, soft):
+        """«Тишина важнее вида»: левая часть — 1, правая — 0.5 (relative_inferred)."""
+        split = re.search(r'\bважнее\b', lowered)
+        if not split:
+            return
+        left = {m['key'] for m in mentions if m['end'] <= split.start()}
+        right = {m['key'] for m in mentions if m['start'] >= split.end()}
+        for pref in soft:
+            if pref.feature_key in left or pref.feature_key in right:
+                pref.importance = 1. if pref.feature_key in left else .5
+                pref.weight_source = 'relative_inferred'

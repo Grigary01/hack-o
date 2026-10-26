@@ -11,7 +11,7 @@ load_dotenv(ROOT / '.env')
 @dataclass(frozen=True)
 class Settings:
     database_url: str = os.getenv('DATABASE_URL', f'sqlite:///{ROOT / "runtime/adler.db"}')
-    parser_mode: str = os.getenv('PARSER_MODE', 'fixture')
+    parser_mode: str = os.getenv('PARSER_MODE', 'offline')
     model_name: str = os.getenv('MODEL_NAME', 'gemma3:12b')
     ollama_url: str = os.getenv('OLLAMA_URL', 'http://127.0.0.1:11434')
     demo_mode: bool = os.getenv('DEMO_MODE', 'true').lower() == 'true'

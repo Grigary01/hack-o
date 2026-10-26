@@ -97,6 +97,26 @@ class FixtureQueryParser:
         return ParsedHotelQuery.model_validate(raw | {'original_text': text})
 
 
+class OfflineQueryParser:
+    """Без ключей и сети: точное совпадение с демо-примером, иначе правила.
+
+    Демо-формулировки дают проверенный эталонный ответ; любой другой текст
+    разбирается RulesQueryParser по словарю реестра. Неизвестное не угадывается.
+    """
+    mode = 'offline'
+
+    def __init__(self):
+        from app.ml.rules_parser import RulesQueryParser
+        self.fixture = FixtureQueryParser()
+        self.rules = RulesQueryParser()
+        self.examples = self.fixture.examples
+
+    def parse(self, text: str) -> ParsedHotelQuery:
+        if normalize(text) in self.fixture.fixtures:
+            return self.fixture.parse(text)
+        return self.rules.parse(text)
+
+
 class OllamaQueryParser:
     """Адаптер готовой модели: schema → HTTP → проверенный Python-объект.
 
@@ -212,10 +232,12 @@ JSON-schema best-effort сохраняет необязательные поля
 
 def make_parser(config=settings) -> QueryParser:
     """Фабрика выбирает провайдер один раз при создании FastAPI-приложения."""
+    if config.parser_mode == 'offline':
+        return OfflineQueryParser()
     if config.parser_mode == 'fixture':
         return FixtureQueryParser()
     if config.parser_mode == 'ollama':
         return OllamaQueryParser(config)
     if config.parser_mode == 'groq':
         return GroqQueryParser(config)
-    raise ValueError('PARSER_MODE должен быть fixture, ollama или groq')
+    raise ValueError('PARSER_MODE должен быть offline, fixture, ollama или groq')

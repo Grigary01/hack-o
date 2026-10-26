@@ -6,6 +6,7 @@ companions: какие расчётные характеристики поис�
 """
 from functools import lru_cache
 from pathlib import Path
+import re
 from typing import Literal
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -49,6 +50,11 @@ class FeatureDefinition(BaseModel):
     choice_labels: dict[str, str] = Field(default_factory=dict)
     companions: list[Companion] = Field(default_factory=list)
     model_check: ModelCheck | None = None
+    # Офлайн-разбор свободного запроса (app/ml/rules_parser.py). Регулярные выражения
+    # по основам слов; negative — слова противоположного смысла («шумный» для тишины).
+    query_patterns: list[str] = Field(default_factory=list)
+    query_negative_patterns: list[str] = Field(default_factory=list)
+    query_desired: str | bool | None = None
 
     @model_validator(mode='after')
     def coherent(self):
@@ -58,6 +64,10 @@ class FeatureDefinition(BaseModel):
             raise ValueError('MVP hotelier provider требует boolean, room и question')
         if set(self.choice_labels) - set(self.choices):
             raise ValueError('choice_labels для несуществующих choices')
+        for pattern in self.query_patterns + self.query_negative_patterns:
+            re.compile(pattern)
+        if self.query_patterns and self.query_desired is None:
+            raise ValueError('query_patterns требуют query_desired')
         return self
 
     def display(self, value):

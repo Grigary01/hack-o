@@ -9,6 +9,8 @@ walking_distance_to_beach_m:
   default_weight: 0.8
   aliases: [пляж, море рядом, пешком до моря]
   scale: 1000
+  query_patterns: ['пляж\w*', '\bмор(е|я|ю|ем)\b', 'перв\w* (берегов\w* )?лини\w*', 'набережн\w*', 'берег\w*']
+  query_desired: near
 quietness_proxy:
   label: Потенциал тишины снаружи
   description: Эвристика дорог, железной дороги и ночных заведений. Не дБ и не тишина в номере.
@@ -20,6 +22,9 @@ quietness_proxy:
   ttl_days: 90
   default_weight: 0.9
   aliases: [тихо, тишина, тихий]
+  query_patterns: ['тих\w*', 'тишин\w*', 'спокойн\w*', 'высп\w*', 'безшумн\w*', 'бесшумн\w*']
+  query_negative_patterns: ['шумн\w*', 'громк\w*', 'оживл[её]нн\w*', '\bшум(а|ом|у|е)?\b']
+  query_desired: high
   ordinal: true
   choice_labels: {low: низкий, medium: средний, high: высокий}
   # В Адлере тишину определяет и аэропорт: OSM-proxy его не учитывает.
@@ -36,6 +41,8 @@ nightlife_distance_m:
   default_weight: 0.7
   aliases: [не рядом с барами, подальше от клубов]
   scale: 500
+  query_patterns: ['\bбар(ы|ов|ам|ами|ах|а|е|у)?\b', 'клуб\w*', 'ночн\w* жизн\w*', 'тусов\w*', 'дискотек\w*', 'паб\w*']
+  query_desired: near
 sea_view:
   label: Вид на море из номера
   description: Утверждение отельера о конкретных номерах, независимо не проверено.
@@ -47,6 +54,8 @@ sea_view:
   default_weight: 0.6
   aliases: [вид на море, море из окна]
   question: В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.
+  query_patterns: ['вид\w* на мор\w*', 'мор\w* из окн\w*', 'видн\w* мор\w*', 'окн\w* на мор\w*', 'панорам\w* мор\w*', 'морск\w* вид\w*', 'видовой']
+  query_desired: true
   companions:
     - {feature_key: sea_view_potential, desired_if_true: wide, desired_if_false: none}
   model_check: {potential: sea_view_potential, none_value: none, min_floor: sea_view_min_floor}
@@ -61,6 +70,8 @@ soundproofing:
   default_weight: 0.7
   aliases: [шумоизоляция, звукоизоляция]
   question: В каких конкретно номерах есть или нет шумоизоляции? Укажите номера.
+  query_patterns: ['шумоизол\w*', 'звукоизол\w*', 'шумоизоляц\w*']
+  query_desired: true
 sunset_view:
   label: Вид на закат из номера
   description: Утверждение отельера; модель рельефа и ориентация окон пока не рассчитываются.
@@ -72,6 +83,8 @@ sunset_view:
   default_weight: 0.6
   aliases: [вид на закат, закат из окна]
   question: Из каких конкретно номеров виден закат? Для сложных условий по месяцам нужна ручная проверка.
+  query_patterns: ['закат\w*', 'заход\w* солнц\w*']
+  query_desired: true
   companions:
     - {feature_key: sunset_view_potential, desired_if_true: year_round, desired_if_false: none}
   model_check: {potential: sunset_view_potential, none_value: none, min_floor: sunset_view_min_floor}
@@ -147,3 +160,5 @@ aircraft_path_distance_m:
   default_weight: 0.7
   aliases: [подальше от самолётов, далеко от аэропорта]
   scale: 1000
+  query_patterns: ['самол[её]т\w*', 'авиашум\w*', 'аэропорт\w*', 'взл[её]т\w*', 'авиаци\w*']
+  query_desired: far
