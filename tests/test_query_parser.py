@@ -46,7 +46,7 @@ def test_ollama_uses_schema_and_options():
         calls.append(body)
         assert body['format']['$defs']['HardConstraint']['properties']['feature_key']['enum']
         assert body['options']['temperature']==0
-        assert len(body['messages'])>=12
+        assert len(body['messages'])==6
         return httpx.Response(200,json={'message':{'content':expected.model_dump_json()}})
     parser=OllamaQueryParser(client=httpx.Client(transport=httpx.MockTransport(handle)))
     assert parser.parse('Нужен номер без вида на море').hard_constraints[0].value is False

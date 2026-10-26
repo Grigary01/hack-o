@@ -5,7 +5,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 from app.core.config import ROOT
 
 
-ROOT_FILES = ('.env.example', '.gitignore', 'LICENSE', 'README.md',
+ROOT_FILES = ('.env.example', '.gitignore', 'LICENSE', 'README.md', 'main.py',
               'THIRD_PARTY_NOTICES.md', 'pyproject.toml', 'requirements.lock')
 PROJECT_DIRS = ('app', 'frontend', 'scripts', 'tests', 'data', 'docs', 'legacy')
 

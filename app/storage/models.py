@@ -85,3 +85,13 @@ class AnswerRow(Base):
     status: Mapped[str] = mapped_column(default='pending')
     simulated: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[str]
+
+
+class EnvironmentReportRow(Base):
+    """История региональных измерений и сценариев; не смешивается с фактами номера."""
+    __tablename__ = 'environment_reports'
+    id: Mapped[str] = mapped_column(primary_key=True)
+    hotel_id: Mapped[str] = mapped_column(ForeignKey('hotels.id'), index=True)
+    kind: Mapped[str] = mapped_column(index=True)
+    collected_at: Mapped[str] = mapped_column(index=True)
+    payload: Mapped[dict] = mapped_column(JSON)

@@ -16,6 +16,13 @@ class Settings:
     ollama_url: str = os.getenv('OLLAMA_URL', 'http://127.0.0.1:11434')
     demo_mode: bool = os.getenv('DEMO_MODE', 'true').lower() == 'true'
     overpass_url: str = os.getenv('OVERPASS_URL', 'https://overpass-api.de/api/interpreter')
+    openaq_api_key: str = os.getenv('OPENAQ_API_KEY', '')
+    noisemodelling_home: str = os.getenv('NOISEMODELLING_HOME', '')
+    noise_java_home: str = os.getenv('NOISE_JAVA_HOME', '')
+    groq_api_key: str = os.getenv('GROQ_API_KEY', '')
+    groq_model: str = os.getenv('GROQ_MODEL', 'openai/gpt-oss-120b')
+    parser_timeout_seconds: float = float(os.getenv('PARSER_TIMEOUT_SECONDS', '90'))
+    ollama_num_ctx: int = int(os.getenv('OLLAMA_NUM_CTX', '8192'))
     demo_dir: Path = ROOT / 'data/demo'
     registry_path: Path = ROOT / 'app/features/registry.yaml'
     max_tool_calls: int = 100

@@ -1,7 +1,8 @@
 """Измеряем качество понимания запросов на заранее размеченном наборе.
 
 Запуск: python -m scripts.evaluate_parser --mode fixture (или ollama).
-Веса модели здесь НЕ обучаются. Мы сравниваем её ответы с ручным эталоном.
+Веса модели здесь НЕ обучаются. Ожидаемые ответы написаны coding assistant,
+это синтетический набор; независимая человеческая разметка ещё нужна.
 Demo и held-out считаются отдельно: заученный пример не доказывает обобщение.
 Подробное объяснение метрик и ограничений: docs/ML_GUIDE.md.
 """
@@ -13,6 +14,7 @@ import json
 
 from app.core.config import ROOT, settings
 from app.ml.query_parser import make_parser, ParserError
+from app.schemas.query import ParsedHotelQuery
 
 
 def canonical(value) -> str:
@@ -38,7 +40,7 @@ def fields(query) -> Counter:
     for kind in ('hard_constraints', 'soft_preferences'):
         for item in query[kind]:
             for name, value in item.items():
-                if name != 'feature_key':
+                if name != 'feature_key' and value is not None:
                     values.append((kind, item['feature_key'], name, canonical(value)))
     return Counter(values)
 
@@ -83,7 +85,9 @@ def measure(rows, parser) -> dict:
     errors = []
     mismatches = []
     for row in rows:
-        expected = row['expected']
+        # Приводим обе стороны к одной актуальной схеме, включая новые optional
+        # поля. Иначе добавление utility=None искусственно обнулит старый exact.
+        expected = ParsedHotelQuery.model_validate(row['expected']).model_dump(mode='json')
         try:
             actual = parser.parse(row['text']).model_dump(mode='json')
         except ParserError as exc:
@@ -129,13 +133,13 @@ def measure(rows, parser) -> dict:
 
 def main():
     args = argparse.ArgumentParser()
-    args.add_argument('--mode', choices=['fixture', 'ollama'], default=settings.parser_mode)
+    args.add_argument('--mode', choices=['fixture', 'ollama', 'groq'], default=settings.parser_mode)
     mode = args.parse_args().mode
     parser = make_parser(replace(settings, parser_mode=mode))
     path = ROOT / 'data/evaluation/queries_gold.jsonl'
     rows = [json.loads(line) for line in path.read_text().splitlines()]
 
-    # Demo совпадает с fixtures; первые 8 demo также входят в few-shot промпт.
+    # Demo совпадает с fixtures; первые 2 demo также входят в few-shot промпт.
     # Held-out не передаётся parser/prompts. Не переносите туда подсмотренные ответы.
     report = {
         'mode': mode, 'model': settings.model_name if mode == 'ollama' else None,

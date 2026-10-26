@@ -55,3 +55,11 @@ Proxy использует метрические расстояния до ли
 
 Лицензия данных: © OpenStreetMap contributors, [ODbL](https://www.openstreetmap.org/copyright).
 Overpass вызывается отдельно: 3 попытки, bounded backoff, timeout, кеш; сервер не запрашивает сеть при поиске.
+
+## Среда, 25–26 октября
+
+Новый OSM snapshot: data/environment/osm_buildings.json, 15 842 элемента,
+запрос/даты/лицензия сохранены. 295 точек фасадов у 24 гостиниц из 25.
+NoiseModelling-сценарий: реальная геометрия, условные высоты и трафик; не измерение
+шума Адлера. OpenAQ-отчёт not_configured, покрытия станций не проверяли.
+Детальный контракт и ограничения — ENVIRONMENT.md.

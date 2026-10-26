@@ -14,6 +14,7 @@ from app.features.service import resolve_feature
 from app.schemas.hotel import Hotel, Observation
 from app.schemas.query import ParsedHotelQuery, SoftPreference
 from app.schemas.search import CriterionResult, HotelSearchResult
+from app.ml.multicriteria import curve_match, aggregate, mark_dominated
 
 # Whitelist математических операций. Например, OPS['<='](319.8, 500) → True.
 # eval строк пользователя/модели здесь не нужен и не используется.
@@ -37,6 +38,8 @@ def soft_match(value, preference: SoftPreference) -> float:
 
     None сюда не передаётся: неизвестное обрабатывается до вызова функции.
     """
+    if preference.utility is not None:
+        return curve_match(value, preference.utility)
     definition = get_registry().get(preference.feature_key)
     if definition.type == 'number' and preference.desired in ('near', 'far'):
         near = 1 / (1 + value / definition.scale)
@@ -52,6 +55,8 @@ def rank_variant(
     observations: list[Observation],
     parsed: ParsedHotelQuery,
     include_simulated: bool,
+    ranking_method: str = 'weighted_v1',
+    balance: float = .25,
 ) -> HotelSearchResult:
     """Оценивает одну комбинацию «отель + конкретный номер».
 
@@ -64,6 +69,7 @@ def rank_variant(
     total_weight = 0.  # Все активные мягкие пожелания, включая неизвестные.
     known_weight = 0.  # Только пожелания, для которых известны факты.
     score_sum = 0.  # Сумма weight × match по известным фактам.
+    matches = {}
 
     # Блок A. Строгие условия НЕ входят в среднюю оценку.
     # Нарушение «не дальше 500 м» нельзя компенсировать хорошим видом.
@@ -98,6 +104,7 @@ def rank_variant(
         state = resolve_feature(observations, subject, preference.feature_key, include_simulated)
         total_weight += preference.importance
         match = None if state.value is None else soft_match(state.value, preference)
+        matches[preference.feature_key] = match
         if match is not None:
             known_weight += preference.importance
             score_sum += preference.importance * match
@@ -106,7 +113,7 @@ def rank_variant(
         actual_text = state.value if state.value is not None else 'требует уточнения'
         criteria.append(CriterionResult(
             feature_key=preference.feature_key,
-            requested=str(preference.desired),
+            requested=str(preference.utility.model_dump(exclude_none=True)) if preference.utility else str(preference.desired),
             actual=state.value,
             outcome='unknown' if match is None else 'preference',
             status=state.status,
@@ -138,16 +145,28 @@ def rank_variant(
 
     # uncertainty здесь — 1 - coverage мягких пожеланий, НЕ вероятность ошибки.
     # Числовая сортировочная оценка 0 допустима, даже если отображаемый score=None.
+    interval = None
+    group_scores = []
+    ranking_score = (score or 0)*coverage
+    if ranking_method == 'balanced_v2':
+        # Группировка и слабая группа влияют только на ранжирование; hard result
+        # не меняется. Интервал отражает отсутствие фактов, не вероятность.
+        summary = aggregate(parsed.soft_preferences,matches,balance)
+        coverage,score = summary['coverage'],summary['score']
+        ranking_score = summary['lower']
+        interval = (round(summary['lower'],4),round(summary['upper'],4))
+        group_scores = summary['groups']
     return HotelSearchResult(
         hotel=hotel,
         eligible=eligible,
         recommended_room_id=room_id,
         score=round(score, 4) if score is not None else None,
         coverage=round(coverage, 4),
-        ranking_score=round((score or 0) * coverage, 4),
+        ranking_score=round(ranking_score, 4),
         uncertainty=round(1 - coverage, 4),
         criteria=criteria,
         warnings=warnings,
+        ranking_method=ranking_method,ranking_interval=interval,group_scores=group_scores,
     )
 
 
@@ -155,6 +174,8 @@ def rank_hotels(
     parsed: ParsedHotelQuery,
     hotels_and_facts: list[tuple[Hotel, list[Observation]]],
     include_simulated: bool = False,
+    ranking_method: str = 'weighted_v1',
+    balance: float = .25,
 ) -> dict[str, list[HotelSearchResult]]:
     """Для каждого отеля выбирает лучший допустимый номер и распределяет по группам.
 
@@ -162,6 +183,8 @@ def rank_hotels(
     шумоизоляция в 302 не удовлетворяют двум требованиям к одному номеру.
     Поэтому сначала rank_variant для каждой комнаты, потом выбор варианта.
     """
+    if ranking_method not in ('weighted_v1','balanced_v2') or not 0 <= balance <= 1:
+        raise ValueError('Некорректная политика ранжирования')
     groups = {'matched': [], 'needs_verification': [], 'excluded': []}
     room_requested = any(
         requirement.scope == 'room'
@@ -178,7 +201,7 @@ def rank_hotels(
         })
         candidate_room_ids = (rooms or [None]) if room_requested else [None]
         variants = [
-            rank_variant(hotel, room_id, observations, parsed, include_simulated)
+            rank_variant(hotel, room_id, observations, parsed, include_simulated, ranking_method, balance)
             for room_id in candidate_room_ids
         ]
 
@@ -213,4 +236,6 @@ def rank_hotels(
     # при равенстве оценок карточки не прыгают между запросами.
     for candidates in groups.values():
         candidates.sort(key=lambda item: (-item.ranking_score, -item.coverage, item.hotel.id))
+        if ranking_method == 'balanced_v2':
+            mark_dominated(candidates)
     return groups

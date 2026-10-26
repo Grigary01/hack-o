@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from app.core.config import settings
 from app.storage.db import create_db
 from app.api.dependencies import repository
-from app.api import search, hotels, hotelier
+from app.api import search, hotels, hotelier, environment
 from app.ml.query_parser import make_parser, ParserError
 
 
@@ -17,6 +17,7 @@ def create_app(engine=None,parser=None,config=settings):
     api.include_router(search.router)
     api.include_router(hotels.router)
     api.include_router(hotelier.router)
+    api.include_router(environment.router)
 
     @api.exception_handler(LookupError)
     async def missing(request:Request,exc:LookupError):

@@ -3,6 +3,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from frontend.api_client import APIClient
 from frontend.map_view import MapEngine, get_routes, offline_map
+from frontend.environment_view import render_environment
 
 st.set_page_config(page_title='О!дин шаг · Адлер',page_icon='🏖',layout='wide')
 api = APIClient()
@@ -30,7 +31,10 @@ examples = call(api.get,'/api/demo-queries') or []
 hotels = call(api.get,'/api/hotels') or []
 names = {h['id']:h['name'] for h in hotels}
 st.caption(f'{health["hotels"]} отелей из OSM · parser: {health["parser_mode"]} · цены и бронирование не подключены')
-search_tab,owner_tab = st.tabs(['Найти свой отель','Отельер · демо'])
+search_tab,owner_tab,environment_tab = st.tabs(['Найти свой отель','Отельер · демо','Среда вокруг отеля'])
+
+with environment_tab:
+    render_environment(api, hotels, call)
 
 
 def show_result(result,index):
@@ -43,6 +47,14 @@ def show_result(result,index):
         columns=st.columns(2)
         columns[0].metric('Оценка известных пожеланий','—' if result['score'] is None else f'{result["score"]:.2f} / 1')
         columns[1].metric('Покрытие пожеланий',f'{result["coverage"]:.0%}')
+        if result.get('ranking_interval') is not None:
+            lower,upper=result['ranking_interval']
+            st.caption(f'Сортировочная оценка: {result["ranking_score"]:.2f}. Диапазон из-за неизвестных данных: {lower:.2f}–{upper:.2f}; это не вероятность.')
+            if result.get('pareto_dominated'):
+                st.caption('Есть другой вариант не хуже по всем известным пожеланиям и лучше хотя бы по одному.')
+            with st.expander('Оценки по группам пожеланий'):
+                for group in result.get('group_scores',[]):
+                    st.write(f'{group["label"]}: {group["lower"]:.2f}–{group["upper"]:.2f}; покрытие {group["coverage"]:.0%}')
         for c in result['criteria']:
             label=definitions[c['feature_key']]['label']
             if c['actual'] is None:
@@ -73,6 +85,10 @@ def show_result(result,index):
 
 
 with search_tab:
+    ranking_method=st.selectbox('Способ ранжирования',['balanced_v2','weighted_v1'],
+        format_func=lambda value:'Баланс потребностей · v2' if value=='balanced_v2' else 'Взвешенная сумма · v1')
+    if health['parser_mode']=='groq':
+        st.caption('Облачная модель Groq: текст запроса отправляется провайдеру. Действуют квоты вашего аккаунта.')
     if health['parser_mode']=='fixture':
         st.info('Без модели доступны 12 проверенных формулировок. Для произвольного текста включите Ollama; незнакомый запрос потребует уточнения.')
     example=st.selectbox('Попробовать сценарий',examples)
@@ -80,7 +96,7 @@ with search_tab:
     simulated=st.checkbox('Учитывать симулированные ответы отельера',value=False,
                           help='Только демонстрация: эти ответы не описывают реальные свойства отелей.')
     if st.button('Найти отели',type='primary',use_container_width=True):
-        response=call(api.post,'/api/search',{'text':text,'include_simulated':simulated})
+        response=call(api.post,'/api/search',{'text':text,'include_simulated':simulated,'ranking_method':ranking_method})
         if response:
             st.session_state['response']=response
             st.session_state['weight_signature']=None
@@ -99,9 +115,9 @@ with search_tab:
                 for column,pref in zip(columns,response['parsed']['soft_preferences']):
                     key=pref['feature_key']
                     weights[key]=column.slider(definitions[key]['label'],0.,1.,float(pref['importance']),.1,key='weight_'+key)
-            signature=(tuple(sorted(weights.items())),simulated)
+            signature=(tuple(sorted(weights.items())),simulated,ranking_method)
             if signature!=st.session_state.get('weight_signature'):
-                updated=call(api.post,'/api/search',{'parsed':response['parsed'],'weights':weights,'include_simulated':simulated})
+                updated=call(api.post,'/api/search',{'parsed':response['parsed'],'weights':weights,'include_simulated':simulated,'ranking_method':ranking_method})
                 if updated:
                     response=updated
                     st.session_state['response']=updated

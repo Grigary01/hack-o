@@ -19,7 +19,7 @@ def search(payload: SearchRequest,request: Request,repo=Depends(repository)):
     parsed = payload.parsed.model_copy(deep=True) if payload.parsed else parser.parse(payload.text)
     mode = 'structured_input' if payload.parsed else parser.mode
     if parsed.region != 'Adler' or parsed.unknown_or_ambiguous or parsed.clarification_question:
-        return SearchResponse(parsed=parsed,parser_mode=mode,status='needs_clarification')
+        return SearchResponse(parsed=parsed,parser_mode=mode,status='needs_clarification',ranking_method=payload.ranking_method)
     if payload.include_simulated and not request.app.state.config.demo_mode:
         raise HTTPException(403,'Симуляция доступна только в DEMO_MODE')
     preferences = {p.feature_key:p for p in parsed.soft_preferences}
@@ -41,9 +41,10 @@ def search(payload: SearchRequest,request: Request,repo=Depends(repository)):
             result = decision.get('result',{})
             if decision.get('tool_used')=='hotelier' and result.get('id'):
                 questions.setdefault(hotel.id,[]).append(result['id'])
-    groups = rank_hotels(parsed,[(h,repo.observations(h.id)) for h in hotels],payload.include_simulated)
+    groups = rank_hotels(parsed,[(h,repo.observations(h.id)) for h in hotels],payload.include_simulated,
+                         payload.ranking_method,payload.balance)
     for rows in groups.values():
         for item in rows:
             item.pending_hotelier_question_ids = questions.get(item.hotel.id,[])
     return SearchResponse(parsed=parsed,parser_mode=mode,trace=agent.trace,
-                          include_simulated=payload.include_simulated,**groups)
+                          include_simulated=payload.include_simulated,ranking_method=payload.ranking_method,**groups)

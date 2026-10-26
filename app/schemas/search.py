@@ -13,6 +13,8 @@ class SearchRequest(Contract):
     parsed: ParsedHotelQuery | None = None
     weights: dict[str,float] = Field(default_factory=dict)
     include_simulated: bool = False
+    ranking_method: Literal['weighted_v1','balanced_v2'] = 'balanced_v2'
+    balance: float = Field(default=.25,ge=0,le=1)
 
     @model_validator(mode='after')
     def input_contract(self):
@@ -46,6 +48,10 @@ class HotelSearchResult(Contract):
     criteria: list[CriterionResult]
     warnings: list[str] = Field(default_factory=list)
     pending_hotelier_question_ids: list[str] = Field(default_factory=list)
+    ranking_method: str = 'weighted_v1'
+    ranking_interval: tuple[float,float] | None = None
+    group_scores: list[dict] = Field(default_factory=list)
+    pareto_dominated: bool = False
 
 
 class SearchResponse(Contract):
@@ -57,3 +63,4 @@ class SearchResponse(Contract):
     excluded: list[HotelSearchResult] = Field(default_factory=list)
     trace: list[dict] = Field(default_factory=list)
     include_simulated: bool = False
+    ranking_method: str = 'weighted_v1'

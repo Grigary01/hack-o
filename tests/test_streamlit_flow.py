@@ -26,3 +26,17 @@ def test_search_and_hotelier_screen(client,monkeypatch):
     next(b for b in ui.button if b.label=='Подтвердить разбор').click().run()
     assert not ui.exception
     assert any('Решение сохранено' in s.value for s in ui.success)
+
+
+def test_environment_screen_without_key(client,monkeypatch):
+    monkeypatch.setattr('app.api.environment.OpenAQProvider',lambda key: __import__(
+        'app.environment.air_quality',fromlist=['OpenAQProvider']).OpenAQProvider(''))
+    def request(self,method,path,payload=None):
+        response=client.request(method,path,json=payload)
+        response.raise_for_status()
+        return response.json()
+    monkeypatch.setattr(APIClient,'request',request)
+    ui=AppTest.from_file(ROOT/'frontend/app.py',default_timeout=20).run()
+    next(b for b in ui.button if b.label=='Обновить данные OpenAQ').click().run()
+    assert not ui.exception
+    assert any('OpenAQ не подключён' in m.value for m in ui.markdown)

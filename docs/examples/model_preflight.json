@@ -1,0 +1,45 @@
+{
+  "created_at": "2026-10-26T16:27:37.436996+00:00",
+  "generation_enabled": false,
+  "dataset_sha256": "56bd7858be4eeb7da95d86e29bc763b94227fd66bfbfb63b49ed8408bd1bd011",
+  "prompt_sha256": "842ee5d17555e5ba01da4bd6ecb91a83da5650a30b6e70d2ba0df22a0539b0cf",
+  "schema_sha256": "921b8c4585a0c45056ab4b8757a5634eecf291e8d377caebbb08bb714b9bdf77",
+  "note": "Synthetic assistant-authored labels; human review required. No model quality measured in preflight.",
+  "split": "held_out",
+  "queries": 32,
+  "profiles": [
+    {
+      "id": "groq-20b",
+      "mode": "groq",
+      "model": "openai/gpt-oss-20b",
+      "note": "Облако, кандидат Free Plan; 21B всего / 3.6B активных, без скачивания",
+      "preflight": {
+        "ready": false,
+        "reason": "missing_GROQ_API_KEY"
+      },
+      "status": "blocked"
+    },
+    {
+      "id": "groq-120b",
+      "mode": "groq",
+      "model": "openai/gpt-oss-120b",
+      "note": "Облако, кандидат Free Plan; 117B всего / 5.1B активных, без скачивания",
+      "preflight": {
+        "ready": false,
+        "reason": "missing_GROQ_API_KEY"
+      },
+      "status": "blocked"
+    },
+    {
+      "id": "groq-qwen27b",
+      "mode": "groq",
+      "model": "qwen/qwen3.8-27b",
+      "note": "Облачная альтернатива 27B; доступность проверяется через /models",
+      "preflight": {
+        "ready": false,
+        "reason": "missing_GROQ_API_KEY"
+      },
+      "status": "blocked"
+    }
+  ]
+}

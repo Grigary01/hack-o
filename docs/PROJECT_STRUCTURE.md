@@ -245,3 +245,29 @@ ostrovok-adler-mvp/
 - `__pycache__/`, `.pytest_cache/`, `*.egg-info/` — служебные артефакты Python; не редактировать вручную.
 
 План работ и границы DONE — [TASKS](TASKS.md). Учебный путь У1 — [ML_GUIDE](ML_GUIDE.md).
+
+## Новые файлы 26 октября и владельцы
+
+- У2: app/environment/__init__.py, air_quality.py, noise.py — OpenAQ, фасады,
+  подготовка входов и вызов NoiseModelling. scripts/collect_environment_osm.py,
+  scripts/noise_pipeline.groovy — сбор данных и Java-адаптер.
+- У3: app/environment/service.py, app/api/environment.py, scripts/environment.py,
+  scripts/install_noisemodelling.py; изменения app/storage/models.py,
+  app/core/config.py, app/main.py, scripts/seed_demo.py.
+- У4: frontend/environment_view.py; изменения frontend/app.py.
+- У1: app/ml/multicriteria.py; изменения ranking.py, query_parser.py, prompts.py,
+  app/schemas/query.py, app/schemas/search.py и app/api/search.py (вместе с У3).
+- У1: scripts/benchmark_models.py, scripts/evaluate_parser.py,
+  data/evaluation/model_candidates.json, parser_metrics_fixture.json,
+  docs/examples/model_preflight.json, docs/MODELS_AND_RANKING.md.
+- У2: data/environment/osm_buildings.json, preparation_reports.json,
+  adler_scenario.json, air_quality_status.json; docs/ENVIRONMENT.md.
+- У2/У3: tests/test_environment.py, tests/test_noise_engine.py;
+  У1: tests/test_multicriteria.py, tests/test_cloud_models.py;
+  У4: расширенный tests/test_streamlit_flow.py.
+- У3: docs/examples/environment_pytest_results.xml и итоговая документация.
+- Командный main.py с f/y сохранён как пришёл из GitHub; это учебные заглушки,
+  не точка входа продукта. Точка входа backend — app.main:app.
+
+В GitHub есть вложенная копия Островок/ из 0e56856. Не используйте её для запуска:
+актуальная реализация в корне. Копия оставлена без удаления работы команды.

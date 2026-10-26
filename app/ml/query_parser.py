@@ -92,7 +92,7 @@ class OllamaQueryParser:
     def __init__(self, config=settings, client=None):
         self.config = config
         # Соединение должно установиться за 5 с; ожидание ответа — до 60 с.
-        self.client = client or httpx.Client(timeout=httpx.Timeout(60, connect=5))
+        self.client = client or httpx.Client(timeout=httpx.Timeout(config.parser_timeout_seconds, connect=5))
 
     def parse(self, text: str) -> ParsedHotelQuery:
         from app.ml.prompts import query_messages
@@ -116,7 +116,7 @@ class OllamaQueryParser:
             'model': self.config.model_name,
             'stream': False,
             'format': schema,
-            'options': {'temperature': 0, 'num_predict': 3000},
+            'options': {'temperature': 0, 'num_predict': 3000, 'num_ctx':self.config.ollama_num_ctx},
             'messages': query_messages(text, schema),
         }
 
@@ -151,10 +151,63 @@ class OllamaQueryParser:
         raise ParserError('unreachable')
 
 
+class GroqQueryParser:
+    """Облачная альтернатива без GPU: одинаковый контракт для разных моделей.
+
+Аккаунт с Free Plan нужен пользователю. Мы не включаем платный план и не
+обещаем неограниченную квоту. Ключ остаётся на backend. Во внешний сервис
+отправляются текст запроса и примеры, но не база гостиниц/ответы отельеров.
+JSON-schema best-effort сохраняет необязательные поля Pydantic; локальная
+валидация обязательна. Ошибка API или 429 не подменяется демо-результатом.
+"""
+    mode = 'groq'
+
+    def __init__(self, config=settings, client=None):
+        self.config = config
+        self.client = client or httpx.Client(timeout=httpx.Timeout(config.parser_timeout_seconds, connect=5))
+
+    def parse(self, text):
+        from app.ml.prompts import query_messages
+        if not self.config.groq_api_key:
+            raise ParserError('Добавьте GROQ_API_KEY в локальный .env; облачная модель ещё не подключена.')
+        schema = ParsedHotelQuery.model_json_schema()
+        for name in ('HardConstraint','SoftPreference'):
+            schema['$defs'][name]['properties']['feature_key']['enum'] = list(get_registry().definitions)
+        payload = {'model':self.config.groq_model, 'messages':query_messages(text,schema),
+                   'temperature':0, 'max_completion_tokens':3000,
+                   'reasoning_effort':'low',
+                   'response_format':{'type':'json_schema','json_schema':{
+                       'name':'hotel_query','strict':False,'schema':schema}}}
+        # Одна повторная попытка только для ошибочного контракта. 401/429/5xx
+        # завершаются сразу: повторять исчерпанную квоту в цикле бессмысленно.
+        for attempt in range(2):
+            try:
+                response = self.client.post('https://api.groq.com/openai/v1/chat/completions',
+                    headers={'Authorization':'Bearer '+self.config.groq_api_key}, json=payload)
+                if response.is_error:
+                    raise ParserError(f'Groq HTTP {response.status_code}: проверьте ключ, доступность модели и бесплатную квоту.')
+                raw = response.json()
+                if raw['choices'][0].get('finish_reason') != 'stop':
+                    raise ValueError('Незавершённый ответ модели')
+                parsed = ParsedHotelQuery.model_validate_json(raw['choices'][0]['message']['content'])
+                parsed.original_text = text
+                return parsed
+            except httpx.HTTPError as exc:
+                raise ParserError('Groq недоступен по сети; запрос не подменён.') from exc
+            except (ValidationError, KeyError, TypeError, ValueError) as exc:
+                if isinstance(exc, ParserError):
+                    raise
+                if attempt == 1:
+                    raise ParserError('Groq вернул невалидный контракт; фильтры не подменены.') from exc
+        raise ParserError('unreachable')
+
+
 def make_parser(config=settings) -> QueryParser:
     """Фабрика выбирает провайдер один раз при создании FastAPI-приложения."""
     if config.parser_mode == 'fixture':
         return FixtureQueryParser()
     if config.parser_mode == 'ollama':
         return OllamaQueryParser(config)
-    raise ValueError('PARSER_MODE должен быть fixture или ollama')
+    if config.parser_mode == 'groq':
+        return GroqQueryParser(config)
+    raise ValueError('PARSER_MODE должен быть fixture, ollama или groq')

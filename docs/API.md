@@ -54,3 +54,21 @@ score=1.0, coverage=.6, ranking_score=.6. Совпадение названия 
 
 Локальный API не имеет авторизации, рассчитан на bind **127.0.0.1**. Production размещение,
 контроль владельца отеля и миграции БД — следующие задачи, не реализованные функции.
+
+## Расширение 26 октября: среда, модели, ранжирование
+
+- GET /api/hotels/{hotel_id}/environment — последние noise/air_quality отчёты,
+  исходные даты и флаг cache_stale. Отсутствие отчёта — not_collected.
+- POST /api/hotels/{hotel_id}/environment/air-quality/refresh — явный сетевой
+  запрос OpenAQ и сохранение отчёта. При отсутствии ключа — not_configured;
+  при недоступности upstream — provider_error, без ложного «станций нет».
+- POST /api/search принимает ranking_method: balanced_v2 (default) или weighted_v1,
+  balance в [0,1] (default .25). В ответе ranking_interval, group_scores,
+  pareto_dominated. Hard/unknown/same-room политика не изменена.
+- SoftPreference.utility: null или {kind: lower|higher|target_range,
+  ideal_min, ideal_max, tolerance}. Числа в единицах фичи, tolerance > 0.
+- PARSER_MODE=groq: облачный parser; его ошибки возвращаются как HTTP 502
+  с сообщением о первопричине, без подмены запроса fixture.
+
+Схемы и примеры: [MODELS_AND_RANKING](MODELS_AND_RANKING.md),
+[ENVIRONMENT](ENVIRONMENT.md). HTTP-запуска произвольных Java-скриптов нет.

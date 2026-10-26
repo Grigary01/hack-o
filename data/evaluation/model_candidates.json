@@ -1,0 +1,8 @@
+[
+  {"id":"groq-20b","mode":"groq","model":"openai/gpt-oss-20b","note":"Облако, кандидат Free Plan; 21B всего / 3.6B активных, без скачивания"},
+  {"id":"groq-120b","mode":"groq","model":"openai/gpt-oss-120b","note":"Облако, кандидат Free Plan; 117B всего / 5.1B активных, без скачивания"},
+  {"id":"groq-qwen27b","mode":"groq","model":"qwen/qwen3.8-27b","note":"Облачная альтернатива 27B; доступность проверяется через /models"},
+  {"id":"local-gemma12b","mode":"ollama","model":"gemma3:12b","note":"Локальная исходная модель; веса не установлены"},
+  {"id":"local-qwen14b","mode":"ollama","model":"qwen3:14b","note":"Локальный кандидат ~9.3 GB весов; RAM нужна дополнительно"},
+  {"id":"local-gemma27b","mode":"ollama","model":"gemma3:27b","note":"~17 GB весов; на Mac 24 GiB тесно, не рекомендуем как основной путь"}
+]
