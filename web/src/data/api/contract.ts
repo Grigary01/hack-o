@@ -137,7 +137,7 @@ export interface SearchResponseDto {
 export interface HotelDetailDto {
   hotel: HotelDto;
   observations: ObservationDto[];
-  conflicts: unknown[];
+  conflicts: { status: 'open' | 'resolved' }[];
 }
 
 export interface HealthDto {
@@ -199,5 +199,20 @@ export interface FactDto {
 
 export interface FactsResponseDto {
   facts: FactDto[];
-  conflicts: unknown[];
+  conflicts: { status: 'open' | 'resolved' }[];
+}
+
+/** Текущее знание вычисляет backend с учётом TTL, конфликтов и режима демо. */
+export interface CurrentFeatureDto {
+  subject_id: string;
+  feature_key: string;
+  value: Value | null;
+  status: ObservationDto['status'];
+  observations: ObservationDto[];
+  resolved_conflict_ids: string[];
+}
+export interface HotelEvidenceDto {
+  observations: ObservationDto[];
+  current_real: CurrentFeatureDto[];
+  current_demo: CurrentFeatureDto[];
 }

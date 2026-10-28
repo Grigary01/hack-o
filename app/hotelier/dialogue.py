@@ -57,7 +57,15 @@ def confirmation_result(repo, answer, *, idempotent=False):
     ids = sorted(o.id for o in repo.observations(question.hotel_id)
                  if accepted and o.evidence.source.ref == answer.id
                  and o.evidence.source.type == 'hotelier_simulated')
-    return {'answer_id': answer.id, 'status': answer.status, 'idempotent': idempotent,
+    review = []
+    if accepted:
+        observations = repo.observations(question.hotel_id)
+        subjects = {o.subject_id for o in observations if o.id in ids}
+        for subject in sorted(subjects):
+            review.extend(item | {'room_id': subject} for item in model_disagreements(
+                observations, question.hotel_id, subject, question.feature_key,
+                include_simulated=True, conflicts=repo.conflict_records(question.hotel_id)))
+    return {'model_review': review, 'answer_id': answer.id, 'status': answer.status, 'idempotent': idempotent,
             'observation_ids': ids, 'conflicts': repo.conflicts(question.hotel_id) if accepted else [],
             'source_type': 'hotelier_simulated' if accepted else None, 'question': row_dict(question)}
 

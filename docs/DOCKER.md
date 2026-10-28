@@ -10,7 +10,7 @@ Frontend: <http://localhost:8501>. API/Swagger: <http://localhost:8000/docs>.
 Готовность: <http://localhost:8000/api/health>.
 
 Сервисы `backend` и `frontend` собираются из одного Dockerfile и работают
-от пользователя `adler`. Backend сначала выполняет `scripts.migrate_db`
+от пользователя `app`. Backend сначала выполняет `scripts.migrate_db`
 и идемпотентный `scripts.seed_demo`, затем запускает uvicorn.
 Frontend запускает текущий Streamlit и обращается к `http://backend:8000`
 по внутренней сети. Он ждёт healthcheck backend —
@@ -44,8 +44,7 @@ docker compose exec backend python -m scripts.seed_demo --environment
 
 ## Настройки frontend и ML
 
-Без `.env` работают те же заглушки, что и при локальном запуске:
-`PARSER_MODE=fixture`, `REPLY_PARSER_MODE=rules`. Docker не меняет контракты
+Без `.env` используются режимы из `config/models.yaml`: гостевой hybrid (правила + Gemma3 12B через Ollama; без Ollama — только правила), ответ отельера rules. Для работы без модели явно задайте `PARSER_MODE=offline` (правила) или `fixture` (готовые примеры). Docker не меняет контракты
 или распределение логики между backend и ML-слоем.
 
 При необходимости скопируйте `.env.example` в `.env`. Compose передаёт
@@ -57,12 +56,10 @@ docker compose exec backend python -m scripts.seed_demo --environment
 |---|---|---|
 | `BACKEND_PORT` | `8000` | Порт API на localhost хоста |
 | `FRONTEND_PORT` | `8501` | Порт Streamlit на localhost хоста |
-| `PARSER_MODE` | `fixture` | Гостевой parser: fixture/ollama/groq |
+| `PARSER_MODE` | из YAML | Операционное переопределение: hybrid/offline/fixture/ollama/groq |
 | `REPLY_PARSER_MODE` | `rules` | Ответ отельера: rules/fixture/ollama/groq |
 | `DOCKER_OLLAMA_URL` | `http://host.docker.internal:11434` | Доступный из контейнера адрес Ollama |
-| `MODEL_NAME` | `gemma3:12b` | Имя локальной модели |
 | `GROQ_API_KEY` | пусто | Ключ облачного провайдера |
-| `GROQ_MODEL` | `openai/gpt-oss-120b` | Имя облачной модели |
 
 Для Ollama на хосте задайте `PARSER_MODE=ollama` и/или
 `REPLY_PARSER_MODE=ollama`. `localhost` внутри контейнера означает сам контейнер;
@@ -90,3 +87,13 @@ UID 10001; `pip check`, целостность SQLite и контроль хос
 Изолированный тестовый проект и его volume удалены после проверки.
 Регрессия: **188 passed, 1 skipped** (внешний NoiseModelling).
 [Фактический отчёт](examples/docker_compose_validation.json).
+
+Имена моделей, контекст, температура, таймаут и лимит ответа находятся только в
+`config/models.yaml`; меняйте их там, затем пересобирайте образ.
+
+В репозитории два явных варианта запуска. `docker compose -f compose.yaml up --build`
+поднимает backend:8000 и Streamlit:8501. Для React используйте
+`docker compose -f docker-compose.yml -f docker-compose.web.yml up --build`:
+React:8081, Streamlit через nginx:8080. Указывайте `-f`, чтобы не путать варианты
+и их сервисы (`backend/frontend` и `api/ui/app/web`). У обоих backend мигрирует БД
+перед seed; named volumes двух Compose-проектов могут отличаться.

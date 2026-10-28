@@ -7,6 +7,15 @@
 - Видео-скринкаст: **TODO — ссылка будет добавлена** (обязательно до сдачи)
 - Развёрнутый сервис: нет (запуск локальный)
 
+## Интеграция команды · 29 октября
+
+Сведены Geo/main, backend `grisha_hack`, React `frontend/mvp` и локальные ML-правки.
+[Изменения, роли, проверки и ограничения](docs/TEAM_INTEGRATION.md).
+Основной интерфейс React: `web/`; расширенный кабинет и веса: `frontend/` (Streamlit).
+Для подключения React к API без Docker: запустите backend, затем в `web/` выполните
+`npm ci`, `npm run dev:api` и откройте `http://localhost:5173`.
+`npm run dev:mock` — отдельный демонстрационный сценарий Батуми, не данные Адлера.
+
 ## Быстрый старт
 
 ```bash
@@ -14,13 +23,13 @@ git clone --branch development/adler-mvp https://github.com/Grigary01/hack-o.git
 cd hack-o
 cp .env.example .env   # локальные адреса и секреты; модель — в config/models.yaml
 ollama pull gemma3:12b  # один раз на хосте с установленным и запущенным Ollama
-docker compose up --build
-# открыть http://localhost:8080
+docker compose -f docker-compose.yml -f docker-compose.web.yml up --build
+# React: http://localhost:8081, Streamlit: http://localhost:8080
 ```
 
 Первая сборка — несколько минут (скачиваются образы и Python-колёса). Демо-данные уже лежат
-в репозитории, загрузка OSM/DEM при старте не выполняется. Остановка: `Ctrl+C` или `docker compose down`;
-`docker compose down -v` дополнительно удалит базу с ответами отельера.
+в репозитории, загрузка OSM/DEM при старте не выполняется. Остановка: `Ctrl+C` или `docker compose -f docker-compose.yml -f docker-compose.web.yml down`;
+`docker compose -f docker-compose.yml -f docker-compose.web.yml down -v` дополнительно удалит базу с ответами отельера.
 
 ## Зависимости и переменные окружения
 
@@ -58,10 +67,10 @@ Ollama работает отдельно: веса Gemma 12B занимают о
 не стираются, дубликатов нет). Вручную:
 
 ```bash
-docker compose exec api python -m scripts.seed_demo
+docker compose -f docker-compose.yml exec api python -m scripts.seed_demo
 ```
 
-Демо-данные — `data/demo/` (отели, маршруты, 225 наблюдений) и `data/environment/` (здания, береговая линия,
+Демо-данные — `data/demo/` (отели, маршруты, 400 наблюдений) и `data/environment/` (здания, береговая линия,
 рельеф Copernicus, ВПП). Пересбор из интернета (не нужен для демо) — раздел «Проверки и обновление данных».
 
 ## Маршруты/доступ
@@ -89,8 +98,8 @@ docker compose exec api python -m scripts.seed_demo
 Работающий локальный MVP: русский запрос → типизированные условия → выбор источника агентом →
 пешие маршруты/шумовой proxy → подбор с объяснениями → диалог с демонстрационным отельером.
 
-Подготовлены **25 реальных OSM-отелей** и **400 наблюдений** по 16 характеристикам из открытых данных — у каждого
-источник, дата, срок годности, уверенность и человеческое объяснение. Что считается по геоданным:
+Подготовлены **25 реальных OSM-отелей** и **400 наблюдений** по 16 расчётным характеристикам из открытых данных — у каждого
+источник, дата, срок годности, уверенность и человеческое объяснение. Полный реестр включает также 4 признака номеров, получаемых от отельера.
 
 ## Запуск через Docker Compose
 
@@ -107,7 +116,7 @@ Frontend: <http://localhost:8501>, API/Swagger: <http://localhost:8000/docs>.
 
 Проверено на macOS arm64, Python **3.12.7** (этапы backend) и **3.13.5** (исходное демо).
 Используйте Python 3.12+.
-Запускайте команды из корня проекта. При первой установке нужен интернет; для поиска после установки — нет.
+Запускайте команды из корня проекта. При первой установке нужен интернет; для offline/fixture после установки — нет; Ollama требует запущенной локальной модели, Groq — сети.
 
 ```bash
 python3 -m venv .venv
@@ -180,7 +189,7 @@ API: <http://127.0.0.1:8000/api/health>. Оба процесса останав�
 
 ## Парсер и границы готовности
 
-По умолчанию `PARSER_MODE=fixture`: 13 фиксированных формулировок, список есть в UI и `/api/demo-queries`.
+По умолчанию `parser_mode: ollama` в `config/models.yaml`. Для разработки без LLM доступны `PARSER_MODE=offline` (правила) и `PARSER_MODE=fixture` (15 готовых примеров из `/api/demo-queries`).
 Другие формулировки явно требуют уточнения. Это **не универсальный NLP-парсер**.
 
 Общая модель и параметры задаются в `config/models.yaml`. В локальном `.env`
@@ -188,7 +197,7 @@ API: <http://127.0.0.1:8000/api/health>. Оба процесса останав�
 После `ollama pull gemma3:12b` и запуска Ollama перезапустите backend.
 28 октября Gemma 12B проверена двумя реальными запросами: поиск 18.94 с и разбор
 условия «не ближе 300 м» 5.85 с. Это smoke-проверка, не оценка качества на gold.
-Ollama получает JSON Schema и 2 few-shot примера; ответ проверяется Pydantic.
+Ollama получает JSON Schema и 6 учебных примеров; ответ проверяется Pydantic.
 Ошибки не заменяются выдуманными фильтрами.
 См. [официальную документацию structured outputs](https://docs.ollama.com/capabilities/structured-outputs).
 

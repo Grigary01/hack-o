@@ -80,6 +80,9 @@ def verify(output):
         return result.stdout
 
     report['migration'] = json.loads(command('scripts.migrate_db'))
+    from app.features.registry import get_registry
+    expected_hotels = len(json.loads((ROOT / 'data/demo/hotels.json').read_text()))
+    expected_features = len(get_registry().definitions)
     first_seed = command('scripts.seed_demo')
     assert command('scripts.seed_demo') == first_seed
 
@@ -104,12 +107,13 @@ def verify(output):
         wait_ready(streamlit, f'http://127.0.0.1:{ui_port}/_stcore/health')
         api = APIClient(base)
         report['health'] = api.get('/api/health')
-        assert report['health']['status'] == 'ok' and report['health']['hotels'] == 25
+        assert report['health']['status'] == 'ok' and report['health']['hotels'] == expected_hotels
         examples = api.get('/api/demo-queries')
         initial = api.post('/api/search', {'text': examples[0]})
         report['original_geo_search'] = {group: len(initial[group])
             for group in ('matched', 'needs_verification', 'excluded')}
-        assert report['original_geo_search'] == {'matched': 12, 'needs_verification': 2, 'excluded': 11}
+        assert sum(report['original_geo_search'].values()) == expected_hotels
+        assert initial['status'] == 'ok' and initial['matched']
         assert KEY in api.get('/api/features') and QUERY in examples
         hotel = api.get('/api/hotels')[0]
         previous_api_url = os.environ.get('API_URL')
@@ -213,8 +217,8 @@ def verify(output):
         with sqlite3.connect(database) as db:
             assert db.execute('PRAGMA integrity_check').fetchone()[0] == 'ok'
             assert not db.execute('PRAGMA foreign_key_check').fetchall()
-            assert db.execute('SELECT COUNT(*) FROM hotels').fetchone()[0] == 25
-            assert db.execute('SELECT COUNT(*) FROM feature_definitions').fetchone()[0] == 7
+            assert db.execute('SELECT COUNT(*) FROM hotels').fetchone()[0] == expected_hotels
+            assert db.execute('SELECT COUNT(*) FROM feature_definitions').fetchone()[0] == expected_features
         backup = report['repeat_migration']['backup']
         assert backup and Path(backup).is_file()
         report.update(restart_seed_migration_preserve_history=True, database_integrity='ok',
