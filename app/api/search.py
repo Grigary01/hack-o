@@ -8,6 +8,20 @@ from app.ml.companions import expand
 
 router = APIRouter(prefix='/api',tags=['search'])
 
+# Тяжёлые части расчётов (все этажи и сценарии вида, входы, все траектории, все заведения)
+# в выдаче поиска не нужны: интерфейс показывает объяснение, источник и маршрут на карте.
+# Полные данные остаются в /api/hotels/{id}/evidence. Ответ поиска уменьшается в разы.
+HEAVY_DETAILS = {'base', 'scenarios', 'inputs', 'method', 'by_track', 'night_places', 'floors', 'node_ids'}
+
+
+def slim(observation):
+    details = observation.evidence.details
+    if not isinstance(details, dict) or not HEAVY_DETAILS & details.keys():
+        return observation
+    compact = {k: v for k, v in details.items() if k not in HEAVY_DETAILS}
+    compact['full_details'] = f'/api/hotels/{observation.hotel_id}/evidence'
+    return observation.model_copy(update={'evidence': observation.evidence.model_copy(update={'details': compact})})
+
 
 @router.post('/parse-query',response_model=ParsedHotelQuery)
 def parse_query(payload: ParseRequest,request: Request):
@@ -50,5 +64,7 @@ def search(payload: SearchRequest,request: Request,repo=Depends(repository)):
     for rows in groups.values():
         for item in rows:
             item.pending_hotelier_question_ids = questions.get(item.hotel.id,[])
+            for criterion in item.criteria:
+                criterion.evidence = [slim(o) for o in criterion.evidence]
     return SearchResponse(parsed=parsed,parser_mode=mode,trace=agent.trace,
                           include_simulated=payload.include_simulated,ranking_method=payload.ranking_method,**groups)

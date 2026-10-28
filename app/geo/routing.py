@@ -8,6 +8,12 @@ from pathlib import Path
 import networkx as nx
 from shapely.geometry import LineString
 from shapely.ops import nearest_points
+
+# Запасная привязка от стены здания: вход где-то на контуре, а проход к сети может быть
+# не отмечен в OSM (внутренний двор, не связанные с сетью дорожки).
+OUTLINE_SNAP_M = 120.
+OUTLINE_CANDIDATES = 12
+MIN_COMPONENT_NODES = 50  # меньше — оторванный кусок сети, с него до пляжа не дойти
 from app.geo.geometry import metric_point, element_shape, UNPROJECT
 from app.geo.osm_provider import osm_id
 
@@ -93,7 +99,45 @@ class PedestrianRouter:
         line = LineString([a,b])
         return any(line.intersects(shape.buffer(.5)) for shape in self.barriers)
 
-    def distance_to_beach(self, hotel) -> RouteResult:
+    def distance_to_beach(self, hotel, outline=None, obstacles=()) -> RouteResult:
+        """outline — контур здания отеля, obstacles — соседние здания (через них проход не строится)."""
+        result = self._from_point(hotel)
+        if result.distance_m is None and outline is not None and result.reason in ('hotel_too_far_from_graph', 'no_path'):
+            fallback = self._from_outline(hotel, outline, obstacles)
+            if fallback is not None:
+                fallback.flags.append('fallback_after_' + result.reason)
+                return fallback
+        return result
+
+    def _components(self):
+        if not hasattr(self, '_component_size'):
+            self._component_size = {}
+            for component in nx.weakly_connected_components(self.graph):
+                for node in component:
+                    self._component_size[node] = len(component)
+        return self._component_size
+
+    def _from_outline(self, hotel, outline, obstacles):
+        """Ближайшие к стене узлы основной сети; отрезок от стены не пересекает ограды и чужие дома."""
+        if not self.targets:
+            return None
+        ring = outline.exterior if outline.geom_type == 'Polygon' else outline.boundary
+        sizes = self._components()
+        candidates = sorted((ring.distance(point), node) for node, point in self.points.items()
+                            if sizes.get(node, 0) >= MIN_COMPONENT_NODES and ring.distance(point) <= OUTLINE_SNAP_M)
+        for gap, node in candidates[:OUTLINE_CANDIDATES]:
+            door = nearest_points(ring, self.points[node])[0]
+            connector = LineString([door, self.points[node]])
+            if self._connector_blocked(door, self.points[node]) or \
+               any(connector.crosses(b) or connector.within(b) for b in obstacles):
+                continue
+            result = self._route(hotel, node, gap)
+            if result.distance_m is not None:
+                result.flags += ['start_from_building_outline', 'unmapped_access_connector']
+                return result
+        return None
+
+    def _from_point(self, hotel) -> RouteResult:
         if not self.points or not self.targets:
             return RouteResult(None, reason='no_accessible_beach_target')
         origin = metric_point(hotel.lat, hotel.lon)
@@ -104,6 +148,9 @@ class PedestrianRouter:
             return RouteResult(None, reason='hotel_too_far_from_graph')
         if self._connector_blocked(origin, self.points[start]):
             return RouteResult(None, reason='hotel_connector_crosses_barrier')
+        return self._route(hotel, start, start_gap)
+
+    def _route(self, hotel, start, start_gap):
         lengths, paths = nx.single_source_dijkstra(self.graph, start, weight='length')
         reachable = [t for t in self.targets if t['node'] in lengths]
         if not reachable:

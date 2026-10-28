@@ -78,3 +78,19 @@ def test_graph_loader_removes_private_edges(tmp_path):
     nx.write_graphml(graph,path)
     safe=load_walking_graph(path)
     assert not safe.has_edge(2,3)
+
+
+def test_outline_fallback_reaches_network_but_not_through_buildings(monkeypatch):
+    from shapely.geometry import box
+    from app.geo.geometry import PROJECT
+    graph, beach = toy_graph()
+    hotel = SimpleNamespace(lat=43.4285, lon=39.92)  # ~170 м южнее узла 1: точка слишком далеко
+    router = PedestrianRouter(graph, [beach], max_beach_snap_m=1, max_snap_m=80)
+    assert router.distance_to_beach(hotel).reason == 'hotel_too_far_from_graph'
+    x, y = PROJECT(39.92, 43.4285)
+    outline = box(x - 10, y - 10, x + 10, y + 110)  # длинное здание почти до узла 1
+    monkeypatch.setattr('app.geo.routing.MIN_COMPONENT_NODES', 1)  # в игрушечном графе 4 узла
+    result = router.distance_to_beach(hotel, outline, [])
+    assert result.distance_m is not None and 'start_from_building_outline' in result.flags
+    blocker = box(x - 30, y + 112, x + 30, y + 140)  # чужой дом между стеной и сетью
+    assert router.distance_to_beach(hotel, outline, [blocker]).distance_m is None
