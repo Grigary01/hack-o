@@ -20,6 +20,7 @@ COPY --from=builder /opt/venv /opt/venv
 # Код и демо-данные принадлежат root и только читаются; писать можно лишь в runtime/ (SQLite).
 COPY pyproject.toml ./
 COPY app ./app
+COPY config ./config
 COPY frontend ./frontend
 COPY scripts ./scripts
 COPY data ./data

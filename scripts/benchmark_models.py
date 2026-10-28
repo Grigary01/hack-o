@@ -14,7 +14,7 @@ from pathlib import Path
 import statistics
 import time
 import httpx
-from app.core.config import ROOT, settings
+from app.core.config import ROOT, settings, MODEL_CONFIG
 from app.ml.query_parser import make_parser, ParserError
 from app.schemas.query import ParsedHotelQuery
 from scripts.evaluate_parser import measure
@@ -109,6 +109,8 @@ def main():
     rows=[r for r in rows if args.split=='all' or r['split']==args.split]
     if args.limit: rows=rows[:args.limit]
     report=dict(created_at=datetime.now(timezone.utc).isoformat(),generation_enabled=args.run,
+                model_config=MODEL_CONFIG.model_dump(),
+                model_config_sha256=hashlib.sha256((ROOT/'config/models.yaml').read_bytes()).hexdigest(),
                 dataset_sha256=hashlib.sha256(dataset.read_bytes()).hexdigest(),
                 prompt_sha256=hashlib.sha256((ROOT/'app/ml/prompts.py').read_bytes()).hexdigest(),
                 schema_sha256=hashlib.sha256(json.dumps(ParsedHotelQuery.model_json_schema(),sort_keys=True).encode()).hexdigest(),

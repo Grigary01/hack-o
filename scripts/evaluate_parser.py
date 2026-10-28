@@ -11,8 +11,9 @@ from collections import Counter
 from dataclasses import replace
 from datetime import datetime, timezone
 import json
+import hashlib
 
-from app.core.config import ROOT, settings
+from app.core.config import ROOT, settings, MODEL_CONFIG
 from app.ml.query_parser import make_parser, ParserError
 from app.schemas.query import ParsedHotelQuery
 
@@ -145,7 +146,9 @@ def main():
     # Demo совпадает с fixtures; первые 2 demo также входят в few-shot промпт.
     # Held-out не передаётся parser/prompts. Не переносите туда подсмотренные ответы.
     report = {
-        'mode': mode, 'model': settings.model_name if mode == 'ollama' else None,
+        'mode': mode, 'model': settings.model_name if mode == 'ollama' else settings.groq_model if mode == 'groq' else None,
+        'model_config': MODEL_CONFIG.model_dump(),
+        'model_config_sha256': hashlib.sha256((ROOT/'config/models.yaml').read_bytes()).hexdigest(),
         'measured_at': datetime.now(timezone.utc).isoformat(),
         'note': 'Fixture exact-match на demo — проверка контракта, не качество NLP. Gold авторский, независимая разметка ещё нужна.',
         'demo': measure([row for row in rows if row['split'] == 'demo'], parser),

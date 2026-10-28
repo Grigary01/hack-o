@@ -147,7 +147,9 @@ class OllamaQueryParser:
             'model': self.config.model_name,
             'stream': False,
             'format': schema,
-            'options': {'temperature': 0, 'num_predict': 3000, 'num_ctx':self.config.ollama_num_ctx},
+            'options': {'temperature': self.config.temperature,
+                        'num_predict': self.config.max_output_tokens,
+                        'num_ctx': self.config.ollama_num_ctx},
             'messages': query_messages(text, schema),
         }
 
@@ -203,8 +205,9 @@ JSON-schema best-effort сохраняет необязательные поля
             raise ParserError('Добавьте GROQ_API_KEY в локальный .env; облачная модель ещё не подключена.')
         schema = llm_schema()
         payload = {'model':self.config.groq_model, 'messages':query_messages(text,schema),
-                   'temperature':0, 'max_completion_tokens':3000,
-                   'reasoning_effort':'low',
+                   'temperature':self.config.temperature,
+                   'max_completion_tokens':self.config.max_output_tokens,
+                   'reasoning_effort':self.config.groq_reasoning_effort,
                    'response_format':{'type':'json_schema','json_schema':{
                        'name':'hotel_query','strict':False,'schema':schema}}}
         # Одна повторная попытка только для ошибочного контракта. 401/429/5xx

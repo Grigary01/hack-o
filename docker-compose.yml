@@ -17,6 +17,10 @@ services:
     <<: *app
     environment:
       DATABASE_URL: sqlite:////app/runtime/adler.db
+      # Ollama работает на хосте, а не внутри контейнера API.
+      OLLAMA_URL: ${OLLAMA_DOCKER_URL:-http://host.docker.internal:11434}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - adler-data:/app/runtime
     expose:

@@ -1,0 +1,13 @@
+# Общая ML-конфигурация команды. Этот файл хранится в Git.
+# Здесь нет ключей, адресов личных серверов или весов модели.
+# После изменения перезапустите backend.
+parser_mode: ollama  # ollama | groq | offline (правила) | fixture (готовые примеры)
+model_name: gemma3:12b
+groq_model: openai/gpt-oss-120b  # используется только при parser_mode: groq
+
+# Параметры генерации: используются адаптерами, не обучают веса модели.
+temperature: 0.0
+max_output_tokens: 3000
+ollama_num_ctx: 8192
+parser_timeout_seconds: 90
+groq_reasoning_effort: low

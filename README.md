@@ -10,9 +10,10 @@
 ## Быстрый старт
 
 ```bash
-git clone git@github.com:Grigary01/hack-o.git
+git clone --branch development/adler-mvp https://github.com/Grigary01/hack-o.git
 cd hack-o
-cp .env.example .env   # необязательно: без .env берутся значения из .env.example
+cp .env.example .env   # локальные адреса и секреты; модель — в config/models.yaml
+ollama pull gemma3:12b  # один раз на хосте с установленным и запущенным Ollama
 docker compose up --build
 # открыть http://localhost:8080
 ```
@@ -23,7 +24,8 @@ docker compose up --build
 
 ## Зависимости и переменные окружения
 
-Рекомендованные ресурсы: 2 CPU, 2 GB RAM, ~2 GB диска под образы.
+Ресурсы для API/UI без inference: 2 CPU, 2 GB RAM, ~2 GB диска под образы.
+Ollama работает отдельно: веса Gemma 12B занимают около 8.2 GB, память нужна дополнительно.
 
 Сервисы в `docker-compose.yml` (общий образ из `Dockerfile`, multi-stage, пользователь без root):
 
@@ -35,23 +37,20 @@ docker compose up --build
 
 Порядок старта: `api` healthy → `ui` healthy → `app`. У всех трёх есть healthcheck.
 
-Переменные (`.env.example`; `.env` переопределяет, compose задаёт `DATABASE_URL` и `API_URL` для контейнеров):
+Общие ML-настройки команды лежат в [`config/models.yaml`](config/models.yaml):
+режим, имена моделей, температура, контекст, лимит ответа, таймаут. По умолчанию —
+**Ollama + Gemma 3 12B**. Веса скачиваются отдельно и не входят в Git/образ Docker.
+Подробности и роли участников: [настройка модели](docs/MODEL_CONFIGURATION.md).
 
-| Переменная | По умолчанию | Назначение |
-|---|---|---|
-| `PARSER_MODE` | `fixture` | `fixture` — 14 проверенных формулировок офлайн; `ollama`/`groq` — свободный текст через LLM |
-| `DATABASE_URL` | `sqlite:///runtime/adler.db` (в compose `sqlite:////app/runtime/adler.db`) | база фактов и ответов |
-| `API_URL` | `http://127.0.0.1:8000` (в compose `http://api:8000`) | адрес API для Streamlit |
-| `DEMO_MODE` | `true` | разрешает учёт симулированных ответов отельера |
-| `MODEL_NAME`, `OLLAMA_URL`, `OLLAMA_NUM_CTX` | `gemma3:12b`, `http://127.0.0.1:11434`, `8192` | локальная LLM (необязательно) |
-| `GROQ_API_KEY`, `GROQ_MODEL` | пусто, `openai/gpt-oss-120b` | облачная LLM, OpenAI-совместимый API (необязательно) |
-| `PARSER_TIMEOUT_SECONDS` | `90` | таймаут LLM-парсера |
-| `OPENAQ_API_KEY` | пусто | качество воздуха OpenAQ (необязательно) |
-| `OVERPASS_URL` | `https://overpass-api.de/api/interpreter` | только для офлайн-пересбора данных |
-| `NOISEMODELLING_HOME`, `NOISE_JAVA_HOME` | пусто | только для отдельной CLI-команды акустики |
+В `.env.example` перечислены только настройки окружения: `DATABASE_URL`, `API_URL`,
+`OLLAMA_URL`, `DEMO_MODE`, адрес Overpass, пути к акустическому движку и пустые места
+для `GROQ_API_KEY`/`OPENAQ_API_KEY`. Свой `.env` не коммитьте.
+Для Docker API адрес Ollama задаётся через `OLLAMA_DOCKER_URL`; по умолчанию это
+`http://host.docker.internal:11434`. Ollama должен быть доступен из контейнера;
+настройка доступа зависит от ОС. Не открывайте его в публичный интернет.
 
-Ключ LLM не нужен: по умолчанию работает офлайн-парсер. Для Ollama внутри Docker укажите
-`OLLAMA_URL=http://host.docker.internal:11434` в `.env`.
+Для UI-разработки без LLM добавьте `PARSER_MODE=offline` в свой `.env`.
+Это явное локальное исключение; скрытого переключения при ошибке модели нет.
 
 ## Сидирование
 
@@ -80,7 +79,7 @@ docker compose exec api python -m scripts.seed_demo
 [облачные модели и ранжирование v2](docs/MODELS_AND_RANKING.md).
 Для сохранённых отчётов среды: `python -m scripts.seed_demo --environment`.
 Для облачной LLM нужен личный Groq Free Plan key; профили 20B/27B/120B ещё
-**не сравнивались на реальной генерации**. По умолчанию — офлайн-разбор свободного текста (`PARSER_MODE=offline`).
+**не сравнивались на реальной генерации**. Текущий общий режим — Ollama; офлайн-разбор доступен через `PARSER_MODE=offline`.
 Акустика на реальной геометрии пока представляет явно помеченный учебный сценарий.
 
 Актуальный проект расположен **в корне репозитория**. Подтянуты коммиты команды
@@ -163,7 +162,7 @@ API: <http://127.0.0.1:8000/api/health>. Оба процесса останав�
 
 ## Парсер и границы готовности
 
-По умолчанию `PARSER_MODE=offline` — **свободный текст без ключей и сети**: 14 демо-формулировок
+Альтернативный режим `PARSER_MODE=offline` — **свободный текст без ключей и сети**: 14 демо-формулировок
 (список в UI и `/api/demo-queries`) дают эталонный разбор, любой другой текст разбирается правилами
 `app/ml/rules_parser.py` по словарю `query_patterns` из реестра. Понимает тишину и шум, пляж и расстояния
 («не дальше 1,5 км», «между 300 и 800 м», «10 минут пешком» = 800 м), вид на море и закат, бары,
@@ -174,18 +173,13 @@ F1 по полям 0.65 (точное совпадение 0.41), после и�
 (оптимистично: исправлялось с оглядкой на held-out). Подробно — [VALIDATION](docs/VALIDATION.md).
 `PARSER_MODE=fixture` — только 14 демо-формулировок, остальное требует уточнения.
 
-Для свободного русского текста реализован `PARSER_MODE=ollama`:
-
-```dotenv
-PARSER_MODE=ollama
-OLLAMA_URL=http://127.0.0.1:11434
-MODEL_NAME=gemma3:12b
-```
-
-Установите Ollama отдельно, загрузите указанную модель (`ollama pull gemma3:12b`), запустите сервер
-и перезапустите backend. Конкретная RAM/VRAM зависит от выбранной модели и квантизации;
-в этой работе локальная модель не запускалась и её качество/производительность не измерялись.
-Ollama получает JSON Schema, 8 few-shot примеров и валидируется Pydantic; ошибки не заменяются выдуманными фильтрами.
+Общая модель и параметры задаются в `config/models.yaml`. В локальном `.env`
+можно задать `OLLAMA_URL=http://127.0.0.1:11434` (адрес inference-сервера).
+После `ollama pull gemma3:12b` и запуска Ollama перезапустите backend.
+28 октября Gemma 12B проверена двумя реальными запросами: поиск 18.94 с и разбор
+условия «не ближе 300 м» 5.85 с. Это smoke-проверка, не оценка качества на gold.
+Ollama получает JSON Schema и 2 few-shot примера; ответ проверяется Pydantic.
+Ошибки не заменяются выдуманными фильтрами.
 См. [официальную документацию structured outputs](https://docs.ollama.com/capabilities/structured-outputs).
 
 Отельер использует ограниченный offline-парсер простых предложений: номера, диапазоны, булево свойство, отрицание, этаж.
