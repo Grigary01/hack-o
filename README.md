@@ -18,7 +18,18 @@
 Вид из окна неизвестен до ответа отельера. Все ответы локального кабинета — **симуляция**
 и по умолчанию исключены из подбора. Это не сервис бронирования и не интеграция с API Островка.
 
-## Запуск
+## Запуск через Docker Compose
+
+```bash
+docker compose up --build --detach --wait
+```
+
+Frontend: <http://localhost:8501>, API/Swagger: <http://localhost:8000/docs>.
+Миграции и seed выполняются автоматически; SQLite сохраняется в Docker volume.
+Остановка: `docker compose down` — данные сохраняются.
+Настройки ML, порты и команды: [DOCKER](docs/DOCKER.md).
+
+## Запуск без Docker
 
 Проверено на macOS arm64, Python **3.12.7** (этапы backend) и **3.13.5** (исходное демо).
 Используйте Python 3.12+.
