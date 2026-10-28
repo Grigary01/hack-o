@@ -15,3 +15,5 @@ tests
 Островок
 Dockerfile
 docker-compose.yml
+web
+frontend/design
