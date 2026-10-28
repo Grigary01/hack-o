@@ -24,6 +24,8 @@ docker-compose.yml
 !README.md
 !LICENSE
 !THIRD_PARTY_NOTICES.md
+!config/
+!config/**
 !app/
 !app/**
 !frontend/
@@ -40,3 +42,6 @@ docker-compose.yml
 **/*.pyc
 **/*.pyo
 **/.DS_Store
+# Веб-фронтенд собирается своим образом (web/Dockerfile); макеты дизайна в образ не нужны.
+web
+frontend/design

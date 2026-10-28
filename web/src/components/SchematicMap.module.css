@@ -1,0 +1,123 @@
+.map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  overflow: hidden;
+  border-radius: var(--radius-l);
+  border: 1px solid var(--c-border);
+  background: var(--c-map-land);
+  isolation: isolate;
+}
+
+.base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.seaLabel {
+  position: absolute;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3c6f8f;
+}
+
+.seaEast {
+  top: var(--space-4);
+  right: var(--space-4);
+}
+
+.seaSouthwest {
+  bottom: var(--space-10);
+  left: var(--space-4);
+}
+
+.pin {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  border: 0;
+  background: none;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.pinLabel {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  min-width: 34px;
+  justify-content: center;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-m);
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(24, 43, 73, 0.12);
+  border: 1px solid rgba(23, 101, 238, 0.12);
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease;
+}
+
+.partial .pinLabel {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border-strong);
+}
+
+.excluded .pinLabel {
+  background: var(--c-surface);
+  color: var(--c-text-muted);
+  border-style: dashed;
+  border-color: var(--c-border-strong);
+}
+
+.pin:hover .pinLabel,
+.active .pinLabel {
+  background: var(--c-primary);
+  color: var(--c-text-inverse);
+  border-color: var(--c-primary);
+}
+
+.active {
+  z-index: 2;
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+.pin:focus-visible {
+  outline: none;
+}
+
+.pin:focus-visible .pinLabel {
+  box-shadow: var(--shadow-focus);
+}
+
+.pinName {
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-s);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-pop);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--c-text);
+  white-space: nowrap;
+}
+
+.caption {
+  position: absolute;
+  left: var(--space-5);
+  bottom: var(--space-4);
+  right: var(--space-5);
+  font-size: var(--fs-small);
+  color: var(--c-text-muted);
+}

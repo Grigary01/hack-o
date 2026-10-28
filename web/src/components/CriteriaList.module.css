@@ -1,0 +1,59 @@
+.wrap {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+}
+
+.list {
+  display: grid;
+  gap: 2px;
+}
+
+.item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  line-height: 1.45;
+}
+
+.m .item {
+  font-size: var(--fs-body);
+}
+
+.l .item {
+  font-size: var(--fs-body-l);
+}
+
+.icon {
+  flex: none;
+  transform: translateY(1px);
+}
+
+.met {
+  color: var(--c-success);
+}
+
+.mutedMet {
+  color: var(--c-text-muted);
+}
+
+.mutedMet .icon {
+  opacity: 0.7;
+}
+
+.weak {
+  color: var(--c-text-muted);
+}
+
+.violated {
+  color: var(--c-danger);
+}
+
+.unknown {
+  min-width: min(250px, 100%);
+}
+
+.conflict {
+  font-size: var(--fs-small);
+  color: var(--c-warning);
+}

@@ -1,0 +1,39 @@
+.notice {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-l);
+  font-size: var(--fs-body);
+}
+
+.title {
+  font-weight: 700;
+}
+
+.body {
+  line-height: var(--lh-body);
+}
+
+.body > * + * {
+  margin-top: var(--space-2);
+}
+
+.info {
+  background: var(--c-primary-soft);
+  color: var(--c-text);
+}
+
+.success {
+  background: var(--c-success-soft);
+  color: var(--c-success);
+}
+
+.warning {
+  background: var(--c-warning-soft);
+  color: var(--c-warning);
+}
+
+.danger {
+  background: var(--c-danger-soft);
+  color: var(--c-danger);
+}
