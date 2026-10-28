@@ -163,14 +163,33 @@ def summarize(cases):
                           'median_seconds': statistics.median(times) if times else None,
                           'p95_seconds': times[math.ceil(.95*len(times))-1] if times else None}
     summary['embedding_errors'] = sum(bool(c.get('embedding_error')) for c in cases)
+    # Верно ли решено, есть ли в запросе неподдержанное/неясное условие.
+    # Текст уточнения не сравниваем: правильных формулировок много.
+    labelled = [c for c in cases if 'expected' in c]
+    summary['ambiguity_accuracy'] = sum(bool(c['expected']['unknown_or_ambiguous']) == bool((c['actual'] or {}).get('unknown_or_ambiguous'))
+                                        for c in labelled)/len(labelled) if labelled else None
     return summary
+
+
+def by_category(cases):
+    """Короткий срез по полю category датасета: где именно парсер ошибается."""
+    groups = {}
+    for case in cases:
+        groups.setdefault(case.get('category') or 'all', []).append(case)
+    result = {}
+    for name, items in groups.items():
+        summary = summarize(items)
+        result[name] = {'queries': len(items), 'requirement_f1': summary['requirements']['f1'],
+                        'hard_exact_match': summary['hard_exact_match'],
+                        'ambiguity_accuracy': summary['ambiguity_accuracy'], 'error_rate': summary['error_rate']}
+    return result
 
 
 def main():
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument('--dataset', type=Path, default=ROOT/'data/evaluation/queries_gold.jsonl')
     source = cli.add_mutually_exclusive_group()
-    source.add_argument('--mode', choices=['fixture', 'offline', 'ollama', 'groq'])
+    source.add_argument('--mode', choices=['fixture', 'offline', 'ollama', 'groq', 'hybrid'])
     source.add_argument('--predictions', type=Path)
     cli.add_argument('--profile', help='Профиль из сохранённого benchmark-отчёта')
     cli.add_argument('--split', choices=['demo', 'held_out', 'all'], default='held_out')
@@ -209,6 +228,7 @@ def main():
 
     def save():
         report['summary'] = summarize(report['cases'])
+        report['by_category'] = by_category(report['cases'])
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False))
 
@@ -238,9 +258,11 @@ def main():
                     latency = None
             if saved is None:
                 latency = time.perf_counter()-started
-            case = {'text': row['text'], 'split': row['split'], 'expected': expected,
+            case = {'text': row['text'], 'split': row['split'], 'category': row.get('category'), 'expected': expected,
                     'actual': actual if error is None else None, 'error': error,
-                    'latency_seconds': latency, 'metrics': compare(expected, actual, failed=error is not None)}
+                    'latency_seconds': latency, 'metrics': compare(expected, actual, failed=error is not None),
+                    # hybrid: кто дал ответ — правила или LLM.
+                    'parser_source': getattr(parser, 'last_source', None)}
             if embed_client is not None and error is None and requirements(expected) and requirements(actual):
                 try:
                     case['metrics']['semantic_cosine'] = semantic_cosine(embed_client, args.embedding_model, expected, actual)
@@ -257,6 +279,11 @@ def main():
         if embed_client is not None:
             embed_client.close()
     print(json.dumps(report['summary'], ensure_ascii=False, indent=2))
+    fmt = lambda v: '-' if v is None else f'{v:.3f}'
+    print(f"{'category':14} {'n':>3} {'reqF1':>6} {'hardEM':>6} {'ambig':>6} {'err':>6}")
+    for name, row in report['by_category'].items():
+        print(f"{name:14} {row['queries']:>3} {fmt(row['requirement_f1']):>6} {fmt(row['hard_exact_match']):>6} "
+              f"{fmt(row['ambiguity_accuracy']):>6} {fmt(row['error_rate']):>6}")
     print(args.output)
 
 

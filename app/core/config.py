@@ -13,8 +13,8 @@ MODEL_CONFIG = load_model_config(ROOT / 'config/models.yaml')
 # запустить PARSER_MODE=offline без загрузки весов и без правки общего YAML.
 # Названия моделей и параметры генерации берутся только из версионируемого YAML.
 PARSER_MODE = os.getenv('PARSER_MODE', MODEL_CONFIG.parser_mode)
-if PARSER_MODE not in ('ollama', 'groq', 'offline', 'fixture'):
-    raise ValueError('PARSER_MODE должен быть ollama, groq, offline или fixture')
+if PARSER_MODE not in ('ollama', 'groq', 'offline', 'fixture', 'hybrid'):
+    raise ValueError('PARSER_MODE должен быть ollama, groq, offline, fixture или hybrid')
 
 
 @dataclass(frozen=True)
@@ -35,6 +35,7 @@ class Settings:
     temperature: float = MODEL_CONFIG.temperature
     max_output_tokens: int = MODEL_CONFIG.max_output_tokens
     groq_reasoning_effort: str = MODEL_CONFIG.groq_reasoning_effort
+    hybrid_llm: str = MODEL_CONFIG.hybrid_llm
     demo_dir: Path = ROOT / 'data/demo'
     environment_dir: Path = ROOT / 'data/environment'
     registry_path: Path = ROOT / 'app/features/registry.yaml'

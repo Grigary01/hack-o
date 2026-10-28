@@ -13,7 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 class ModelConfig(BaseModel):
     model_config = ConfigDict(extra='forbid', strict=True, allow_inf_nan=False)
-    parser_mode: Literal['ollama', 'groq', 'offline', 'fixture']
+    parser_mode: Literal['ollama', 'groq', 'offline', 'fixture', 'hybrid']
     model_name: str = Field(min_length=1)
     groq_model: str = Field(min_length=1)
     temperature: float = Field(ge=0, le=2)
@@ -21,6 +21,8 @@ class ModelConfig(BaseModel):
     ollama_num_ctx: int = Field(gt=0)
     parser_timeout_seconds: float = Field(gt=0)
     groq_reasoning_effort: Literal['low', 'medium', 'high']
+    # hybrid: какая LLM разбирает то, что не поняли правила.
+    hybrid_llm: Literal['ollama', 'groq'] = 'ollama'
 
 
 def load_model_config(path: Path) -> ModelConfig:
