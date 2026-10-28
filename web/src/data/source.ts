@@ -1,3 +1,4 @@
+import { createApiSource } from './api/source';
 import { createMockSource } from './mock/source';
 import type { DataMode, DataSource } from './types';
 
@@ -11,8 +12,7 @@ export const dataMode: DataMode = import.meta.env.VITE_DATA_MODE;
 function create(mode: DataMode): DataSource {
   switch (mode) {
     case 'api':
-      // Адаптер FastAPI подключается отдельным шагом.
-      throw new Error('Режим api ещё не реализован: используйте VITE_DATA_MODE=mock');
+      return createApiSource();
     case 'mock':
       return createMockSource();
     default:

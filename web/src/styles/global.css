@@ -64,6 +64,13 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Ссылка внутри текста должна отличаться не только цветом (WCAG 1.4.1). */
+p a:not([class]),
+li a:not([class]) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 :focus-visible {
   outline: 2px solid var(--c-primary);
   outline-offset: 2px;

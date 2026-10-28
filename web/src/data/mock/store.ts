@@ -47,6 +47,7 @@ export function resetState() {
 
 /** Задержка, чтобы в демо были видны состояния загрузки. */
 export function latency(ms = 450): Promise<void> {
+  if (import.meta.env.MODE === 'test') return Promise.resolve();
   const jitter = Math.round(Math.random() * 250);
   return new Promise((resolve) => setTimeout(resolve, ms + jitter));
 }
