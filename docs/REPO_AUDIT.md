@@ -2,7 +2,8 @@
 
 Прочитан реальный код [agent_tool_map](https://github.com/MaximShalankin/agent_tool_map),
 commit `45ad71a637f1c7bbf561934326cbd8854f27f118` (ветка main).
-Локальная неизменённая копия: `upstream/agent_tool_map/`. Это справочный код, не entrypoint MVP.
+Неизменённые исходники сохранены в `legacy/agent_tool_map_45ad71a.zip`.
+Это справочный код, не entrypoint MVP; отдельного `upstream/` в текущей папке нет.
 Аудит выполнен до реализации. Ни BIO, ни embeddings, ни MCP, ни маршрутизации по графу в нём нет.
 
 | Исходный файл и функция | Реальное поведение | Решение / новый модуль |

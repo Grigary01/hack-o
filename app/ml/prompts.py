@@ -83,7 +83,7 @@ utility={kind:target_range,ideal_min:250,ideal_max:450,tolerance:150}.
 СМЫСЛ ПРИЗНАКОВ
 Тишина — quietness_proxy desired="high". Шумный/оживлённый — "low".
 Вид на море — sea_view; вид на закат — sunset_view; шумоизоляция — soundproofing.
-Эти три признака относятся к room, остальные — hotel (см. реестр).
+Область scope каждого признака бери из реестра: например, вид и шторы — room.
 Вид из окна без направления неоднозначен: спроси, какой именно вид нужен.
 Не выводи расчётные спутники *_potential/*_min_floor вместо желания гостя:
 их при необходимости добавит backend. Самолёты/авиашум/близость аэропорта:
@@ -95,7 +95,7 @@ utility={kind:target_range,ideal_min:250,ideal_max:450,tolerance:150}.
     # Не копируем его вручную: новые признаки доступны обоим провайдерам.
     definitions = {
         key: {name: value for name, value in definition.model_dump().items()
-              if name in ('label', 'type', 'unit', 'scope', 'choices', 'default_weight')}
+              if name in ('label', 'type', 'unit', 'scope', 'choices', 'default_weight', 'aliases', 'description')}
         for key, definition in get_registry().definitions.items()
     }
     messages = [{'role': 'system', 'content': system + '\nРеестр: ' + json.dumps(definitions, ensure_ascii=False)}]

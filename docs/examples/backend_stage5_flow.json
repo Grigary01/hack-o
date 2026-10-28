@@ -1,0 +1,93 @@
+{
+  "checked_at": "2026-10-28T21:06:21.649457+00:00",
+  "transport": "Streamlit AppTest -> actual HTTP -> persistent SQLite",
+  "schema_revision_unchanged": "0003_question_lifecycle",
+  "real_model_used": false,
+  "health": {
+    "status": "ok",
+    "database": "ok",
+    "hotels": 25,
+    "parser_mode": "fixture",
+    "reply_parser_mode": "bounded_rules",
+    "demo_mode": true,
+    "external_services_checked": false
+  },
+  "typed_confirmation": {
+    "answer_id": "1cb43c1ff10143279816f4abb9f40467",
+    "status": "confirmed",
+    "idempotent": false,
+    "observation_ids": [
+      "1cb43c1ff10143279816f4abb9f40467:701"
+    ],
+    "conflicts": [],
+    "source_type": "hotelier_simulated",
+    "question": {
+      "id": "681141795ec34622379cb20f",
+      "hotel_id": "osm:node:11843553838",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "answered",
+      "created_at": "2026-10-28T19:33:50.289349Z",
+      "context": {
+        "reasons": [],
+        "subject_ids": [],
+        "review_answer_id": "1cb43c1ff10143279816f4abb9f40467"
+      },
+      "updated_at": "2026-10-28T21:06:22.297632Z"
+    }
+  },
+  "repeat_has_same_observation_ids": true,
+  "ui_conflict_resolution": {
+    "target_hotel_id": "osm:node:11843553838",
+    "question_id": "681141795ec34622379cb20f",
+    "before_matched": 3,
+    "after_matched": 4,
+    "explicit_selection_and_reason_required": true,
+    "question_closed": true,
+    "both_versions_preserved": true,
+    "search_refreshed_without_manual_button": true,
+    "resolution": {
+      "selected_observation_id": "1cb43c1ff10143279816f4abb9f40467:701",
+      "reason": "Проверено через экран конфликтов: исходный ответ о номере 701",
+      "conflict_id": "c296f59082b87e2af1521d0d8a80846cf0e656389ff0f87a6b9a8468d390de7f",
+      "resolved_at": "2026-10-28T21:06:23.659001Z",
+      "operator_id": "demo_operator"
+    }
+  },
+  "errors": {
+    "not_found": {
+      "status_code": 404,
+      "body": {
+        "code": "not_found",
+        "detail": "Ответ не найден"
+      }
+    },
+    "invalid_request": {
+      "status_code": 422,
+      "body": {
+        "code": "invalid_request",
+        "detail": [
+          {
+            "type": "bool_type",
+            "loc": [
+              "body",
+              "accept"
+            ],
+            "msg": "Input should be a valid boolean",
+            "input": "yes"
+          }
+        ]
+      }
+    },
+    "state_conflict": {
+      "status_code": 409,
+      "body": {
+        "code": "state_conflict",
+        "detail": "Решение уже принято; создайте новый ответ"
+      }
+    }
+  },
+  "restart_preserves_ui_decision_and_search": true,
+  "database_integrity": "ok",
+  "browser_visual_check": "not performed: CUA inventory has no browsers or apps; native pipe startup fails"
+}

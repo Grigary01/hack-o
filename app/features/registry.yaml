@@ -61,7 +61,7 @@ sea_view:
   query_patterns: ['вид\w* на мор\w*', 'мор\w* из окн\w*', 'видн\w* мор\w*', 'окн\w* на мор\w*', 'панорам\w* мор\w*', 'морск\w* вид\w*', 'видовой']
   query_desired: true
   companions:
-    - {feature_key: sea_view_potential, desired_if_true: wide, desired_if_false: none}
+    - {feature_key: sea_view_potential, desired_if_true: wide}
   model_check: {potential: sea_view_potential, none_value: none, min_floor: sea_view_min_floor}
 soundproofing:
   label: Шумоизоляция номера
@@ -90,7 +90,7 @@ sunset_view:
   query_patterns: ['закат\w*', 'заход\w* солнц\w*']
   query_desired: true
   companions:
-    - {feature_key: sunset_view_potential, desired_if_true: year_round, desired_if_false: none}
+    - {feature_key: sunset_view_potential, desired_if_true: year_round}
   model_check: {potential: sunset_view_potential, none_value: none, min_floor: sunset_view_min_floor}
 sea_view_potential:
   label: Вид на море из окон (расчёт)
@@ -262,3 +262,16 @@ quiet_side_potential:
   choice_labels: {low: шумно со всех сторон, medium: умеренно, high: есть тихая сторона}
   query_patterns: ['тих\w* сторон\w*', 'окн\w* (выходят |смотрят )?во двор', '\bво двор\w*', 'окн\w* не на (улиц|дорог)\w*']
   query_desired: high
+blackout_curtains:
+  label: Плотные шторы
+  description: Утверждение отельера о плотных шторах в конкретном номере, независимо не проверено.
+  type: boolean
+  unit: null
+  scope: room
+  provider: hotelier
+  ttl_days: 180
+  default_weight: 0.5
+  query_desired: true
+  query_patterns: ['плотн\w* штор\w*', 'бл[эе]каут\w*', '\bblackout\b']
+  aliases: [плотные шторы, плотных штор, плотными шторами, шторы блэкаут, штор блэкаут, блэкаут]
+  question: В каких конкретно номерах есть или нет плотных штор? Укажите номера и этаж, если известен.

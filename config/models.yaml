@@ -2,6 +2,7 @@
 # Здесь нет ключей, адресов личных серверов или весов модели.
 # После изменения перезапустите backend.
 parser_mode: ollama  # ollama | groq | offline (правила) | fixture (готовые примеры)
+reply_parser_mode: rules  # rules | fixture | ollama | groq; отдельный разбор ответа отельера
 model_name: gemma3:12b
 groq_model: openai/gpt-oss-120b  # используется только при parser_mode: groq
 

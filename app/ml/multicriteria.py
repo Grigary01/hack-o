@@ -12,7 +12,7 @@
 оценки всей альтернативы. Это границы по отсутствующим данным, НЕ доверительный
 интервал; измерительные ошибки известных фактов пока в него не включены.
 
-F = (1-balance) * weighted_mean(group_utilities) + balance * min(group_utilities).
+F = (1-balance) * weighted_mean(group_utilities) + balance * (1 - max(relative_weight * (1 - group_utility))).
 Положительный balance уменьшает компенсацию плохой группы отличной другой.
 Сортируем по нижней границе, показываем обе. Hard-ограничения остаются отдельно.
 """
@@ -60,8 +60,13 @@ def aggregate(preferences, matches, balance=.25):
         return dict(lower=0.,upper=0.,coverage=0.,score=None,groups=[])
     mean = lambda key:sum(g['weight']*g[key] for g in result)/total
     coverage=mean('coverage')
-    lower=(1-balance)*mean('lower')+balance*min(g['lower'] for g in result)
-    upper=(1-balance)*mean('upper')+balance*min(g['upper'] for g in result)
+    # Слабое пожелание не должно штрафовать так же сильно, как главное.
+    # Нормируем вес на самый важный: при равных весах это прежний min(utility).
+    # При весе, стремящемся к нулю, штраф тоже исчезает непрерывно.
+    maximum = max(g['weight'] for g in result)
+    worst = lambda key: 1 - max(g['weight'] / maximum * (1 - g[key]) for g in result)
+    lower=(1-balance)*mean('lower')+balance*worst('lower')
+    upper=(1-balance)*mean('upper')+balance*worst('upper')
     return dict(lower=lower,upper=upper,coverage=coverage,
                 score=mean('lower')/coverage if coverage else None,groups=result)
 

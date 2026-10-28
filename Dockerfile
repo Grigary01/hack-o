@@ -21,6 +21,9 @@ COPY --from=builder /opt/venv /opt/venv
 COPY pyproject.toml ./
 COPY app ./app
 COPY config ./config
+COPY alembic.ini ./
+COPY migrations ./migrations
+COPY docker ./docker
 COPY frontend ./frontend
 COPY scripts ./scripts
 COPY data ./data
@@ -28,4 +31,4 @@ RUN mkdir -p /app/runtime && chown app:app /app/runtime
 USER app
 EXPOSE 8000 8501
 # По умолчанию — API: идемпотентный seed демо-данных, затем uvicorn.
-CMD ["sh", "-c", "python -m scripts.seed_demo && exec python -m uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+CMD ["sh", "/app/docker/backend-entrypoint.sh", "python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

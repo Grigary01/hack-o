@@ -15,13 +15,13 @@ from app.features.service import resolve_feature
 
 
 def model_disagreements(observations, hotel_id, room_subject_id, feature_key,
-                        include_simulated=False, now=None):
+                        include_simulated=False, now=None, *, conflicts=()):
     """Список расхождений для текущего значения отельера о номере (может быть пуст)."""
     definition = get_registry().get(feature_key)
     check = definition.model_check
     if check is None or room_subject_id is None:
         return []
-    claim = resolve_feature(observations, room_subject_id, feature_key, include_simulated, now)
+    claim = resolve_feature(observations, room_subject_id, feature_key, include_simulated, now, conflicts=conflicts)
     if claim.value is not True:
         return []
     decisions = [o for o in claim.observations if o.evidence.source.type == 'operator_decision']
@@ -31,7 +31,7 @@ def model_disagreements(observations, hotel_id, room_subject_id, feature_key,
                  and o.evidence.source.type != 'operator_decision']
         if decision.value == claim.value and not newer:
             return []  # оператор уже разобрал расхождение и оставил значение отельера
-    potential = resolve_feature(observations, hotel_id, check.potential, include_simulated, now)
+    potential = resolve_feature(observations, hotel_id, check.potential, include_simulated, now, conflicts=conflicts)
     if potential.value is None:
         return []
     claim_obs = max((o for o in claim.observations if o.value is True), key=lambda o: o.collected_at)
@@ -46,7 +46,7 @@ def model_disagreements(observations, hotel_id, room_subject_id, feature_key,
                        'text': f'Отельер указал «{definition.label.lower()}» в номере {room}, '
                                f'а расчёт по зданию этого не видит. {hint}'.strip()})
     elif check.min_floor and floor is not None:
-        min_floor = resolve_feature(observations, hotel_id, check.min_floor, include_simulated, now)
+        min_floor = resolve_feature(observations, hotel_id, check.min_floor, include_simulated, now, conflicts=conflicts)
         if min_floor.value is not None and floor < min_floor.value:
             floor_obs = max(min_floor.observations, key=lambda o: o.collected_at)
             result.append({'reason': 'below_model_min_floor', 'hotelier_observation_id': claim_obs.id,

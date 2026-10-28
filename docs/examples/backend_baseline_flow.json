@@ -1,0 +1,353 @@
+{
+  "checked_at": "2026-10-28T19:33:50.235164+00:00",
+  "transport": "real HTTP; persistent SQLite; no clock patch",
+  "health": {
+    "status": "ok",
+    "database": "ok",
+    "hotels": 25,
+    "parser_mode": "fixture",
+    "demo_mode": true,
+    "external_services_checked": false
+  },
+  "streamlit_health": "ok",
+  "parsed": {
+    "region": "Adler",
+    "hard_constraints": [
+      {
+        "feature_key": "walking_distance_to_beach_m",
+        "operator": "<=",
+        "value": 500,
+        "unit": "m",
+        "scope": "hotel"
+      }
+    ],
+    "soft_preferences": [
+      {
+        "feature_key": "quietness_proxy",
+        "desired": "high",
+        "importance": 0.9,
+        "weight_source": "default",
+        "scope": "hotel",
+        "utility": null
+      },
+      {
+        "feature_key": "sea_view",
+        "desired": true,
+        "importance": 0.6,
+        "weight_source": "default",
+        "scope": "room",
+        "utility": null
+      }
+    ],
+    "unknown_or_ambiguous": [],
+    "clarification_question": null,
+    "original_text": "Ищу тихий отель в Адлере, не дальше 500 метров пешком от пляжа, хотелось бы вид на море"
+  },
+  "search_before_answer": {
+    "matched": 12,
+    "needs_verification": 2,
+    "excluded": 11
+  },
+  "selected_hotel": {
+    "id": "osm:node:10058556917",
+    "name": "Островок",
+    "lat": 43.428439,
+    "lon": 39.9153879,
+    "region": "Adler",
+    "tags": {
+      "name": "Островок",
+      "tourism": "hotel"
+    },
+    "source_url": "https://www.openstreetmap.org/node/10058556917",
+    "collected_at": "2026-10-23T20:46:09.761121Z"
+  },
+  "first_result_criteria": [
+    {
+      "feature_key": "walking_distance_to_beach_m",
+      "actual": 319.8,
+      "status": "estimated",
+      "outcome": "matched"
+    },
+    {
+      "feature_key": "quietness_proxy",
+      "actual": "high",
+      "status": "estimated",
+      "outcome": "preference"
+    },
+    {
+      "feature_key": "sea_view",
+      "actual": null,
+      "status": "unknown",
+      "outcome": "unknown"
+    }
+  ],
+  "question": {
+    "id": "83b438bce2520e9e12c1a28b",
+    "hotel_id": "osm:node:10058556917",
+    "feature_key": "sea_view",
+    "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+    "status": "open",
+    "created_at": "2026-10-28T19:33:50.286650+00:00"
+  },
+  "pending_answer": {
+    "id": "29c0c6f3820d4e439e48b4bad13f99c9",
+    "question_id": "83b438bce2520e9e12c1a28b",
+    "text": "В номере 301 есть вид на море, на 3-м этаже.",
+    "extraction": {
+      "claims": [
+        {
+          "room_number": "301",
+          "floor": 3,
+          "feature_key": "sea_view",
+          "value": true,
+          "quote": "В номере 301 есть вид на море, на 3-м этаже"
+        }
+      ],
+      "unparsed": [],
+      "parser_mode": "bounded_rules"
+    },
+    "status": "pending",
+    "simulated": true,
+    "created_at": "2026-10-28T19:33:50.303626+00:00"
+  },
+  "pending_has_no_observations": true,
+  "confirmed": {
+    "answer_id": "29c0c6f3820d4e439e48b4bad13f99c9",
+    "status": "confirmed",
+    "observation_ids": [
+      "29c0c6f3820d4e439e48b4bad13f99c9:301"
+    ],
+    "conflicts": [],
+    "source_type": "hotelier_simulated"
+  },
+  "repeat_confirmation": {
+    "answer_id": "29c0c6f3820d4e439e48b4bad13f99c9",
+    "status": "confirmed",
+    "idempotent": true
+  },
+  "strict_real": {
+    "matched": 0,
+    "needs_verification": 25,
+    "excluded": 0
+  },
+  "strict_demo_after_confirmation": {
+    "matched": 1,
+    "needs_verification": 24,
+    "excluded": 0
+  },
+  "contradiction_confirmation": {
+    "answer_id": "65ce78c54d3f462c8b67dfd88183b31a",
+    "status": "confirmed",
+    "observation_ids": [
+      "65ce78c54d3f462c8b67dfd88183b31a:301"
+    ],
+    "conflicts": [
+      {
+        "id": "09bed89dd6bffca4a0b912c26200b43d8bc85990926b235ad925686ee51b37a5",
+        "hotel_id": "osm:node:10058556917",
+        "subject_id": "osm:node:10058556917:room:301",
+        "feature_key": "sea_view",
+        "left_id": "29c0c6f3820d4e439e48b4bad13f99c9:301",
+        "right_id": "65ce78c54d3f462c8b67dfd88183b31a:301",
+        "created_at": "2026-10-28T19:33:50.330955+00:00",
+        "policy": "withhold_and_ask_hotelier"
+      }
+    ],
+    "source_type": "hotelier_simulated"
+  },
+  "strict_demo_after_conflict": {
+    "matched": 0,
+    "needs_verification": 25,
+    "excluded": 0
+  },
+  "conflicting_observations": [
+    {
+      "id": "29c0c6f3820d4e439e48b4bad13f99c9:301",
+      "hotel_id": "osm:node:10058556917",
+      "subject_type": "room",
+      "subject_id": "osm:node:10058556917:room:301",
+      "feature_key": "sea_view",
+      "value": true,
+      "unit": null,
+      "observed_at": "2026-10-28T19:33:50.307927Z",
+      "collected_at": "2026-10-28T19:33:50.307927Z",
+      "expires_at": "2027-01-26T19:33:50.307927Z",
+      "status": "estimated",
+      "confidence_level": "low",
+      "confidence": null,
+      "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+      "quality_flags": [
+        "simulated",
+        "hotelier_claim_not_independently_verified"
+      ],
+      "evidence": {
+        "source": {
+          "type": "hotelier_simulated",
+          "name": "Отельер (демо)",
+          "ref": "29c0c6f3820d4e439e48b4bad13f99c9",
+          "url": null
+        },
+        "method": "human_confirmed_extraction",
+        "raw_excerpt": "В номере 301 есть вид на море, на 3-м этаже.",
+        "snapshot_path": null,
+        "details": {
+          "quote": "В номере 301 есть вид на море, на 3-м этаже",
+          "floor": 3,
+          "question_id": "83b438bce2520e9e12c1a28b"
+        }
+      }
+    },
+    {
+      "id": "65ce78c54d3f462c8b67dfd88183b31a:301",
+      "hotel_id": "osm:node:10058556917",
+      "subject_type": "room",
+      "subject_id": "osm:node:10058556917:room:301",
+      "feature_key": "sea_view",
+      "value": false,
+      "unit": null,
+      "observed_at": "2026-10-28T19:33:50.330498Z",
+      "collected_at": "2026-10-28T19:33:50.330498Z",
+      "expires_at": "2027-01-26T19:33:50.330498Z",
+      "status": "estimated",
+      "confidence_level": "low",
+      "confidence": null,
+      "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+      "quality_flags": [
+        "simulated",
+        "hotelier_claim_not_independently_verified"
+      ],
+      "evidence": {
+        "source": {
+          "type": "hotelier_simulated",
+          "name": "Отельер (демо)",
+          "ref": "65ce78c54d3f462c8b67dfd88183b31a",
+          "url": null
+        },
+        "method": "human_confirmed_extraction",
+        "raw_excerpt": "В номере 301 нет вида на море.",
+        "snapshot_path": null,
+        "details": {
+          "quote": "В номере 301 нет вида на море",
+          "floor": null,
+          "question_id": "83b438bce2520e9e12c1a28b"
+        }
+      }
+    }
+  ],
+  "conflicted_current_demo": [
+    {
+      "subject_id": "osm:node:10058556917:room:301",
+      "feature_key": "sea_view",
+      "value": null,
+      "status": "conflicted",
+      "observations": [
+        {
+          "id": "29c0c6f3820d4e439e48b4bad13f99c9:301",
+          "hotel_id": "osm:node:10058556917",
+          "subject_type": "room",
+          "subject_id": "osm:node:10058556917:room:301",
+          "feature_key": "sea_view",
+          "value": true,
+          "unit": null,
+          "observed_at": "2026-10-28T19:33:50.307927Z",
+          "collected_at": "2026-10-28T19:33:50.307927Z",
+          "expires_at": "2027-01-26T19:33:50.307927Z",
+          "status": "estimated",
+          "confidence_level": "low",
+          "confidence": null,
+          "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+          "quality_flags": [
+            "simulated",
+            "hotelier_claim_not_independently_verified"
+          ],
+          "evidence": {
+            "source": {
+              "type": "hotelier_simulated",
+              "name": "Отельер (демо)",
+              "ref": "29c0c6f3820d4e439e48b4bad13f99c9",
+              "url": null
+            },
+            "method": "human_confirmed_extraction",
+            "raw_excerpt": "В номере 301 есть вид на море, на 3-м этаже.",
+            "snapshot_path": null,
+            "details": {
+              "quote": "В номере 301 есть вид на море, на 3-м этаже",
+              "floor": 3,
+              "question_id": "83b438bce2520e9e12c1a28b"
+            }
+          }
+        },
+        {
+          "id": "65ce78c54d3f462c8b67dfd88183b31a:301",
+          "hotel_id": "osm:node:10058556917",
+          "subject_type": "room",
+          "subject_id": "osm:node:10058556917:room:301",
+          "feature_key": "sea_view",
+          "value": false,
+          "unit": null,
+          "observed_at": "2026-10-28T19:33:50.330498Z",
+          "collected_at": "2026-10-28T19:33:50.330498Z",
+          "expires_at": "2027-01-26T19:33:50.330498Z",
+          "status": "estimated",
+          "confidence_level": "low",
+          "confidence": null,
+          "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+          "quality_flags": [
+            "simulated",
+            "hotelier_claim_not_independently_verified"
+          ],
+          "evidence": {
+            "source": {
+              "type": "hotelier_simulated",
+              "name": "Отельер (демо)",
+              "ref": "65ce78c54d3f462c8b67dfd88183b31a",
+              "url": null
+            },
+            "method": "human_confirmed_extraction",
+            "raw_excerpt": "В номере 301 нет вида на море.",
+            "snapshot_path": null,
+            "details": {
+              "quote": "В номере 301 нет вида на море",
+              "floor": null,
+              "question_id": "83b438bce2520e9e12c1a28b"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "known_gap_question_status_after_conflict_and_search": "answered",
+  "known_gap_conflict_resolution_endpoint_present": false,
+  "streamlit_apptest_real_http": {
+    "search": "passed",
+    "question": "passed",
+    "answer": "passed",
+    "confirmation": "passed",
+    "browser_visual_check": "unavailable: no browsers or native apps in CUA inventory"
+  },
+  "restart_persistence": {
+    "passed": true,
+    "health": {
+      "status": "ok",
+      "database": "ok",
+      "hotels": 25,
+      "parser_mode": "fixture",
+      "demo_mode": true,
+      "external_services_checked": false
+    },
+    "counts_before_restart": {
+      "hotels": 25,
+      "rooms": 6,
+      "observations": 82,
+      "hotelier_questions": 25,
+      "hotelier_answers": 3,
+      "conflicts": 1,
+      "environment_reports": 27
+    },
+    "conflicting_observations_preserved": true,
+    "conflict_preserved": true,
+    "question_preserved": true,
+    "backup_path": "runtime/backups/backend_baseline_20261028.db",
+    "backup_integrity": "ok"
+  }
+}

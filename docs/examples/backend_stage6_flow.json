@@ -1,0 +1,127 @@
+{
+  "checked_at": "2026-10-28T21:19:17.694701+00:00",
+  "transport": "existing Streamlit -> actual HTTP -> SQLite",
+  "real_model_used": false,
+  "schema_revision_unchanged": "0003_question_lifecycle",
+  "feature_key": "blackout_curtains",
+  "definition": {
+    "label": "Плотные шторы",
+    "description": "Утверждение отельера о плотных шторах в конкретном номере, независимо не проверено.",
+    "type": "boolean",
+    "unit": null,
+    "scope": "room",
+    "provider": "hotelier",
+    "ttl_days": 180,
+    "default_weight": 0.5,
+    "aliases": [
+      "плотные шторы",
+      "плотных штор",
+      "плотными шторами",
+      "шторы блэкаут",
+      "штор блэкаут",
+      "блэкаут"
+    ],
+    "choices": [],
+    "question": "В каких конкретно номерах есть или нет плотных штор? Укажите номера и этаж, если известен.",
+    "scale": 1000.0
+  },
+  "registry_size": 7,
+  "parsed_query": {
+    "region": "Adler",
+    "hard_constraints": [
+      {
+        "feature_key": "blackout_curtains",
+        "operator": "=",
+        "value": true,
+        "unit": null,
+        "scope": "room"
+      }
+    ],
+    "soft_preferences": [],
+    "unknown_or_ambiguous": [],
+    "clarification_question": null,
+    "original_text": "Нужен номер с плотными шторами"
+  },
+  "observations": [
+    {
+      "id": "d70be7a95b824a2a86e786a09e8da0c7:501",
+      "hotel_id": "osm:node:11843553839",
+      "subject_type": "room",
+      "subject_id": "osm:node:11843553839:room:501",
+      "feature_key": "blackout_curtains",
+      "value": true,
+      "unit": null,
+      "observed_at": "2026-10-28T21:19:19.905385Z",
+      "collected_at": "2026-10-28T21:19:19.905385Z",
+      "expires_at": "2027-04-26T21:19:19.905385Z",
+      "status": "estimated",
+      "confidence_level": "low",
+      "confidence": null,
+      "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+      "quality_flags": [
+        "simulated",
+        "hotelier_claim_not_independently_verified"
+      ],
+      "evidence": {
+        "source": {
+          "type": "hotelier_simulated",
+          "name": "Отельер (демо)",
+          "ref": "d70be7a95b824a2a86e786a09e8da0c7",
+          "url": null
+        },
+        "method": "human_confirmed_extraction",
+        "raw_excerpt": "В номере 501 есть плотные шторы.",
+        "snapshot_path": null,
+        "details": {
+          "quote": "В номере 501 есть плотные шторы",
+          "floor": null,
+          "question_id": "0fa7198c680137fc5b615be0"
+        }
+      }
+    },
+    {
+      "id": "8f500f4572364445bab2315d607be914:502",
+      "hotel_id": "osm:node:11843553839",
+      "subject_type": "room",
+      "subject_id": "osm:node:11843553839:room:502",
+      "feature_key": "blackout_curtains",
+      "value": false,
+      "unit": null,
+      "observed_at": "2026-10-28T21:19:20.276283Z",
+      "collected_at": "2026-10-28T21:19:20.276283Z",
+      "expires_at": "2027-04-26T21:19:20.276283Z",
+      "status": "estimated",
+      "confidence_level": "low",
+      "confidence": null,
+      "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+      "quality_flags": [
+        "simulated",
+        "hotelier_claim_not_independently_verified"
+      ],
+      "evidence": {
+        "source": {
+          "type": "hotelier_simulated",
+          "name": "Отельер (демо)",
+          "ref": "8f500f4572364445bab2315d607be914",
+          "url": null
+        },
+        "method": "human_confirmed_extraction",
+        "raw_excerpt": "В номере 502 нет плотных штор.",
+        "snapshot_path": null,
+        "details": {
+          "quote": "В номере 502 нет плотных штор",
+          "floor": null,
+          "question_id": "0fa7198c680137fc5b615be0"
+        }
+      }
+    }
+  ],
+  "both_ranking_methods_and_simulation_policy": "passed",
+  "ui_unknown_pending_confirmed_pipeline": "passed; 0 matches before confirmation, 1 afterwards",
+  "question_id": "0fa7198c680137fc5b615be0",
+  "restart_preserves_feature_and_room_facts": true,
+  "definition_persisted_by_idempotent_seed": true,
+  "database_integrity": "ok",
+  "browser_visual_check": "not performed; no browser available in this session",
+  "real_model_quality": "not measured; model adapter schema/prompt integration covered by MockTransport tests"
+}
