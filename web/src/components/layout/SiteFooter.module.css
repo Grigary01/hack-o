@@ -1,0 +1,14 @@
+.footer {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--space-12) var(--page-gutter) var(--space-6);
+  font-size: var(--fs-small);
+  color: var(--c-text-muted);
+}
+
+.inset {
+  max-width: none;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+}

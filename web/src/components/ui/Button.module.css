@@ -1,0 +1,108 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-width: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-m);
+  font-weight: 650;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-fast) ease,
+    border-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    transform var(--dur-fast) ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button:hover {
+  text-decoration: none;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.button[aria-busy='true'] {
+  cursor: progress;
+  opacity: 0.85;
+}
+
+/* Размеры по макету: высота 48, ширина ~250 */
+.l {
+  min-height: 48px;
+  padding: 0 var(--space-8);
+  font-size: var(--fs-body);
+  min-width: 174px;
+}
+
+.m {
+  min-height: 40px;
+  padding: 0 var(--space-5);
+  font-size: var(--fs-small);
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+.primary {
+  background: var(--c-primary);
+  color: var(--c-text-inverse);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--c-primary-hover);
+}
+
+.primary:active:not(:disabled) {
+  background: var(--c-primary-active);
+}
+
+.secondary {
+  background: var(--c-surface);
+  color: var(--c-primary);
+  border-color: var(--c-border);
+}
+
+.secondary:hover:not(:disabled) {
+  border-color: var(--c-primary);
+  background: var(--c-primary-soft);
+}
+
+.link {
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 var(--space-2);
+  background: transparent;
+  color: var(--c-primary);
+  font-weight: 500;
+}
+
+.link:hover:not(:disabled) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .l {
+    padding: 0 var(--space-5);
+    min-width: 0;
+    white-space: normal;
+  }
+}

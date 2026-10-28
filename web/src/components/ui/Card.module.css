@@ -1,0 +1,40 @@
+.card {
+  min-width: 0;
+  border-radius: var(--radius-l);
+}
+
+.surface {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+}
+
+.muted {
+  background: var(--c-surface-muted);
+}
+
+.primary {
+  background: var(--c-primary-soft);
+}
+
+.warning {
+  background: var(--c-warning-soft);
+  color: var(--c-warning);
+}
+
+.pads {
+  padding: var(--space-4);
+}
+
+.padm {
+  padding: var(--space-5);
+}
+
+.padl {
+  padding: var(--space-7);
+}
+
+@media (max-width: 560px) {
+  .padl {
+    padding: var(--space-5);
+  }
+}
