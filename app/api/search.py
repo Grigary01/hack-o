@@ -4,8 +4,9 @@ from app.agent.feature_agent import FeatureAgent
 from app.schemas.search import ParseRequest, SearchRequest, SearchResponse
 from app.schemas.query import ParsedHotelQuery
 from app.ml.ranking import rank_hotels
+from app.schemas.errors import ERROR_RESPONSES
 
-router = APIRouter(prefix='/api',tags=['search'])
+router = APIRouter(prefix='/api',tags=['search'], responses=ERROR_RESPONSES)
 
 
 @router.post('/parse-query',response_model=ParsedHotelQuery)
@@ -19,7 +20,8 @@ def search(payload: SearchRequest,request: Request,repo=Depends(repository)):
     parsed = payload.parsed.model_copy(deep=True) if payload.parsed else parser.parse(payload.text)
     mode = 'structured_input' if payload.parsed else parser.mode
     if parsed.region != 'Adler' or parsed.unknown_or_ambiguous or parsed.clarification_question:
-        return SearchResponse(parsed=parsed,parser_mode=mode,status='needs_clarification',ranking_method=payload.ranking_method)
+        return SearchResponse(parsed=parsed,parser_mode=mode,status='needs_clarification',
+                              ranking_method=payload.ranking_method,balance=payload.balance)
     if payload.include_simulated and not request.app.state.config.demo_mode:
         raise HTTPException(403,'Симуляция доступна только в DEMO_MODE')
     preferences = {p.feature_key:p for p in parsed.soft_preferences}
@@ -39,12 +41,14 @@ def search(payload: SearchRequest,request: Request,repo=Depends(repository)):
         for key in keys:
             decision = agent.ensure(hotel.id,key,payload.include_simulated)
             result = decision.get('result',{})
-            if decision.get('tool_used')=='hotelier' and result.get('id'):
+            if (decision.get('tool_used')=='hotelier' and result.get('id')
+                    and result.get('status') == 'open'):
                 questions.setdefault(hotel.id,[]).append(result['id'])
     groups = rank_hotels(parsed,[(h,repo.observations(h.id)) for h in hotels],payload.include_simulated,
-                         payload.ranking_method,payload.balance)
+                         payload.ranking_method,payload.balance,conflicts=repo.conflict_records())
     for rows in groups.values():
         for item in rows:
             item.pending_hotelier_question_ids = questions.get(item.hotel.id,[])
     return SearchResponse(parsed=parsed,parser_mode=mode,trace=agent.trace,
-                          include_simulated=payload.include_simulated,ranking_method=payload.ranking_method,**groups)
+                          include_simulated=payload.include_simulated,ranking_method=payload.ranking_method,
+                          balance=payload.balance,**groups)

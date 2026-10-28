@@ -10,12 +10,26 @@
 |---|---|---|---|
 | 1. Агент собирает и вычисляет | DONE (MVP) | `app/agent/*`, `app/geo/*`; 25 отелей, 23 маршрута, trace выбора tool; test_feature_agent/test_geo_routes | Constrained rules planner; входы оценочные, нет автономного web research |
 | 2. Диалог с отельером | DONE (MVP) | `app/hotelier/dialogue.py`, `app/api/hotelier.py`, UI; range/negation, confirmation, persist | Симуляция; bounded grammar, сложный текст требует уточнения |
-| 3. Хранение и достоверность | DONE (MVP) | `app/storage/*`, `app/features/service.py`; source/date/confidence, TTL, обе версии конфликта | Конфликт блокирует факт и возвращает к вопросу; ручной resolver ещё TODO |
-| 4. Расширяемость | DONE (MVP) | YAML boolean room feature + existing hotelier provider; тест blackout_curtains | Новая геоматематика требует calculator; fixture-запрос добавляется отдельно |
-| 5. Поиск по запросу | DONE для demo; IN_PROGRESS для качества свободного NLP | 12 offline формулировок, typed filters/ranking; Ollama schema adapter | Реальная модель не запускалась; универсальное качество не подтверждено |
+| 3. Хранение и достоверность | DONE (MVP) | `app/storage/*`, `app/features/service.py`; source/date/confidence, TTL, явное решение и повторное открытие вопроса | Реальной авторизации нет; качество реального свободного текста ещё не проверено |
+| 4. Расширяемость | DONE (MVP) | YAML boolean room feature + existing hotelier provider; [полный путь blackout_curtains](REGISTRY_EXTENSION.md), тест следующего ключа reading_lamp | Новая геоматематика требует calculator; fixture-запрос добавляется отдельно |
+| 5. Поиск по запросу | DONE для demo; IN_PROGRESS для качества свободного NLP | 13 offline формулировок, typed filters/ranking; Ollama schema adapter | Реальная модель не запускалась; универсальное качество не подтверждено |
 
 ## Уже сделано дополнительно
 
+- DONE локально 29.10, этап 7 — **У3/У4**: повторяемая приёмка
+  `python -m scripts.verify_backend`, чистая установка из ZIP, общий прогон,
+  документация и комплект передачи. В обеих средах 188 passed, 1 skipped;
+  HTTP/UI, миграция/seed и перезапуск проверены. Реальный ML и визуальный QA
+  остаются TODO. [Сдача и отчёты](BACKEND_HANDOFF.md).
+- DONE 29.10, этап 6 — **У3/У1/У4**: новая характеристика `blackout_curtains`
+  проходит реестр → запрос → вопрос → подтверждение → поиск без специальных ветвлений.
+  188 passed, 1 skipped; настоящий HTTP/UI, SQLite и перезапуск.
+  [Подключение и проверки](REGISTRY_EXTENSION.md).
+
+- DONE 29.10 — **У3/У4**: типы ответов, стабильное подтверждение, единые ошибки,
+  экран обеих версий и причины решения, обновление выдачи/истории с сохранением
+  параметров. 177 passed, 1 skipped; UI → настоящий HTTP → SQLite и перезапуск.
+  [Контракт, OpenAPI и инструкция](API_FRONTEND_INTEGRATION.md).
 - DONE — **У1**: hard/soft separation, веса, same-room matching, coverage; [ranking](../app/ml/ranking.py).
 - DONE — **У1**: 44 синтетических assistant-authored случая, не проверенных человеком, 12 demo/32 held-out и честный evaluator; [evaluation](../scripts/evaluate_parser.py).
 - DONE — **У2**: raw OSM, GraphML, checksum, все 75 значений воспроизводятся; [validator](../scripts/validate_data.py).
@@ -35,18 +49,26 @@
   источники/дата и сравнение расчётов с проверенной проходимой трассой. Не менять low confidence без оснований.
 - **P0 / У4 / TODO** — Визуальная проверка в браузере, в том числе узкий экран, длинные названия и карта.
   `frontend/app.py`. Готово, когда просмотрены реальные экраны; AppTest не заменяет визуальный QA.
-- **P1 / У3 / TODO** — Разрешение конфликта оператором с причиной, выбранной версией и историей решений.
+- **P1 / У3 / DONE 28.10** — Разрешение конфликта оператором с причиной, выбранной версией и историей решений.
   `app/features/service.py`, `app/storage/models.py`, `app/api/hotelier.py`. Готово: конфликт не удаляется,
   выбранное значение возвращается в поиск только после явного решения, есть тесты.
+  [API, заглушка frontend и контракт ML](CONFLICT_INTEGRATION.md).
+- **P1 / У3 / DONE 28.10, этап 3** — Вопрос повторно открывается при конфликте/устаревании;
+  не закрывается при оставшихся проблемах по другому номеру, pending/отклонённом разборе.
+  История и один вопрос на пару сохранены. [Контракт очереди](QUESTION_INTEGRATION.md).
 - **P1 / У1+У3 / TODO** — Ollama structured extractor свободных ответов отельера с условиями/сезонностью;
   `app/hotelier/dialogue.py`, `app/schemas/hotelier.py`. Готово: gold replies, сохранённые цитаты,
   scope/условия не теряются, confirmation остаётся обязательным.
+  Backend-часть этапа 4 DONE: ReplyParser, rules/fixture, HTTP-адаптеры,
+  валидация перед pending/confirm и ошибки 502/503. [Интеграция](REPLY_PARSER_INTEGRATION.md).
+  Реальный прогон и качество остаются TODO; сезонные условия пока требуют уточнения.
 - **P1 / У2 / TODO** — Добавить авиационный фактор/другой независимый источник шума и калибровку;
   `app/geo/quietness.py`. Готово: источники, метод, метрика против размеченной проверки; не выдавать дБ без модели.
 - **P1 / У2+У3 / TODO** — Плановое обновление snapshot с версионированием и обработкой удалённых отелей.
   `scripts/collect_adler_osm.py`, `app/storage/repository.py`. Сейчас TTL учитывается, но автоматической загрузки нет.
-- **P1 / У3 / TODO** — Авторизация реального отельера, ownership, миграции SQLite и проверки конкурентных записей.
+- **P1 / У3 / TODO** — Авторизация реального отельера и ownership.
   `app/api/hotelier.py`, `app/storage/*`. Нельзя публиковать текущий симулятор как реальный кабинет.
+  Миграции SQLite, повторные и конкурентные решения конфликтов проверены в этапе 2.
 - **P2 / У2 / TODO** — DEM/buildings/facade/floor viewshed, только при достаточных источниках.
   Будущий `app/geo/viewshed.py` пока намеренно не создан.
 - **P2 / У1 / TODO** — Semantic retrieval описаний после детерминированных фильтров; embeddings сейчас не нужны.
@@ -54,10 +76,13 @@
 
 ## Ограничения среды
 
-Браузерный UI-инструмент недоступен (`CUA_REPL_ENABLED_SURFACES is required`); визуальный QA не заявляется.
-Обновление 26 октября: Ollama 0.40.2 установлена, список локальных моделей пуст. Это ограничения проверки, не маскируются DONE.
-Для Git используется отдельная рабочая копия `runtime/publish/hack-o/`, чтобы не затронуть репозиторий домашнего каталога.
-Ветка разработки — `development/adler-mvp` в `Grigary01/hack-o`; оригинальный проект сохранён в `upstream/` и `legacy/`.
+Состояние 29 октября: CUA не находит браузеров/приложений, native pipe не запускается;
+визуальный QA не заявляется. Ollama HTTP недоступна, `GROQ_API_KEY` отсутствует;
+[preflight](examples/backend_stage7_ml_preflight.json) не запускал генерацию.
+Рабочая папка — корневой `hack-o`, ветка передачи — `grisha_hack`.
+Старая вложенная `Островок/` и временная копия чистой установки удалены при очистке 29.10;
+отчёты проверок сохранены. Основная `.venv`, рабочая БД и резервные копии оставлены.
+Исторические отчёты ниже относятся к другой среде команды 24–26 октября.
 
 ## Обновление 26 октября
 

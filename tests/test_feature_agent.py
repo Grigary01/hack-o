@@ -38,20 +38,21 @@ def test_missing_geo_feature_is_calculated_and_saved(repo):
 
 def test_yaml_only_room_feature_extension(repo,tmp_path,monkeypatch):
     raw=yaml.safe_load(settings.registry_path.read_text())
-    raw['blackout_curtains']={'label':'Плотные шторы','description':'Утверждение отельера',
+    assert 'reading_lamp' not in raw
+    raw['reading_lamp']={'label':'Лампа для чтения','description':'Утверждение отельера',
         'type':'boolean','scope':'room','provider':'hotelier','ttl_days':180,'default_weight':.5,
-        'aliases':['плотные шторы'],'question':'В каких номерах есть плотные шторы?'}
+        'aliases':['лампа для чтения'],'question':'В каких номерах есть лампа для чтения?'}
     path=tmp_path/'features.yaml';path.write_text(yaml.safe_dump(raw,allow_unicode=True))
     with monkeypatch.context() as scoped:
         scoped.setattr('app.features.registry.settings',replace(settings,registry_path=path))
         get_registry.cache_clear()
         try:
             # Загрузчик должен обращаться к текущему пути конфигурации.
-            assert get_registry().get('blackout_curtains').provider=='hotelier'
+            assert get_registry().get('reading_lamp').provider=='hotelier'
             h=repo.hotels()[0]
-            decision=FeatureAgent(repo).ensure(h.id,'blackout_curtains')
+            decision=FeatureAgent(repo).ensure(h.id,'reading_lamp')
             assert decision['tool_used']=='hotelier'
-            extracted=parse_hotelier_reply('blackout_curtains','В номере 501 есть плотные шторы.')
+            extracted=parse_hotelier_reply('reading_lamp','В номере 501 есть лампа для чтения.')
             assert extracted.claims[0].value is True
         finally:
             get_registry.cache_clear()

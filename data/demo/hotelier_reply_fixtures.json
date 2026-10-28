@@ -1,0 +1,99 @@
+[
+  {
+    "feature_key": "sea_view",
+    "text": "301: море видно. 302: окна во двор.",
+    "extraction": {
+      "claims": [
+        {
+          "room_number": "301",
+          "floor": null,
+          "feature_key": "sea_view",
+          "value": true,
+          "quote": "301: море видно"
+        },
+        {
+          "room_number": "302",
+          "floor": null,
+          "feature_key": "sea_view",
+          "value": false,
+          "quote": "302: окна во двор"
+        }
+      ],
+      "unparsed": [],
+      "parser_mode": "fixture"
+    }
+  },
+  {
+    "feature_key": "soundproofing",
+    "text": "В 405 установлена шумоизоляция.",
+    "extraction": {
+      "claims": [
+        {
+          "room_number": "405",
+          "floor": null,
+          "feature_key": "soundproofing",
+          "value": true,
+          "quote": "В 405 установлена шумоизоляция"
+        }
+      ],
+      "unparsed": [],
+      "parser_mode": "fixture"
+    }
+  },
+  {
+    "feature_key": "sea_view",
+    "text": "В номере 301 вид на море только зимой.",
+    "extraction": {
+      "claims": [],
+      "unparsed": [
+        "В номере 301 вид на море только зимой."
+      ],
+      "parser_mode": "fixture"
+    }
+  },
+  {
+    "feature_key": "sea_view",
+    "text": "Не уверен насчёт вида из 701.",
+    "extraction": {
+      "claims": [],
+      "unparsed": [
+        "Не уверен насчёт вида из 701."
+      ],
+      "parser_mode": "fixture"
+    }
+  },
+  {
+    "feature_key": "blackout_curtains",
+    "text": "В номере 501 есть плотные шторы.",
+    "extraction": {
+      "claims": [
+        {
+          "room_number": "501",
+          "floor": null,
+          "feature_key": "blackout_curtains",
+          "value": true,
+          "quote": "В номере 501 есть плотные шторы"
+        }
+      ],
+      "unparsed": [],
+      "parser_mode": "fixture"
+    }
+  },
+  {
+    "feature_key": "blackout_curtains",
+    "text": "В номере 502 нет плотных штор.",
+    "extraction": {
+      "claims": [
+        {
+          "room_number": "502",
+          "floor": null,
+          "feature_key": "blackout_curtains",
+          "value": false,
+          "quote": "В номере 502 нет плотных штор"
+        }
+      ],
+      "unparsed": [],
+      "parser_mode": "fixture"
+    }
+  }
+]

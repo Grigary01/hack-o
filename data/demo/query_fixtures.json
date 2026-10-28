@@ -290,5 +290,25 @@
       "clarification_question": null,
       "original_text": "Хочу тихий отель не дальше 500 метров пешком от пляжа, желательно номер с видом на море"
     }
+  },
+  {
+    "text": "Нужен номер с плотными шторами",
+    "split": "demo",
+    "expected": {
+      "region": "Adler",
+      "hard_constraints": [
+        {
+          "feature_key": "blackout_curtains",
+          "operator": "=",
+          "value": true,
+          "unit": null,
+          "scope": "room"
+        }
+      ],
+      "soft_preferences": [],
+      "unknown_or_ambiguous": [],
+      "clarification_question": null,
+      "original_text": "Нужен номер с плотными шторами"
+    }
   }
 ]
