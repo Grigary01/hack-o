@@ -39,7 +39,11 @@ class FeatureAgent:
         definition = get_registry().get(feature_key)
         observations = self.repo.observations(hotel_id,feature_key)
         subject_ids = {o.subject_id for o in observations} if definition.scope=='room' else {hotel_id}
-        states = [resolve_feature(observations,s,feature_key,include_simulated) for s in subject_ids]
+        conflicts = self.repo.conflict_records(hotel_id)
+        if definition.provider == 'hotelier':
+            self.repo.refresh_existing_question(hotel_id, feature_key)
+        states = [resolve_feature(observations,s,feature_key,include_simulated,
+                                  conflicts=conflicts) for s in subject_ids]
         entry = {'hotel_id':hotel_id,'feature_key':feature_key,'provider':definition.provider}
         if states and all(s.value is not None for s in states):
             entry.update(action='read_evidence',reason='fresh_known_observation')

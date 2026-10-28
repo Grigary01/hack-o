@@ -58,8 +58,7 @@ class FeatureDefinition(BaseModel):
     # True: отрицание не переворачивает желание («без подъёмов» — тоже поменьше подъёмов).
     query_negation_keeps: bool = False
     # Текстовая подсказка LLM-парсеру: как гости называют признак и как заполнить desired.
-    # Только признаки с подсказкой попадают в промпт и enum схемы LLM: расчётные
-    # спутники (*_potential, *_min_floor) модель не выводит, их добавляет backend.
+    # Какие признаки видит LLM, решает app/ml/prompts.py:query_features.
     query_hint: str | None = None
 
     @model_validator(mode='after')

@@ -1,0 +1,87 @@
+{
+  "checked_at": "2026-10-28T20:37:28.963530+00:00",
+  "transport": "real HTTP; persistent SQLite; explicit ML fixture; real model not used",
+  "schema_revision_unchanged": "0003_question_lifecycle",
+  "ollama_preflight": {
+    "http_available": false,
+    "configured_model_present": false
+  },
+  "groq_key_configured": false,
+  "real_generation_validation": "pending: no configured ready model/key; no quality metrics claimed",
+  "fixture_health": {
+    "status": "ok",
+    "database": "ok",
+    "hotels": 25,
+    "parser_mode": "fixture",
+    "reply_parser_mode": "fixture",
+    "demo_mode": true,
+    "external_services_checked": false
+  },
+  "pending_answer": {
+    "id": "a4cead9ac28540f8918159674aeab899",
+    "question_id": "5bb693e8689ec1fa5cacecda",
+    "text": "301: море видно. 302: окна во двор.",
+    "extraction": {
+      "claims": [
+        {
+          "room_number": "301",
+          "floor": null,
+          "feature_key": "sea_view",
+          "value": true,
+          "quote": "301: море видно"
+        },
+        {
+          "room_number": "302",
+          "floor": null,
+          "feature_key": "sea_view",
+          "value": false,
+          "quote": "302: окна во двор"
+        }
+      ],
+      "unparsed": [],
+      "parser_mode": "fixture"
+    },
+    "status": "pending",
+    "simulated": true,
+    "created_at": "2026-10-28T20:37:29.613398+00:00"
+  },
+  "pending_does_not_create_facts": true,
+  "confirmation": {
+    "answer_id": "a4cead9ac28540f8918159674aeab899",
+    "status": "confirmed",
+    "observation_ids": [
+      "a4cead9ac28540f8918159674aeab899:301",
+      "a4cead9ac28540f8918159674aeab899:302"
+    ],
+    "conflicts": [],
+    "source_type": "hotelier_simulated"
+  },
+  "confirmation_changes_only_simulated_search": true,
+  "condition_requires_clarification": {
+    "status_code": 422,
+    "body": {
+      "detail": "Ответ разобран не полностью. Отклоните его и уточните формулировку."
+    }
+  },
+  "unknown_fixture_text_not_replaced": true,
+  "missing_model_error": {
+    "status_code": 503,
+    "body": {
+      "detail": "Настройте GROQ_API_KEY на backend; обработчик ответа не подключён."
+    },
+    "database_counts_unchanged": true
+  },
+  "rules_health": {
+    "status": "ok",
+    "database": "ok",
+    "hotels": 25,
+    "parser_mode": "fixture",
+    "reply_parser_mode": "bounded_rules",
+    "demo_mode": true,
+    "external_services_checked": false
+  },
+  "extraction_and_evidence_survive_parser_swap_and_restart": true,
+  "existing_streamlit_real_http": "search, answer preview and confirmation passed with default rules",
+  "database_integrity": "ok",
+  "browser_visual_check": "not performed; browser unavailable in this session"
+}

@@ -1,0 +1,55 @@
+{
+  "checked_at": "2026-10-28T22:30:05.232085+00:00",
+  "project": "hack-o-check-f80a1a6e",
+  "real_model_used": false,
+  "base": "http://127.0.0.1:18000",
+  "health": {
+    "status": "ok",
+    "database": "ok",
+    "hotels": 25,
+    "parser_mode": "fixture",
+    "reply_parser_mode": "bounded_rules",
+    "demo_mode": true,
+    "external_services_checked": false
+  },
+  "frontend_to_backend_internal_dns": "passed",
+  "geo_search": {
+    "matched": 12,
+    "needs_verification": 2,
+    "excluded": 11
+  },
+  "pending_confirm_search_simulation_policy": "passed",
+  "volume_survives_down_and_up": true,
+  "repeat_start_migration_seed_preserve_answers": true,
+  "container": {
+    "uid": 10001,
+    "architecture": "aarch64",
+    "revision": "0003_question_lifecycle",
+    "integrity": "ok",
+    "backup_count": 1,
+    "build_context_exclusions": "passed"
+  },
+  "pip_check": "No broken requirements found.",
+  "services": [
+    {
+      "Service": "backend",
+      "State": "running",
+      "Health": "healthy"
+    },
+    {
+      "Service": "frontend",
+      "State": "running",
+      "Health": "healthy"
+    }
+  ],
+  "host_database_unchanged": true,
+  "status": "passed",
+  "isolated_test_project_and_volume_removed": true,
+  "pytest": {
+    "tests": 189,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "passed": 188
+  }
+}

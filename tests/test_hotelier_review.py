@@ -71,7 +71,7 @@ def test_resolution_validates_choice_and_correction_needs_value(client):
     conflict = corrected['conflicts'][0]
     other = client.post(f'/api/hotelier/conflicts/{conflict["id"]}/resolve',
                         json={'chosen_observation_id': 'not-in-conflict', 'reason': 'ошибка'})
-    assert other.status_code == 422
+    assert other.status_code == 404  # неизвестный id: общий контракт backend
 
 
 def test_operator_can_side_with_model_on_room_claim(client, after_viewshed_snapshot):

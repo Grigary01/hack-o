@@ -22,7 +22,7 @@ def hotel_facts(repo, hotel_id):
     for key, definition in get_registry().definitions.items():
         if definition.scope != 'hotel':
             continue
-        state = resolve_feature(observations, hotel_id, key, include_simulated=True)
+        state = resolve_feature(observations, hotel_id, key, include_simulated=True, conflicts=repo.conflict_records(hotel_id))
         if not state.observations:
             continue
         model = [o for o in state.observations if o.evidence.source.type in MODEL_SOURCES]
@@ -44,7 +44,7 @@ def review_fact(repo, hotel_id, feature_key, verdict, value=None, comment=''):
     if definition.scope != 'hotel':
         raise ValueError('Через проверку фактов правятся только характеристики отеля; номера — через вопросы')
     observations = repo.observations(hotel_id, feature_key)
-    current = resolve_feature(observations, hotel_id, feature_key, include_simulated=True)
+    current = resolve_feature(observations, hotel_id, feature_key, include_simulated=True, conflicts=repo.conflict_records(hotel_id))
     model = [o for o in observations if o.evidence.source.type in MODEL_SOURCES and o.value is not None]
     if not model:
         raise ValueError('Для этой характеристики нет расчёта, который можно подтвердить')
@@ -74,7 +74,7 @@ def review_fact(repo, hotel_id, feature_key, verdict, value=None, comment=''):
             'conflicts': [c for c in repo.conflicts(hotel_id) if observation.id in (c['left_id'], c['right_id'])]}
 
 
-def resolve_conflict(repo, conflict_id, chosen_observation_id, reason):
+def record_review_decision(repo, conflict_id, chosen_observation_id, reason):
     conflict = repo.conflict(conflict_id)
     if chosen_observation_id not in (conflict['left_id'], conflict['right_id']):
         raise ValueError('Выберите одну из двух версий этого конфликта')
@@ -85,7 +85,7 @@ def resolve_conflict(repo, conflict_id, chosen_observation_id, reason):
     value = chosen.value if chosen.feature_key == conflict['feature_key'] else False
     now = now_utc()
     decision = Observation(
-        id='decision:' + uuid.uuid4().hex, hotel_id=conflict['hotel_id'],
+        id='decision:' + conflict_id, hotel_id=conflict['hotel_id'],
         subject_type='room' if ':room:' in conflict['subject_id'] else 'hotel', subject_id=conflict['subject_id'],
         feature_key=conflict['feature_key'], value=value, unit=definition.unit,
         observed_at=now, collected_at=now, expires_at=now + timedelta(days=definition.ttl_days),
@@ -102,3 +102,14 @@ def resolve_conflict(repo, conflict_id, chosen_observation_id, reason):
                                                                          rejected.evidence.source.type)}))
     repo.save_observation(decision)
     return {'decision_observation_id': decision.id, 'value': value, 'conflict_id': conflict_id}
+
+
+def resolve_conflict(repo, conflict_id, chosen_observation_id, reason):
+    """Старый Python-вход использует ту же транзакцию и идемпотентность, что HTTP."""
+    resolution, idempotent = repo.resolve_conflict(conflict_id, chosen_observation_id, reason)
+    conflict = repo.conflict(conflict_id)
+    current = resolve_feature(repo.observations(conflict['hotel_id']), conflict['subject_id'],
+                              conflict['feature_key'], include_simulated=True,
+                              conflicts=repo.conflict_records(conflict['hotel_id']))
+    return {'conflict_id': conflict_id, 'resolution': resolution.model_dump(mode='json'),
+            'idempotent': idempotent, 'value': current.value}

@@ -26,6 +26,10 @@ class ParserError(ValueError):
     """Отличает проблему LLM от обычной ошибки ввода. API вернёт HTTP 502."""
 
 
+class QueryParserUnavailable(ParserError):
+    """Ключ/модель/сервис недоступны; API вернёт 503 без подмены запроса."""
+
+
 class QueryParser(Protocol):
     """Общий интерфейс, а не третий парсер.
 
@@ -203,7 +207,7 @@ class OllamaQueryParser:
             'messages': query_messages(text, schema),
         }
 
-        # Шаг 3. Максимум две попытки. Бесконечный retry заморозил бы интерфейс.
+        # Шаг 3. До двух попыток при невалидном контракте; отказ сети/сервиса — сразу.
         for attempt in range(2):
             try:
                 response = self.client.post(
@@ -222,7 +226,14 @@ class OllamaQueryParser:
                 # Для аудита берём реальный ввод; не доверяем его пересказу LLM.
                 parsed.original_text = text
                 return drop_invented_numbers(parsed, text)
-            except (httpx.HTTPError, ValidationError, KeyError, TypeError, ValueError) as exc:
+            except httpx.HTTPStatusError as exc:
+                status = exc.response.status_code
+                if status in (401, 403, 404, 408, 429) or status >= 500:
+                    raise QueryParserUnavailable(f'Ollama HTTP {status}: сервис или модель недоступны.') from exc
+                raise ParserError(f'Ollama отклонила запрос (HTTP {status}); фильтры не подменены.') from exc
+            except httpx.HTTPError as exc:
+                raise QueryParserUnavailable('Ollama недоступна по сети; фильтры не подменены.') from exc
+            except (ValidationError, KeyError, TypeError, ValueError) as exc:
                 if attempt == 1:
                     # Никакого скрытого fallback: ошибка модели не означает,
                     # что следует заменить запрос одним из demo-примеров.
@@ -262,7 +273,7 @@ JSON-schema best-effort сохраняет необязательные поля
     def parse(self, text):
         from app.ml.prompts import query_messages
         if not self.config.groq_api_key:
-            raise ParserError('Добавьте GROQ_API_KEY в локальный .env; облачная модель ещё не подключена.')
+            raise QueryParserUnavailable('Добавьте GROQ_API_KEY в локальный .env; облачная модель ещё не подключена.')
         schema = llm_schema()
         payload = {'model':self.config.groq_model, 'messages':query_messages(text,schema),
                    'temperature':self.config.temperature,
@@ -277,6 +288,8 @@ JSON-schema best-effort сохраняет необязательные поля
                 response = self.client.post('https://api.groq.com/openai/v1/chat/completions',
                     headers={'Authorization':'Bearer '+self.config.groq_api_key}, json=payload)
                 if response.is_error:
+                    if response.status_code in (401, 403, 404, 408, 429) or response.status_code >= 500:
+                        raise QueryParserUnavailable(f'Groq HTTP {response.status_code}: проверьте ключ, модель и квоту.')
                     raise ParserError(f'Groq HTTP {response.status_code}: проверьте ключ, доступность модели и бесплатную квоту.')
                 raw = response.json()
                 if raw['choices'][0].get('finish_reason') != 'stop':
@@ -285,7 +298,7 @@ JSON-schema best-effort сохраняет необязательные поля
                 parsed.original_text = text
                 return drop_invented_numbers(parsed, text)
             except httpx.HTTPError as exc:
-                raise ParserError('Groq недоступен по сети; запрос не подменён.') from exc
+                raise QueryParserUnavailable('Groq недоступен по сети; запрос не подменён.') from exc
             except (ValidationError, KeyError, TypeError, ValueError) as exc:
                 if isinstance(exc, ParserError):
                     raise

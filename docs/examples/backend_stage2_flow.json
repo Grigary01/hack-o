@@ -1,0 +1,239 @@
+{
+  "checked_at": "2026-10-28T19:51:47.708889+00:00",
+  "transport": "real HTTP; frontend ConflictClient; persistent migrated SQLite",
+  "migration": {
+    "revision": "0002_conflict_resolutions",
+    "backup": "/Users/grishaa/dev/hack_0/hack-o/runtime/backups/backend_stage2.20261028T195147Z.a2b5fce1.db"
+  },
+  "legacy_counts_preserved": {
+    "hotels": 25,
+    "rooms": 6,
+    "observations": 82,
+    "hotelier_questions": 25,
+    "hotelier_answers": 3,
+    "conflicts": 1,
+    "environment_reports": 27
+  },
+  "before_resolution_target_matched": false,
+  "resolution": {
+    "conflict_id": "157692d7734d8343775c0eaa77d72c727b4104547f7470d2638fb0572c811005",
+    "status": "resolved",
+    "resolution": {
+      "selected_observation_id": "663320cc2d4f42eaa66392ce0e904059:901",
+      "reason": "Проверка интеграции frontend/backend/ML",
+      "conflict_id": "157692d7734d8343775c0eaa77d72c727b4104547f7470d2638fb0572c811005",
+      "resolved_at": "2026-10-28T19:51:48.415011Z",
+      "operator_id": "demo_operator"
+    },
+    "idempotent": false,
+    "current": {
+      "subject_id": "osm:node:10759614195:room:901",
+      "feature_key": "sea_view",
+      "value": true,
+      "status": "estimated",
+      "observations": [
+        {
+          "id": "663320cc2d4f42eaa66392ce0e904059:901",
+          "hotel_id": "osm:node:10759614195",
+          "subject_type": "room",
+          "subject_id": "osm:node:10759614195:room:901",
+          "feature_key": "sea_view",
+          "value": true,
+          "unit": null,
+          "observed_at": "2026-10-28T19:51:48.379270Z",
+          "collected_at": "2026-10-28T19:51:48.379270Z",
+          "expires_at": "2027-01-26T19:51:48.379270Z",
+          "status": "estimated",
+          "confidence_level": "low",
+          "confidence": null,
+          "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+          "quality_flags": [
+            "simulated",
+            "hotelier_claim_not_independently_verified"
+          ],
+          "evidence": {
+            "source": {
+              "type": "hotelier_simulated",
+              "name": "Отельер (демо)",
+              "ref": "663320cc2d4f42eaa66392ce0e904059",
+              "url": null
+            },
+            "method": "human_confirmed_extraction",
+            "raw_excerpt": "В номере 901 есть вид на море.",
+            "snapshot_path": null,
+            "details": {
+              "quote": "В номере 901 есть вид на море",
+              "floor": null,
+              "question_id": "a0371aadf32e4ec15c1ac98f"
+            }
+          }
+        },
+        {
+          "id": "fb51da4ff56546ab888ca3a3bb3a43ed:901",
+          "hotel_id": "osm:node:10759614195",
+          "subject_type": "room",
+          "subject_id": "osm:node:10759614195:room:901",
+          "feature_key": "sea_view",
+          "value": false,
+          "unit": null,
+          "observed_at": "2026-10-28T19:51:48.384117Z",
+          "collected_at": "2026-10-28T19:51:48.384117Z",
+          "expires_at": "2027-01-26T19:51:48.384117Z",
+          "status": "estimated",
+          "confidence_level": "low",
+          "confidence": null,
+          "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+          "quality_flags": [
+            "simulated",
+            "hotelier_claim_not_independently_verified"
+          ],
+          "evidence": {
+            "source": {
+              "type": "hotelier_simulated",
+              "name": "Отельер (демо)",
+              "ref": "fb51da4ff56546ab888ca3a3bb3a43ed",
+              "url": null
+            },
+            "method": "human_confirmed_extraction",
+            "raw_excerpt": "В номере 901 нет вида на море.",
+            "snapshot_path": null,
+            "details": {
+              "quote": "В номере 901 нет вида на море",
+              "floor": null,
+              "question_id": "a0371aadf32e4ec15c1ac98f"
+            }
+          }
+        }
+      ],
+      "resolved_conflict_ids": [
+        "157692d7734d8343775c0eaa77d72c727b4104547f7470d2638fb0572c811005"
+      ]
+    }
+  },
+  "frontend_adapter_real_http": "passed",
+  "repeat_is_idempotent": true,
+  "restart_preserves_decision_and_search": true,
+  "new_contradiction_blocks_target_again": true,
+  "current_after_new_contradiction": {
+    "subject_id": "osm:node:10759614195:room:901",
+    "feature_key": "sea_view",
+    "value": null,
+    "status": "conflicted",
+    "observations": [
+      {
+        "id": "663320cc2d4f42eaa66392ce0e904059:901",
+        "hotel_id": "osm:node:10759614195",
+        "subject_type": "room",
+        "subject_id": "osm:node:10759614195:room:901",
+        "feature_key": "sea_view",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-10-28T19:51:48.379270Z",
+        "collected_at": "2026-10-28T19:51:48.379270Z",
+        "expires_at": "2027-01-26T19:51:48.379270Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+        "quality_flags": [
+          "simulated",
+          "hotelier_claim_not_independently_verified"
+        ],
+        "evidence": {
+          "source": {
+            "type": "hotelier_simulated",
+            "name": "Отельер (демо)",
+            "ref": "663320cc2d4f42eaa66392ce0e904059",
+            "url": null
+          },
+          "method": "human_confirmed_extraction",
+          "raw_excerpt": "В номере 901 есть вид на море.",
+          "snapshot_path": null,
+          "details": {
+            "quote": "В номере 901 есть вид на море",
+            "floor": null,
+            "question_id": "a0371aadf32e4ec15c1ac98f"
+          }
+        }
+      },
+      {
+        "id": "fb51da4ff56546ab888ca3a3bb3a43ed:901",
+        "hotel_id": "osm:node:10759614195",
+        "subject_type": "room",
+        "subject_id": "osm:node:10759614195:room:901",
+        "feature_key": "sea_view",
+        "value": false,
+        "unit": null,
+        "observed_at": "2026-10-28T19:51:48.384117Z",
+        "collected_at": "2026-10-28T19:51:48.384117Z",
+        "expires_at": "2027-01-26T19:51:48.384117Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+        "quality_flags": [
+          "simulated",
+          "hotelier_claim_not_independently_verified"
+        ],
+        "evidence": {
+          "source": {
+            "type": "hotelier_simulated",
+            "name": "Отельер (демо)",
+            "ref": "fb51da4ff56546ab888ca3a3bb3a43ed",
+            "url": null
+          },
+          "method": "human_confirmed_extraction",
+          "raw_excerpt": "В номере 901 нет вида на море.",
+          "snapshot_path": null,
+          "details": {
+            "quote": "В номере 901 нет вида на море",
+            "floor": null,
+            "question_id": "a0371aadf32e4ec15c1ac98f"
+          }
+        }
+      },
+      {
+        "id": "dc4b9b57ee5c45138e30f879a539588a:901",
+        "hotel_id": "osm:node:10759614195",
+        "subject_type": "room",
+        "subject_id": "osm:node:10759614195:room:901",
+        "feature_key": "sea_view",
+        "value": false,
+        "unit": null,
+        "observed_at": "2026-10-28T19:51:49.184441Z",
+        "collected_at": "2026-10-28T19:51:49.184441Z",
+        "expires_at": "2027-01-26T19:51:49.184441Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+        "quality_flags": [
+          "simulated",
+          "hotelier_claim_not_independently_verified"
+        ],
+        "evidence": {
+          "source": {
+            "type": "hotelier_simulated",
+            "name": "Отельер (демо)",
+            "ref": "dc4b9b57ee5c45138e30f879a539588a",
+            "url": null
+          },
+          "method": "human_confirmed_extraction",
+          "raw_excerpt": "В номере 901 нет вида на море.",
+          "snapshot_path": null,
+          "details": {
+            "quote": "В номере 901 нет вида на море",
+            "floor": null,
+            "question_id": "a0371aadf32e4ec15c1ac98f"
+          }
+        }
+      }
+    ],
+    "resolved_conflict_ids": [
+      "157692d7734d8343775c0eaa77d72c727b4104547f7470d2638fb0572c811005"
+    ]
+  },
+  "target_hotel_id": "osm:node:10759614195",
+  "question_lifecycle": "unchanged; reopening is stage 3",
+  "browser_visual_check": "not performed; no browser available in this session"
+}

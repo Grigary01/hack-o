@@ -108,8 +108,14 @@ class SoftPreference(Contract):
             pass
         else:
             registry.validate_value(self.feature_key, self.desired)
-        if (self.weight_source == 'companion') != (self.derived_from is not None):
-            raise ValueError('companion-вес требует derived_from, и наоборот')
+        if self.weight_source == 'companion' and self.derived_from is None:
+            raise ValueError('companion-вес требует derived_from')
+        if self.derived_from is not None:
+            if self.weight_source not in ('companion', 'explicit'):
+                raise ValueError('Производное пожелание имеет автоматический или явный вес')
+            parent = registry.get(self.derived_from)
+            if not any(c.feature_key == self.feature_key for c in parent.companions):
+                raise ValueError('Связь derived_from отсутствует в реестре')
         if self.weight_source == 'default':
             # Модель не может выдать случайный вес за «стандартный»:
             # доверяем default_weight из нашего YAML, не её числу.

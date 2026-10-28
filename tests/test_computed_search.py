@@ -33,7 +33,7 @@ def test_companions_follow_registry_and_respect_negation():
     assert companion.desired == 'wide' and companion.derived_from == 'sea_view'
     assert not expanded.hard_constraints[0].feature_key.endswith('potential')  # hard не ужесточается
     negative = expand(parser.parse('Нужен номер без вида на море'))
-    assert negative.soft_preferences[0].desired == 'none'
+    assert negative.soft_preferences == []  # отсутствие вида из номера не описывает всё здание
     assert expand(expanded).soft_preferences == expanded.soft_preferences  # идемпотентно
     # LLM не видит полей, которые заполняет только backend.
     soft = llm_schema()['$defs']['SoftPreference']['properties']

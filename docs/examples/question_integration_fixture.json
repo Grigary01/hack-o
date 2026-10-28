@@ -1,0 +1,144 @@
+{
+  "fixture_only": true,
+  "ttl_scenario_uses_simulated_clock": true,
+  "description": "Снимки настоящего API с симулированными ответами; не реальные свойства номера.",
+  "question_request": {
+    "hotel_id": "osm:node:10058556917",
+    "feature_key": "sea_view"
+  },
+  "question_states": {
+    "open": {
+      "id": "83b438bce2520e9e12c1a28b",
+      "hotel_id": "osm:node:10058556917",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "open",
+      "created_at": "2026-10-28T21:05:11.330495Z",
+      "context": {
+        "reasons": [
+          "unknown"
+        ],
+        "subject_ids": [],
+        "review_answer_id": null
+      },
+      "updated_at": "2026-10-28T21:05:11.330495Z"
+    },
+    "pending": {
+      "id": "83b438bce2520e9e12c1a28b",
+      "hotel_id": "osm:node:10058556917",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "open",
+      "created_at": "2026-10-28T21:05:11.330495Z",
+      "context": {
+        "reasons": [
+          "pending_answer",
+          "unknown"
+        ],
+        "subject_ids": [
+          "osm:node:10058556917:room:301"
+        ],
+        "review_answer_id": "92b3cbb269b64df6b6b0c3875791e7a1"
+      },
+      "updated_at": "2026-10-28T21:05:11.334144Z"
+    },
+    "answered": {
+      "id": "83b438bce2520e9e12c1a28b",
+      "hotel_id": "osm:node:10058556917",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "answered",
+      "created_at": "2026-10-28T21:05:11.330495Z",
+      "context": {
+        "reasons": [],
+        "subject_ids": [],
+        "review_answer_id": "92b3cbb269b64df6b6b0c3875791e7a1"
+      },
+      "updated_at": "2026-10-28T21:05:11.339915Z"
+    },
+    "reopened": {
+      "id": "83b438bce2520e9e12c1a28b",
+      "hotel_id": "osm:node:10058556917",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "open",
+      "created_at": "2026-10-28T21:05:11.330495Z",
+      "context": {
+        "reasons": [
+          "conflicted"
+        ],
+        "subject_ids": [
+          "osm:node:10058556917:room:301"
+        ],
+        "review_answer_id": "e53ca75de612465988dea4f3a20493e7"
+      },
+      "updated_at": "2026-10-28T21:05:11.346302Z"
+    },
+    "resolved": {
+      "id": "83b438bce2520e9e12c1a28b",
+      "hotel_id": "osm:node:10058556917",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "answered",
+      "created_at": "2026-10-28T21:05:11.330495Z",
+      "context": {
+        "reasons": [],
+        "subject_ids": [],
+        "review_answer_id": "e53ca75de612465988dea4f3a20493e7"
+      },
+      "updated_at": "2026-10-28T21:05:11.353039Z"
+    },
+    "unparsed": {
+      "id": "83b438bce2520e9e12c1a28b",
+      "hotel_id": "osm:node:10058556917",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "open",
+      "created_at": "2026-10-28T21:05:11.330495Z",
+      "context": {
+        "reasons": [
+          "pending_answer",
+          "unparsed_answer"
+        ],
+        "subject_ids": [],
+        "review_answer_id": "7a73342dedd5414893c4c5fa375bc053"
+      },
+      "updated_at": "2026-10-28T21:05:11.356528Z"
+    },
+    "rejected": {
+      "id": "83b438bce2520e9e12c1a28b",
+      "hotel_id": "osm:node:10058556917",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "open",
+      "created_at": "2026-10-28T21:05:11.330495Z",
+      "context": {
+        "reasons": [
+          "rejected_answer"
+        ],
+        "subject_ids": [],
+        "review_answer_id": "7a73342dedd5414893c4c5fa375bc053"
+      },
+      "updated_at": "2026-10-28T21:05:11.359721Z"
+    },
+    "stale": {
+      "id": "83b438bce2520e9e12c1a28b",
+      "hotel_id": "osm:node:10058556917",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "open",
+      "created_at": "2026-10-28T21:05:11.330495Z",
+      "context": {
+        "reasons": [
+          "stale"
+        ],
+        "subject_ids": [
+          "osm:node:10058556917:room:301",
+          "osm:node:10058556917:room:302"
+        ],
+        "review_answer_id": "d148395eb24946049e9a3e4941a48ea2"
+      },
+      "updated_at": "2027-01-27T21:05:11.365231Z"
+    }
+  }
+}

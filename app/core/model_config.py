@@ -14,6 +14,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 class ModelConfig(BaseModel):
     model_config = ConfigDict(extra='forbid', strict=True, allow_inf_nan=False)
     parser_mode: Literal['ollama', 'groq', 'offline', 'fixture', 'hybrid']
+    reply_parser_mode: Literal['rules', 'fixture', 'ollama', 'groq'] = 'rules'
     model_name: str = Field(min_length=1)
     groq_model: str = Field(min_length=1)
     temperature: float = Field(ge=0, le=2)

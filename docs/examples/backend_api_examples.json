@@ -1,0 +1,3635 @@
+{
+  "fixture_only": true,
+  "real_model_used": false,
+  "health": {
+    "status": "ok",
+    "database": "ok",
+    "hotels": 25,
+    "parser_mode": "fixture",
+    "reply_parser_mode": "bounded_rules",
+    "demo_mode": true,
+    "external_services_checked": false
+  },
+  "question": {
+    "id": "83b438bce2520e9e12c1a28b",
+    "hotel_id": "osm:node:10058556917",
+    "feature_key": "sea_view",
+    "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+    "status": "open",
+    "created_at": "2026-10-28T21:01:42.663862Z",
+    "context": {
+      "reasons": [
+        "unknown"
+      ],
+      "subject_ids": [],
+      "review_answer_id": null
+    },
+    "updated_at": "2026-10-28T21:01:42.663862Z"
+  },
+  "pending_answer": {
+    "id": "c73e712c9f9240dbb32a058bff187e4d",
+    "question_id": "83b438bce2520e9e12c1a28b",
+    "text": "В номере 301 есть вид на море.",
+    "extraction": {
+      "claims": [
+        {
+          "room_number": "301",
+          "floor": null,
+          "feature_key": "sea_view",
+          "value": true,
+          "quote": "В номере 301 есть вид на море"
+        }
+      ],
+      "unparsed": [],
+      "parser_mode": "bounded_rules"
+    },
+    "status": "pending",
+    "simulated": true,
+    "created_at": "2026-10-28T21:01:42.667053Z"
+  },
+  "confirmation": {
+    "answer_id": "c73e712c9f9240dbb32a058bff187e4d",
+    "status": "confirmed",
+    "idempotent": false,
+    "observation_ids": [
+      "c73e712c9f9240dbb32a058bff187e4d:301"
+    ],
+    "conflicts": [],
+    "source_type": "hotelier_simulated",
+    "question": {
+      "id": "83b438bce2520e9e12c1a28b",
+      "hotel_id": "osm:node:10058556917",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "answered",
+      "created_at": "2026-10-28T21:01:42.663862Z",
+      "context": {
+        "reasons": [],
+        "subject_ids": [],
+        "review_answer_id": "c73e712c9f9240dbb32a058bff187e4d"
+      },
+      "updated_at": "2026-10-28T21:01:42.671083Z"
+    }
+  },
+  "repeat_confirmation": {
+    "answer_id": "c73e712c9f9240dbb32a058bff187e4d",
+    "status": "confirmed",
+    "idempotent": true,
+    "observation_ids": [
+      "c73e712c9f9240dbb32a058bff187e4d:301"
+    ],
+    "conflicts": [],
+    "source_type": "hotelier_simulated",
+    "question": {
+      "id": "83b438bce2520e9e12c1a28b",
+      "hotel_id": "osm:node:10058556917",
+      "feature_key": "sea_view",
+      "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+      "status": "answered",
+      "created_at": "2026-10-28T21:01:42.663862Z",
+      "context": {
+        "reasons": [],
+        "subject_ids": [],
+        "review_answer_id": "c73e712c9f9240dbb32a058bff187e4d"
+      },
+      "updated_at": "2026-10-28T21:01:42.671083Z"
+    }
+  },
+  "saved_answer": {
+    "id": "c73e712c9f9240dbb32a058bff187e4d",
+    "question_id": "83b438bce2520e9e12c1a28b",
+    "text": "В номере 301 есть вид на море.",
+    "extraction": {
+      "claims": [
+        {
+          "room_number": "301",
+          "floor": null,
+          "feature_key": "sea_view",
+          "value": true,
+          "quote": "В номере 301 есть вид на море"
+        }
+      ],
+      "unparsed": [],
+      "parser_mode": "bounded_rules"
+    },
+    "status": "confirmed",
+    "simulated": true,
+    "created_at": "2026-10-28T21:01:42.667053Z"
+  },
+  "open_conflict": {
+    "id": "a3a1c9d285bec8951b8e0aee8d7a6fc5f47eb817849ba2ed37d52da97751d2b4",
+    "hotel_id": "osm:node:10058556917",
+    "subject_id": "osm:node:10058556917:room:301",
+    "feature_key": "sea_view",
+    "left_id": "64d78a1a317f427eb025df17d7d37203:301",
+    "right_id": "c73e712c9f9240dbb32a058bff187e4d:301",
+    "created_at": "2026-10-28T21:01:42.677685Z",
+    "policy": "withhold_and_ask_hotelier",
+    "status": "open",
+    "resolution": null,
+    "left_observation": {
+      "id": "64d78a1a317f427eb025df17d7d37203:301",
+      "hotel_id": "osm:node:10058556917",
+      "subject_type": "room",
+      "subject_id": "osm:node:10058556917:room:301",
+      "feature_key": "sea_view",
+      "value": false,
+      "unit": null,
+      "observed_at": "2026-10-28T21:01:42.677283Z",
+      "collected_at": "2026-10-28T21:01:42.677283Z",
+      "expires_at": "2027-01-26T21:01:42.677283Z",
+      "status": "estimated",
+      "confidence_level": "low",
+      "confidence": null,
+      "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+      "quality_flags": [
+        "simulated",
+        "hotelier_claim_not_independently_verified"
+      ],
+      "evidence": {
+        "source": {
+          "type": "hotelier_simulated",
+          "name": "Отельер (демо)",
+          "ref": "64d78a1a317f427eb025df17d7d37203",
+          "url": null
+        },
+        "method": "human_confirmed_extraction",
+        "raw_excerpt": "В номере 301 нет вида на море.",
+        "snapshot_path": null,
+        "details": {
+          "quote": "В номере 301 нет вида на море",
+          "floor": null,
+          "question_id": "83b438bce2520e9e12c1a28b"
+        }
+      }
+    },
+    "right_observation": {
+      "id": "c73e712c9f9240dbb32a058bff187e4d:301",
+      "hotel_id": "osm:node:10058556917",
+      "subject_type": "room",
+      "subject_id": "osm:node:10058556917:room:301",
+      "feature_key": "sea_view",
+      "value": true,
+      "unit": null,
+      "observed_at": "2026-10-28T21:01:42.669735Z",
+      "collected_at": "2026-10-28T21:01:42.669735Z",
+      "expires_at": "2027-01-26T21:01:42.669735Z",
+      "status": "estimated",
+      "confidence_level": "low",
+      "confidence": null,
+      "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+      "quality_flags": [
+        "simulated",
+        "hotelier_claim_not_independently_verified"
+      ],
+      "evidence": {
+        "source": {
+          "type": "hotelier_simulated",
+          "name": "Отельер (демо)",
+          "ref": "c73e712c9f9240dbb32a058bff187e4d",
+          "url": null
+        },
+        "method": "human_confirmed_extraction",
+        "raw_excerpt": "В номере 301 есть вид на море.",
+        "snapshot_path": null,
+        "details": {
+          "quote": "В номере 301 есть вид на море",
+          "floor": null,
+          "question_id": "83b438bce2520e9e12c1a28b"
+        }
+      }
+    }
+  },
+  "resolution": {
+    "conflict_id": "a3a1c9d285bec8951b8e0aee8d7a6fc5f47eb817849ba2ed37d52da97751d2b4",
+    "status": "resolved",
+    "resolution": {
+      "selected_observation_id": "c73e712c9f9240dbb32a058bff187e4d:301",
+      "reason": "Пример контракта API",
+      "conflict_id": "a3a1c9d285bec8951b8e0aee8d7a6fc5f47eb817849ba2ed37d52da97751d2b4",
+      "resolved_at": "2026-10-28T21:01:42.682298Z",
+      "operator_id": "demo_operator"
+    },
+    "idempotent": false,
+    "current": {
+      "subject_id": "osm:node:10058556917:room:301",
+      "feature_key": "sea_view",
+      "value": true,
+      "status": "estimated",
+      "observations": [
+        {
+          "id": "c73e712c9f9240dbb32a058bff187e4d:301",
+          "hotel_id": "osm:node:10058556917",
+          "subject_type": "room",
+          "subject_id": "osm:node:10058556917:room:301",
+          "feature_key": "sea_view",
+          "value": true,
+          "unit": null,
+          "observed_at": "2026-10-28T21:01:42.669735Z",
+          "collected_at": "2026-10-28T21:01:42.669735Z",
+          "expires_at": "2027-01-26T21:01:42.669735Z",
+          "status": "estimated",
+          "confidence_level": "low",
+          "confidence": null,
+          "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+          "quality_flags": [
+            "simulated",
+            "hotelier_claim_not_independently_verified"
+          ],
+          "evidence": {
+            "source": {
+              "type": "hotelier_simulated",
+              "name": "Отельер (демо)",
+              "ref": "c73e712c9f9240dbb32a058bff187e4d",
+              "url": null
+            },
+            "method": "human_confirmed_extraction",
+            "raw_excerpt": "В номере 301 есть вид на море.",
+            "snapshot_path": null,
+            "details": {
+              "quote": "В номере 301 есть вид на море",
+              "floor": null,
+              "question_id": "83b438bce2520e9e12c1a28b"
+            }
+          }
+        },
+        {
+          "id": "64d78a1a317f427eb025df17d7d37203:301",
+          "hotel_id": "osm:node:10058556917",
+          "subject_type": "room",
+          "subject_id": "osm:node:10058556917:room:301",
+          "feature_key": "sea_view",
+          "value": false,
+          "unit": null,
+          "observed_at": "2026-10-28T21:01:42.677283Z",
+          "collected_at": "2026-10-28T21:01:42.677283Z",
+          "expires_at": "2027-01-26T21:01:42.677283Z",
+          "status": "estimated",
+          "confidence_level": "low",
+          "confidence": null,
+          "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+          "quality_flags": [
+            "simulated",
+            "hotelier_claim_not_independently_verified"
+          ],
+          "evidence": {
+            "source": {
+              "type": "hotelier_simulated",
+              "name": "Отельер (демо)",
+              "ref": "64d78a1a317f427eb025df17d7d37203",
+              "url": null
+            },
+            "method": "human_confirmed_extraction",
+            "raw_excerpt": "В номере 301 нет вида на море.",
+            "snapshot_path": null,
+            "details": {
+              "quote": "В номере 301 нет вида на море",
+              "floor": null,
+              "question_id": "83b438bce2520e9e12c1a28b"
+            }
+          }
+        }
+      ],
+      "resolved_conflict_ids": [
+        "a3a1c9d285bec8951b8e0aee8d7a6fc5f47eb817849ba2ed37d52da97751d2b4"
+      ]
+    }
+  },
+  "hotel_detail": {
+    "hotel": {
+      "id": "osm:node:10058556917",
+      "name": "Островок",
+      "lat": 43.428439,
+      "lon": 39.9153879,
+      "region": "Adler",
+      "tags": {
+        "name": "Островок",
+        "tourism": "hotel"
+      },
+      "source_url": "https://www.openstreetmap.org/node/10058556917",
+      "collected_at": "2026-10-23T20:46:09.761121Z"
+    },
+    "observations": [
+      {
+        "id": "a75f4c10d9809a06569d40e44d65d3d6d855dc346ad0d3c76800f739142b3d43",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "hotel",
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "walking_distance_to_beach_m",
+        "value": 319.8,
+        "unit": "m",
+        "observed_at": "2026-10-23T20:44:21Z",
+        "collected_at": "2026-10-23T20:46:09.761121Z",
+        "expires_at": "2027-01-21T20:44:21Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+        "quality_flags": [
+          "osm_coverage_not_field_verified",
+          "hotel_entry_approximate",
+          "beach_access_candidate",
+          "connectors_not_surveyed",
+          "osm_access_incomplete",
+          "terrain_and_crossing_safety_not_assessed"
+        ],
+        "evidence": {
+          "source": {
+            "type": "openstreetmap",
+            "name": "OpenStreetMap contributors",
+            "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+            "url": "https://www.openstreetmap.org/node/10058556917"
+          },
+          "method": "pedestrian_graph",
+          "raw_excerpt": "",
+          "snapshot_path": "data/demo/osm_snapshot.json",
+          "details": {
+            "distance_m": 319.8282158976681,
+            "reason": null,
+            "network_distance_m": 245.86016930576153,
+            "connector_distance_m": 73.96804659190656,
+            "coordinates": [
+              [
+                39.9153879,
+                43.428439
+              ],
+              [
+                39.9150142,
+                43.4280713
+              ],
+              [
+                39.9146083,
+                43.4285048
+              ],
+              [
+                39.9141172,
+                43.4290293
+              ],
+              [
+                39.9140638,
+                43.428994
+              ],
+              [
+                39.913549,
+                43.4286495
+              ],
+              [
+                39.913061,
+                43.4283086
+              ],
+              [
+                39.91279491600694,
+                43.42823226245952
+              ]
+            ],
+            "way_ids": [
+              "38894475",
+              "578748130",
+              "783340764"
+            ],
+            "beach_id": "osm:way:53086451",
+            "beach_name": "Пляж OSM",
+            "flags": [
+              "hotel_entry_approximate",
+              "beach_access_candidate",
+              "connectors_not_surveyed",
+              "osm_access_incomplete",
+              "terrain_and_crossing_safety_not_assessed"
+            ],
+            "graph_snapshot_date": "2026-10-23T20:48:30.603815+00:00",
+            "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+            "coverage_quality": "approximate_entries"
+          }
+        }
+      },
+      {
+        "id": "6cb9193ce7abe2e4f48bbff3d5861075702adc852fa2dc00fb1da8e2c9b23ca0",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "hotel",
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "quietness_proxy",
+        "value": "high",
+        "unit": null,
+        "observed_at": "2026-10-23T20:44:21Z",
+        "collected_at": "2026-10-23T20:46:09.761121Z",
+        "expires_at": "2027-01-21T20:44:21Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+        "quality_flags": [
+          "osm_coverage_not_field_verified",
+          "uncalibrated_heuristic",
+          "aircraft_noise_not_modeled"
+        ],
+        "evidence": {
+          "source": {
+            "type": "openstreetmap",
+            "name": "OpenStreetMap contributors",
+            "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+            "url": "https://www.openstreetmap.org/node/10058556917"
+          },
+          "method": "noise_proxy_v1",
+          "raw_excerpt": "",
+          "snapshot_path": "data/demo/osm_snapshot.json",
+          "details": {
+            "risk": 0.2011,
+            "top_contributors": [
+              {
+                "osm_id": "osm:way:38894475",
+                "kind": "road",
+                "distance_m": 48.0,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.2011
+              },
+              {
+                "osm_id": "osm:way:992388733",
+                "kind": "road",
+                "distance_m": 61.1,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.1803
+              },
+              {
+                "osm_id": "osm:way:53350681",
+                "kind": "road",
+                "distance_m": 125.0,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.1059
+              },
+              {
+                "osm_id": "osm:way:235368392",
+                "kind": "road",
+                "distance_m": 53.4,
+                "weight": 0.15,
+                "decay_scale_m": 120.0,
+                "risk": 0.0961
+              },
+              {
+                "osm_id": "osm:way:38883325",
+                "kind": "road",
+                "distance_m": 176.3,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.069
+              }
+            ],
+            "formula": "max(weight * exp(-distance_m / decay_scale_m))",
+            "limits": "Не дБ; без авиации, сезонности, строек, окон и реального акустического измерения.",
+            "nearest_nightlife": [
+              218.4459938100779,
+              "osm:node:11878294027"
+            ]
+          }
+        }
+      },
+      {
+        "id": "74f2c82f484f005972be50818765fde8f13dc1ae91d9e498eedb80e8b9bcd249",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "hotel",
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "nightlife_distance_m",
+        "value": 218.4,
+        "unit": "m",
+        "observed_at": "2026-10-23T20:44:21Z",
+        "collected_at": "2026-10-23T20:46:09.761121Z",
+        "expires_at": "2026-12-22T20:44:21Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+        "quality_flags": [
+          "osm_coverage_not_field_verified",
+          "uncalibrated_heuristic",
+          "aircraft_noise_not_modeled"
+        ],
+        "evidence": {
+          "source": {
+            "type": "openstreetmap",
+            "name": "OpenStreetMap contributors",
+            "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+            "url": "https://www.openstreetmap.org/node/10058556917"
+          },
+          "method": "projected_distance_to_osm_geometry",
+          "raw_excerpt": "",
+          "snapshot_path": "data/demo/osm_snapshot.json",
+          "details": {
+            "risk": 0.2011,
+            "top_contributors": [
+              {
+                "osm_id": "osm:way:38894475",
+                "kind": "road",
+                "distance_m": 48.0,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.2011
+              },
+              {
+                "osm_id": "osm:way:992388733",
+                "kind": "road",
+                "distance_m": 61.1,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.1803
+              },
+              {
+                "osm_id": "osm:way:53350681",
+                "kind": "road",
+                "distance_m": 125.0,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.1059
+              },
+              {
+                "osm_id": "osm:way:235368392",
+                "kind": "road",
+                "distance_m": 53.4,
+                "weight": 0.15,
+                "decay_scale_m": 120.0,
+                "risk": 0.0961
+              },
+              {
+                "osm_id": "osm:way:38883325",
+                "kind": "road",
+                "distance_m": 176.3,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.069
+              }
+            ],
+            "formula": "max(weight * exp(-distance_m / decay_scale_m))",
+            "limits": "Не дБ; без авиации, сезонности, строек, окон и реального акустического измерения.",
+            "nearest_nightlife": [
+              218.4459938100779,
+              "osm:node:11878294027"
+            ]
+          }
+        }
+      },
+      {
+        "id": "c73e712c9f9240dbb32a058bff187e4d:301",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "room",
+        "subject_id": "osm:node:10058556917:room:301",
+        "feature_key": "sea_view",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-10-28T21:01:42.669735Z",
+        "collected_at": "2026-10-28T21:01:42.669735Z",
+        "expires_at": "2027-01-26T21:01:42.669735Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+        "quality_flags": [
+          "simulated",
+          "hotelier_claim_not_independently_verified"
+        ],
+        "evidence": {
+          "source": {
+            "type": "hotelier_simulated",
+            "name": "Отельер (демо)",
+            "ref": "c73e712c9f9240dbb32a058bff187e4d",
+            "url": null
+          },
+          "method": "human_confirmed_extraction",
+          "raw_excerpt": "В номере 301 есть вид на море.",
+          "snapshot_path": null,
+          "details": {
+            "quote": "В номере 301 есть вид на море",
+            "floor": null,
+            "question_id": "83b438bce2520e9e12c1a28b"
+          }
+        }
+      },
+      {
+        "id": "64d78a1a317f427eb025df17d7d37203:301",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "room",
+        "subject_id": "osm:node:10058556917:room:301",
+        "feature_key": "sea_view",
+        "value": false,
+        "unit": null,
+        "observed_at": "2026-10-28T21:01:42.677283Z",
+        "collected_at": "2026-10-28T21:01:42.677283Z",
+        "expires_at": "2027-01-26T21:01:42.677283Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+        "quality_flags": [
+          "simulated",
+          "hotelier_claim_not_independently_verified"
+        ],
+        "evidence": {
+          "source": {
+            "type": "hotelier_simulated",
+            "name": "Отельер (демо)",
+            "ref": "64d78a1a317f427eb025df17d7d37203",
+            "url": null
+          },
+          "method": "human_confirmed_extraction",
+          "raw_excerpt": "В номере 301 нет вида на море.",
+          "snapshot_path": null,
+          "details": {
+            "quote": "В номере 301 нет вида на море",
+            "floor": null,
+            "question_id": "83b438bce2520e9e12c1a28b"
+          }
+        }
+      }
+    ],
+    "conflicts": [
+      {
+        "id": "a3a1c9d285bec8951b8e0aee8d7a6fc5f47eb817849ba2ed37d52da97751d2b4",
+        "hotel_id": "osm:node:10058556917",
+        "subject_id": "osm:node:10058556917:room:301",
+        "feature_key": "sea_view",
+        "left_id": "64d78a1a317f427eb025df17d7d37203:301",
+        "right_id": "c73e712c9f9240dbb32a058bff187e4d:301",
+        "created_at": "2026-10-28T21:01:42.677685Z",
+        "policy": "withhold_and_ask_hotelier",
+        "status": "resolved",
+        "resolution": {
+          "selected_observation_id": "c73e712c9f9240dbb32a058bff187e4d:301",
+          "reason": "Пример контракта API",
+          "conflict_id": "a3a1c9d285bec8951b8e0aee8d7a6fc5f47eb817849ba2ed37d52da97751d2b4",
+          "resolved_at": "2026-10-28T21:01:42.682298Z",
+          "operator_id": "demo_operator"
+        }
+      }
+    ]
+  },
+  "hotel_evidence": {
+    "observations": [
+      {
+        "id": "a75f4c10d9809a06569d40e44d65d3d6d855dc346ad0d3c76800f739142b3d43",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "hotel",
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "walking_distance_to_beach_m",
+        "value": 319.8,
+        "unit": "m",
+        "observed_at": "2026-10-23T20:44:21Z",
+        "collected_at": "2026-10-23T20:46:09.761121Z",
+        "expires_at": "2027-01-21T20:44:21Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+        "quality_flags": [
+          "osm_coverage_not_field_verified",
+          "hotel_entry_approximate",
+          "beach_access_candidate",
+          "connectors_not_surveyed",
+          "osm_access_incomplete",
+          "terrain_and_crossing_safety_not_assessed"
+        ],
+        "evidence": {
+          "source": {
+            "type": "openstreetmap",
+            "name": "OpenStreetMap contributors",
+            "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+            "url": "https://www.openstreetmap.org/node/10058556917"
+          },
+          "method": "pedestrian_graph",
+          "raw_excerpt": "",
+          "snapshot_path": "data/demo/osm_snapshot.json",
+          "details": {
+            "distance_m": 319.8282158976681,
+            "reason": null,
+            "network_distance_m": 245.86016930576153,
+            "connector_distance_m": 73.96804659190656,
+            "coordinates": [
+              [
+                39.9153879,
+                43.428439
+              ],
+              [
+                39.9150142,
+                43.4280713
+              ],
+              [
+                39.9146083,
+                43.4285048
+              ],
+              [
+                39.9141172,
+                43.4290293
+              ],
+              [
+                39.9140638,
+                43.428994
+              ],
+              [
+                39.913549,
+                43.4286495
+              ],
+              [
+                39.913061,
+                43.4283086
+              ],
+              [
+                39.91279491600694,
+                43.42823226245952
+              ]
+            ],
+            "way_ids": [
+              "38894475",
+              "578748130",
+              "783340764"
+            ],
+            "beach_id": "osm:way:53086451",
+            "beach_name": "Пляж OSM",
+            "flags": [
+              "hotel_entry_approximate",
+              "beach_access_candidate",
+              "connectors_not_surveyed",
+              "osm_access_incomplete",
+              "terrain_and_crossing_safety_not_assessed"
+            ],
+            "graph_snapshot_date": "2026-10-23T20:48:30.603815+00:00",
+            "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+            "coverage_quality": "approximate_entries"
+          }
+        }
+      },
+      {
+        "id": "6cb9193ce7abe2e4f48bbff3d5861075702adc852fa2dc00fb1da8e2c9b23ca0",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "hotel",
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "quietness_proxy",
+        "value": "high",
+        "unit": null,
+        "observed_at": "2026-10-23T20:44:21Z",
+        "collected_at": "2026-10-23T20:46:09.761121Z",
+        "expires_at": "2027-01-21T20:44:21Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+        "quality_flags": [
+          "osm_coverage_not_field_verified",
+          "uncalibrated_heuristic",
+          "aircraft_noise_not_modeled"
+        ],
+        "evidence": {
+          "source": {
+            "type": "openstreetmap",
+            "name": "OpenStreetMap contributors",
+            "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+            "url": "https://www.openstreetmap.org/node/10058556917"
+          },
+          "method": "noise_proxy_v1",
+          "raw_excerpt": "",
+          "snapshot_path": "data/demo/osm_snapshot.json",
+          "details": {
+            "risk": 0.2011,
+            "top_contributors": [
+              {
+                "osm_id": "osm:way:38894475",
+                "kind": "road",
+                "distance_m": 48.0,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.2011
+              },
+              {
+                "osm_id": "osm:way:992388733",
+                "kind": "road",
+                "distance_m": 61.1,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.1803
+              },
+              {
+                "osm_id": "osm:way:53350681",
+                "kind": "road",
+                "distance_m": 125.0,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.1059
+              },
+              {
+                "osm_id": "osm:way:235368392",
+                "kind": "road",
+                "distance_m": 53.4,
+                "weight": 0.15,
+                "decay_scale_m": 120.0,
+                "risk": 0.0961
+              },
+              {
+                "osm_id": "osm:way:38883325",
+                "kind": "road",
+                "distance_m": 176.3,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.069
+              }
+            ],
+            "formula": "max(weight * exp(-distance_m / decay_scale_m))",
+            "limits": "Не дБ; без авиации, сезонности, строек, окон и реального акустического измерения.",
+            "nearest_nightlife": [
+              218.4459938100779,
+              "osm:node:11878294027"
+            ]
+          }
+        }
+      },
+      {
+        "id": "74f2c82f484f005972be50818765fde8f13dc1ae91d9e498eedb80e8b9bcd249",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "hotel",
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "nightlife_distance_m",
+        "value": 218.4,
+        "unit": "m",
+        "observed_at": "2026-10-23T20:44:21Z",
+        "collected_at": "2026-10-23T20:46:09.761121Z",
+        "expires_at": "2026-12-22T20:44:21Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+        "quality_flags": [
+          "osm_coverage_not_field_verified",
+          "uncalibrated_heuristic",
+          "aircraft_noise_not_modeled"
+        ],
+        "evidence": {
+          "source": {
+            "type": "openstreetmap",
+            "name": "OpenStreetMap contributors",
+            "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+            "url": "https://www.openstreetmap.org/node/10058556917"
+          },
+          "method": "projected_distance_to_osm_geometry",
+          "raw_excerpt": "",
+          "snapshot_path": "data/demo/osm_snapshot.json",
+          "details": {
+            "risk": 0.2011,
+            "top_contributors": [
+              {
+                "osm_id": "osm:way:38894475",
+                "kind": "road",
+                "distance_m": 48.0,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.2011
+              },
+              {
+                "osm_id": "osm:way:992388733",
+                "kind": "road",
+                "distance_m": 61.1,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.1803
+              },
+              {
+                "osm_id": "osm:way:53350681",
+                "kind": "road",
+                "distance_m": 125.0,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.1059
+              },
+              {
+                "osm_id": "osm:way:235368392",
+                "kind": "road",
+                "distance_m": 53.4,
+                "weight": 0.15,
+                "decay_scale_m": 120.0,
+                "risk": 0.0961
+              },
+              {
+                "osm_id": "osm:way:38883325",
+                "kind": "road",
+                "distance_m": 176.3,
+                "weight": 0.3,
+                "decay_scale_m": 120.0,
+                "risk": 0.069
+              }
+            ],
+            "formula": "max(weight * exp(-distance_m / decay_scale_m))",
+            "limits": "Не дБ; без авиации, сезонности, строек, окон и реального акустического измерения.",
+            "nearest_nightlife": [
+              218.4459938100779,
+              "osm:node:11878294027"
+            ]
+          }
+        }
+      },
+      {
+        "id": "c73e712c9f9240dbb32a058bff187e4d:301",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "room",
+        "subject_id": "osm:node:10058556917:room:301",
+        "feature_key": "sea_view",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-10-28T21:01:42.669735Z",
+        "collected_at": "2026-10-28T21:01:42.669735Z",
+        "expires_at": "2027-01-26T21:01:42.669735Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+        "quality_flags": [
+          "simulated",
+          "hotelier_claim_not_independently_verified"
+        ],
+        "evidence": {
+          "source": {
+            "type": "hotelier_simulated",
+            "name": "Отельер (демо)",
+            "ref": "c73e712c9f9240dbb32a058bff187e4d",
+            "url": null
+          },
+          "method": "human_confirmed_extraction",
+          "raw_excerpt": "В номере 301 есть вид на море.",
+          "snapshot_path": null,
+          "details": {
+            "quote": "В номере 301 есть вид на море",
+            "floor": null,
+            "question_id": "83b438bce2520e9e12c1a28b"
+          }
+        }
+      },
+      {
+        "id": "64d78a1a317f427eb025df17d7d37203:301",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "room",
+        "subject_id": "osm:node:10058556917:room:301",
+        "feature_key": "sea_view",
+        "value": false,
+        "unit": null,
+        "observed_at": "2026-10-28T21:01:42.677283Z",
+        "collected_at": "2026-10-28T21:01:42.677283Z",
+        "expires_at": "2027-01-26T21:01:42.677283Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+        "quality_flags": [
+          "simulated",
+          "hotelier_claim_not_independently_verified"
+        ],
+        "evidence": {
+          "source": {
+            "type": "hotelier_simulated",
+            "name": "Отельер (демо)",
+            "ref": "64d78a1a317f427eb025df17d7d37203",
+            "url": null
+          },
+          "method": "human_confirmed_extraction",
+          "raw_excerpt": "В номере 301 нет вида на море.",
+          "snapshot_path": null,
+          "details": {
+            "quote": "В номере 301 нет вида на море",
+            "floor": null,
+            "question_id": "83b438bce2520e9e12c1a28b"
+          }
+        }
+      }
+    ],
+    "conflicts": [
+      {
+        "id": "a3a1c9d285bec8951b8e0aee8d7a6fc5f47eb817849ba2ed37d52da97751d2b4",
+        "hotel_id": "osm:node:10058556917",
+        "subject_id": "osm:node:10058556917:room:301",
+        "feature_key": "sea_view",
+        "left_id": "64d78a1a317f427eb025df17d7d37203:301",
+        "right_id": "c73e712c9f9240dbb32a058bff187e4d:301",
+        "created_at": "2026-10-28T21:01:42.677685Z",
+        "policy": "withhold_and_ask_hotelier",
+        "status": "resolved",
+        "resolution": {
+          "selected_observation_id": "c73e712c9f9240dbb32a058bff187e4d:301",
+          "reason": "Пример контракта API",
+          "conflict_id": "a3a1c9d285bec8951b8e0aee8d7a6fc5f47eb817849ba2ed37d52da97751d2b4",
+          "resolved_at": "2026-10-28T21:01:42.682298Z",
+          "operator_id": "demo_operator"
+        }
+      }
+    ],
+    "current_real": [
+      {
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "nightlife_distance_m",
+        "value": 218.4,
+        "status": "estimated",
+        "observations": [
+          {
+            "id": "74f2c82f484f005972be50818765fde8f13dc1ae91d9e498eedb80e8b9bcd249",
+            "hotel_id": "osm:node:10058556917",
+            "subject_type": "hotel",
+            "subject_id": "osm:node:10058556917",
+            "feature_key": "nightlife_distance_m",
+            "value": 218.4,
+            "unit": "m",
+            "observed_at": "2026-10-23T20:44:21Z",
+            "collected_at": "2026-10-23T20:46:09.761121Z",
+            "expires_at": "2026-12-22T20:44:21Z",
+            "status": "estimated",
+            "confidence_level": "low",
+            "confidence": null,
+            "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+            "quality_flags": [
+              "osm_coverage_not_field_verified",
+              "uncalibrated_heuristic",
+              "aircraft_noise_not_modeled"
+            ],
+            "evidence": {
+              "source": {
+                "type": "openstreetmap",
+                "name": "OpenStreetMap contributors",
+                "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+                "url": "https://www.openstreetmap.org/node/10058556917"
+              },
+              "method": "projected_distance_to_osm_geometry",
+              "raw_excerpt": "",
+              "snapshot_path": "data/demo/osm_snapshot.json",
+              "details": {
+                "risk": 0.2011,
+                "top_contributors": [
+                  {
+                    "osm_id": "osm:way:38894475",
+                    "kind": "road",
+                    "distance_m": 48.0,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.2011
+                  },
+                  {
+                    "osm_id": "osm:way:992388733",
+                    "kind": "road",
+                    "distance_m": 61.1,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.1803
+                  },
+                  {
+                    "osm_id": "osm:way:53350681",
+                    "kind": "road",
+                    "distance_m": 125.0,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.1059
+                  },
+                  {
+                    "osm_id": "osm:way:235368392",
+                    "kind": "road",
+                    "distance_m": 53.4,
+                    "weight": 0.15,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.0961
+                  },
+                  {
+                    "osm_id": "osm:way:38883325",
+                    "kind": "road",
+                    "distance_m": 176.3,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.069
+                  }
+                ],
+                "formula": "max(weight * exp(-distance_m / decay_scale_m))",
+                "limits": "Не дБ; без авиации, сезонности, строек, окон и реального акустического измерения.",
+                "nearest_nightlife": [
+                  218.4459938100779,
+                  "osm:node:11878294027"
+                ]
+              }
+            }
+          }
+        ],
+        "resolved_conflict_ids": []
+      },
+      {
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "quietness_proxy",
+        "value": "high",
+        "status": "estimated",
+        "observations": [
+          {
+            "id": "6cb9193ce7abe2e4f48bbff3d5861075702adc852fa2dc00fb1da8e2c9b23ca0",
+            "hotel_id": "osm:node:10058556917",
+            "subject_type": "hotel",
+            "subject_id": "osm:node:10058556917",
+            "feature_key": "quietness_proxy",
+            "value": "high",
+            "unit": null,
+            "observed_at": "2026-10-23T20:44:21Z",
+            "collected_at": "2026-10-23T20:46:09.761121Z",
+            "expires_at": "2027-01-21T20:44:21Z",
+            "status": "estimated",
+            "confidence_level": "low",
+            "confidence": null,
+            "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+            "quality_flags": [
+              "osm_coverage_not_field_verified",
+              "uncalibrated_heuristic",
+              "aircraft_noise_not_modeled"
+            ],
+            "evidence": {
+              "source": {
+                "type": "openstreetmap",
+                "name": "OpenStreetMap contributors",
+                "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+                "url": "https://www.openstreetmap.org/node/10058556917"
+              },
+              "method": "noise_proxy_v1",
+              "raw_excerpt": "",
+              "snapshot_path": "data/demo/osm_snapshot.json",
+              "details": {
+                "risk": 0.2011,
+                "top_contributors": [
+                  {
+                    "osm_id": "osm:way:38894475",
+                    "kind": "road",
+                    "distance_m": 48.0,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.2011
+                  },
+                  {
+                    "osm_id": "osm:way:992388733",
+                    "kind": "road",
+                    "distance_m": 61.1,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.1803
+                  },
+                  {
+                    "osm_id": "osm:way:53350681",
+                    "kind": "road",
+                    "distance_m": 125.0,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.1059
+                  },
+                  {
+                    "osm_id": "osm:way:235368392",
+                    "kind": "road",
+                    "distance_m": 53.4,
+                    "weight": 0.15,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.0961
+                  },
+                  {
+                    "osm_id": "osm:way:38883325",
+                    "kind": "road",
+                    "distance_m": 176.3,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.069
+                  }
+                ],
+                "formula": "max(weight * exp(-distance_m / decay_scale_m))",
+                "limits": "Не дБ; без авиации, сезонности, строек, окон и реального акустического измерения.",
+                "nearest_nightlife": [
+                  218.4459938100779,
+                  "osm:node:11878294027"
+                ]
+              }
+            }
+          }
+        ],
+        "resolved_conflict_ids": []
+      },
+      {
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "walking_distance_to_beach_m",
+        "value": 319.8,
+        "status": "estimated",
+        "observations": [
+          {
+            "id": "a75f4c10d9809a06569d40e44d65d3d6d855dc346ad0d3c76800f739142b3d43",
+            "hotel_id": "osm:node:10058556917",
+            "subject_type": "hotel",
+            "subject_id": "osm:node:10058556917",
+            "feature_key": "walking_distance_to_beach_m",
+            "value": 319.8,
+            "unit": "m",
+            "observed_at": "2026-10-23T20:44:21Z",
+            "collected_at": "2026-10-23T20:46:09.761121Z",
+            "expires_at": "2027-01-21T20:44:21Z",
+            "status": "estimated",
+            "confidence_level": "low",
+            "confidence": null,
+            "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+            "quality_flags": [
+              "osm_coverage_not_field_verified",
+              "hotel_entry_approximate",
+              "beach_access_candidate",
+              "connectors_not_surveyed",
+              "osm_access_incomplete",
+              "terrain_and_crossing_safety_not_assessed"
+            ],
+            "evidence": {
+              "source": {
+                "type": "openstreetmap",
+                "name": "OpenStreetMap contributors",
+                "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+                "url": "https://www.openstreetmap.org/node/10058556917"
+              },
+              "method": "pedestrian_graph",
+              "raw_excerpt": "",
+              "snapshot_path": "data/demo/osm_snapshot.json",
+              "details": {
+                "distance_m": 319.8282158976681,
+                "reason": null,
+                "network_distance_m": 245.86016930576153,
+                "connector_distance_m": 73.96804659190656,
+                "coordinates": [
+                  [
+                    39.9153879,
+                    43.428439
+                  ],
+                  [
+                    39.9150142,
+                    43.4280713
+                  ],
+                  [
+                    39.9146083,
+                    43.4285048
+                  ],
+                  [
+                    39.9141172,
+                    43.4290293
+                  ],
+                  [
+                    39.9140638,
+                    43.428994
+                  ],
+                  [
+                    39.913549,
+                    43.4286495
+                  ],
+                  [
+                    39.913061,
+                    43.4283086
+                  ],
+                  [
+                    39.91279491600694,
+                    43.42823226245952
+                  ]
+                ],
+                "way_ids": [
+                  "38894475",
+                  "578748130",
+                  "783340764"
+                ],
+                "beach_id": "osm:way:53086451",
+                "beach_name": "Пляж OSM",
+                "flags": [
+                  "hotel_entry_approximate",
+                  "beach_access_candidate",
+                  "connectors_not_surveyed",
+                  "osm_access_incomplete",
+                  "terrain_and_crossing_safety_not_assessed"
+                ],
+                "graph_snapshot_date": "2026-10-23T20:48:30.603815+00:00",
+                "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+                "coverage_quality": "approximate_entries"
+              }
+            }
+          }
+        ],
+        "resolved_conflict_ids": []
+      },
+      {
+        "subject_id": "osm:node:10058556917:room:301",
+        "feature_key": "sea_view",
+        "value": null,
+        "status": "unknown",
+        "observations": [],
+        "resolved_conflict_ids": []
+      }
+    ],
+    "current_demo": [
+      {
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "nightlife_distance_m",
+        "value": 218.4,
+        "status": "estimated",
+        "observations": [
+          {
+            "id": "74f2c82f484f005972be50818765fde8f13dc1ae91d9e498eedb80e8b9bcd249",
+            "hotel_id": "osm:node:10058556917",
+            "subject_type": "hotel",
+            "subject_id": "osm:node:10058556917",
+            "feature_key": "nightlife_distance_m",
+            "value": 218.4,
+            "unit": "m",
+            "observed_at": "2026-10-23T20:44:21Z",
+            "collected_at": "2026-10-23T20:46:09.761121Z",
+            "expires_at": "2026-12-22T20:44:21Z",
+            "status": "estimated",
+            "confidence_level": "low",
+            "confidence": null,
+            "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+            "quality_flags": [
+              "osm_coverage_not_field_verified",
+              "uncalibrated_heuristic",
+              "aircraft_noise_not_modeled"
+            ],
+            "evidence": {
+              "source": {
+                "type": "openstreetmap",
+                "name": "OpenStreetMap contributors",
+                "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+                "url": "https://www.openstreetmap.org/node/10058556917"
+              },
+              "method": "projected_distance_to_osm_geometry",
+              "raw_excerpt": "",
+              "snapshot_path": "data/demo/osm_snapshot.json",
+              "details": {
+                "risk": 0.2011,
+                "top_contributors": [
+                  {
+                    "osm_id": "osm:way:38894475",
+                    "kind": "road",
+                    "distance_m": 48.0,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.2011
+                  },
+                  {
+                    "osm_id": "osm:way:992388733",
+                    "kind": "road",
+                    "distance_m": 61.1,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.1803
+                  },
+                  {
+                    "osm_id": "osm:way:53350681",
+                    "kind": "road",
+                    "distance_m": 125.0,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.1059
+                  },
+                  {
+                    "osm_id": "osm:way:235368392",
+                    "kind": "road",
+                    "distance_m": 53.4,
+                    "weight": 0.15,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.0961
+                  },
+                  {
+                    "osm_id": "osm:way:38883325",
+                    "kind": "road",
+                    "distance_m": 176.3,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.069
+                  }
+                ],
+                "formula": "max(weight * exp(-distance_m / decay_scale_m))",
+                "limits": "Не дБ; без авиации, сезонности, строек, окон и реального акустического измерения.",
+                "nearest_nightlife": [
+                  218.4459938100779,
+                  "osm:node:11878294027"
+                ]
+              }
+            }
+          }
+        ],
+        "resolved_conflict_ids": []
+      },
+      {
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "quietness_proxy",
+        "value": "high",
+        "status": "estimated",
+        "observations": [
+          {
+            "id": "6cb9193ce7abe2e4f48bbff3d5861075702adc852fa2dc00fb1da8e2c9b23ca0",
+            "hotel_id": "osm:node:10058556917",
+            "subject_type": "hotel",
+            "subject_id": "osm:node:10058556917",
+            "feature_key": "quietness_proxy",
+            "value": "high",
+            "unit": null,
+            "observed_at": "2026-10-23T20:44:21Z",
+            "collected_at": "2026-10-23T20:46:09.761121Z",
+            "expires_at": "2027-01-21T20:44:21Z",
+            "status": "estimated",
+            "confidence_level": "low",
+            "confidence": null,
+            "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+            "quality_flags": [
+              "osm_coverage_not_field_verified",
+              "uncalibrated_heuristic",
+              "aircraft_noise_not_modeled"
+            ],
+            "evidence": {
+              "source": {
+                "type": "openstreetmap",
+                "name": "OpenStreetMap contributors",
+                "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+                "url": "https://www.openstreetmap.org/node/10058556917"
+              },
+              "method": "noise_proxy_v1",
+              "raw_excerpt": "",
+              "snapshot_path": "data/demo/osm_snapshot.json",
+              "details": {
+                "risk": 0.2011,
+                "top_contributors": [
+                  {
+                    "osm_id": "osm:way:38894475",
+                    "kind": "road",
+                    "distance_m": 48.0,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.2011
+                  },
+                  {
+                    "osm_id": "osm:way:992388733",
+                    "kind": "road",
+                    "distance_m": 61.1,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.1803
+                  },
+                  {
+                    "osm_id": "osm:way:53350681",
+                    "kind": "road",
+                    "distance_m": 125.0,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.1059
+                  },
+                  {
+                    "osm_id": "osm:way:235368392",
+                    "kind": "road",
+                    "distance_m": 53.4,
+                    "weight": 0.15,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.0961
+                  },
+                  {
+                    "osm_id": "osm:way:38883325",
+                    "kind": "road",
+                    "distance_m": 176.3,
+                    "weight": 0.3,
+                    "decay_scale_m": 120.0,
+                    "risk": 0.069
+                  }
+                ],
+                "formula": "max(weight * exp(-distance_m / decay_scale_m))",
+                "limits": "Не дБ; без авиации, сезонности, строек, окон и реального акустического измерения.",
+                "nearest_nightlife": [
+                  218.4459938100779,
+                  "osm:node:11878294027"
+                ]
+              }
+            }
+          }
+        ],
+        "resolved_conflict_ids": []
+      },
+      {
+        "subject_id": "osm:node:10058556917",
+        "feature_key": "walking_distance_to_beach_m",
+        "value": 319.8,
+        "status": "estimated",
+        "observations": [
+          {
+            "id": "a75f4c10d9809a06569d40e44d65d3d6d855dc346ad0d3c76800f739142b3d43",
+            "hotel_id": "osm:node:10058556917",
+            "subject_type": "hotel",
+            "subject_id": "osm:node:10058556917",
+            "feature_key": "walking_distance_to_beach_m",
+            "value": 319.8,
+            "unit": "m",
+            "observed_at": "2026-10-23T20:44:21Z",
+            "collected_at": "2026-10-23T20:46:09.761121Z",
+            "expires_at": "2027-01-21T20:44:21Z",
+            "status": "estimated",
+            "confidence_level": "low",
+            "confidence": null,
+            "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
+            "quality_flags": [
+              "osm_coverage_not_field_verified",
+              "hotel_entry_approximate",
+              "beach_access_candidate",
+              "connectors_not_surveyed",
+              "osm_access_incomplete",
+              "terrain_and_crossing_safety_not_assessed"
+            ],
+            "evidence": {
+              "source": {
+                "type": "openstreetmap",
+                "name": "OpenStreetMap contributors",
+                "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+                "url": "https://www.openstreetmap.org/node/10058556917"
+              },
+              "method": "pedestrian_graph",
+              "raw_excerpt": "",
+              "snapshot_path": "data/demo/osm_snapshot.json",
+              "details": {
+                "distance_m": 319.8282158976681,
+                "reason": null,
+                "network_distance_m": 245.86016930576153,
+                "connector_distance_m": 73.96804659190656,
+                "coordinates": [
+                  [
+                    39.9153879,
+                    43.428439
+                  ],
+                  [
+                    39.9150142,
+                    43.4280713
+                  ],
+                  [
+                    39.9146083,
+                    43.4285048
+                  ],
+                  [
+                    39.9141172,
+                    43.4290293
+                  ],
+                  [
+                    39.9140638,
+                    43.428994
+                  ],
+                  [
+                    39.913549,
+                    43.4286495
+                  ],
+                  [
+                    39.913061,
+                    43.4283086
+                  ],
+                  [
+                    39.91279491600694,
+                    43.42823226245952
+                  ]
+                ],
+                "way_ids": [
+                  "38894475",
+                  "578748130",
+                  "783340764"
+                ],
+                "beach_id": "osm:way:53086451",
+                "beach_name": "Пляж OSM",
+                "flags": [
+                  "hotel_entry_approximate",
+                  "beach_access_candidate",
+                  "connectors_not_surveyed",
+                  "osm_access_incomplete",
+                  "terrain_and_crossing_safety_not_assessed"
+                ],
+                "graph_snapshot_date": "2026-10-23T20:48:30.603815+00:00",
+                "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+                "coverage_quality": "approximate_entries"
+              }
+            }
+          }
+        ],
+        "resolved_conflict_ids": []
+      },
+      {
+        "subject_id": "osm:node:10058556917:room:301",
+        "feature_key": "sea_view",
+        "value": true,
+        "status": "estimated",
+        "observations": [
+          {
+            "id": "c73e712c9f9240dbb32a058bff187e4d:301",
+            "hotel_id": "osm:node:10058556917",
+            "subject_type": "room",
+            "subject_id": "osm:node:10058556917:room:301",
+            "feature_key": "sea_view",
+            "value": true,
+            "unit": null,
+            "observed_at": "2026-10-28T21:01:42.669735Z",
+            "collected_at": "2026-10-28T21:01:42.669735Z",
+            "expires_at": "2027-01-26T21:01:42.669735Z",
+            "status": "estimated",
+            "confidence_level": "low",
+            "confidence": null,
+            "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+            "quality_flags": [
+              "simulated",
+              "hotelier_claim_not_independently_verified"
+            ],
+            "evidence": {
+              "source": {
+                "type": "hotelier_simulated",
+                "name": "Отельер (демо)",
+                "ref": "c73e712c9f9240dbb32a058bff187e4d",
+                "url": null
+              },
+              "method": "human_confirmed_extraction",
+              "raw_excerpt": "В номере 301 есть вид на море.",
+              "snapshot_path": null,
+              "details": {
+                "quote": "В номере 301 есть вид на море",
+                "floor": null,
+                "question_id": "83b438bce2520e9e12c1a28b"
+              }
+            }
+          },
+          {
+            "id": "64d78a1a317f427eb025df17d7d37203:301",
+            "hotel_id": "osm:node:10058556917",
+            "subject_type": "room",
+            "subject_id": "osm:node:10058556917:room:301",
+            "feature_key": "sea_view",
+            "value": false,
+            "unit": null,
+            "observed_at": "2026-10-28T21:01:42.677283Z",
+            "collected_at": "2026-10-28T21:01:42.677283Z",
+            "expires_at": "2027-01-26T21:01:42.677283Z",
+            "status": "estimated",
+            "confidence_level": "low",
+            "confidence": null,
+            "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+            "quality_flags": [
+              "simulated",
+              "hotelier_claim_not_independently_verified"
+            ],
+            "evidence": {
+              "source": {
+                "type": "hotelier_simulated",
+                "name": "Отельер (демо)",
+                "ref": "64d78a1a317f427eb025df17d7d37203",
+                "url": null
+              },
+              "method": "human_confirmed_extraction",
+              "raw_excerpt": "В номере 301 нет вида на море.",
+              "snapshot_path": null,
+              "details": {
+                "quote": "В номере 301 нет вида на море",
+                "floor": null,
+                "question_id": "83b438bce2520e9e12c1a28b"
+              }
+            }
+          }
+        ],
+        "resolved_conflict_ids": [
+          "a3a1c9d285bec8951b8e0aee8d7a6fc5f47eb817849ba2ed37d52da97751d2b4"
+        ]
+      }
+    ]
+  },
+  "search": {
+    "parsed": {
+      "region": "Adler",
+      "hard_constraints": [
+        {
+          "feature_key": "sea_view",
+          "operator": "=",
+          "value": true,
+          "unit": null,
+          "scope": "room"
+        }
+      ],
+      "soft_preferences": [],
+      "unknown_or_ambiguous": [],
+      "clarification_question": null,
+      "original_text": "Нужен номер обязательно с видом на море"
+    },
+    "parser_mode": "fixture",
+    "status": "ok",
+    "matched": [
+      {
+        "hotel": {
+          "id": "osm:node:10058556917",
+          "name": "Островок",
+          "lat": 43.428439,
+          "lon": 39.9153879,
+          "region": "Adler",
+          "tags": {
+            "name": "Островок",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/10058556917",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": true,
+        "recommended_room_id": "osm:node:10058556917:room:301",
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": true,
+            "outcome": "matched",
+            "status": "estimated",
+            "subject_id": "osm:node:10058556917:room:301",
+            "match": null,
+            "explanation": "Вид на море из номера: True; условие = True .",
+            "evidence": [
+              {
+                "id": "c73e712c9f9240dbb32a058bff187e4d:301",
+                "hotel_id": "osm:node:10058556917",
+                "subject_type": "room",
+                "subject_id": "osm:node:10058556917:room:301",
+                "feature_key": "sea_view",
+                "value": true,
+                "unit": null,
+                "observed_at": "2026-10-28T21:01:42.669735Z",
+                "collected_at": "2026-10-28T21:01:42.669735Z",
+                "expires_at": "2027-01-26T21:01:42.669735Z",
+                "status": "estimated",
+                "confidence_level": "low",
+                "confidence": null,
+                "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+                "quality_flags": [
+                  "simulated",
+                  "hotelier_claim_not_independently_verified"
+                ],
+                "evidence": {
+                  "source": {
+                    "type": "hotelier_simulated",
+                    "name": "Отельер (демо)",
+                    "ref": "c73e712c9f9240dbb32a058bff187e4d",
+                    "url": null
+                  },
+                  "method": "human_confirmed_extraction",
+                  "raw_excerpt": "В номере 301 есть вид на море.",
+                  "snapshot_path": null,
+                  "details": {
+                    "quote": "В номере 301 есть вид на море",
+                    "floor": null,
+                    "question_id": "83b438bce2520e9e12c1a28b"
+                  }
+                }
+              },
+              {
+                "id": "64d78a1a317f427eb025df17d7d37203:301",
+                "hotel_id": "osm:node:10058556917",
+                "subject_type": "room",
+                "subject_id": "osm:node:10058556917:room:301",
+                "feature_key": "sea_view",
+                "value": false,
+                "unit": null,
+                "observed_at": "2026-10-28T21:01:42.677283Z",
+                "collected_at": "2026-10-28T21:01:42.677283Z",
+                "expires_at": "2027-01-26T21:01:42.677283Z",
+                "status": "estimated",
+                "confidence_level": "low",
+                "confidence": null,
+                "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+                "quality_flags": [
+                  "simulated",
+                  "hotelier_claim_not_independently_verified"
+                ],
+                "evidence": {
+                  "source": {
+                    "type": "hotelier_simulated",
+                    "name": "Отельер (демо)",
+                    "ref": "64d78a1a317f427eb025df17d7d37203",
+                    "url": null
+                  },
+                  "method": "human_confirmed_extraction",
+                  "raw_excerpt": "В номере 301 нет вида на море.",
+                  "snapshot_path": null,
+                  "details": {
+                    "quote": "В номере 301 нет вида на море",
+                    "floor": null,
+                    "question_id": "83b438bce2520e9e12c1a28b"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "warnings": [
+          "Соответствие рассчитано по оценкам; входы и доступность на местности не подтверждены.",
+          "Использованы симулированные ответы: это демонстрация, не реальные свойства отеля."
+        ],
+        "pending_hotelier_question_ids": [],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      }
+    ],
+    "needs_verification": [
+      {
+        "hotel": {
+          "id": "osm:node:10759614195",
+          "name": "Golden Tennis Club",
+          "lat": 43.4244336,
+          "lon": 39.9162591,
+          "region": "Adler",
+          "tags": {
+            "contact:email": "info@goldentennisclub.ru",
+            "contact:phone": "+7 800 7072448;+7 918 4192336",
+            "contact:website": "https://goldentennisclub.ru/",
+            "name": "Golden Tennis Club",
+            "opening_hours": "Mo-Su 00:00-00:00",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/10759614195",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "a0371aadf32e4ec15c1ac98f"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:11138786325",
+          "name": "Черномор",
+          "lat": 43.4312708,
+          "lon": 39.9212828,
+          "region": "Adler",
+          "tags": {
+            "contact:email": "chernomor.sochi@mail.ru",
+            "contact:phone": "+7 939 4444411",
+            "contact:website": "https://chernomor-sochi.ru/",
+            "name": "Черномор",
+            "opening_hours": "24/7",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/11138786325",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "b949d1102b4bbe88db460761"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:11843545856",
+          "name": "Marco Polo",
+          "lat": 43.425054,
+          "lon": 39.917617,
+          "region": "Adler",
+          "tags": {
+            "contact:email": "marcopolohotel@mail.ru",
+            "contact:phone": "+7 918 9190033",
+            "contact:website": "https://marcopolohotel.ru",
+            "name": "Marco Polo",
+            "opening_hours": "24/7",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/11843545856",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "5bb693e8689ec1fa5cacecda"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:11843553838",
+          "name": "Офелия",
+          "lat": 43.4363252,
+          "lon": 39.9151057,
+          "region": "Adler",
+          "tags": {
+            "contact:email": "ofeliahotel@mail.ru",
+            "contact:phone": "+7 967 6426400",
+            "contact:website": "https://ofeliahotel.ru",
+            "name": "Офелия",
+            "opening_hours": "24/7",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/11843553838",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "681141795ec34622379cb20f"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:11843553839",
+          "name": "Аркадия+",
+          "lat": 43.425955,
+          "lon": 39.917348,
+          "region": "Adler",
+          "tags": {
+            "contact:email": "arcadia_plus@mail.ru",
+            "contact:phone": "+7 918 1062255",
+            "contact:website": "https://arcadiaplushotel.ru/",
+            "name": "Аркадия+",
+            "opening_hours": "24/7",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/11843553839",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "3fad27db8015e5a2ca0b4f7c"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:11866202895",
+          "name": "Cascade",
+          "lat": 43.4253046,
+          "lon": 39.9148089,
+          "region": "Adler",
+          "tags": {
+            "check_date": "2024-04-29",
+            "name": "Cascade",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/11866202895",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "73b672973963a5798b3272b8"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:11878294031",
+          "name": "SM Royal",
+          "lat": 43.4288605,
+          "lon": 39.9184333,
+          "region": "Adler",
+          "tags": {
+            "check_date": "2024-05-04",
+            "name": "SM Royal",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/11878294031",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "2c8a44d924f10d02eff11bba"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:11878294032",
+          "name": "Bliss House",
+          "lat": 43.4291139,
+          "lon": 39.9170665,
+          "region": "Adler",
+          "tags": {
+            "check_date": "2024-05-04",
+            "name": "Bliss House",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/11878294032",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "02376029a3573f1a47585aaf"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:11958139262",
+          "name": "Гости Эльбрус",
+          "lat": 43.4286548,
+          "lon": 39.9154946,
+          "region": "Adler",
+          "tags": {
+            "contact:email": "adler-2024@mail.ru",
+            "contact:phone": "+7 928 4470990;+7 928 4500990",
+            "contact:website": "https://sochi-elbrus.ru",
+            "name": "Гости Эльбрус",
+            "opening_hours": "24/7",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/11958139262",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "039906bda551ffea19ea926e"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:13301736402",
+          "name": "Lavicon club residence biarritz",
+          "lat": 43.4283976,
+          "lon": 39.9138515,
+          "region": "Adler",
+          "tags": {
+            "addr:housenumber": "96/1",
+            "addr:street": "улица Просвещения",
+            "name": "Lavicon club residence biarritz",
+            "opening_hours": "Mo-Su 08:00-18:00",
+            "phone": "+78612057272",
+            "tourism": "hotel",
+            "website": "https://lavicon.ru/"
+          },
+          "source_url": "https://www.openstreetmap.org/node/13301736402",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "9968de569bdeeccfd616a6b1"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:1449074195",
+          "name": "Корсар",
+          "lat": 43.4276924,
+          "lon": 39.9180891,
+          "region": "Adler",
+          "tags": {
+            "name": "Корсар",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/1449074195",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "31dcefa8b4523b5c938ef20b"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:1589835176",
+          "name": "МиЛи",
+          "lat": 43.4250911,
+          "lon": 39.9245776,
+          "region": "Adler",
+          "tags": {
+            "name": "МиЛи",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/1589835176",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "a5c8366ada20a38651f20355"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:2857562133",
+          "name": "Огонёк",
+          "lat": 43.4354295,
+          "lon": 39.9081608,
+          "region": "Adler",
+          "tags": {
+            "name": "Огонёк",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/2857562133",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "6920b1e4c87fce8a27d8bf05"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:2862997459",
+          "name": "Грант",
+          "lat": 43.428172,
+          "lon": 39.9165655,
+          "region": "Adler",
+          "tags": {
+            "name": "Грант",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/2862997459",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "a07b12a6d997b2bfb95c4375"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:4072901609",
+          "name": "Касабланка",
+          "lat": 43.426786,
+          "lon": 39.9154215,
+          "region": "Adler",
+          "tags": {
+            "addr:city": "Сочи",
+            "addr:housenumber": "5",
+            "addr:postcode": "354340",
+            "addr:street": "улица 8 Марта",
+            "name": "Касабланка",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/4072901609",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "8592c23427202e6996031e7a"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:4118677615",
+          "name": "Shine",
+          "lat": 43.4299438,
+          "lon": 39.9181421,
+          "region": "Adler",
+          "tags": {
+            "addr:housenumber": "63",
+            "addr:street": "улица Ленина",
+            "internet_access": "wlan",
+            "name": "Shine",
+            "opening_hours": "24/7",
+            "phone": "+7 862 2405777",
+            "tourism": "hotel",
+            "website": "https://www.shine-hotel.ru/"
+          },
+          "source_url": "https://www.openstreetmap.org/node/4118677615",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "e90bbb833a6816a71c4271fe"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:4284096790",
+          "name": "Элона",
+          "lat": 43.4243045,
+          "lon": 39.9215364,
+          "region": "Adler",
+          "tags": {
+            "contact:email": "elonahotel@mail.ru",
+            "contact:phone": "+7 989 1654144",
+            "contact:website": "https://elonahotel.ru",
+            "internet_access": "wlan",
+            "name": "Элона",
+            "opening_hours": "24/7",
+            "operator": "Буюклян Элона",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/4284096790",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "e7141eb89ef1b32858ee9b58"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:4327828193",
+          "name": "Михаил",
+          "lat": 43.4286617,
+          "lon": 39.9158027,
+          "region": "Adler",
+          "tags": {
+            "name": "Михаил",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/4327828193",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "4084949801456a1aa0f6c14c"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:4348786790",
+          "name": "Маргарита",
+          "lat": 43.4250504,
+          "lon": 39.9216593,
+          "region": "Adler",
+          "tags": {
+            "name": "Маргарита",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/4348786790",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "0d3bdca108af751f71ec6873"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:4931886321",
+          "name": "Марина",
+          "lat": 43.4261456,
+          "lon": 39.9175407,
+          "region": "Adler",
+          "tags": {
+            "addr:housenumber": "12А",
+            "addr:street": "переулок Богдана Хмельницкого",
+            "beds": "30",
+            "contact:email": "hotelmarina@mail.ru",
+            "contact:fax": "+7 862240024",
+            "contact:phone": "+7 862 2400124;+7 918 9020781;+7 918 4052222",
+            "contact:website": "www.marina-sochi.ru",
+            "internet_access": "wlan",
+            "internet_access:fee": "yes",
+            "name": "Марина",
+            "name:ru": "Марина",
+            "opening_hours": "24/7",
+            "operator": "Тимохина Марина Николаевна",
+            "payment:cash": "yes",
+            "payment:coins": "yes",
+            "payment:contactless": "yes",
+            "payment:credit_cards": "yes",
+            "payment:mastercard": "yes",
+            "payment:visa": "yes",
+            "rooms": "15",
+            "smoking": "outside",
+            "stars": "3",
+            "tourism": "hotel",
+            "wheelchair": "no"
+          },
+          "source_url": "https://www.openstreetmap.org/node/4931886321",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "5a0e7fd1ad4fb81be298beaf"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:6494252594",
+          "name": "Отель Атрия",
+          "lat": 43.4474298,
+          "lon": 39.9321533,
+          "region": "Adler",
+          "tags": {
+            "name": "Отель Атрия",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/6494252594",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "e73afc2297b8ee599667e347"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:7115085741",
+          "name": "El Paraiso",
+          "lat": 43.4260269,
+          "lon": 39.9151498,
+          "region": "Adler",
+          "tags": {
+            "addr:city": "Сочи",
+            "addr:housenumber": "70",
+            "addr:street": "улица Просвещения",
+            "contact:email": "elparaisohotel@mail.ru",
+            "contact:phone": "+7 988 2378009",
+            "contact:website": "https://elparaiso.ru",
+            "internet_access": "wlan",
+            "name": "El Paraiso",
+            "opening_hours": "24/7",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/7115085741",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "b6611dbc08c5ed56becc37b0"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:7115162128",
+          "name": "Center Plaza",
+          "lat": 43.4275197,
+          "lon": 39.9280934,
+          "region": "Adler",
+          "tags": {
+            "addr:city": "Сочи",
+            "addr:housenumber": "1",
+            "addr:street": "Старонасыпная улица",
+            "name": "Center Plaza",
+            "phone": "+7 989 0879123;+7 988 1447800",
+            "tourism": "hotel",
+            "website": "https://centerplaza-sochi.ru/"
+          },
+          "source_url": "https://www.openstreetmap.org/node/7115162128",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "81ad0857d5f76e82336f8025"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      },
+      {
+        "hotel": {
+          "id": "osm:node:7345928591",
+          "name": "Три Сезона",
+          "lat": 43.4273462,
+          "lon": 39.9357441,
+          "region": "Adler",
+          "tags": {
+            "name": "Три Сезона",
+            "tourism": "hotel"
+          },
+          "source_url": "https://www.openstreetmap.org/node/7345928591",
+          "collected_at": "2026-10-23T20:46:09.761121Z"
+        },
+        "eligible": null,
+        "recommended_room_id": null,
+        "score": null,
+        "coverage": 0.0,
+        "ranking_score": 0.0,
+        "uncertainty": 1.0,
+        "criteria": [
+          {
+            "feature_key": "sea_view",
+            "requested": "= True",
+            "actual": null,
+            "outcome": "unknown",
+            "status": "unknown",
+            "subject_id": null,
+            "match": null,
+            "explanation": "Вид на море из номера: нет надёжных данных; условие = True .",
+            "evidence": []
+          }
+        ],
+        "warnings": [],
+        "pending_hotelier_question_ids": [
+          "f85edcc522ba291e508b91da"
+        ],
+        "ranking_method": "balanced_v2",
+        "ranking_interval": [
+          0.0,
+          0.0
+        ],
+        "group_scores": [],
+        "pareto_dominated": false
+      }
+    ],
+    "excluded": [],
+    "trace": [
+      {
+        "hotel_id": "osm:node:10058556917",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "read_evidence",
+        "reason": "fresh_known_observation"
+      },
+      {
+        "hotel_id": "osm:node:10759614195",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "a0371aadf32e4ec15c1ac98f",
+          "hotel_id": "osm:node:10759614195",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.688708+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.688708+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:11138786325",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "b949d1102b4bbe88db460761",
+          "hotel_id": "osm:node:11138786325",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.689279+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.689279+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:11843545856",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "5bb693e8689ec1fa5cacecda",
+          "hotel_id": "osm:node:11843545856",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.689754+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.689754+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:11843553838",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "681141795ec34622379cb20f",
+          "hotel_id": "osm:node:11843553838",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.690199+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.690199+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:11843553839",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "3fad27db8015e5a2ca0b4f7c",
+          "hotel_id": "osm:node:11843553839",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.690642+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.690642+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:11866202895",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "73b672973963a5798b3272b8",
+          "hotel_id": "osm:node:11866202895",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.691080+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.691080+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:11878294031",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "2c8a44d924f10d02eff11bba",
+          "hotel_id": "osm:node:11878294031",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.691512+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.691512+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:11878294032",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "02376029a3573f1a47585aaf",
+          "hotel_id": "osm:node:11878294032",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.691959+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.691959+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:11958139262",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "039906bda551ffea19ea926e",
+          "hotel_id": "osm:node:11958139262",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.692384+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.692384+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:13301736402",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "9968de569bdeeccfd616a6b1",
+          "hotel_id": "osm:node:13301736402",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.692806+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.692806+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:1449074195",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "31dcefa8b4523b5c938ef20b",
+          "hotel_id": "osm:node:1449074195",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.693230+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.693230+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:1589835176",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "a5c8366ada20a38651f20355",
+          "hotel_id": "osm:node:1589835176",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.693657+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.693657+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:2857562133",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "6920b1e4c87fce8a27d8bf05",
+          "hotel_id": "osm:node:2857562133",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.694085+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.694085+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:2862997459",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "a07b12a6d997b2bfb95c4375",
+          "hotel_id": "osm:node:2862997459",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.694530+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.694530+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:4072901609",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "8592c23427202e6996031e7a",
+          "hotel_id": "osm:node:4072901609",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.694953+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.694953+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:4118677615",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "e90bbb833a6816a71c4271fe",
+          "hotel_id": "osm:node:4118677615",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.695377+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.695377+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:4284096790",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "e7141eb89ef1b32858ee9b58",
+          "hotel_id": "osm:node:4284096790",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.695803+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.695803+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:4327828193",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "4084949801456a1aa0f6c14c",
+          "hotel_id": "osm:node:4327828193",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.696226+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.696226+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:4348786790",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "0d3bdca108af751f71ec6873",
+          "hotel_id": "osm:node:4348786790",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.696655+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.696655+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:4931886321",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "5a0e7fd1ad4fb81be298beaf",
+          "hotel_id": "osm:node:4931886321",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.697103+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.697103+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:6494252594",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "e73afc2297b8ee599667e347",
+          "hotel_id": "osm:node:6494252594",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.697531+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.697531+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:7115085741",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "b6611dbc08c5ed56becc37b0",
+          "hotel_id": "osm:node:7115085741",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.697991+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.697991+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:7115162128",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "81ad0857d5f76e82336f8025",
+          "hotel_id": "osm:node:7115162128",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.698447+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.698447+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      },
+      {
+        "hotel_id": "osm:node:7345928591",
+        "feature_key": "sea_view",
+        "provider": "hotelier",
+        "action": "tool_call",
+        "tool_used": "hotelier",
+        "result": {
+          "id": "f85edcc522ba291e508b91da",
+          "hotel_id": "osm:node:7345928591",
+          "feature_key": "sea_view",
+          "text": "В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.",
+          "status": "open",
+          "created_at": "2026-10-28T21:01:42.698890+00:00",
+          "context": {
+            "reasons": [
+              "unknown"
+            ],
+            "subject_ids": [],
+            "review_answer_id": null
+          },
+          "updated_at": "2026-10-28T21:01:42.698890+00:00"
+        },
+        "reason": "missing_or_conflicted_feature"
+      }
+    ],
+    "include_simulated": true,
+    "ranking_method": "balanced_v2",
+    "balance": 0.4
+  },
+  "errors": {
+    "not_found": {
+      "status_code": 404,
+      "body": {
+        "code": "not_found",
+        "detail": "Ответ не найден"
+      }
+    },
+    "invalid_request": {
+      "status_code": 422,
+      "body": {
+        "code": "invalid_request",
+        "detail": [
+          {
+            "type": "value_error",
+            "loc": [
+              "body"
+            ],
+            "msg": "Value error, Передайте ровно одно поле: text или parsed",
+            "input": {},
+            "ctx": {
+              "error": {}
+            }
+          }
+        ]
+      }
+    },
+    "state_conflict": {
+      "status_code": 409,
+      "body": {
+        "code": "state_conflict",
+        "detail": "Решение уже принято; создайте новый ответ"
+      }
+    },
+    "forbidden": {
+      "status_code": 403,
+      "body": {
+        "code": "forbidden",
+        "detail": "Локальный кабинет — только симулятор; реальная авторизация пока не реализована"
+      }
+    },
+    "service_unavailable": {
+      "status_code": 503,
+      "body": {
+        "code": "service_unavailable",
+        "detail": "Добавьте GROQ_API_KEY в локальный .env; облачная модель ещё не подключена."
+      }
+    },
+    "invalid_model_output": {
+      "status_code": 502,
+      "body": {
+        "code": "invalid_model_output",
+        "detail": "Учебный пример: модель вернула неверную структуру"
+      }
+    }
+  }
+}

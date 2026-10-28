@@ -61,8 +61,16 @@ EXTRA_EXAMPLES = [
 
 
 def query_features():
-    """Признаки, которые гость может запросить: у них есть query_hint в реестре."""
-    return {key: d for key, d in get_registry().definitions.items() if d.query_hint}
+    """Признаки, которые гость может запросить, — всё, кроме чисто расчётных.
+
+    Запрашиваемый признак: есть query_hint или query_patterns, либо его знает
+    отельер (provider=hotelier). Новый признак отельера, описанный только в YAML
+    (например, blackout_curtains), сразу виден LLM. Расчётные спутники
+    (*_potential, *_min_floor, aircraft_noise_exposure) скрыты: модель путала их
+    с желаниями гостя, их добавляет backend.
+    """
+    return {key: d for key, d in get_registry().definitions.items()
+            if d.query_hint or d.query_patterns or d.provider == 'hotelier'}
 
 
 def query_messages(text, schema):
@@ -131,7 +139,7 @@ utility={kind:target_range,ideal_min:250,ideal_max:450,tolerance:150}.
 СМЫСЛ ПРИЗНАКОВ
 Тишина — quietness_proxy desired="high". Шумный/оживлённый — "low".
 Вид на море — sea_view; вид на закат — sunset_view; шумоизоляция — soundproofing.
-Эти три признака относятся к room, остальные — hotel (см. реестр).
+Область scope каждого признака бери из реестра: например, вид и шторы — room.
 Вид из окна без направления неоднозначен: спроси, какой именно вид нужен.
 Не выводи расчётные спутники *_potential/*_min_floor вместо желания гостя:
 их при необходимости добавит backend. Самолёты/авиашум/близость аэропорта:
@@ -145,7 +153,8 @@ utility={kind:target_range,ideal_min:250,ideal_max:450,tolerance:150}.
     # «коляска/лестницы» — это подъёмы на маршруте, а не тишина или пляж <= 500 м.
     definitions = {
         key: {name: value for name, value in definition.model_dump().items()
-              if name in ('label', 'description', 'type', 'unit', 'scope', 'choices', 'default_weight', 'query_hint')
+              if name in ('label', 'description', 'type', 'unit', 'scope', 'choices', 'default_weight',
+                          'aliases', 'query_hint')
               and value not in (None, [])}
         for key, definition in query_features().items()
     }

@@ -1,0 +1,219 @@
+{
+  "checked_at": "2026-10-28T21:29:43.396736+00:00",
+  "transport": "Streamlit AppTest -> actual HTTP -> isolated SQLite",
+  "real_model_used": false,
+  "run_directory": "/Users/grishaa/dev/hack_0/hack-o/runtime/backend-acceptance-e3jvar0w",
+  "migration": {
+    "revision": "0003_question_lifecycle",
+    "backup": null
+  },
+  "health": {
+    "status": "ok",
+    "database": "ok",
+    "hotels": 25,
+    "parser_mode": "fixture",
+    "reply_parser_mode": "bounded_rules",
+    "demo_mode": true,
+    "external_services_checked": false
+  },
+  "original_geo_search": {
+    "matched": 12,
+    "needs_verification": 2,
+    "excluded": 11
+  },
+  "ui_flow": {
+    "unknown_matches": 0,
+    "pending_matches": 0,
+    "confirmed_matches": 1,
+    "conflicted_matches": 0,
+    "resolved_matches": 1,
+    "explicit_selection_and_reason_required": true,
+    "automatic_search_refresh": true
+  },
+  "observations": [
+    {
+      "id": "cf487271221e46468bf076dec570130a:501",
+      "hotel_id": "osm:node:10058556917",
+      "subject_type": "room",
+      "subject_id": "osm:node:10058556917:room:501",
+      "feature_key": "blackout_curtains",
+      "value": true,
+      "unit": null,
+      "observed_at": "2026-10-28T21:29:46.424510Z",
+      "collected_at": "2026-10-28T21:29:46.424510Z",
+      "expires_at": "2027-04-26T21:29:46.424510Z",
+      "status": "estimated",
+      "confidence_level": "low",
+      "confidence": null,
+      "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+      "quality_flags": [
+        "simulated",
+        "hotelier_claim_not_independently_verified"
+      ],
+      "evidence": {
+        "source": {
+          "type": "hotelier_simulated",
+          "name": "Отельер (демо)",
+          "ref": "cf487271221e46468bf076dec570130a",
+          "url": null
+        },
+        "method": "human_confirmed_extraction",
+        "raw_excerpt": "В номере 501 есть плотные шторы.",
+        "snapshot_path": null,
+        "details": {
+          "quote": "В номере 501 есть плотные шторы",
+          "floor": null,
+          "question_id": "f1eee4f1ee376a79abb75c6a"
+        }
+      }
+    },
+    {
+      "id": "02021497c53b46569cf1cb44e0723318:501",
+      "hotel_id": "osm:node:10058556917",
+      "subject_type": "room",
+      "subject_id": "osm:node:10058556917:room:501",
+      "feature_key": "blackout_curtains",
+      "value": false,
+      "unit": null,
+      "observed_at": "2026-10-28T21:29:46.785350Z",
+      "collected_at": "2026-10-28T21:29:46.785350Z",
+      "expires_at": "2027-04-26T21:29:46.785350Z",
+      "status": "estimated",
+      "confidence_level": "low",
+      "confidence": null,
+      "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+      "quality_flags": [
+        "simulated",
+        "hotelier_claim_not_independently_verified"
+      ],
+      "evidence": {
+        "source": {
+          "type": "hotelier_simulated",
+          "name": "Отельер (демо)",
+          "ref": "02021497c53b46569cf1cb44e0723318",
+          "url": null
+        },
+        "method": "human_confirmed_extraction",
+        "raw_excerpt": "В номере 501 нет плотных штор.",
+        "snapshot_path": null,
+        "details": {
+          "quote": "В номере 501 нет плотных штор",
+          "floor": null,
+          "question_id": "f1eee4f1ee376a79abb75c6a"
+        }
+      }
+    }
+  ],
+  "resolution": {
+    "conflict_id": "a5df3d552f17cc444d3346443bbb2ddbbb8329be454ccc655e0935235e945f33",
+    "status": "resolved",
+    "resolution": {
+      "selected_observation_id": "cf487271221e46468bf076dec570130a:501",
+      "reason": "Приёмка: выбран исходный ответ о номере 501",
+      "conflict_id": "a5df3d552f17cc444d3346443bbb2ddbbb8329be454ccc655e0935235e945f33",
+      "resolved_at": "2026-10-28T21:29:47.245480Z",
+      "operator_id": "demo_operator"
+    },
+    "idempotent": true,
+    "current": {
+      "subject_id": "osm:node:10058556917:room:501",
+      "feature_key": "blackout_curtains",
+      "value": true,
+      "status": "estimated",
+      "observations": [
+        {
+          "id": "cf487271221e46468bf076dec570130a:501",
+          "hotel_id": "osm:node:10058556917",
+          "subject_type": "room",
+          "subject_id": "osm:node:10058556917:room:501",
+          "feature_key": "blackout_curtains",
+          "value": true,
+          "unit": null,
+          "observed_at": "2026-10-28T21:29:46.424510Z",
+          "collected_at": "2026-10-28T21:29:46.424510Z",
+          "expires_at": "2027-04-26T21:29:46.424510Z",
+          "status": "estimated",
+          "confidence_level": "low",
+          "confidence": null,
+          "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+          "quality_flags": [
+            "simulated",
+            "hotelier_claim_not_independently_verified"
+          ],
+          "evidence": {
+            "source": {
+              "type": "hotelier_simulated",
+              "name": "Отельер (демо)",
+              "ref": "cf487271221e46468bf076dec570130a",
+              "url": null
+            },
+            "method": "human_confirmed_extraction",
+            "raw_excerpt": "В номере 501 есть плотные шторы.",
+            "snapshot_path": null,
+            "details": {
+              "quote": "В номере 501 есть плотные шторы",
+              "floor": null,
+              "question_id": "f1eee4f1ee376a79abb75c6a"
+            }
+          }
+        },
+        {
+          "id": "02021497c53b46569cf1cb44e0723318:501",
+          "hotel_id": "osm:node:10058556917",
+          "subject_type": "room",
+          "subject_id": "osm:node:10058556917:room:501",
+          "feature_key": "blackout_curtains",
+          "value": false,
+          "unit": null,
+          "observed_at": "2026-10-28T21:29:46.785350Z",
+          "collected_at": "2026-10-28T21:29:46.785350Z",
+          "expires_at": "2027-04-26T21:29:46.785350Z",
+          "status": "estimated",
+          "confidence_level": "low",
+          "confidence": null,
+          "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+          "quality_flags": [
+            "simulated",
+            "hotelier_claim_not_independently_verified"
+          ],
+          "evidence": {
+            "source": {
+              "type": "hotelier_simulated",
+              "name": "Отельер (демо)",
+              "ref": "02021497c53b46569cf1cb44e0723318",
+              "url": null
+            },
+            "method": "human_confirmed_extraction",
+            "raw_excerpt": "В номере 501 нет плотных штор.",
+            "snapshot_path": null,
+            "details": {
+              "quote": "В номере 501 нет плотных штор",
+              "floor": null,
+              "question_id": "f1eee4f1ee376a79abb75c6a"
+            }
+          }
+        }
+      ],
+      "resolved_conflict_ids": [
+        "a5df3d552f17cc444d3346443bbb2ddbbb8329be454ccc655e0935235e945f33"
+      ]
+    }
+  },
+  "incompatible_repeat": {
+    "status_code": 409,
+    "body": {
+      "code": "state_conflict",
+      "detail": "Конфликт уже решён иначе; изменение решения не поддерживается"
+    }
+  },
+  "repeat_migration": {
+    "revision": "0003_question_lifecycle",
+    "backup": "/Users/grishaa/dev/hack_0/hack-o/runtime/backend-acceptance-e3jvar0w/backups/acceptance.20261028T212947Z.f8c04b87.db"
+  },
+  "restart_seed_migration_preserve_history": true,
+  "database_integrity": "ok",
+  "streamlit_health": "ok",
+  "browser_visual_check": "not performed; AppTest checks behavior only",
+  "both_ranking_methods": "passed",
+  "status": "passed"
+}
