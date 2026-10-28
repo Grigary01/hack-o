@@ -59,9 +59,20 @@ def llm_schema() -> dict:
     schema = ParsedHotelQuery.model_json_schema()
     for name in ('HardConstraint', 'SoftPreference'):
         schema['$defs'][name]['properties']['feature_key']['enum'] = list(get_registry().definitions)
+    # Pydantic допускает unit=None/scope=hotel по умолчанию, но для числовой
+    # фичи валидатор требует unit=m, для признака номера — scope=room.
+    # Без required модель могла законно (по JSON Schema) опустить эти поля,
+    # после чего тот же ответ отклонялся предметным валидатором Pydantic.
+    schema['$defs']['HardConstraint']['required'] = list(schema['$defs']['HardConstraint']['properties'])
     soft = schema['$defs']['SoftPreference']['properties']
     soft.pop('derived_from', None)
     schema['properties'].pop('ignored_terms', None)
+    # Исходный текст уже есть у сервера. Просить LLM переписывать его лишнее.
+    schema['properties'].pop('original_text', None)
+    # Не разрешаем молча пропускать списки и источник веса: иначе default
+    # Pydantic скрывает пропуск и может затереть явный вес пользователя.
+    schema['required'] = list(schema['properties'])
+    schema['$defs']['SoftPreference']['required'] = list(soft)
     soft['weight_source']['enum'] = [v for v in soft['weight_source']['enum'] if v != 'companion']
     return schema
 
@@ -180,6 +191,16 @@ class OllamaQueryParser:
                         'Ollama недоступна или вернула невалидный контракт; '
                         'фильтры не подменены.'
                     ) from exc
+                if isinstance(exc, ValidationError):
+                    # Повтор того же запроса при temperature=0 часто повторяет
+                    # ту же ошибку. Даём модели адрес и причину нарушения схемы,
+                    # без секретов и без эталонных ответов из evaluation-набора.
+                    payload['messages'].extend([{'role': 'assistant', 'content': content},
+                        {'role': 'user', 'content':
+                        'Ответ не прошёл проверку контракта. Исправь JSON для того же запроса. '
+                        'Неподдержанное условие помести в unknown_or_ambiguous. Ошибки: '
+                        + json.dumps(exc.errors(include_url=False, include_context=False, include_input=False), ensure_ascii=False)
+                        + '\nИсходный запрос (JSON-строка): ' + json.dumps(text, ensure_ascii=False)}])
                 time.sleep(.2)
         raise ParserError('unreachable')
 

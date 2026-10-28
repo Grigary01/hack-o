@@ -1,0 +1,66 @@
+{
+  "note": "Deliberately incorrect answer to demonstrate that cosine is not correctness.",
+  "embedding_model": "embeddinggemma",
+  "expected": {
+    "region": "Adler",
+    "hard_constraints": [
+      {
+        "feature_key": "walking_distance_to_beach_m",
+        "operator": "<=",
+        "value": 500,
+        "unit": "m",
+        "scope": "hotel"
+      }
+    ],
+    "soft_preferences": [],
+    "unknown_or_ambiguous": [],
+    "clarification_question": null
+  },
+  "actual": {
+    "region": "Adler",
+    "hard_constraints": [
+      {
+        "feature_key": "walking_distance_to_beach_m",
+        "operator": ">=",
+        "value": 500,
+        "unit": "m",
+        "scope": "hotel"
+      }
+    ],
+    "soft_preferences": [],
+    "unknown_or_ambiguous": [],
+    "clarification_question": null
+  },
+  "metrics": {
+    "exact_match": false,
+    "hard_exact_match": false,
+    "fields": {
+      "tp": 3,
+      "fp": 1,
+      "fn": 1
+    },
+    "requirements": {
+      "tp": 0,
+      "fp": 1,
+      "fn": 1
+    },
+    "field_cosine": 0.75,
+    "requirement_cosine": 0.0,
+    "operators": {
+      "tp": 0,
+      "fp": 1,
+      "fn": 1
+    },
+    "numbers": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    },
+    "negations": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0
+    },
+    "semantic_cosine": 0.9939568435515965
+  }
+}
