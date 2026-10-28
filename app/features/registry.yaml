@@ -247,3 +247,18 @@ mountain_view_min_floor:
   default_weight: 0.3
   aliases: [с какого этажа горы]
   scale: 3
+quiet_side_potential:
+  label: Тихая сторона здания (расчёт)
+  description: Потенциал тишины снаружи на самой тихой стене здания — с экранированием своим и соседними домами. Те же веса и пороги, что у потенциала тишины; не дБ.
+  type: category
+  choices: [low, medium, high]
+  unit: null
+  scope: hotel
+  provider: facade_noise
+  ttl_days: 90
+  default_weight: 0.6
+  aliases: [окна во двор, тихая сторона]
+  ordinal: true
+  choice_labels: {low: шумно со всех сторон, medium: умеренно, high: есть тихая сторона}
+  query_patterns: ['тих\w* сторон\w*', 'окн\w* (выходят |смотрят )?во двор', '\bво двор\w*', 'окн\w* не на (улиц|дорог)\w*']
+  query_desired: high

@@ -3104,6 +3104,114 @@
     }
   },
   {
+    "id": "9f04c174cd1f70b19c00a0843d560ded98294c98e9ab3219458961f502c5a9d5",
+    "hotel_id": "osm:node:10058556917",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:10058556917",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/10058556917"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "В",
+        "quiet_risk": 0.1184,
+        "quiet_category": "high",
+        "loud_side": "З",
+        "loud_risk": 0.2136,
+        "loud_category": "high",
+        "sides": {
+          "СЗ": {
+            "risk": 0.2041,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 46,
+            "shielded": null
+          },
+          "З": {
+            "risk": 0.2136,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 41,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.1295,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 40,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.2042,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 46,
+            "shielded": null
+          },
+          "В": {
+            "risk": 0.1184,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 50,
+            "shielded": "соседний дом"
+          },
+          "СВ": {
+            "risk": 0.2019,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 48,
+            "shielded": null
+          },
+          "С": {
+            "risk": 0.2001,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 49,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Стороны здания по шуму почти не отличаются: тихо (ближайший источник — улица Богдана Хмельницкого, 50 м).",
+        "building_osm_id": "osm:way:53284172"
+      }
+    }
+  },
+  {
     "id": "12ce65c5edc30756537b184db6aebc040148c8b46f8564dd8ba5854d498337dc",
     "hotel_id": "osm:node:10759614195",
     "subject_type": "hotel",
@@ -6382,6 +6490,114 @@
     }
   },
   {
+    "id": "09ae5fa8e68b295fe50e2573bdea54d90ddab901784229c519cb656ed2e722a6",
+    "hotel_id": "osm:node:10759614195",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:10759614195",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/10759614195"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.1966,
+        "quiet_category": "high",
+        "loud_side": "СВ",
+        "loud_risk": 0.2716,
+        "loud_category": "medium",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.1966,
+            "source": "переулок Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 51,
+            "shielded": null
+          },
+          "Ю": {
+            "risk": 0.2562,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 19,
+            "shielded": null
+          },
+          "ЮВ": {
+            "risk": 0.2686,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 13,
+            "shielded": null
+          },
+          "В": {
+            "risk": 0.2617,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 16,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2716,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 12,
+            "shielded": null
+          },
+          "С": {
+            "risk": 0.2598,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 17,
+            "shielded": null
+          },
+          "СЗ": {
+            "risk": 0.2682,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 13,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮЗ (тихо); шумная — СВ (умеренно: улица Просвещения, 12 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:80180147"
+      }
+    }
+  },
+  {
     "id": "3109712e25dbe431069f036d1639a1789d27fea7b0633b5a9cbb9011db354422",
     "hotel_id": "osm:node:11138786325",
     "subject_type": "hotel",
@@ -9465,6 +9681,93 @@
     }
   },
   {
+    "id": "54c50dcb44b80709338275e8cbcdd10cceea6a374ec749fc875a4b2db80bfccc",
+    "hotel_id": "osm:node:11138786325",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11138786325",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11138786325"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "СВ",
+        "quiet_risk": 0.1156,
+        "quiet_category": "high",
+        "loud_side": "ЮЗ",
+        "loud_risk": 0.2937,
+        "loud_category": "medium",
+        "sides": {
+          "СЗ": {
+            "risk": 0.2824,
+            "source": "Ереванский переулок",
+            "kind": "дорога",
+            "distance_m": 7,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.2937,
+            "source": "Ереванский переулок",
+            "kind": "дорога",
+            "distance_m": 3,
+            "shielded": null
+          },
+          "ЮВ": {
+            "risk": 0.2821,
+            "source": "Ереванский переулок",
+            "kind": "дорога",
+            "distance_m": 7,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.1156,
+            "source": "дорога",
+            "kind": "дорога",
+            "distance_m": 31,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — СВ (тихо); шумная — ЮЗ (умеренно: Ереванский переулок, 3 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:55359125"
+      }
+    }
+  },
+  {
     "id": "868b1a2633c75b7cb40b93294cb1731e08fb29871bc3fbe6e3b18260c11919ff",
     "hotel_id": "osm:node:11843545856",
     "subject_type": "hotel",
@@ -12175,6 +12478,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 473 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "627fd46bab8585b55cbd968a57a08c2cc911633809d503bf02c3d8c8aeebde48",
+    "hotel_id": "osm:node:11843545856",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843545856",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11843545856"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "СЗ",
+        "quiet_risk": 0.1103,
+        "quiet_category": "high",
+        "loud_side": "СВ",
+        "loud_risk": 0.2072,
+        "loud_category": "high",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.1356,
+            "source": "улица Ульянова",
+            "kind": "дорога",
+            "distance_m": 34,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.143,
+            "source": "улица Ульянова",
+            "kind": "дорога",
+            "distance_m": 28,
+            "shielded": "соседний дом"
+          },
+          "СВ": {
+            "risk": 0.2072,
+            "source": "улица Ульянова",
+            "kind": "дорога",
+            "distance_m": 44,
+            "shielded": null
+          },
+          "СЗ": {
+            "risk": 0.1103,
+            "source": "дорога",
+            "kind": "дорога",
+            "distance_m": 37,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Стороны здания по шуму почти не отличаются: тихо (ближайший источник — дорога, 37 м).",
+        "building_osm_id": "osm:way:80042447"
       }
     }
   },
@@ -14943,6 +15333,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: Сеть аптек, 427 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "a627776b6dd4934cf64d3276bf3682f8a3d2bf15f99fdeca5652ca68ef749dbb",
+    "hotel_id": "osm:node:11843553838",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843553838",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11843553838"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "СВ",
+        "quiet_risk": 0.1558,
+        "quiet_category": "high",
+        "loud_side": "ЮЗ",
+        "loud_risk": 0.2537,
+        "loud_category": "medium",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.2537,
+            "source": "улица Куйбышева",
+            "kind": "дорога",
+            "distance_m": 20,
+            "shielded": null
+          },
+          "ЮВ": {
+            "risk": 0.242,
+            "source": "улица Куйбышева",
+            "kind": "дорога",
+            "distance_m": 26,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.1558,
+            "source": "улица Лескова",
+            "kind": "дорога",
+            "distance_m": 79,
+            "shielded": null
+          },
+          "СЗ": {
+            "risk": 0.2432,
+            "source": "улица Куйбышева",
+            "kind": "дорога",
+            "distance_m": 25,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — СВ (тихо); шумная — ЮЗ (умеренно: улица Куйбышева, 20 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:693055871"
       }
     }
   },
@@ -17791,6 +18268,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 428 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "7768d4a2b7690ffb8faae939dee716a39926facdfc797a6ca048da2be82fac48",
+    "hotel_id": "osm:node:11843553839",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11843553839",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11843553839"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮВ",
+        "quiet_risk": 0.1444,
+        "quiet_category": "high",
+        "loud_side": "СЗ",
+        "loud_risk": 0.2706,
+        "loud_category": "medium",
+        "sides": {
+          "СЗ": {
+            "risk": 0.2706,
+            "source": "переулок Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 12,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.258,
+            "source": "переулок Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 18,
+            "shielded": null
+          },
+          "ЮВ": {
+            "risk": 0.1444,
+            "source": "дорога",
+            "kind": "дорога",
+            "distance_m": 5,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2588,
+            "source": "переулок Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 18,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮВ (тихо); шумная — СЗ (умеренно: переулок Богдана Хмельницкого, 12 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:53290613"
       }
     }
   },
@@ -20779,6 +21343,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 642 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "6271912654c35fba2d6123a701dc3abbb00a684285c18fd55576ecbcdd688556",
+    "hotel_id": "osm:node:11866202895",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11866202895",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11866202895"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.0571,
+        "quiet_category": "high",
+        "loud_side": "СЗ",
+        "loud_risk": 0.2204,
+        "loud_category": "high",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.0571,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 55,
+            "shielded": "своё здание"
+          },
+          "ЮВ": {
+            "risk": 0.079,
+            "source": "переулок Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 99,
+            "shielded": "соседний дом"
+          },
+          "СВ": {
+            "risk": 0.138,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 32,
+            "shielded": "соседний дом"
+          },
+          "СЗ": {
+            "risk": 0.2204,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 37,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Стороны здания по шуму почти не отличаются: тихо (ближайший источник — улица Просвещения, 55 м).",
+        "building_osm_id": "osm:way:679416881"
       }
     }
   },
@@ -23861,6 +24512,93 @@
     }
   },
   {
+    "id": "704c003614d4555a09fcdf7b1a6d32e3f74a12cbba12e59fa4f5a79f45dae6be",
+    "hotel_id": "osm:node:11878294031",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11878294031",
+    "feature_key": "quiet_side_potential",
+    "value": "medium",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11878294031"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "СЗ",
+        "quiet_risk": 0.2561,
+        "quiet_category": "medium",
+        "loud_side": "ЮВ",
+        "loud_risk": 0.4299,
+        "loud_category": "medium",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.2577,
+            "source": "улица Павлика Морозова",
+            "kind": "дорога",
+            "distance_m": 18,
+            "shielded": null
+          },
+          "ЮВ": {
+            "risk": 0.4299,
+            "source": "улица Ленина",
+            "kind": "дорога",
+            "distance_m": 58,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2711,
+            "source": "улица Ленина",
+            "kind": "дорога",
+            "distance_m": 53,
+            "shielded": "соседний дом"
+          },
+          "СЗ": {
+            "risk": 0.2561,
+            "source": "улица Ленина",
+            "kind": "дорога",
+            "distance_m": 59,
+            "shielded": "соседний дом"
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Стороны здания по шуму почти не отличаются: умеренно (ближайший источник — улица Ленина, 59 м).",
+        "building_osm_id": "osm:way:708992263"
+      }
+    }
+  },
+  {
     "id": "2c2d77036bd14ec87fb5b69880b123c2ae115c2b85f67e0dc24b5622ce939e6f",
     "hotel_id": "osm:node:11878294032",
     "subject_type": "hotel",
@@ -26691,6 +27429,107 @@
     }
   },
   {
+    "id": "e06e1e6037fa81d7fc2cf1e8ad6b2f0a5e2fede9f09c29ab127274ef69fa2c0b",
+    "hotel_id": "osm:node:11878294032",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11878294032",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11878294032"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.102,
+        "quiet_category": "high",
+        "loud_side": "СВ",
+        "loud_risk": 0.2638,
+        "loud_category": "medium",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.102,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 68,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.2486,
+            "source": "улица Павлика Морозова",
+            "kind": "дорога",
+            "distance_m": 23,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2638,
+            "source": "улица Павлика Морозова",
+            "kind": "дорога",
+            "distance_m": 15,
+            "shielded": null
+          },
+          "В": {
+            "risk": 0.2622,
+            "source": "улица Павлика Морозова",
+            "kind": "дорога",
+            "distance_m": 16,
+            "shielded": null
+          },
+          "С": {
+            "risk": 0.2632,
+            "source": "улица Павлика Морозова",
+            "kind": "дорога",
+            "distance_m": 16,
+            "shielded": null
+          },
+          "СЗ": {
+            "risk": 0.247,
+            "source": "улица Павлика Морозова",
+            "kind": "дорога",
+            "distance_m": 23,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮЗ (тихо, экранирует соседний дом); шумная — СВ (умеренно: улица Павлика Морозова, 15 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:147646191"
+      }
+    }
+  },
+  {
     "id": "c392fed751ddbaacc855212963ef170331867bdf50ee25f83f2d59bc16a34085",
     "hotel_id": "osm:node:11958139262",
     "subject_type": "hotel",
@@ -29393,6 +30232,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 515 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "3a629a99a98ca3e862d938f6d900c82508677812180a21ccb0a30d3c30d8e401",
+    "hotel_id": "osm:node:11958139262",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:11958139262",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/11958139262"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.1109,
+        "quiet_category": "high",
+        "loud_side": "СЗ",
+        "loud_risk": 0.2141,
+        "loud_category": "high",
+        "sides": {
+          "СЗ": {
+            "risk": 0.2141,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 40,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.1109,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 58,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.1288,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 40,
+            "shielded": "соседний дом"
+          },
+          "СВ": {
+            "risk": 0.1361,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 34,
+            "shielded": "соседний дом"
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Стороны здания по шуму почти не отличаются: тихо (ближайший источник — улица 8 Марта, 58 м).",
+        "building_osm_id": "osm:way:235368424"
       }
     }
   },
@@ -32117,6 +33043,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 645 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "452cda3941265e79a37d9b25b9e995e149013e3dc2e5837854a38f075f718e7a",
+    "hotel_id": "osm:node:13301736402",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:13301736402",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/13301736402"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.1346,
+        "quiet_category": "high",
+        "loud_side": "СЗ",
+        "loud_risk": 0.2178,
+        "loud_category": "high",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.1346,
+            "source": "улица Калинина",
+            "kind": "дорога",
+            "distance_m": 35,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.2154,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 40,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.1367,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 33,
+            "shielded": "соседний дом"
+          },
+          "СЗ": {
+            "risk": 0.2178,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 38,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Стороны здания по шуму почти не отличаются: тихо (ближайший источник — улица Калинина, 35 м).",
+        "building_osm_id": "osm:way:775621444"
       }
     }
   },
@@ -34917,6 +35930,107 @@
     }
   },
   {
+    "id": "430de3549f6c0254b068b51f9bce5b674f7873bc6f923bc6907f7208e8258cd3",
+    "hotel_id": "osm:node:1449074195",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:1449074195",
+    "feature_key": "quiet_side_potential",
+    "value": "medium",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/1449074195"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "СВ",
+        "quiet_risk": 0.2575,
+        "quiet_category": "medium",
+        "loud_side": "ЮЗ",
+        "loud_risk": 0.2927,
+        "loud_category": "medium",
+        "sides": {
+          "Ю": {
+            "risk": 0.2672,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 14,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.2927,
+            "source": "Устричный Бар",
+            "kind": "бар/клуб",
+            "distance_m": 21,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.2808,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 8,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2575,
+            "source": "улица Свердлова",
+            "kind": "дорога",
+            "distance_m": 18,
+            "shielded": null
+          },
+          "СЗ": {
+            "risk": 0.2819,
+            "source": "улица Свердлова",
+            "kind": "дорога",
+            "distance_m": 7,
+            "shielded": null
+          },
+          "С": {
+            "risk": 0.2722,
+            "source": "улица Свердлова",
+            "kind": "дорога",
+            "distance_m": 12,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Стороны здания по шуму почти не отличаются: умеренно (ближайший источник — улица Свердлова, 18 м).",
+        "building_osm_id": "osm:way:43007737"
+      }
+    }
+  },
+  {
     "id": "669ed0d6cfec8fe33544910cccda1a472edfd0b4f1841b3a2c8432ccdf627b9b",
     "hotel_id": "osm:node:1589835176",
     "subject_type": "hotel",
@@ -37477,6 +38591,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 396 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "bd40c83e6864fafe2871228d41c8c4c2455700cd2a0d8b1d0cfb9e535a43d3ae",
+    "hotel_id": "osm:node:1589835176",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:1589835176",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/1589835176"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.2111,
+        "quiet_category": "high",
+        "loud_side": "СВ",
+        "loud_risk": 0.3825,
+        "loud_category": "medium",
+        "sides": {
+          "СЗ": {
+            "risk": 0.3492,
+            "source": "улица Ленина",
+            "kind": "дорога",
+            "distance_m": 43,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.2111,
+            "source": "улица Кирова",
+            "kind": "дорога",
+            "distance_m": 42,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.2202,
+            "source": "улица Ленина",
+            "kind": "дорога",
+            "distance_m": 37,
+            "shielded": "соседний дом"
+          },
+          "СВ": {
+            "risk": 0.3825,
+            "source": "улица Кирова",
+            "kind": "дорога",
+            "distance_m": 73,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮЗ (тихо, экранирует соседний дом); шумная — СВ (умеренно: улица Кирова, 73 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:53276195"
       }
     }
   },
@@ -40724,23 +41925,117 @@
     }
   },
   {
-    "id": "6ce4dab8cbcf6cca29813fc2e76214fb5528dc7d721b61f88c49b4dbeed32fa1",
+    "id": "f0339d03ea4512a9bceeec696eaf7583a33c18c44b8a2b60ba9dc8e436ced58d",
+    "hotel_id": "osm:node:2857562133",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:2857562133",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/2857562133"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮВ",
+        "quiet_risk": 0.0673,
+        "quiet_category": "high",
+        "loud_side": "СЗ",
+        "loud_risk": 0.2648,
+        "loud_category": "medium",
+        "sides": {
+          "СЗ": {
+            "risk": 0.2648,
+            "source": "улица Гоголя",
+            "kind": "дорога",
+            "distance_m": 15,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.2524,
+            "source": "улица Гоголя",
+            "kind": "дорога",
+            "distance_m": 21,
+            "shielded": null
+          },
+          "ЮВ": {
+            "risk": 0.0673,
+            "source": "улица Гоголя",
+            "kind": "дорога",
+            "distance_m": 35,
+            "shielded": "своё здание"
+          },
+          "СВ": {
+            "risk": 0.1522,
+            "source": "улица Гоголя",
+            "kind": "дорога",
+            "distance_m": 20,
+            "shielded": "соседний дом"
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮВ (тихо, экранирует своё здание); шумная — СЗ (умеренно: улица Гоголя, 15 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:105867912"
+      }
+    }
+  },
+  {
+    "id": "3a9a3147d4e5032d50aa826cdbba1d956cec9aba18b6e14404f54084257d57cf",
     "hotel_id": "osm:node:2862997459",
     "subject_type": "hotel",
     "subject_id": "osm:node:2862997459",
     "feature_key": "walking_distance_to_beach_m",
-    "value": null,
+    "value": 592.1,
     "unit": "m",
     "observed_at": "2026-10-23T20:44:21Z",
     "collected_at": "2026-10-23T20:46:09.761121Z",
     "expires_at": "2027-01-21T20:44:21Z",
-    "status": "unknown",
-    "confidence_level": "unknown",
+    "status": "estimated",
+    "confidence_level": "low",
     "confidence": null,
     "confidence_method": "Эвристический уровень: полнота OSM и входы не проверены на местности; вероятность не оценивалась.",
     "quality_flags": [
       "osm_coverage_not_field_verified",
-      "hotel_too_far_from_graph"
+      "hotel_entry_approximate",
+      "beach_access_candidate",
+      "connectors_not_surveyed",
+      "osm_access_incomplete",
+      "terrain_and_crossing_safety_not_assessed",
+      "start_from_building_outline",
+      "unmapped_access_connector",
+      "fallback_after_hotel_too_far_from_graph"
     ],
     "evidence": {
       "source": {
@@ -40753,16 +42048,144 @@
       "raw_excerpt": "",
       "snapshot_path": "data/demo/osm_snapshot.json",
       "details": {
-        "distance_m": null,
-        "reason": "hotel_too_far_from_graph",
-        "network_distance_m": null,
-        "connector_distance_m": 0,
-        "coordinates": [],
-        "way_ids": [],
-        "node_ids": [],
-        "beach_id": null,
-        "beach_name": null,
-        "flags": [],
+        "distance_m": 592.0660324971108,
+        "reason": null,
+        "network_distance_m": 462.31052141880474,
+        "connector_distance_m": 129.755511078306,
+        "coordinates": [
+          [
+            39.9165655,
+            43.428172
+          ],
+          [
+            39.9176683,
+            43.4275982
+          ],
+          [
+            39.9176102,
+            43.4275499
+          ],
+          [
+            39.9172782,
+            43.4272747
+          ],
+          [
+            39.9167517,
+            43.4268389
+          ],
+          [
+            39.91653,
+            43.4266692
+          ],
+          [
+            39.9165749,
+            43.4266378
+          ],
+          [
+            39.916508,
+            43.4265834
+          ],
+          [
+            39.9164464,
+            43.4265371
+          ],
+          [
+            39.9157026,
+            43.4259948
+          ],
+          [
+            39.9156007,
+            43.4259205
+          ],
+          [
+            39.9153594,
+            43.4257446
+          ],
+          [
+            39.9152816,
+            43.4256879
+          ],
+          [
+            39.9152499,
+            43.4256648
+          ],
+          [
+            39.9151574,
+            43.4255982
+          ],
+          [
+            39.9152356,
+            43.4255458
+          ],
+          [
+            39.9156028,
+            43.4253035
+          ],
+          [
+            39.9158524,
+            43.4251349
+          ],
+          [
+            39.9158051,
+            43.4251098
+          ],
+          [
+            39.9155619,
+            43.4252777
+          ],
+          [
+            39.9151106,
+            43.4249931
+          ],
+          [
+            39.91483051662838,
+            43.424878299027824
+          ]
+        ],
+        "way_ids": [
+          "772093911",
+          "772093912",
+          "875793151",
+          "38883329",
+          "80043571",
+          "1278996039",
+          "578746973",
+          "202411728"
+        ],
+        "node_ids": [
+          8151609211,
+          7207856282,
+          7207856283,
+          7207856284,
+          7207856285,
+          8151503608,
+          461904623,
+          7207856290,
+          11873417082,
+          11873417081,
+          11869514643,
+          8310553138,
+          5544474940,
+          461889510,
+          7207856187,
+          7315616177,
+          11873505381,
+          11873505382,
+          5544526740,
+          2123824714
+        ],
+        "beach_id": "osm:way:53086451",
+        "beach_name": "Пляж OSM",
+        "flags": [
+          "hotel_entry_approximate",
+          "beach_access_candidate",
+          "connectors_not_surveyed",
+          "osm_access_incomplete",
+          "terrain_and_crossing_safety_not_assessed",
+          "start_from_building_outline",
+          "unmapped_access_connector",
+          "fallback_after_hotel_too_far_from_graph"
+        ],
         "graph_snapshot_date": "2026-10-23T20:48:30.603815+00:00",
         "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
         "coverage_quality": "approximate_entries"
@@ -42970,23 +44393,26 @@
     }
   },
   {
-    "id": "c2a25fbceae8bb3efc7a1ff139c77003b642e380f7b3b15dfd1600f73f5c8b69",
+    "id": "85d4fd9fb433f8cfa95bbfae4a1f567bae9c0a3db13d0edbcf625ac4a93af6ce",
     "hotel_id": "osm:node:2862997459",
     "subject_type": "hotel",
     "subject_id": "osm:node:2862997459",
     "feature_key": "beach_route_climb_m",
-    "value": null,
+    "value": 1.2,
     "unit": "m",
     "observed_at": "2026-10-23T20:44:21Z",
     "collected_at": "2026-10-23T20:46:09.761121Z",
     "expires_at": "2027-10-23T20:44:21Z",
-    "status": "unknown",
-    "confidence_level": "unknown",
+    "status": "estimated",
+    "confidence_level": "low",
     "confidence": null,
     "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
     "quality_flags": [
       "osm_coverage_not_field_verified",
-      "hotel_too_far_from_graph"
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
     ],
     "evidence": {
       "source": {
@@ -42999,28 +44425,50 @@
       "raw_excerpt": "",
       "snapshot_path": "data/demo/osm_snapshot.json",
       "details": {
-        "reason": "hotel_too_far_from_graph"
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.2,
+        "climb_m": 1.2,
+        "max_grade_pct": 2.4,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 463,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Подъёмы на пути к пляжу: туда ≈ 0 м, обратно ≈ 1.2 м. Практически ровно (в пределах точности рельефа).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "30e53303dffb4607fc4eb315d224aad137efd0da488671230807bf9ef2f5520f"
       }
     }
   },
   {
-    "id": "15d19090bdea9884439711c688752357f0c525280ffebbf39ed036a1472c5146",
+    "id": "9a26046f96e75551a5ef831ce598a1b60a2a7854c55dc9ab54e50ea2f42d2020",
     "hotel_id": "osm:node:2862997459",
     "subject_type": "hotel",
     "subject_id": "osm:node:2862997459",
     "feature_key": "beach_route_busy_crossings",
-    "value": null,
+    "value": 0,
     "unit": "count",
     "observed_at": "2026-10-23T20:44:21Z",
     "collected_at": "2026-10-23T20:46:09.761121Z",
     "expires_at": "2027-04-21T20:44:21Z",
-    "status": "unknown",
-    "confidence_level": "unknown",
+    "status": "estimated",
+    "confidence_level": "low",
     "confidence": null,
     "confidence_method": "Маршрут по графу OSM; рельеф GLO-30 (±2–4 м), тип перехода — по тегам OSM; на местности не проверено. Вероятность не оценивалась.",
     "quality_flags": [
       "osm_coverage_not_field_verified",
-      "hotel_too_far_from_graph"
+      "dem_vertical_error_2_4m",
+      "crossing_type_from_osm_tags",
+      "route_entry_points_approximate",
+      "underpasses_only_if_tagged"
     ],
     "evidence": {
       "source": {
@@ -43033,7 +44481,26 @@
       "raw_excerpt": "",
       "snapshot_path": "data/demo/osm_snapshot.json",
       "details": {
-        "reason": "hotel_too_far_from_graph"
+        "ascent_to_beach_m": 0.0,
+        "ascent_back_m": 1.2,
+        "climb_m": 1.2,
+        "max_grade_pct": 2.4,
+        "busy_crossings": 0,
+        "crossings": [],
+        "stairs_segments": 0,
+        "sample_step_m": 10.0,
+        "hysteresis_m": 1.0,
+        "route_length_m": 463,
+        "limits": [
+          "dem_vertical_error_2_4m",
+          "crossing_type_from_osm_tags",
+          "route_entry_points_approximate",
+          "underpasses_only_if_tagged"
+        ],
+        "explanation": "Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).",
+        "beach_id": "osm:way:53086451",
+        "graph_sha256": "3d4a61c6100e868337bb8e08b23465e808c621043fbe1d0c57a5ef69f9ed5350",
+        "dem_sha256": "30e53303dffb4607fc4eb315d224aad137efd0da488671230807bf9ef2f5520f"
       }
     }
   },
@@ -43246,6 +44713,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 424 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "6f7b506119d103243014c1ac4b8e90f4e1cd03d96a354d49b6af7dfc9c2bb9c1",
+    "hotel_id": "osm:node:2862997459",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:2862997459",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/2862997459"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.0927,
+        "quiet_category": "high",
+        "loud_side": "СВ",
+        "loud_risk": 0.2875,
+        "loud_category": "medium",
+        "sides": {
+          "СЗ": {
+            "risk": 0.2739,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 11,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.0927,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 80,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.274,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 11,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2875,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 5,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮЗ (тихо, экранирует соседний дом); шумная — СВ (умеренно: улица Богдана Хмельницкого, 5 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:55359101"
       }
     }
   },
@@ -45711,6 +47265,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 534 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "955c8b91749f5fff3f290c763e72d662c1145101e79cdc7e512096c3eaf62948",
+    "hotel_id": "osm:node:4072901609",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4072901609",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4072901609"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.0942,
+        "quiet_category": "high",
+        "loud_side": "ЮВ",
+        "loud_risk": 0.2129,
+        "loud_category": "high",
+        "sides": {
+          "ЮВ": {
+            "risk": 0.2129,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 41,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2042,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 46,
+            "shielded": null
+          },
+          "СЗ": {
+            "risk": 0.1938,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 52,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.0942,
+            "source": "улица Свердлова",
+            "kind": "дорога",
+            "distance_m": 78,
+            "shielded": "соседний дом"
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Стороны здания по шуму почти не отличаются: тихо (ближайший источник — улица Свердлова, 78 м).",
+        "building_osm_id": "osm:way:149546329"
       }
     }
   },
@@ -48894,6 +50535,93 @@
     }
   },
   {
+    "id": "663bf08dc4b960f96041982721d41cd337d737f4e2d8d9ba2ccd0927fa13a679",
+    "hotel_id": "osm:node:4118677615",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4118677615",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4118677615"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.1402,
+        "quiet_category": "high",
+        "loud_side": "СВ",
+        "loud_risk": 0.6267,
+        "loud_category": "low",
+        "sides": {
+          "СЗ": {
+            "risk": 0.6012,
+            "source": "улица Ленина",
+            "kind": "дорога",
+            "distance_m": 18,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.1402,
+            "source": "улица Ленина",
+            "kind": "дорога",
+            "distance_m": 48,
+            "shielded": "своё здание"
+          },
+          "ЮВ": {
+            "risk": 0.5929,
+            "source": "улица Ленина",
+            "kind": "дорога",
+            "distance_m": 20,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.6267,
+            "source": "улица Ленина",
+            "kind": "дорога",
+            "distance_m": 13,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮЗ (тихо, экранирует своё здание); шумная — СВ (шумно: улица Ленина, 13 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:53290646"
+      }
+    }
+  },
+  {
     "id": "bf57fb8bf7152458de7b658c5d311b974b6cccdb84bd09a6f630ecffe8349981",
     "hotel_id": "osm:node:4284096790",
     "subject_type": "hotel",
@@ -51257,6 +52985,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 414 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "033af57b0091a7184162c0e8d3caecb4c5c1d1d3292111947eb3044f1eb14756",
+    "hotel_id": "osm:node:4284096790",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4284096790",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4284096790"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.1307,
+        "quiet_category": "high",
+        "loud_side": "СВ",
+        "loud_risk": 0.2776,
+        "loud_category": "medium",
+        "sides": {
+          "СЗ": {
+            "risk": 0.2682,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 13,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.1307,
+            "source": "улица Кирова",
+            "kind": "дорога",
+            "distance_m": 100,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.2675,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 14,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2776,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 9,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮЗ (тихо, экранирует соседний дом); шумная — СВ (умеренно: улица Богдана Хмельницкого, 9 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:53301309"
       }
     }
   },
@@ -53911,6 +55726,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 491 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "d9ebd543d8f87597123e44c69c54da3577dd55e19a87e49089b9c7df33d375ea",
+    "hotel_id": "osm:node:4327828193",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4327828193",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4327828193"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.0943,
+        "quiet_category": "high",
+        "loud_side": "СВ",
+        "loud_risk": 0.2776,
+        "loud_category": "medium",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.0943,
+            "source": "улица 8 Марта",
+            "kind": "дорога",
+            "distance_m": 78,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.2629,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 16,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2776,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 9,
+            "shielded": null
+          },
+          "СЗ": {
+            "risk": 0.2645,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 15,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮЗ (тихо, экранирует соседний дом); шумная — СВ (умеренно: улица Богдана Хмельницкого, 9 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:131715050"
       }
     }
   },
@@ -56861,6 +58763,93 @@
     }
   },
   {
+    "id": "abb334b6a0c11e85178900087ddcea2c6285df27ed1ae7bc8815e9396cc2d63f",
+    "hotel_id": "osm:node:4348786790",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4348786790",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4348786790"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "СЗ",
+        "quiet_risk": 0.1142,
+        "quiet_category": "high",
+        "loud_side": "СВ",
+        "loud_risk": 0.1649,
+        "loud_category": "high",
+        "sides": {
+          "СЗ": {
+            "risk": 0.1142,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 55,
+            "shielded": "соседний дом"
+          },
+          "ЮЗ": {
+            "risk": 0.1215,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 47,
+            "shielded": "соседний дом"
+          },
+          "ЮВ": {
+            "risk": 0.1162,
+            "source": "улица Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 53,
+            "shielded": "соседний дом"
+          },
+          "СВ": {
+            "risk": 0.1649,
+            "source": "улица Павлика Морозова",
+            "kind": "дорога",
+            "distance_m": 72,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Стороны здания по шуму почти не отличаются: тихо (ближайший источник — улица Богдана Хмельницкого, 55 м).",
+        "building_osm_id": "osm:way:53289663"
+      }
+    }
+  },
+  {
     "id": "e5d63d67a7052b26ab86958af3c84c420557293c3d75585751daa60abd732ade",
     "hotel_id": "osm:node:4931886321",
     "subject_type": "hotel",
@@ -59623,6 +61612,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 403 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "ac74eb8d7de59fef00afdfbdae6020ce5ace49b5519f8956486ea80a06f62b81",
+    "hotel_id": "osm:node:4931886321",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:4931886321",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/4931886321"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮВ",
+        "quiet_risk": 0.1399,
+        "quiet_category": "high",
+        "loud_side": "СЗ",
+        "loud_risk": 0.2759,
+        "loud_category": "medium",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.2658,
+            "source": "переулок Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 15,
+            "shielded": null
+          },
+          "ЮВ": {
+            "risk": 0.1399,
+            "source": "переулок Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 8,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2664,
+            "source": "переулок Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 14,
+            "shielded": null
+          },
+          "СЗ": {
+            "risk": 0.2759,
+            "source": "переулок Богдана Хмельницкого",
+            "kind": "дорога",
+            "distance_m": 10,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮВ (тихо); шумная — СЗ (умеренно: переулок Богдана Хмельницкого, 10 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:131299002"
       }
     }
   },
@@ -63342,6 +65418,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: 36,6, 743 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "e2709818b59c650852816889d9334e323f75bff9d0984c75a275f4c75a5156c3",
+    "hotel_id": "osm:node:6494252594",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:6494252594",
+    "feature_key": "quiet_side_potential",
+    "value": "medium",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/6494252594"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮВ",
+        "quiet_risk": 0.3013,
+        "quiet_category": "medium",
+        "loud_side": "СЗ",
+        "loud_risk": 0.5116,
+        "loud_category": "medium",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.4796,
+            "source": "улица Мира",
+            "kind": "дорога",
+            "distance_m": 45,
+            "shielded": null
+          },
+          "ЮВ": {
+            "risk": 0.3013,
+            "source": "Аэровокзальная улица",
+            "kind": "дорога",
+            "distance_m": 34,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.4971,
+            "source": "улица Мира",
+            "kind": "дорога",
+            "distance_m": 41,
+            "shielded": null
+          },
+          "СЗ": {
+            "risk": 0.5116,
+            "source": "улица Мира",
+            "kind": "дорога",
+            "distance_m": 38,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Стороны здания по шуму почти не отличаются: умеренно (ближайший источник — Аэровокзальная улица, 34 м).",
+        "building_osm_id": "osm:way:54058300"
       }
     }
   },
@@ -67336,6 +69499,100 @@
     }
   },
   {
+    "id": "c117839eb786faa5c246bd60da8a0e7c80e304f13f8c9037711d3396aefef184",
+    "hotel_id": "osm:node:7115085741",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7115085741",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/7115085741"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "СЗ",
+        "quiet_risk": 0.2376,
+        "quiet_category": "high",
+        "loud_side": "ЮЗ",
+        "loud_risk": 0.252,
+        "loud_category": "medium",
+        "sides": {
+          "СЗ": {
+            "risk": 0.2376,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 28,
+            "shielded": null
+          },
+          "ЮЗ": {
+            "risk": 0.252,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 21,
+            "shielded": null
+          },
+          "З": {
+            "risk": 0.2507,
+            "source": "улица Просвещения",
+            "kind": "дорога",
+            "distance_m": 22,
+            "shielded": null
+          },
+          "ЮВ": {
+            "risk": 0.2434,
+            "source": "улица Свердлова",
+            "kind": "дорога",
+            "distance_m": 25,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2393,
+            "source": "улица Свердлова",
+            "kind": "дорога",
+            "distance_m": 27,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — СЗ (тихо); шумная — ЮЗ (умеренно: улица Просвещения, 21 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:149546331"
+      }
+    }
+  },
+  {
     "id": "6c38d1fc5db82cef3d76050acb2a27f2eddc1ce83ede471682889753b5b0a449",
     "hotel_id": "osm:node:7115162128",
     "subject_type": "hotel",
@@ -71140,6 +73397,93 @@
     }
   },
   {
+    "id": "5a02c008a67868f83c4b820423d505be8d6b920ba543cfcd1bd9953a717c24a4",
+    "hotel_id": "osm:node:7115162128",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7115162128",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/7115162128"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "СВ",
+        "quiet_risk": 0.2485,
+        "quiet_category": "high",
+        "loud_side": "СЗ",
+        "loud_risk": 0.2996,
+        "loud_category": "medium",
+        "sides": {
+          "СЗ": {
+            "risk": 0.2996,
+            "source": "Вобла",
+            "kind": "бар/клуб",
+            "distance_m": 18,
+            "shielded": "соседний дом"
+          },
+          "ЮЗ": {
+            "risk": 0.2763,
+            "source": "Старонасыпная улица",
+            "kind": "дорога",
+            "distance_m": 10,
+            "shielded": null
+          },
+          "ЮВ": {
+            "risk": 0.2903,
+            "source": "Старонасыпная улица",
+            "kind": "дорога",
+            "distance_m": 4,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.2485,
+            "source": "Старонасыпная улица",
+            "kind": "дорога",
+            "distance_m": 23,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — СВ (тихо); шумная — СЗ (умеренно: Вобла, 18 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:53293146"
+      }
+    }
+  },
+  {
     "id": "1e53c585dfd0bfd1706b13c9ff430df37a029497c0ea0f93d827c3f290330bb0",
     "hotel_id": "osm:node:7345928591",
     "subject_type": "hotel",
@@ -73494,6 +75838,93 @@
         },
         "definition": "открыто в 01:00 все 7 дней по opening_hours OSM",
         "explanation": "Ближайшая аптека, открытая ночью: без названия, 1131 м по прямой (24/7)."
+      }
+    }
+  },
+  {
+    "id": "68073cc60a577e84bb5c539645bf84a33534321247b0e4dece838dfbfef938fb",
+    "hotel_id": "osm:node:7345928591",
+    "subject_type": "hotel",
+    "subject_id": "osm:node:7345928591",
+    "feature_key": "quiet_side_potential",
+    "value": "high",
+    "unit": null,
+    "observed_at": "2026-10-23T20:44:21Z",
+    "collected_at": "2026-10-23T20:46:09.761121Z",
+    "expires_at": "2027-01-21T20:44:21Z",
+    "status": "estimated",
+    "confidence_level": "low",
+    "confidence": null,
+    "confidence_method": "Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.",
+    "quality_flags": [
+      "osm_coverage_not_field_verified",
+      "uncalibrated_heuristic",
+      "not_db_level",
+      "no_reflections_or_diffraction",
+      "aircraft_not_included",
+      "facade_points_not_actual_windows"
+    ],
+    "evidence": {
+      "source": {
+        "type": "geo_model",
+        "name": "OSM дороги, ж/д, бары и здания",
+        "ref": "2f8e913d6bf25901aa38aba4bfbb4bd4258908af52500b85acded8f595259c0d",
+        "url": "https://www.openstreetmap.org/node/7345928591"
+      },
+      "method": "facade_noise_v1",
+      "raw_excerpt": "",
+      "snapshot_path": "data/demo/osm_snapshot.json",
+      "details": {
+        "quiet_side": "ЮЗ",
+        "quiet_risk": 0.2068,
+        "quiet_category": "high",
+        "loud_side": "СВ",
+        "loud_risk": 0.7578,
+        "loud_category": "low",
+        "sides": {
+          "ЮЗ": {
+            "risk": 0.2068,
+            "source": "ж/д",
+            "kind": "ж/д",
+            "distance_m": 67,
+            "shielded": "своё здание"
+          },
+          "ЮВ": {
+            "risk": 0.7466,
+            "source": "ж/д",
+            "kind": "ж/д",
+            "distance_m": 53,
+            "shielded": null
+          },
+          "СВ": {
+            "risk": 0.7578,
+            "source": "ж/д",
+            "kind": "ж/д",
+            "distance_m": 50,
+            "shielded": null
+          },
+          "СЗ": {
+            "risk": 0.7074,
+            "source": "ж/д",
+            "kind": "ж/д",
+            "distance_m": 62,
+            "shielded": null
+          }
+        },
+        "formula": "max(weight * exp(-distance_m / decay_scale_m)) × экранирование",
+        "shielding": {
+          "own_building": 0.3,
+          "neighbour": 0.6
+        },
+        "limits": [
+          "uncalibrated_heuristic",
+          "not_db_level",
+          "no_reflections_or_diffraction",
+          "aircraft_not_included",
+          "facade_points_not_actual_windows"
+        ],
+        "explanation": "Тихая сторона — ЮЗ (тихо, экранирует своё здание); шумная — СВ (шумно: ж/д, 50 м). Спросите номер с окнами на тихую сторону.",
+        "building_osm_id": "osm:way:53349978"
       }
     }
   }

@@ -1,17 +1,13 @@
 {
-  "checked_at": "2026-10-26T21:08:26.880607+00:00",
+  "checked_at": "2026-10-28T22:00:27.159281+00:00",
   "hotels": 25,
   "osm_elements": 4895,
   "graph_nodes": 12188,
   "graph_edges": 27002,
-  "observations": 375,
-  "routes_computed": 23,
-  "route_coverage": 0.92,
+  "observations": 400,
+  "routes_computed": 24,
+  "route_coverage": 0.96,
   "unknown_routes": [
-    {
-      "hotel_id": "osm:node:2862997459",
-      "reason": "hotel_too_far_from_graph"
-    },
     {
       "hotel_id": "osm:node:7345928591",
       "reason": "no_path"
@@ -20,9 +16,9 @@
   "all_observations_recomputed": true,
   "graph_checksum_valid": true,
   "confidence_levels": {
-    "low": 295,
+    "low": 323,
     "medium": 69,
-    "unknown": 11
+    "unknown": 8
   },
   "ground_truth_accuracy": null,
   "field_survey_done": false,

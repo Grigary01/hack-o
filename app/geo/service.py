@@ -12,13 +12,15 @@ from app.geo.routing import PedestrianRouter, load_walking_graph
 from app.geo.quietness import calculate_quietness_proxy
 from app.geo.viewshed import ViewshedScene, analyze_hotel
 from app.geo.aircraft import runways, exposure, explanation as aircraft_explanation
-from app.geo import route_quality, night
+from app.geo import route_quality, night, facade_noise
 
 VIEWSHED_KEYS = ('sea_view_potential', 'sea_view_min_floor', 'sunset_view_potential', 'sunset_view_min_floor',
                  'mountain_view_potential', 'mountain_view_min_floor')
 AIRCRAFT_KEYS = ('aircraft_noise_exposure', 'aircraft_path_distance_m')
 ROUTE_KEYS = ('beach_route_climb_m', 'beach_route_busy_crossings')
 NIGHT_KEYS = ('night_open_places_500m', 'nearest_night_pharmacy_m')
+OUTLINE_OBSTACLE_RADIUS_M = 150.
+FACADE_KEYS = ('quiet_side_potential',)
 
 
 class GeoService:
@@ -78,6 +80,37 @@ class GeoService:
                 ref=metadata['query_sha256'], url=hotel.source_url), method='aircraft_track_proximity_v1',
                 snapshot_path='data/environment/osm_aeroways.json', details=details))
 
+    def compute_facade_noise(self, hotel, feature_key):
+        definition = get_registry().get(feature_key)
+        scene = self._scene()
+        match = scene.hotel_building(hotel)
+        summary = None
+        if match is not None:
+            building, own = match
+            near = building.polygon.buffer(200)
+            neighbours = [b['polygon'] for i, b in enumerate(scene.buildings) if i != own and b['polygon'].intersects(near)]
+            summary = facade_noise.summarize(facade_noise.side_risks(building.polygon, self.snapshot['elements'], neighbours))
+        value = summary['quiet_category'] if summary else None
+        details = (summary | {'explanation': facade_noise.explain(summary), 'building_osm_id': building.osm_id}
+                   if summary else {'reason': 'hotel_building_not_found'})
+        metadata = self.snapshot['metadata']
+        observed = datetime.fromisoformat(metadata.get('osm_base') or metadata['collected_at'])
+        collected = datetime.fromisoformat(metadata['collected_at'])
+        digest = hashlib.sha256(json.dumps([hotel.id, feature_key, metadata['query_sha256'],
+                                            scene.inputs['buildings']['query_sha256'], value, details],
+                                           sort_keys=True, default=str).encode()).hexdigest()
+        return Observation(id=digest, hotel_id=hotel.id, subject_type='hotel', subject_id=hotel.id,
+            feature_key=feature_key, value=value, unit=definition.unit,
+            observed_at=observed, collected_at=collected, expires_at=observed+timedelta(days=definition.ttl_days),
+            status='estimated' if value is not None else 'unknown',
+            confidence_level='low' if value is not None else 'unknown',
+            confidence_method=('Эвристика по стенам здания: дороги/ж/д/бары OSM, экранирование своим и соседними '
+                               'домами; некалибровано, не дБ, без авиации. Вероятность не оценивалась.'),
+            quality_flags=['osm_coverage_not_field_verified'] + (summary or {}).get('limits', []),
+            evidence=Evidence(source=Source(type='geo_model', name='OSM дороги, ж/д, бары и здания',
+                ref=metadata['query_sha256'], url=hotel.source_url), method='facade_noise_v1',
+                snapshot_path='data/demo/osm_snapshot.json', details=details))
+
     def compute_night(self, hotel, feature_key):
         definition = get_registry().get(feature_key)
         raw = json.loads((self.environment_dir/'osm_amenities.json').read_text())
@@ -106,12 +139,23 @@ class GeoService:
                 ref=metadata['query_sha256'], url=hotel.source_url), method='opening_hours_v1',
                 snapshot_path='data/environment/osm_amenities.json', details=details))
 
+    def _route_to_beach(self, hotel):
+        """Маршрут до пляжа; контур здания и соседние дома — для запасной привязки от стены."""
+        scene = self._scene()
+        match = scene.hotel_building(hotel)
+        if match is None:
+            return self._router().distance_to_beach(hotel)
+        building, own = match
+        near = building.polygon.buffer(OUTLINE_OBSTACLE_RADIUS_M)
+        obstacles = [b['polygon'] for i, b in enumerate(scene.buildings) if i != own and b['polygon'].intersects(near)]
+        return self._router().distance_to_beach(hotel, building.polygon, obstacles)
+
     def compute_route_quality(self, hotel, feature_key):
         """Тот же маршрут, что для расстояния до пляжа, плюс рельеф и дороги OSM."""
         definition = get_registry().get(feature_key)
         scene = self._scene()
         ground = lambda x, y: float(scene.dem_grid.bilinear(scene.dtm, np.array([x]), np.array([y]))[0])
-        route = self._router().distance_to_beach(hotel)
+        route = self._route_to_beach(hotel)
         result = route_quality.analyze(route, self._router().graph, self.snapshot['elements'], ground)
         metadata = self.snapshot['metadata']
         observed = datetime.fromisoformat(metadata.get('osm_base') or metadata['collected_at'])
@@ -201,13 +245,15 @@ class GeoService:
             return self.compute_route_quality(hotel, feature_key)
         if feature_key in NIGHT_KEYS:
             return self.compute_night(hotel, feature_key)
+        if feature_key in FACADE_KEYS:
+            return self.compute_facade_noise(hotel, feature_key)
         definition = get_registry().get(feature_key)
         metadata = self.snapshot['metadata']
         observed = datetime.fromisoformat(metadata.get('osm_base') or metadata['collected_at'])
         collected = datetime.fromisoformat(metadata['collected_at'])
         flags = ['osm_coverage_not_field_verified']
         if feature_key == 'walking_distance_to_beach_m':
-            result = self._router().distance_to_beach(hotel)
+            result = self._route_to_beach(hotel)
             value = round(result.distance_m,1) if result.distance_m is not None else None
             details = asdict(result) | {'graph_snapshot_date':self.graph_metadata['collected_at'],
                                        'graph_sha256':self.graph_metadata['sha256'],
