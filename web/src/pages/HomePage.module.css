@@ -1,0 +1,273 @@
+.page {
+  min-height: 100vh;
+  background: var(--c-hero);
+}
+
+.hero {
+  background: var(--c-hero);
+  padding-bottom: var(--space-12);
+}
+
+.heroInner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--page-gutter) 0;
+}
+
+.heroInner:focus {
+  outline: none;
+}
+
+.title {
+  font-size: var(--fs-display);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--c-hero-ink);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  margin-top: var(--space-6);
+  padding: 0 var(--space-6);
+  border-radius: var(--radius-m) var(--radius-m) 0 0;
+  background: var(--c-surface);
+  color: #1546c9;
+  font-weight: 600;
+}
+
+.form {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: 0 var(--radius-l) var(--radius-l) var(--radius-l);
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr) minmax(150px, 0.6fr);
+  gap: var(--space-2);
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-width: 0;
+  gap: 0;
+}
+
+.dates > div:first-child label {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.dates > div:last-child label {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: -1px;
+}
+
+.destination,
+.guests {
+  min-width: 0;
+}
+
+.wishCard {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-4) var(--space-4);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-l);
+  background: var(--c-surface);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.chip {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-m);
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+  font-weight: 650;
+  transition: background-color var(--dur-fast) ease;
+}
+
+.chip:hover {
+  background: var(--c-primary-soft-hover);
+}
+
+.chip:active {
+  transform: scale(0.98);
+}
+
+.submitRow {
+  display: flex;
+}
+
+.note {
+  font-size: var(--fs-small);
+  color: var(--c-text-muted);
+}
+
+.error {
+  color: var(--c-danger);
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+/* Белая «простыня» с закруглением, как на главной Островка */
+.sheet {
+  background: var(--c-surface);
+  border-radius: 40px 40px 0 0;
+}
+
+.sheetInner {
+  display: grid;
+  gap: var(--space-6);
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--space-12) var(--page-gutter) 0;
+}
+
+.sheetHead {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.sheetTitle {
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  line-height: var(--lh-tight);
+}
+
+.sheetLead {
+  font-size: var(--fs-body-l);
+}
+
+.examples {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.example {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: 64px;
+  padding: var(--space-3) var(--space-5);
+  border: 0;
+  border-radius: var(--radius-l);
+  background: var(--c-surface-muted);
+  text-align: left;
+  font-weight: 500;
+  transition: background-color var(--dur-fast) ease;
+}
+
+.example svg {
+  flex: none;
+  color: var(--c-primary);
+}
+
+.example:hover {
+  background: var(--c-primary-soft);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.step {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border-radius: var(--radius-l);
+  background: var(--c-surface-muted);
+}
+
+.stepNum {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: var(--space-2);
+  border-radius: 50%;
+  background: var(--c-primary);
+  color: var(--c-text-inverse);
+  font-weight: 700;
+}
+
+.stepTitle {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+}
+
+.stepText {
+  color: var(--c-text-muted);
+}
+
+.hotelier {
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius-l);
+  background: var(--c-primary-soft);
+}
+
+@media (max-width: 960px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .destination {
+    grid-column: 1 / -1;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding-bottom: var(--space-8);
+  }
+
+  .form {
+    padding: var(--space-2);
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .examples {
+    grid-template-columns: 1fr;
+  }
+
+  .submitRow > * {
+    flex: 1;
+  }
+
+  .sheet {
+    border-radius: 24px 24px 0 0;
+  }
+
+  .sheetInner {
+    padding-top: var(--space-8);
+  }
+}

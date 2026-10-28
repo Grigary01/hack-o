@@ -70,8 +70,9 @@ export function usePublishAnswer() {
     onSuccess: async (result) => {
       client.setQueryData(keys.publish(result.answerId), result);
       // Опубликованный ответ сразу влияет на подбор гостей и на кабинет.
+      // refetchType: 'all' — чтобы и закрытые сейчас экраны не показали устаревшее при возврате.
       await Promise.all([
-        client.invalidateQueries({ queryKey: ['hotelier'] }),
+        client.invalidateQueries({ queryKey: ['hotelier'], refetchType: 'all' }),
         client.invalidateQueries({ queryKey: ['search'] }),
         client.invalidateQueries({ queryKey: ['hotel'] }),
       ]);

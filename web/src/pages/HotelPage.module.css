@@ -1,0 +1,164 @@
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 36px;
+  margin-top: var(--space-2);
+  font-size: var(--fs-body);
+}
+
+.title {
+  margin-top: var(--space-5);
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 780px) minmax(300px, 516px);
+  justify-content: space-between;
+  gap: var(--space-12);
+  margin-top: var(--space-6);
+}
+
+.main {
+  display: grid;
+  align-content: start;
+  gap: var(--space-8);
+  min-width: 0;
+}
+
+.roomHead {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.roomTitle {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+
+.section {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.basis {
+  display: grid;
+  gap: var(--space-4);
+  min-height: 220px;
+  align-content: start;
+}
+
+.cardTitle {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+}
+
+.osm {
+  font-size: var(--fs-small);
+}
+
+.side {
+  display: grid;
+  align-content: start;
+  gap: var(--space-8);
+}
+
+.offer {
+  display: grid;
+  gap: var(--space-6);
+  min-height: 420px;
+  align-content: start;
+}
+
+.offerTitle {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+}
+
+.priceBlock {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.price {
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem);
+  font-weight: 700;
+}
+
+.total {
+  font-size: var(--fs-body-l);
+  color: var(--c-text-muted);
+}
+
+.demoNote {
+  width: fit-content;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-s);
+  background: var(--c-surface-muted);
+  color: var(--c-text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--c-text-muted);
+}
+
+.caveats {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--fs-body-l);
+  line-height: 1.5;
+}
+
+@media (max-width: 1080px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+    gap: var(--space-8);
+  }
+}
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* На телефоне предложение и цена сразу после фото — до подробностей. */
+  .main {
+    display: contents;
+  }
+
+  .main > :first-child {
+    order: 1;
+  }
+
+  .roomHead {
+    order: 2;
+  }
+
+  .side {
+    order: 3;
+  }
+
+  .section {
+    order: 4;
+  }
+
+  .basis {
+    order: 5;
+  }
+
+  .offer {
+    min-height: 0;
+  }
+}

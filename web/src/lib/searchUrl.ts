@@ -1,3 +1,4 @@
+import { formatDateRange, formatGuests } from './format';
 import type { SearchParams } from '../data/types';
 
 /** Параметры поиска живут в адресе: выдачей можно поделиться, «Назад» работает. */
@@ -24,4 +25,9 @@ export function searchFromQuery(query: URLSearchParams, defaults: SearchParams):
 
 export function hasSearch(query: URLSearchParams): boolean {
   return Boolean(query.get('q')?.trim());
+}
+
+/** Строка контекста для шапки: «Батуми · 12–16 июня · 2 взрослых». */
+export function describeSearch(params: SearchParams): string {
+  return [params.destination, formatDateRange(params.checkIn, params.checkOut), formatGuests(params.guests)].filter(Boolean).join(' · ');
 }

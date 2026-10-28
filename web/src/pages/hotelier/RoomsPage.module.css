@@ -1,0 +1,43 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: var(--space-5);
+}
+
+.grid > li {
+  display: grid;
+}
+
+.card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+}
+
+.note {
+  font-weight: 500;
+  color: var(--c-text-muted);
+}
+
+.facts {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.fact {
+  display: grid;
+  gap: 2px;
+}
+
+.fact dd {
+  margin: 0;
+}
+
+.value {
+  font-weight: 600;
+}

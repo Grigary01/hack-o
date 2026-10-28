@@ -1,0 +1,41 @@
+.wrap {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.item {
+  display: grid;
+  gap: 2px;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--c-text-muted);
+}
+
+.title {
+  color: var(--c-text);
+  font-weight: 600;
+}
+
+.note {
+  font-size: var(--fs-xs);
+}
+
+.warnings {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-m);
+  background: var(--c-warning-soft);
+  color: var(--c-warning);
+  font-size: var(--fs-small);
+}
+
+.empty {
+  font-size: var(--fs-small);
+  color: var(--c-text-muted);
+}

@@ -1,0 +1,141 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--c-bg);
+}
+
+.body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-6) var(--space-4) var(--space-8);
+  background: var(--c-surface);
+}
+
+.nav {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 46px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-m);
+  color: var(--c-text-muted);
+  font-size: var(--fs-body-l);
+  transition:
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease;
+}
+
+.navLink:hover {
+  background: var(--c-surface-muted);
+  color: var(--c-text);
+  text-decoration: none;
+}
+
+.navActive,
+.navActive:hover {
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+  font-weight: 700;
+}
+
+.count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 12px;
+  background: var(--c-warning-soft);
+  color: var(--c-warning);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.switcher {
+  margin-top: var(--space-2);
+}
+
+.sideNote {
+  margin-top: auto;
+  padding: 0 var(--space-3);
+  max-width: 180px;
+  font-size: var(--fs-small);
+  color: var(--c-text-muted);
+  line-height: 1.5;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--space-10) var(--space-10) 0;
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: 1096px;
+}
+
+.main:focus {
+  outline: none;
+}
+
+@media (max-width: 960px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    gap: var(--space-3);
+    padding: 0 var(--page-gutter) var(--space-3);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  /* Навигация — горизонтальная лента вкладок */
+  .nav {
+    display: flex;
+    gap: var(--space-1);
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 calc(-1 * var(--page-gutter));
+    padding: 0 var(--page-gutter);
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .navLink {
+    min-height: 40px;
+    padding: 0 var(--space-3);
+    font-size: var(--fs-body);
+    white-space: nowrap;
+    gap: var(--space-2);
+  }
+
+  .switcher {
+    margin-top: 0;
+  }
+
+  .sideNote {
+    display: none;
+  }
+
+  .content {
+    padding: var(--space-6) var(--page-gutter) 0;
+  }
+}

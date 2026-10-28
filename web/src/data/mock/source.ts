@@ -340,8 +340,7 @@ export function createMockSource(): DataSource & { resetDemo(): Promise<void> } 
       const w = parseWishes(params.text);
       const destination = params.destination.trim().toLowerCase();
       const known = !destination || destination.includes('батуми') || destination.includes('batumi');
-      const notes = ['Демонстрационные отели, цены и характеристики — не данные бэкенда.'];
-      if (!known) notes.unshift(`В демо-данных есть только ${DEMO_DESTINATION}.`);
+      const notes = known ? [] : [`В демо-данных есть только ${DEMO_DESTINATION}. Попробуйте это направление.`];
       return {
         status: 'ok',
         clarification: null,

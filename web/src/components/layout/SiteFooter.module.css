@@ -1,4 +1,5 @@
 .footer {
+  width: 100%;
   max-width: var(--page-max);
   margin: 0 auto;
   padding: var(--space-12) var(--page-gutter) var(--space-6);

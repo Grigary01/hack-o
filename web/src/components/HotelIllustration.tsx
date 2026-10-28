@@ -26,7 +26,7 @@ export function HotelIllustration({ variant = 0, caption = 'Иллюстраци
       <svg
         className={styles.svg}
         viewBox={wide ? '0 0 780 250' : '0 0 176 176'}
-        preserveAspectRatio={wide ? 'xMinYMid slice' : 'xMidYMid meet'}
+        preserveAspectRatio={wide ? 'xMidYMid slice' : 'xMidYMid meet'}
         aria-hidden="true"
       >
         <defs>

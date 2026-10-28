@@ -1,0 +1,124 @@
+.list {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.badge {
+  width: fit-content;
+  min-width: 210px;
+}
+
+.text {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+
+.prompt {
+  max-width: 560px;
+  font-size: var(--fs-body-l);
+  line-height: 1.6;
+}
+
+.why {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5) var(--space-8);
+  border-radius: var(--radius-m);
+  background: var(--c-surface-muted);
+}
+
+.whyTitle {
+  font-size: var(--fs-body);
+  font-weight: 700;
+}
+
+.whyText {
+  color: var(--c-text-muted);
+  font-size: var(--fs-body);
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+}
+
+.metaRow dd {
+  margin: 0;
+}
+
+.answer {
+  min-width: 250px;
+}
+
+.footnote {
+  font-size: var(--fs-body-l);
+}
+
+.answered {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.answeredTitle {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+}
+
+.answeredList {
+  display: grid;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-l);
+  background: var(--c-surface);
+}
+
+.answeredItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+}
+
+.answeredItem + .answeredItem {
+  border-top: 1px solid var(--c-border);
+}
+
+.answeredName {
+  font-weight: 600;
+}
+
+.again {
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .card {
+    gap: var(--space-6);
+  }
+
+  .answer {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .answeredItem {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .again {
+    grid-column: 1 / -1;
+  }
+}

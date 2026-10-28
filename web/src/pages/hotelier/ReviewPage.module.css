@@ -1,0 +1,162 @@
+.tableWrap {
+  overflow: hidden;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-l);
+  background: var(--c-surface);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table thead th {
+  height: 56px;
+  padding: 0 var(--space-5);
+  background: var(--c-primary-soft);
+  color: var(--c-text-muted);
+  font-size: var(--fs-body);
+  font-weight: 650;
+}
+
+.table thead th:first-child {
+  width: 37%;
+}
+
+.table thead th:nth-child(2) {
+  width: 27%;
+}
+
+.table tbody tr + tr > * {
+  border-top: 1px solid var(--c-border);
+}
+
+.table tbody th,
+.table tbody td {
+  padding: var(--space-8) var(--space-5);
+  vertical-align: middle;
+}
+
+.subject {
+  display: grid;
+  gap: 2px;
+  font-size: var(--fs-body-l);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.subjectNote {
+  display: block;
+  font-weight: 700;
+}
+
+.detail {
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  max-width: 260px;
+}
+
+.toggle,
+.value {
+  min-width: min(220px, 100%);
+  min-height: 36px;
+  justify-content: flex-start;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-m);
+  font-size: var(--fs-small);
+  font-weight: 650;
+  text-align: left;
+  transition:
+    border-color var(--dur-fast) ease,
+    transform var(--dur-fast) ease;
+}
+
+.toggle:hover {
+  border-color: currentColor;
+}
+
+.toggle:active {
+  transform: scale(0.98);
+}
+
+.yes {
+  background: var(--c-success-soft);
+  color: var(--c-success);
+}
+
+.no {
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+}
+
+.changed {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}
+
+.unparsed {
+  display: grid;
+  gap: var(--space-1);
+  padding-left: var(--space-4);
+  list-style: disc;
+}
+
+.publish {
+  min-width: 370px;
+}
+
+/* Телефон: строки таблицы превращаются в карточки с подписями */
+@media (max-width: 720px) {
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .table tbody tr {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-5);
+  }
+
+  .table tbody tr + tr {
+    border-top: 1px solid var(--c-border);
+  }
+
+  .table tbody tr + tr > * {
+    border-top: 0;
+  }
+
+  .table tbody th,
+  .table tbody td {
+    display: block;
+    padding: 0;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+  }
+
+  .detail {
+    max-width: none;
+  }
+
+  .publish {
+    min-width: 0;
+  }
+}

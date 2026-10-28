@@ -9,14 +9,15 @@ interface BoxProps {
 
 /** Поле в стиле макета: подпись мелким шрифтом внутри рамки, значение крупнее. */
 export function TextField({ label, hint, className, suffix, ...input }: BoxProps & InputHTMLAttributes<HTMLInputElement> & { suffix?: string }) {
-  const id = useId();
+  const generated = useId();
+  const id = input.id ?? generated;
   const hintId = hint ? `${id}-hint` : undefined;
   return (
     <div className={[styles.wrap, className].filter(Boolean).join(' ')}>
       <label className={`${styles.box} ${input.disabled ? styles.disabled : ''}`} htmlFor={id}>
         <span className={styles.label}>{label}</span>
         <span className={styles.control}>
-          <input id={id} className={styles.input} aria-describedby={hintId} {...input} />
+          <input {...input} id={id} className={styles.input} aria-describedby={[hintId, input['aria-describedby']].filter(Boolean).join(' ') || undefined} />
           {suffix && (
             <span className={styles.suffix} aria-hidden="true">
               {suffix}
@@ -34,13 +35,14 @@ export function TextField({ label, hint, className, suffix, ...input }: BoxProps
 }
 
 export function SelectField({ label, hint, className, children, ...select }: BoxProps & SelectHTMLAttributes<HTMLSelectElement>) {
-  const id = useId();
+  const generated = useId();
+  const id = select.id ?? generated;
   const hintId = hint ? `${id}-hint` : undefined;
   return (
     <div className={[styles.wrap, className].filter(Boolean).join(' ')}>
       <label className={`${styles.box} ${styles.selectBox}`} htmlFor={id}>
         <span className={styles.label}>{label}</span>
-        <select id={id} className={`${styles.input} ${styles.select}`} aria-describedby={hintId} {...select}>
+        <select {...select} id={id} className={`${styles.input} ${styles.select}`} aria-describedby={hintId}>
           {children}
         </select>
         <svg className={styles.chevron} width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
@@ -57,14 +59,15 @@ export function SelectField({ label, hint, className, children, ...select }: Box
 }
 
 export function TextArea({ label, hint, className, labelVisible = true, ...area }: BoxProps & TextareaHTMLAttributes<HTMLTextAreaElement> & { labelVisible?: boolean }) {
-  const id = useId();
+  const generated = useId();
+  const id = area.id ?? generated;
   const hintId = hint ? `${id}-hint` : undefined;
   return (
     <div className={[styles.wrap, className].filter(Boolean).join(' ')}>
       <label className={labelVisible ? styles.areaLabel : 'visually-hidden'} htmlFor={id}>
         {label}
       </label>
-      <textarea id={id} className={styles.area} aria-describedby={hintId} {...area} />
+      <textarea {...area} id={id} className={styles.area} aria-describedby={[hintId, area['aria-describedby']].filter(Boolean).join(' ') || undefined} />
       {hint && (
         <p id={hintId} className={styles.hint}>
           {hint}

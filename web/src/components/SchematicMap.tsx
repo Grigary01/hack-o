@@ -21,9 +21,9 @@ interface Props {
 
 /** Области суши, куда проецируются отели, чтобы метки не попадали в море. */
 const LAND = {
-  east: { x0: 0.08, x1: 0.56, y0: 0.08, y1: 0.86 },
-  southwest: { x0: 0.2, x1: 0.9, y0: 0.08, y1: 0.74 },
-  none: { x0: 0.1, x1: 0.9, y0: 0.08, y1: 0.88 },
+  east: { x0: 0.2, x1: 0.44, y0: 0.1, y1: 0.82 },
+  southwest: { x0: 0.3, x1: 0.82, y0: 0.08, y1: 0.7 },
+  none: { x0: 0.18, x1: 0.82, y0: 0.08, y1: 0.86 },
 } as const;
 
 function project(pins: MapPin[], seaSide: Props['seaSide']) {
