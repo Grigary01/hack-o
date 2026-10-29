@@ -9,6 +9,7 @@ export function searchToQuery(params: SearchParams): string {
   if (params.checkIn) query.set('in', params.checkIn);
   if (params.checkOut) query.set('out', params.checkOut);
   query.set('guests', String(params.guests));
+  if (params.skipUnclear) query.set('relax', '1');
   return query.toString();
 }
 
@@ -20,6 +21,7 @@ export function searchFromQuery(query: URLSearchParams, defaults: SearchParams):
     checkIn: query.get('in') ?? defaults.checkIn,
     checkOut: query.get('out') ?? defaults.checkOut,
     guests: Number.isInteger(guests) && guests > 0 && guests <= 12 ? guests : defaults.guests,
+    skipUnclear: query.get('relax') === '1',
   };
 }
 

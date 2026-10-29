@@ -1,5 +1,5 @@
 import { lazy, Suspense, useMemo, useState } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { GuestLayout } from '../components/layout/GuestLayout';
 import { Filters } from '../components/results/Filters';
 import { DEFAULT_FILTERS, type FilterState } from '../components/results/filterState';
@@ -104,6 +104,19 @@ export function ResultsPage() {
           ))}
         </ul>
       )}
+      {result && result.skipped.length > 0 && (
+        <Notice tone="warning" className={styles.notice} title="Ищем без условий, которые система пока не умеет проверять">
+          <ul className={styles.skipped}>
+            {result.skipped.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <p>
+            <Link to={`/search?${searchToQuery({ ...params, skipUnclear: false })}`}>Вернуть условие</Link> или{' '}
+            <Link to={`/?${searchToQuery({ ...params, skipUnclear: false })}`}>изменить запрос</Link>.
+          </p>
+        </Notice>
+      )}
       {result && result.ignoredTerms.length > 0 && (
         <Notice tone="warning" className={styles.notice}>
           Не учтено при подборе — система пока не знает этих характеристик: {result.ignoredTerms.join(', ')}.
@@ -159,8 +172,23 @@ export function ResultsPage() {
           {search.isError && <ErrorState title="Не удалось подобрать отели" error={search.error} onRetry={() => search.refetch()} />}
 
           {result?.status === 'needs_clarification' && (
-            <EmptyState title="Уточните запрос" action={<ButtonLink to={`/?${queryString}`}>Изменить запрос</ButtonLink>}>
+            <EmptyState
+              title="Уточните запрос"
+              action={
+                <div className={styles.clarifyActions}>
+                  {result.canSearchAnyway && (
+                    <ButtonLink to={`/search?${searchToQuery({ ...params, skipUnclear: true })}`}>Искать без этого условия</ButtonLink>
+                  )}
+                  <ButtonLink to={`/?${queryString}`} variant={result.canSearchAnyway ? 'secondary' : 'primary'}>
+                    Изменить запрос
+                  </ButtonLink>
+                </div>
+              }
+            >
               <p>{result.clarification}</p>
+              {result.canSearchAnyway && (
+                <p>Можно искать по остальным пожеланиям — непроверенное условие останется в списке «не учтено».</p>
+              )}
             </EmptyState>
           )}
 

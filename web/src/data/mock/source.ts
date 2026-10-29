@@ -352,6 +352,9 @@ export function createMockSource(): DataSource & { resetDemo(): Promise<void> } 
         ignoredTerms: w.ignored,
         hotels: known ? state.hotels.map((h) => summarize(h, w, state)) : [],
         notes,
+        // Демо-разбор не блокирует поиск: непонятое уходит в «Не учтено».
+        canSearchAnyway: false,
+        skipped: [],
       };
     },
 

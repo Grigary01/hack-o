@@ -58,20 +58,40 @@ const loadHealth = once(() => get<HealthDto>('/health'));
 
 /* Последние ответы поиска: карточка отеля переиспользует их, чтобы не гонять агента повторно. */
 const SEARCH_TTL_MS = 60_000;
-const searchCache = new Map<string, { at: number; promise: Promise<SearchResponseDto> }>();
+const searchCache = new Map<string, { at: number; promise: Promise<SearchOutcome> }>();
 
-async function runSearch(params: SearchParams, fresh = false): Promise<SearchResponseDto> {
-  const key = params.text.trim();
+type SearchOutcome = SearchResponseDto & {
+  /** Условия, без которых искали по просьбе гостя (только при skipUnclear). */
+  skipped: string[];
+};
+
+/** Что мешает искать: непроверяемые условия или вопрос парсера. */
+export function unclearItems(parsed: SearchResponseDto['parsed']): string[] {
+  if (parsed.unknown_or_ambiguous.length) return parsed.unknown_or_ambiguous;
+  return parsed.clarification_question ? [parsed.clarification_question] : [];
+}
+
+async function runSearch(params: SearchParams, fresh = false): Promise<SearchOutcome> {
+  const text = params.text.trim();
+  const key = `${text}|${params.skipUnclear ? 'relax' : ''}`;
   const cached = searchCache.get(key);
   if (!fresh && cached && Date.now() - cached.at < SEARCH_TTL_MS) return cached.promise;
-  const health = await loadHealth();
-  const body: SearchRequestDto = {
-    text: key,
+  const promise = (async (): Promise<SearchOutcome> => {
+    const health = await loadHealth();
     // Демо-ответы отельера участвуют в подборе только в DEMO_MODE бэкенда и помечаются в источниках.
-    include_simulated: health.demo_mode,
-    ranking_method: 'balanced_v2',
-  };
-  const promise = post<SearchResponseDto>('/search', body);
+    const options = { include_simulated: health.demo_mode, ranking_method: 'balanced_v2' as const };
+    if (!params.skipUnclear) {
+      const body: SearchRequestDto = { text, ...options };
+      return { ...(await post<SearchResponseDto>('/search', body)), skipped: [] };
+    }
+    // Гость согласился искать без непроверяемых условий. Берём уже полученный разбор (без
+    // повторного вызова LLM), убираем то, что система проверить не может, и ищем по остальному.
+    const first = await runSearch({ ...params, skipUnclear: false });
+    if (first.status !== 'needs_clarification' || first.parsed.region !== 'Adler') return first;
+    const parsed = { ...first.parsed, unknown_or_ambiguous: [], clarification_question: null };
+    const second = await post<SearchResponseDto>('/search', { parsed, ...options });
+    return { ...second, skipped: unclearItems(first.parsed) };
+  })();
   searchCache.set(key, { at: Date.now(), promise });
   if (searchCache.size > 6) searchCache.delete(searchCache.keys().next().value!);
   promise.catch(() => searchCache.delete(key));
@@ -193,6 +213,8 @@ export function createApiSource(): DataSource {
           ...response.excluded.map((h) => mapHotelResult(h, 'excluded', response.parsed, registry)),
         ],
         notes,
+        canSearchAnyway: response.status === 'needs_clarification' && response.parsed.region === 'Adler',
+        skipped: response.skipped,
       };
       return result;
     },

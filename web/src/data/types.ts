@@ -38,6 +38,8 @@ export interface SearchParams {
   checkIn: string;
   checkOut: string;
   guests: number;
+  /** Гость согласился искать без условий, которые система не умеет проверять (цена, бассейн…). */
+  skipUnclear?: boolean;
 }
 
 export interface HealthInfo {
@@ -108,6 +110,10 @@ export interface SearchResult {
   hotels: HotelSummary[];
   /** Пояснения о качестве данных, общие для выдачи. */
   notes: string[];
+  /** Можно ли искать без непроверяемых условий (status = needs_clarification, регион поддержан). */
+  canSearchAnyway: boolean;
+  /** Условия, без которых искали по просьбе гостя; показываются как «не учтено». */
+  skipped: string[];
 }
 
 export interface RoomOffer {

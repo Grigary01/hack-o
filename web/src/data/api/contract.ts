@@ -119,7 +119,9 @@ export interface HotelSearchResultDto {
 }
 
 export interface SearchRequestDto {
-  text: string;
+  /** Ровно одно из двух: text (разберёт парсер) или parsed (уже разобранный запрос). */
+  text?: string;
+  parsed?: ParsedQueryDto;
   include_simulated: boolean;
   ranking_method: 'weighted_v1' | 'balanced_v2';
 }

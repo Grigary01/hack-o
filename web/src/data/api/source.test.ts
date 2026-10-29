@@ -55,3 +55,35 @@ it('просьба уточнить показывает, что именно н
   );
   expect(clarificationText({ ...base, region: 'Batumi', unknown_or_ambiguous: [] })).toContain('Адлер');
 });
+
+it('«Искать без этого условия»: не разбирает текст повторно и помечает пропущенное', async () => {
+  const parsed = {
+    region: 'Adler', hard_constraints: [], original_text: 'тихо и дешево', ignored_terms: [],
+    soft_preferences: [{ feature_key: 'quietness_proxy', desired: 'high', importance: 0.9, weight_source: 'default', scope: 'hotel', derived_from: null }],
+    unknown_or_ambiguous: ['«дешево» — цены не поддерживаются'], clarification_question: 'Уберите условие о стоимости.',
+  };
+  const empty = { matched: [], needs_verification: [], excluded: [], parser_mode: 'groq', include_simulated: true };
+  const bodies: Record<string, unknown>[] = [];
+  vi.stubGlobal('fetch', vi.fn(async (url: string, init?: RequestInit) => {
+    if (url.endsWith('/health')) return new Response(JSON.stringify({ status: 'ok', demo_mode: true }));
+    if (url.endsWith('/features')) return new Response(JSON.stringify({}));
+    const body = JSON.parse(String(init?.body));
+    bodies.push(body);
+    return new Response(JSON.stringify(body.text
+      ? { ...empty, status: 'needs_clarification', parsed }
+      : { ...empty, status: 'ok', parsed: body.parsed }));
+  }));
+  const { createApiSource } = await import('./source');
+  const source = createApiSource();
+  const params = { text: 'тихо и дешево', destination: 'Адлер', checkIn: '', checkOut: '', guests: 2 };
+  const first = await source.search(params);
+  expect(first.status).toBe('needs_clarification');
+  expect(first.canSearchAnyway).toBe(true);
+  const relaxed = await source.search({ ...params, skipUnclear: true });
+  expect(relaxed.status).toBe('ok');
+  expect(relaxed.skipped).toEqual(['«дешево» — цены не поддерживаются']);
+  // Второй запрос — уже разобранный: без text, с очищенными непроверяемыми условиями.
+  expect(bodies).toHaveLength(2);
+  expect(bodies[1]).toMatchObject({ parsed: { unknown_or_ambiguous: [], clarification_question: null } });
+  expect(bodies[1]).not.toHaveProperty('text');
+});
