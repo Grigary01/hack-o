@@ -61,6 +61,8 @@ export interface FeatureDefinitionDto {
   choices: string[];
   question: string | null;
   choice_labels: Record<string, string>;
+  /** Утверждение отельера, которое проверяется расчётом по зданию (sea_view → sea_view_potential). */
+  model_check?: { potential: string; none_value: string; min_floor: string | null } | null;
 }
 
 export type FeatureRegistryDto = Record<string, FeatureDefinitionDto>;

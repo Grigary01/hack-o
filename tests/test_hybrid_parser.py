@@ -75,3 +75,14 @@ def test_prompt_examples_follow_contract_and_only_query_features():
         parsed = ParsedHotelQuery.model_validate(answer())
         keys = {c.feature_key for c in parsed.hard_constraints} | {p.feature_key for p in parsed.soft_preferences}
         assert keys <= allowed, text
+
+
+def test_unmatched_words_stay_visible_when_llm_adds_nothing():
+    """«ХАЧУ …, тихий отель» — LLM ничего нового не нашла, «не учтено» не пропадает."""
+    rules = HybridQueryParser(llm=FakeLLM({})).offline.parse('Хочу абракадабру, тихий отель')
+    assert rules.ignored_terms
+    parser = HybridQueryParser(llm=FakeLLM({}))
+    parsed = parser.parse('Хочу абракадабру, тихий отель')
+    assert parser.last_source == 'llm' and parsed.ignored_terms == rules.ignored_terms
+    answer = {'soft_preferences': [{'feature_key': 'sea_view', 'desired': True, 'scope': 'room'}]}
+    assert HybridQueryParser(llm=FakeLLM(answer)).parse('Хочу абракадабру, тихий отель').ignored_terms == []
