@@ -25,8 +25,9 @@ def describe_llm(config) -> str:
     mode, hybrid = config.parser_mode, config.hybrid_llm
     if mode in ('offline', 'fixture'):
         return 'нет (только правила)'
-    cloud = f'облако: {config.groq_model} через {config.cloud_base_url}'
-    local = f'локально: {config.model_name} через Ollama {config.ollama_url}'
+    # Без адресов: /api/health публичный, а адрес прокси — внутренняя настройка.
+    cloud = f'облако: {config.groq_model}'
+    local = f'локально: {config.model_name} через Ollama'
     if mode == 'groq':
         return cloud + (' (если недоступна — правила)' if getattr(config, 'cloud_rules_fallback', False) else '')
     if mode == 'ollama':

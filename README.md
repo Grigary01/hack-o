@@ -54,7 +54,7 @@ docker compose up --build
 | `WEB_PORT` | `8080` | Порт интерфейса на хосте |
 | `DEMO_MODE` | `true` | Учитывать тестовые ответы отелей из демо-набора (в интерфейсе они помечены) |
 | `LLM_PROVIDER` | пусто → правила + локальная модель, если доступна | Модель для разбора запроса: `cloud`, `local` или `off` (см. «Модели») |
-| `CLOUD_LLM_BASE_URL` | пусто → Groq | Адрес OpenAI-совместимого API |
+| `CLOUD_LLM_BASE_URL` | пусто → Groq (`api.groq.com`) | Адрес OpenAI-совместимого API |
 | `CLOUD_LLM_MODEL` | пусто → из `config/models.yaml` | Модель облачной LLM |
 | `LLM_API_KEY` | пусто | Ключ облачной LLM — заполняется самостоятельно (см. «Ключи») |
 | `COMPOSE_PROFILES` | пусто | `local-llm` — поднять Ollama в Docker и скачать локальную модель |
@@ -70,7 +70,7 @@ docker compose up --build
 
 | `LLM_PROVIDER` | Провайдер и модель | Как работает |
 |---|---|---|
-| `cloud` | Claude `claude-opus-5` (Anthropic) через прокси `cli.infra.skdtechai.com` | Запрос целиком разбирает модель. Если она недоступна (сеть, квота), запрос разбирают правила, а гость видит пометку |
+| `cloud` | Claude `claude-opus-5` (Anthropic) через прокси | Запрос целиком разбирает модель. Если она недоступна (сеть, квота), запрос разбирают правила, а гость видит пометку |
 | `local` | Gemma 3 12B (`gemma3:12b`) через Ollama | Правила разбирают запрос, модель дополняет то, что они не поняли. Пока модель не скачана — только правила |
 | `off` | — | Только правила |
 
@@ -120,7 +120,7 @@ DOCKER_OLLAMA_URL=http://host.docker.internal:11434
 
 ```bash
 LLM_PROVIDER=cloud
-CLOUD_LLM_BASE_URL=https://<провайдер>/v1   # любой OpenAI-совместимый API; у нас — https://cli.infra.skdtechai.com/v1
+CLOUD_LLM_BASE_URL=https://<провайдер>/v1   # любой OpenAI-совместимый API
 CLOUD_LLM_MODEL=<модель>                   # у нас — claude-opus-5
 LLM_API_KEY=<ваш ключ>
 ```
