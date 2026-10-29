@@ -121,6 +121,11 @@ export function ResultsPage() {
       {result && result.refinements.length > 0 && (
         <RefinementBar refinements={result.refinements} params={params} busy={search.isFetching} />
       )}
+      {result?.modelUnavailable && (
+        <Notice tone="warning" className={styles.notice}>
+          Языковая модель сейчас недоступна — запрос разобран упрощённо, свободные формулировки могут быть поняты не полностью.
+        </Notice>
+      )}
       {result && result.unsupported.length > 0 && (
         <Notice tone="info" className={styles.notice}>
           Не реализовано в текущей версии, поэтому не учитывается в подборе: {result.unsupported.join(', ')}.

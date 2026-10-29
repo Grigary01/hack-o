@@ -117,6 +117,8 @@ export interface SearchResult {
   hotels: HotelSummary[];
   /** Пояснения о качестве данных, общие для выдачи. */
   notes: string[];
+  /** Языковая модель была нужна, но недоступна: запрос разобран правилами. */
+  modelUnavailable: boolean;
   /** Можно ли искать без непроверяемых условий (status = needs_clarification, регион поддержан). */
   canSearchAnyway: boolean;
   /** Условия, без которых искали по просьбе гостя; показываются как «не учтено». */

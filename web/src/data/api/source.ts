@@ -230,9 +230,6 @@ export function createApiSource(): DataSource {
       const [response, registry] = await Promise.all([runSearch(params, true), loadRegistry()]);
       const notes = ['Цены, бронирование и учёт дат и числа гостей не реализованы в текущей версии.'];
       if (response.include_simulated) notes.push('Ответы отелей в текущей версии тестовые — они отмечены в источниках.');
-      if (response.parser_mode === 'rules_fallback') {
-        notes.unshift('Языковая модель сейчас недоступна — запрос разобран упрощённо, свободные формулировки могут быть поняты не полностью.');
-      }
       const result: SearchResult = {
         status: response.status,
         clarification: response.status === 'needs_clarification' ? clarificationText(response.parsed) : null,
@@ -240,6 +237,7 @@ export function createApiSource(): DataSource {
         chips: requestChips(response.parsed, registry),
         ignoredTerms: response.parsed.ignored_terms ?? [],
         unsupported: response.parsed.unsupported ?? [],
+        modelUnavailable: response.parser_mode === 'rules_fallback',
         hotels: [
           ...response.matched.map((h) => mapHotelResult(h, 'matched', response.parsed, registry)),
           ...response.needs_verification.map((h) => mapHotelResult(h, 'needs_verification', response.parsed, registry)),

@@ -125,5 +125,5 @@ it('если языковая модель недоступна, гость ви
   }));
   const { createApiSource } = await import('./source');
   const result = await createApiSource().search({ text: 'тихо ' + Math.random(), destination: 'Адлер', checkIn: '', checkOut: '', guests: 2 });
-  expect(result.notes[0]).toMatch(/Языковая модель сейчас недоступна/);
+  expect(result.modelUnavailable).toBe(true);
 });

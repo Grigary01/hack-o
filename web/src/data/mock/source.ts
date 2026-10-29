@@ -352,6 +352,7 @@ export function createMockSource(): DataSource & { resetDemo(): Promise<void> } 
         chips: chipsFor(w),
         ignoredTerms: w.ignored,
         unsupported: [],
+        modelUnavailable: false,
         hotels: known ? state.hotels.map((h) => summarize(h, w, state)) : [],
         notes,
         // Демо-разбор не блокирует поиск: непонятое уходит в «Не учтено».
