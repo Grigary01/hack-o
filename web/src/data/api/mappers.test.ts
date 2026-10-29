@@ -5,8 +5,8 @@ import { groupClaims, mapHotelResult, mapQuestion, requestChips, valueText } fro
 const registry = {
   walking_distance_to_beach_m: { label: 'Путь до пляжа', description: '', type: 'number', unit: 'm', scope: 'hotel', provider: 'pedestrian_distance', choices: [], question: null, choice_labels: {} },
   quietness_proxy: { label: 'Потенциал тишины снаружи', description: '', type: 'category', unit: null, scope: 'hotel', provider: 'quietness', choices: ['low', 'medium', 'high'], question: null, choice_labels: { low: 'низкий', medium: 'средний', high: 'высокий' } },
-  sea_view: { label: 'Вид на море из номера', description: '', type: 'boolean', unit: null, scope: 'room', provider: 'hotelier', choices: [], question: 'В каких конкретно номерах есть или нет вида на море?', choice_labels: {} },
-  sea_view_potential: { label: 'Вид на море из окон (расчёт)', description: '', type: 'category', unit: null, scope: 'hotel', provider: 'viewshed', choices: ['none', 'partial', 'wide'], question: null, choice_labels: { wide: 'широкий вид' } },
+  sea_view: { label: 'Вид на море из номера', description: '', type: 'boolean', unit: null, scope: 'room', provider: 'hotelier', choices: [], question: 'В каких конкретно номерах есть или нет вида на море?', choice_labels: {}, model_check: { potential: 'sea_view_potential', none_value: 'none', min_floor: 'sea_view_min_floor' } },
+  sea_view_potential: { label: 'Вид на море из окон (расчёт)', description: '', type: 'category', unit: null, scope: 'hotel', provider: 'viewshed', choices: ['none', 'partial', 'wide'], question: null, choice_labels: { wide: 'широкий вид', none: 'моря не видно' } },
 } satisfies FeatureRegistryDto;
 
 const parsed: ParsedQueryDto = {
@@ -57,7 +57,7 @@ describe('API mappers', () => {
     expect(valueText('sea_view', null, registry.sea_view)).toBe('нет данных');
   });
 
-  it('matched с неизвестным пожеланием — не «подтверждён», а частичный', () => {
+  it('нет ответа отельера, но есть расчёт по зданию — показываем расчёт, номер не подтверждён', () => {
     const hotel = mapHotelResult(
       result([
         criterion({}),
@@ -69,14 +69,40 @@ describe('API mappers', () => {
       parsed,
       registry,
     );
-    expect(hotel.group).toBe('partial');
+    // Отель у воды с широким расчётным видом не уходит ниже отеля с одним подтверждённым номером.
+    expect(hotel.group).toBe('confirmed');
     expect(hotel.price).toBeNull();
-    // Расчётный спутник (companion) не показывается в карточке, но остаётся в источниках.
+    // Расчётный спутник отдельной строкой не показывается, но остаётся в источниках.
     expect(hotel.criteria.map((c) => c.key)).toEqual(['walking_distance_to_beach_m', 'quietness_proxy', 'sea_view']);
     expect(hotel.evidence).toHaveLength(4);
     expect(hotel.criteria[0]).toMatchObject({ required: true, state: 'met' });
-    expect(hotel.criteria[2]).toMatchObject({ state: 'unknown', askable: true });
+    expect(hotel.criteria[2]).toMatchObject({ state: 'met', askable: true, text: 'Вид на море — по расчёту: широкий вид · номер не подтверждён' });
     expect(hotel.pendingQuestion).toBe(true);
+  });
+
+  it('нет ни ответа отельера, ни расчёта — «нет данных», отель частичный', () => {
+    const hotel = mapHotelResult(
+      result([criterion({}), criterion({ feature_key: 'sea_view', actual: null, outcome: 'unknown', subject_id: null })]),
+      'matched',
+      parsed,
+      registry,
+    );
+    expect(hotel.group).toBe('partial');
+    expect(hotel.criteria[1]).toMatchObject({ state: 'unknown', text: 'Вид на море — нет данных' });
+  });
+
+  it('по расчёту моря не видно — частичное соответствие, а не «нет данных»', () => {
+    const hotel = mapHotelResult(
+      result([
+        criterion({}),
+        criterion({ feature_key: 'sea_view', actual: null, outcome: 'unknown', subject_id: null }),
+        criterion({ feature_key: 'sea_view_potential', actual: 'none', outcome: 'preference', match: 0 }),
+      ]),
+      'matched',
+      parsed,
+      registry,
+    );
+    expect(hotel.criteria[1]).toMatchObject({ state: 'weak', text: 'Вид на море — по расчёту: моря не видно · номер не подтверждён' });
   });
 
   it('matched со всеми известными условиями — подтверждён', () => {

@@ -199,6 +199,33 @@ export function evidenceLines(criteria: CriterionDto[], registry: FeatureRegistr
   });
 }
 
+/**
+ * Отельер про номер не ответил, но есть расчёт по зданию (model_check в реестре):
+ * показываем расчёт, а не «нет данных», и честно пишем, что номер не подтверждён.
+ * Иначе отель у самой воды с широким расчётным видом уходил в «Не все условия
+ * подтверждены» ниже отеля с одним подтверждённым номером и худшими фактами.
+ */
+export function estimatedFromModel(
+  criterion: Criterion,
+  dto: CriterionDto,
+  byKey: Map<string, CriterionDto>,
+  registry: FeatureRegistryDto,
+): Criterion {
+  const potentialKey = registry[dto.feature_key]?.model_check?.potential;
+  const potential = potentialKey ? byKey.get(potentialKey) : undefined;
+  if (criterion.state !== 'unknown' || !potential || potential.actual === null) return criterion;
+  const value = valueText(potential.feature_key, potential.actual, registry[potential.feature_key]);
+  const observation = potential.evidence[0];
+  return {
+    ...criterion,
+    text: `${criterion.name} — по расчёту: ${value} · номер не подтверждён`,
+    state: criterionState(potential),
+    source: observation
+      ? `${sourceText(observation.evidence.source)} · уверенность ${CONFIDENCE[observation.confidence_level]}`
+      : criterion.source,
+  };
+}
+
 export function companionKeys(parsed: ParsedQueryDto): Set<string> {
   return new Set(parsed.soft_preferences.filter((p) => p.weight_source === 'companion').map((p) => p.feature_key));
 }
@@ -224,7 +251,8 @@ export function mapHotelResult(
   const companions = companionKeys(parsed);
   const required = new Set(parsed.hard_constraints.map((h) => h.feature_key));
   const primary = item.criteria.filter((c) => !companions.has(c.feature_key));
-  const criteria = primary.map((c) => mapCriterion(c, registry, required));
+  const byKey = new Map(item.criteria.map((c) => [c.feature_key, c]));
+  const criteria = primary.map((c) => estimatedFromModel(mapCriterion(c, registry, required), c, byKey, registry));
   // «Условия подтверждены» только если по каждому пожеланию гостя есть данные.
   let group: ResultGroup = 'partial';
   if (backendGroup === 'excluded') group = 'excluded';

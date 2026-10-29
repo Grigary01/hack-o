@@ -361,11 +361,15 @@ class HybridQueryParser:
         hard = rules.hard_constraints + [c for c in llm.hard_constraints if c.feature_key not in known]
         soft = rules.soft_preferences + [p for p in llm.soft_preferences if p.feature_key not in known]
         unknown = rules.unknown_or_ambiguous + [u for u in llm.unknown_or_ambiguous if u not in rules.unknown_or_ambiguous]
+        # Если LLM ничего не добавила, непонятые слова так и остались непонятыми:
+        # гость должен видеть «Не учтено: …», а не думать, что учтено всё.
+        added = len(hard) + len(soft) + len(unknown) > (len(rules.hard_constraints) + len(rules.soft_preferences)
+                                                        + len(rules.unknown_or_ambiguous))
         return ParsedHotelQuery(
             region=llm.region if rules.region == 'other' else rules.region,
             hard_constraints=hard, soft_preferences=soft, unknown_or_ambiguous=unknown,
             clarification_question=rules.clarification_question or llm.clarification_question if unknown else None,
-            original_text=rules.original_text, ignored_terms=[])
+            original_text=rules.original_text, ignored_terms=[] if added else rules.ignored_terms)
 
 
 def make_parser(config=settings) -> QueryParser:
