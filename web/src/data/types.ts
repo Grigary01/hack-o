@@ -1,3 +1,7 @@
+import type { Photo } from './photos';
+
+export type { Photo } from './photos';
+
 /**
  * Доменная модель интерфейса. Её возвращают оба адаптера (mock и api),
  * компоненты знают только эти типы и ничего не знают о форме ответов FastAPI.
@@ -88,9 +92,11 @@ export interface HotelSummary {
   warnings: string[];
   /** Агент уже отправил отельеру вопрос по неизвестной характеристике. */
   pendingQuestion: boolean;
-  /** Номер для иллюстрации: разные отели получают разные цвета рисунка. */
-  illustration: number;
+  /** Фото для карточки; у отелей из OSM — иллюстративное, это видно в UI. */
+  photo: Photo;
   sourceUrl?: string;
+  /** Сайт отеля из OSM (website / contact:website), если указан. */
+  website?: string;
 }
 
 export interface SearchResult {
@@ -116,6 +122,7 @@ export interface RoomOffer {
 export interface HotelDetail {
   hotel: HotelSummary;
   room: RoomOffer | null;
+  roomPhoto: Photo;
   roomUnavailableReason: string | null;
   basis: EvidenceLine[];
   caveats: string[];

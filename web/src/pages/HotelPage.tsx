@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { CriteriaList } from '../components/CriteriaList';
 import { EvidenceList } from '../components/EvidenceList';
-import { HotelIllustration } from '../components/HotelIllustration';
+import { HotelPhoto } from '../components/HotelPhoto';
 import { GuestLayout } from '../components/layout/GuestLayout';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
@@ -45,7 +45,7 @@ export function HotelPage() {
           <h1 className={styles.title}>{hotel.data.hotel.name}</h1>
           <div className={styles.layout}>
             <div className={styles.main}>
-              <HotelIllustration wide variant={hotel.data.hotel.illustration} caption="Иллюстрация номера · фото пока не подключены" />
+              <HotelPhoto variant="wide" photo={hotel.data.roomPhoto} priority />
 
               <div className={styles.roomHead}>
                 <h2 className={styles.roomTitle}>
@@ -68,10 +68,19 @@ export function HotelPage() {
                   На чём основан подбор
                 </h2>
                 <EvidenceList lines={hotel.data.basis} />
-                {hotel.data.hotel.sourceUrl && (
-                  <a href={hotel.data.hotel.sourceUrl} target="_blank" rel="noreferrer" className={styles.osm}>
-                    Отель в OpenStreetMap<span className="visually-hidden"> (откроется в новой вкладке)</span>
-                  </a>
+                {(hotel.data.hotel.website || hotel.data.hotel.sourceUrl) && (
+                  <p className={styles.links}>
+                    {hotel.data.hotel.website && (
+                      <a href={hotel.data.hotel.website} target="_blank" rel="noreferrer">
+                        Сайт отеля — настоящие фото<span className="visually-hidden"> (откроется в новой вкладке)</span>
+                      </a>
+                    )}
+                    {hotel.data.hotel.sourceUrl && (
+                      <a href={hotel.data.hotel.sourceUrl} target="_blank" rel="noreferrer">
+                        Отель в OpenStreetMap<span className="visually-hidden"> (откроется в новой вкладке)</span>
+                      </a>
+                    )}
+                  </p>
                 )}
               </Card>
             </div>

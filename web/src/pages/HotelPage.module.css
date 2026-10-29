@@ -62,7 +62,10 @@
   font-weight: 700;
 }
 
-.osm {
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
   font-size: var(--fs-small);
 }
 

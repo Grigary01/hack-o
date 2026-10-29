@@ -1,9 +1,9 @@
 .card {
   position: relative;
   display: grid;
-  grid-template-columns: 174px minmax(0, 1fr);
+  grid-template-columns: 216px minmax(0, 1fr);
   gap: var(--space-5);
-  padding: var(--space-4) var(--space-6) var(--space-5) var(--space-4);
+  padding: var(--space-2) var(--space-6) var(--space-5) var(--space-2);
   background: var(--c-surface);
   border: 1px solid var(--c-border);
   border-radius: var(--radius-l);
@@ -34,11 +34,27 @@
 
 .media {
   display: grid;
-  align-content: space-between;
+  grid-template-rows: minmax(216px, 1fr) auto;
   gap: var(--space-3);
 }
 
+.photoLink {
+  display: block;
+  min-height: 0;
+  border-radius: var(--radius-m);
+  overflow: hidden;
+}
+
+.photoLink img {
+  transition: transform 400ms var(--ease-out), opacity 240ms var(--ease-out);
+}
+
+.card:hover .photoLink img {
+  transform: scale(1.03);
+}
+
 .mediaNote {
+  padding: 0 var(--space-2);
   font-size: var(--fs-small);
   color: var(--c-text-muted);
 }
@@ -48,7 +64,7 @@
   align-content: start;
   gap: var(--space-4);
   min-width: 0;
-  padding-top: var(--space-2);
+  padding-top: var(--space-4);
 }
 
 .head {
@@ -128,7 +144,7 @@
 
 @media (max-width: 640px) {
   .card {
-    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-columns: 76px minmax(0, 1fr);
     gap: var(--space-4) var(--space-4);
     padding: var(--space-4);
   }
@@ -138,8 +154,9 @@
     display: none;
   }
 
-  .media svg {
-    padding-bottom: 0;
+  .media {
+    grid-template-rows: auto;
+    align-self: start;
   }
 
   /* Фото и название — в одну строку, условия и кнопки — на всю ширину */

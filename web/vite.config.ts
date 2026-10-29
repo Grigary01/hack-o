@@ -40,6 +40,8 @@ export default defineConfig(({ mode }) => {
     css: {
       modules: { localsConvention: 'camelCaseOnly' },
     },
+    // Воркер карты MapLibre — ES-модуль (import внутри); собираем его тоже как ES.
+    worker: { format: 'es' },
     test: {
       environment: 'node',
       include: ['src/**/*.test.ts'],

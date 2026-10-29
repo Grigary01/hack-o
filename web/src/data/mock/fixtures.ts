@@ -22,7 +22,7 @@ export interface MockHotel {
   name: string;
   area: string;
   coords: { lat: number; lon: number };
-  illustration: number;
+  photoIndex: number;
   pricePerNight: number;
   room: { category: string; note: string };
   beachMeters: number;
@@ -96,8 +96,8 @@ export function initialState(): MockState {
         id: 'demo-primorsky',
         name: 'Приморский',
         area: 'Батуми, Приморский бульвар',
-        coords: { lat: 41.6505, lon: 41.6335 },
-        illustration: 0,
+        coords: { lat: 41.648, lon: 41.633 },
+        photoIndex: 0,
         pricePerNight: 9200,
         room: { category: 'Улучшенный номер', note: 'окна во двор' },
         beachMeters: 920,
@@ -120,9 +120,9 @@ export function initialState(): MockState {
       {
         id: 'demo-tikhiy-dvor',
         name: 'Тихий двор',
-        area: 'Батуми, Старый город',
-        coords: { lat: 41.6455, lon: 41.6305 },
-        illustration: 1,
+        area: 'Батуми, Старый город (у Пьяццы)',
+        coords: { lat: 41.6497, lon: 41.6395 },
+        photoIndex: 1,
         pricePerNight: 8400,
         room: { category: 'Улучшенный номер', note: 'окна во двор' },
         beachMeters: 700,
@@ -137,9 +137,9 @@ export function initialState(): MockState {
       {
         id: 'demo-morskaya-milya',
         name: 'Морская миля',
-        area: 'Батуми, Новый бульвар',
-        coords: { lat: 41.6395, lon: 41.6362 },
-        illustration: 2,
+        area: 'Батуми, Новый бульвар (ул. Шерифа Химшиашвили)',
+        coords: { lat: 41.6315, lon: 41.603 },
+        photoIndex: 2,
         pricePerNight: 12600,
         room: { category: 'Номер делюкс', note: 'вид на море' },
         beachMeters: 210,
@@ -160,8 +160,8 @@ export function initialState(): MockState {
         id: 'demo-staryi-batumi',
         name: 'Старый Батуми',
         area: 'Батуми, ул. Руставели',
-        coords: { lat: 41.6425, lon: 41.6282 },
-        illustration: 3,
+        coords: { lat: 41.644, lon: 41.642 },
+        photoIndex: 3,
         pricePerNight: 6900,
         room: { category: 'Стандартный номер', note: 'окна на улицу' },
         beachMeters: 1400,
@@ -179,8 +179,8 @@ export function initialState(): MockState {
         id: 'demo-bulvar-residence',
         name: 'Бульвар Резиденс',
         area: 'Батуми, Приморский бульвар',
-        coords: { lat: 41.6532, lon: 41.6352 },
-        illustration: 4,
+        coords: { lat: 41.647, lon: 41.624 },
+        photoIndex: 4,
         pricePerNight: 16800,
         room: { category: 'Люкс', note: 'вид на море' },
         beachMeters: 150,

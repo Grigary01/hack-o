@@ -29,7 +29,8 @@ import type {
   SearchResponseDto,
 } from './contract';
 import { get, post } from './http';
-import { evidenceLines, featureName, groupClaims, mapFact, mapHotelResult, mapQuestion, requestChips, roomNumber, sourceText, valueText } from './mappers';
+import { hotelPhoto, roomPhoto } from '../photos';
+import { evidenceLines, featureName, hotelWebsite, groupClaims, mapFact, mapHotelResult, mapQuestion, requestChips, roomNumber, sourceText, valueText } from './mappers';
 
 const capabilities: Capabilities = {
   prices: false,
@@ -229,8 +230,9 @@ export function createApiSource(): DataSource {
         evidence: [],
         warnings: [],
         pendingQuestion: false,
-        illustration: 0,
+        photo: hotelPhoto(hotel.id, hotel.name),
         sourceUrl: hotel.source_url,
+        website: hotelWebsite(hotel.tags),
       };
 
       // Подтверждённые отельером номера — из наблюдений уровня room.
@@ -297,6 +299,7 @@ export function createApiSource(): DataSource {
       const result: HotelDetail = {
         hotel: summary,
         room,
+        roomPhoto: roomPhoto(hotel.id, room?.title ?? hotel.name),
         roomUnavailableReason: room
           ? null
           : 'API пока не возвращает категории номеров. Показываем характеристики отеля и номеров, о которых ответил отельер.',

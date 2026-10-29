@@ -17,6 +17,7 @@ import type {
 } from '../types';
 import { DEMO_DESTINATION, DEMO_EXAMPLES, DEMO_QUERY, FEATURE_COPY, type MockAnswer, type MockHotel, type MockState } from './fixtures';
 import { parseBlackoutAnswer } from './parseAnswer';
+import { hotelPhoto, roomPhoto } from '../photos';
 import { latency, maybeFail, readState, resetState, writeState } from './store';
 
 const capabilities: Capabilities = {
@@ -217,7 +218,7 @@ function summarize(hotel: MockHotel, w: Wishes, state: MockState): HotelSummary 
     evidence: evidenceFor(hotel, w),
     warnings: [],
     pendingQuestion: state.questions.some((q) => q.hotelId === hotel.id && q.status === 'open'),
-    illustration: hotel.illustration,
+    photo: hotelPhoto(hotel.photoIndex, hotel.name),
   };
 }
 
@@ -386,6 +387,7 @@ export function createMockSource(): DataSource & { resetDemo(): Promise<void> } 
           nights,
           total: nights ? money(hotel.pricePerNight * nights) : null,
         },
+        roomPhoto: roomPhoto(hotel.photoIndex, category),
         roomUnavailableReason: null,
         basis: summary.evidence,
         caveats,

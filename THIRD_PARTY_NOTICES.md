@@ -26,7 +26,7 @@
 Источники, времена, запросы и bbox доступны внутри snapshots. Данные Островка не использовались.
 
 Кэш OSMnx сохранён для аудита полученного ответа; не загружаются массово тайлы.
-Карта в интерфейсе — схема без подложки: внешние тайлы не загружаются.
+Подложку карты в интерфейсе браузер загружает с OpenFreeMap (см. раздел «Интерфейс web/»).
 Демо-запросы и синтетические unit-test объекты отделены от реальных OSM-данных.
 Симулированные room facts записываются только в локальную runtime DB, не в реальный геодатасет.
 
@@ -61,3 +61,31 @@ OpenAQ v3: https://docs.openaq.org/. Нужен личный ключ; усло�
 © OpenStreetMap contributors, ODbL 1.0. Сценарный трафик условный, не измеренный.
 Веса GPT-OSS/Qwen/Gemma не скачиваются и не распространяются с проектом;
 облачный Groq имеет собственные условия и квоты аккаунта.
+
+## Интерфейс web/: карта и фотографии
+
+- **Карта** — [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js) (BSD-3-Clause) с векторной
+  подложкой [OpenFreeMap](https://openfreemap.org/) (стиль Liberty, без ключа).
+  Данные подложки © [OpenMapTiles](https://www.openmaptiles.org/), © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright) (ODbL).
+  Атрибуция выводится на самой карте. Подложка загружается браузером из сети; без сети показывается
+  SVG-схема по координатам.
+- **Фотографии** — стоковые снимки [Unsplash](https://unsplash.com/) по [Unsplash License](https://unsplash.com/license)
+  (свободное использование, в т. ч. коммерческое, без обязательной атрибуции). Это **не фото конкретных
+  отелей**: в интерфейсе они подписаны «Фото для примера», в alt — «Иллюстративное фото». Своих фото у
+  отелей из OSM нет; при наличии сайта отеля в OSM на странице отеля есть ссылка на него.
+
+| Файл | Источник |
+|---|---|
+| `web/public/photos/hotel-1.webp` | https://images.unsplash.com/photo-1455587734955-081b22074882 |
+| `web/public/photos/hotel-2.webp` | https://images.unsplash.com/photo-1551882547-ff40c63fe5fa |
+| `web/public/photos/hotel-3.webp` | https://images.unsplash.com/photo-1564501049412-61c2a3083791 |
+| `web/public/photos/hotel-4.webp` | https://images.unsplash.com/photo-1568084680786-a84f91d1153c |
+| `web/public/photos/hotel-5.webp` | https://images.unsplash.com/photo-1615460549969-36fa19521a4f |
+| `web/public/photos/hotel-6.webp` | https://images.unsplash.com/photo-1542314831-068cd1dbfeeb |
+| `web/public/photos/hotel-7.webp` | https://images.unsplash.com/photo-1561501900-3701fa6a0864 |
+| `web/public/photos/hotel-8.webp` | https://images.unsplash.com/photo-1566073771259-6a8506099945 |
+| `web/public/photos/room-1.webp` | https://images.unsplash.com/photo-1590490360182-c33d57733427 |
+| `web/public/photos/room-2.webp` | https://images.unsplash.com/photo-1618773928121-c32242e63f39 |
+| `web/public/photos/room-3.webp` | https://images.unsplash.com/photo-1631049307264-da0ec9d70304 |
+| `web/public/photos/room-4.webp` | https://images.unsplash.com/photo-1611892440504-42a792e24d32 |
+| `web/public/photos/room-5.webp` | https://images.unsplash.com/photo-1582719478250-c89cae4dc85b |

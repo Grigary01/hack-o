@@ -1,10 +1,10 @@
-import { useMemo, useState } from 'react';
+import { lazy, Suspense, useMemo, useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import { GuestLayout } from '../components/layout/GuestLayout';
 import { Filters } from '../components/results/Filters';
 import { DEFAULT_FILTERS, type FilterState } from '../components/results/filterState';
 import { HotelCard } from '../components/results/HotelCard';
-import { SchematicMap, type MapPin } from '../components/SchematicMap';
+import type { MapPin } from '../components/SchematicMap';
 import { Badge } from '../components/ui/Badge';
 import { ButtonLink } from '../components/ui/Button';
 import { Notice } from '../components/ui/Notice';
@@ -14,6 +14,11 @@ import { dataSource, useSearch, type HotelSummary, type ResultGroup } from '../d
 import { formatMoney, plural } from '../lib/format';
 import { describeSearch, hasSearch, searchFromQuery, searchToQuery } from '../lib/searchUrl';
 import styles from './ResultsPage.module.css';
+
+// Карта (MapLibre ~250 КБ gzip) грузится отдельным чанком, не задерживая выдачу.
+const HotelMap = lazy(() => import('../components/map/HotelMap'));
+
+const shortName = (name: string) => (name.length > 18 ? `${name.slice(0, 17).trimEnd()}…` : name);
 
 const GROUP_TITLES: Record<ResultGroup, string> = {
   confirmed: 'Условия подтверждены',
@@ -55,10 +60,10 @@ export function ResultsPage() {
   const excluded = byGroup('excluded');
   const listed = [...confirmed, ...partial];
 
-  const pins: MapPin[] = listed.map((h, i) => ({
+  const pins: MapPin[] = listed.map((h) => ({
     id: h.id,
     name: h.name,
-    label: h.price ? formatMoney(h.price) : String(i + 1),
+    label: h.price ? formatMoney(h.price) : shortName(h.name),
     coords: h.coords,
     tone: h.group,
   }));
@@ -231,14 +236,16 @@ export function ResultsPage() {
         <div id="map-panel" className={`${styles.map} ${mapOpen ? styles.open : ''}`}>
           {search.isPending && <div className={styles.mapSkeleton} aria-hidden="true" />}
           {pins.length > 0 && (
-            <SchematicMap
-              pins={pins}
-              seaSide={dataSource.mode === 'mock' ? 'east' : 'southwest'}
-              activeId={activeId}
-              onSelect={selectFromMap}
-              onHover={setActiveId}
-              caption={dataSource.mode === 'mock' ? 'Схематическая карта' : 'Схема по координатам OSM, без подложки'}
-            />
+            <Suspense fallback={<div className={styles.mapSkeleton} aria-hidden="true" />}>
+              <HotelMap
+                pins={pins}
+                activeId={activeId}
+                onSelect={selectFromMap}
+                onHover={setActiveId}
+                seaSide={dataSource.mode === 'mock' ? 'east' : 'southwest'}
+                fallbackCaption="Схема по координатам"
+              />
+            </Suspense>
           )}
         </div>
       </div>

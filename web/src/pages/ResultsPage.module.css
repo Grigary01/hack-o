@@ -284,6 +284,15 @@
     display: block;
   }
 
+  /* На телефоне открытые фильтры и карта — над списком, как кнопки над ним. */
+  .filters.open {
+    order: -2;
+  }
+
+  .map.open {
+    order: -1;
+  }
+
   .filters > section {
     min-height: 0;
   }

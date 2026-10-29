@@ -4,7 +4,7 @@ import { dataSource, errorMessage, useRequestCheck, type HotelSummary } from '..
 import { formatMoney } from '../../lib/format';
 import { CriteriaList } from '../CriteriaList';
 import { EvidenceList } from '../EvidenceList';
-import { HotelIllustration } from '../HotelIllustration';
+import { HotelPhoto } from '../HotelPhoto';
 import { Button, ButtonLink } from '../ui/Button';
 import { Notice } from '../ui/Notice';
 import styles from './HotelCard.module.css';
@@ -34,7 +34,9 @@ export function HotelCard({ hotel, hotelHref, active, onHover }: Props) {
       onMouseLeave={() => onHover(null)}
     >
       <div className={styles.media}>
-        <HotelIllustration variant={hotel.illustration} caption="Фото отеля" />
+        <Link to={hotelHref} className={styles.photoLink} tabIndex={-1} aria-hidden="true">
+          <HotelPhoto photo={hotel.photo} />
+        </Link>
         {hotel.group === 'partial' && <p className={styles.mediaNote}>Можно продолжить поиск</p>}
       </div>
 

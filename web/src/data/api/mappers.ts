@@ -1,4 +1,5 @@
 import { capitalize, compactNumbers, formatDay, formatMeters, plural, walkMinutes } from '../../lib/format';
+import { hotelPhoto } from '../photos';
 import type {
   Criterion,
   CriterionState,
@@ -202,11 +203,16 @@ export function companionKeys(parsed: ParsedQueryDto): Set<string> {
   return new Set(parsed.soft_preferences.filter((p) => p.weight_source === 'companion').map((p) => p.feature_key));
 }
 
-let illustrationCounter = 0;
-const illustrationIds = new Map<string, number>();
-function illustrationFor(id: string): number {
-  if (!illustrationIds.has(id)) illustrationIds.set(id, illustrationCounter++);
-  return illustrationIds.get(id)!;
+/** Сайт из тегов OSM: website / contact:website; «www.site.ru» → https://www.site.ru. */
+export function hotelWebsite(tags: Record<string, string>): string | undefined {
+  const raw = (tags.website ?? tags['contact:website'] ?? '').split(';')[0]?.trim();
+  if (!raw) return undefined;
+  const url = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    return new URL(url).toString();
+  } catch {
+    return undefined;
+  }
 }
 
 export function mapHotelResult(
@@ -237,7 +243,8 @@ export function mapHotelResult(
     evidence: evidenceLines([...primary, ...item.criteria.filter((c) => companions.has(c.feature_key))], registry),
     warnings: [...item.warnings, ...conflicts],
     pendingQuestion: item.pending_hotelier_question_ids.length > 0,
-    illustration: illustrationFor(item.hotel.id),
+    photo: hotelPhoto(item.hotel.id, item.hotel.name),
+    website: hotelWebsite(item.hotel.tags),
     sourceUrl: item.hotel.source_url,
   };
 }
