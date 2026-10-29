@@ -20,7 +20,7 @@ export function EvidenceList({ lines, warnings = [] }: { lines: EvidenceLine[]; 
                   <>
                     {line.note ? ' · ' : ''}
                     <a href={line.url} target="_blank" rel="noreferrer">
-                      объект в OSM<span className="visually-hidden"> (откроется в новой вкладке)</span>
+                      на карте<span className="visually-hidden"> (откроется в новой вкладке)</span>
                     </a>
                   </>
                 )}

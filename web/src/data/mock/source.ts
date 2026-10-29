@@ -248,7 +248,7 @@ function questionView(state: MockState, id: string): HotelierQuestion {
     prompt: FEATURE_COPY.prompt,
     ask: FEATURE_COPY.ask,
     why: FEATURE_COPY.why,
-    requestedBy: 'агент проверки данных',
+    requestedBy: 'из поиска гостей',
     status: q.status,
     createdAt: q.createdAt,
     answerHint: FEATURE_COPY.hint,

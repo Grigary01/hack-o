@@ -12,8 +12,8 @@ import styles from './HomePage.module.css';
 
 const STEPS = [
   { title: 'Опишите поездку своими словами', text: '«Прилетаем поздно, нужен тёмный номер и магазин рядом» — без фильтров и галочек.' },
-  { title: 'Проверяем по данным', text: 'Маршруты и заведения из OpenStreetMap, расчёты и ответы отельеров — с источником у каждого факта.' },
-  { title: 'Чего нет — спрашиваем', text: 'Неизвестное не угадываем: агент задаёт вопрос отельеру, а ответ попадает в следующие подборы.' },
+  { title: 'Проверяем по данным', text: 'Маршруты и заведения с открытых карт, расчёт вида и тишины, ответы отелей — с источником у каждого факта.' },
+  { title: 'Чего нет — спрашиваем', text: 'Неизвестное не угадываем: задаём вопрос отелю, а его ответ попадает в следующие подборы.' },
 ];
 
 export function HomePage() {
@@ -84,7 +84,7 @@ export function HomePage() {
                 onChange={(e) => setDestination(e.target.value)}
                 placeholder="Город, отель или аэропорт"
                 disabled={!caps.freeDestination}
-                hint={caps.freeDestination ? undefined : 'API поддерживает только прибрежный Адлер'}
+                hint={caps.freeDestination ? undefined : 'В текущей версии доступен только Адлер'}
                 autoComplete="off"
               />
               <div className={styles.dates}>
@@ -163,7 +163,7 @@ export function HomePage() {
             <p className={styles.sheetLead}>
               {dataSource.mode === 'mock'
                 ? 'Демо-сценарий: Батуми, шторы blackout, магазин ночью и море пешком.'
-                : 'Проверенные формулировки из /api/demo-queries — их понимает разбор запроса без LLM.'}
+                : 'Можно выбрать пример или написать запрос своими словами.'}
             </p>
           </div>
           {suggestions.isError && <p className={styles.note}>Примеры запросов не загрузились — напишите свой.</p>}

@@ -70,7 +70,7 @@ export function HotelCard({ hotel, hotelHref, active, onHover }: Props) {
             <p>{request.data.message}</p>
             {request.data.cabinetPath && (
               <p>
-                <Link to={request.data.cabinetPath}>Ответить за отельера (демо-кабинет)</Link>
+                <Link to={request.data.cabinetPath}>Ответить от имени отеля</Link>
               </p>
             )}
           </Notice>
@@ -108,14 +108,14 @@ export function HotelCard({ hotel, hotelHref, active, onHover }: Props) {
           </Button>
         </div>
         {hotel.pendingQuestion && hotel.group !== 'confirmed' && !request.isSuccess && (
-          <p className={styles.pending}>Агент уже спросил отельера — ответ появится в следующих подборах.</p>
+          <p className={styles.pending}>Мы уже спросили отель — ответ появится в следующих подборах.</p>
         )}
 
         <div id={sourcesId} className={styles.sources} hidden={!sourcesOpen}>
           <EvidenceList lines={hotel.evidence} warnings={hotel.warnings} />
           {hotel.sourceUrl && (
             <a className={styles.osm} href={hotel.sourceUrl} target="_blank" rel="noreferrer">
-              Карточка отеля в OpenStreetMap<span className="visually-hidden"> (откроется в новой вкладке)</span>
+              Отель на карте OpenStreetMap<span className="visually-hidden"> (откроется в новой вкладке)</span>
             </a>
           )}
         </div>

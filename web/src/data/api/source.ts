@@ -31,6 +31,7 @@ import type {
 import { get, post } from './http';
 import { hotelPhoto, roomPhoto } from '../photos';
 import { evidenceLines, featureName, hotelWebsite, groupClaims, mapFact, mapHotelResult, mapQuestion, requestChips, roomNumber, sourceText, valueText } from './mappers';
+import { humanize } from './humanize';
 
 const capabilities: Capabilities = {
   prices: false,
@@ -67,8 +68,8 @@ type SearchOutcome = SearchResponseDto & {
 
 /** Что мешает искать: непроверяемые условия или вопрос парсера. */
 export function unclearItems(parsed: SearchResponseDto['parsed']): string[] {
-  if (parsed.unknown_or_ambiguous.length) return parsed.unknown_or_ambiguous;
-  return parsed.clarification_question ? [parsed.clarification_question] : [];
+  if (parsed.unknown_or_ambiguous.length) return parsed.unknown_or_ambiguous.map((u) => humanize(u));
+  return parsed.clarification_question ? [humanize(parsed.clarification_question)] : [];
 }
 
 async function runSearch(params: SearchParams, fresh = false): Promise<SearchOutcome> {
@@ -148,16 +149,16 @@ async function buildPublishResult(answer: AnswerDto, review: ModelReviewDto[] | 
     conflicts,
     publishedAt: answer.created_at,
     guestPreview: positive.length ? `${question.featureShort} — в номерах ${positive.join(', ')}` : `${question.featureShort} — нет в указанных номерах`,
-    sourceLabel: 'ответ представителя отеля (демо-симулятор)',
+    sourceLabel: 'ответ представителя отеля (тестовые данные)',
     statusLabel: 'заявление отельера, без независимой проверки',
   };
 }
 
 /** Почему поиск просит уточнения: вопрос парсера, непонятые места или регион вне Адлера. */
 export function clarificationText(parsed: SearchResponseDto['parsed']): string {
-  if (parsed.clarification_question) return parsed.clarification_question;
-  if (parsed.unknown_or_ambiguous.length) return `Уточните: ${parsed.unknown_or_ambiguous.join('; ')}`;
-  if (parsed.region !== 'Adler') return 'Сейчас поддерживается только прибрежный Адлер.';
+  if (parsed.clarification_question) return humanize(parsed.clarification_question);
+  if (parsed.unknown_or_ambiguous.length) return `Уточните: ${humanize(parsed.unknown_or_ambiguous.join('; '))}`;
+  if (parsed.region !== 'Adler') return 'В текущей версии доступен только Адлер.';
   return 'Уточните запрос.';
 }
 
@@ -169,9 +170,9 @@ export function createApiSource(): DataSource {
     async getHealth() {
       const health = await loadHealth();
       if (health.status !== 'ok') {
-        return { ok: false, label: 'База пуста', details: 'Выполните python -m scripts.seed_demo и перезапустите бэкенд.' };
+        return { ok: false, label: 'Каталог пуст', details: 'Отели пока не загружены.' };
       }
-      return { ok: true, label: `API · ${health.hotels} отелей`, details: `Разбор запроса: ${health.parser_mode}` };
+      return { ok: true, label: `${health.hotels} отелей`, details: 'Адлер' };
     },
 
     getDefaultSearch() {
@@ -199,8 +200,8 @@ export function createApiSource(): DataSource {
 
     async search(params) {
       const [response, registry] = await Promise.all([runSearch(params, true), loadRegistry()]);
-      const notes = ['Цены и бронирование не подключены к API.', 'Даты и число гостей пока не передаются в подбор.'];
-      if (response.include_simulated) notes.push('Учитываются демо-ответы отельеров — они помечены в источниках.');
+      const notes = ['Цены, бронирование и учёт дат и числа гостей не реализованы в текущей версии.'];
+      if (response.include_simulated) notes.push('Ответы отелей в текущей версии тестовые — они отмечены в источниках.');
       const result: SearchResult = {
         status: response.status,
         clarification: response.status === 'needs_clarification' ? clarificationText(response.parsed) : null,
@@ -272,14 +273,14 @@ export function createApiSource(): DataSource {
       }
       for (const [key, { yes, no }] of roomClaims) {
         const name = featureName(key, registry);
-        if (yes.length) caveats.push(`${name}: по словам отельера (демо) — в номерах ${compactNumbers(yes)}.`);
+        if (yes.length) caveats.push(`${name}: по словам отеля — в номерах ${compactNumbers(yes)}.`);
         if (no.length) caveats.push(`${name}: нет в номерах ${compactNumbers(no)}.`);
       }
       for (const c of summary.criteria) {
         if (c.state === 'unknown') {
           caveats.push(
             c.askable
-              ? `${c.name}: отельер пока не ответил. Вопрос ${summary.pendingQuestion ? 'уже отправлен' : 'можно отправить из выдачи'}.`
+              ? `${c.name}: отель пока не ответил. Вопрос ${summary.pendingQuestion ? 'уже отправлен' : 'можно отправить из выдачи'}.`
               : `${c.name}: нет данных в открытых источниках.`,
           );
         }
@@ -324,7 +325,7 @@ export function createApiSource(): DataSource {
         roomPhoto: roomPhoto(hotel.id, room?.title ?? hotel.name),
         roomUnavailableReason: room
           ? null
-          : 'API пока не возвращает категории номеров. Показываем характеристики отеля и номеров, о которых ответил отельер.',
+          : 'Категории номеров не реализованы в текущей версии. Показываем характеристики отеля и номеров, о которых ответил отель.',
         basis,
         caveats,
       };
@@ -379,7 +380,7 @@ export function createApiSource(): DataSource {
 
     async publishAnswer(answerId, overrides) {
       if (Object.keys(overrides).length > 0) {
-        throw new DataError('unsupported', 'API не принимает правки отдельных строк. Измените текст ответа и отправьте его заново.');
+        throw new DataError('unsupported', 'Правка отдельных строк не реализована в текущей версии. Измените текст ответа и отправьте его заново.');
       }
       const response = await post<ConfirmResponseDto>(`/hotelier/answers/${encodeURIComponent(answerId)}/confirm`, { accept: true });
       searchCache.clear();

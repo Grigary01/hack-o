@@ -31,7 +31,7 @@ export async function request<T>(method: 'GET' | 'POST', path: string, body?: un
   } catch {
     throw new DataError(
       'network',
-      'Бэкенд недоступен. Запустите FastAPI (uvicorn app.main:app --port 8000) или откройте демо в режиме VITE_DATA_MODE=mock.',
+      'Сервис временно недоступен. Проверьте подключение к интернету и попробуйте ещё раз.',
     );
   }
 
@@ -53,14 +53,19 @@ export async function request<T>(method: 'GET' | 'POST', path: string, body?: un
     if (response.status === 409 || body?.code === 'state_conflict') {
       throw new DataError('state_conflict', detail ?? 'Состояние уже изменилось — обновите страницу.', 409);
     }
-    if (body?.code === 'service_unavailable') {
-      throw new DataError('network', detail ?? 'Сервис разбора временно недоступен.', response.status);
+    // Тексты 5xx — для разработчиков (ключи, модели, порты); гостю показываем понятное
+    // сообщение, а техническую причину — в консоль.
+    if (response.status >= 500 || body?.code === 'service_unavailable') {
+      if (detail) console.warn(`[${method} ${path}] ${response.status}: ${detail}`);
+      throw new DataError(
+        'network',
+        path.startsWith('/search')
+          ? 'Не получилось обработать запрос. Попробуйте ещё раз или сформулируйте иначе.'
+          : 'Сервис временно недоступен. Попробуйте ещё раз через минуту.',
+        response.status,
+      );
     }
-    // Vite-прокси отвечает 5xx без JSON-detail, если uvicorn не запущен.
-    if (response.status >= 500 && !detail) {
-      throw new DataError('network', 'Бэкенд не отвечает через прокси /api. Проверьте, что FastAPI запущен.', response.status);
-    }
-    throw new DataError('http', detail ?? `Ошибка API ${response.status}`, response.status);
+    throw new DataError('http', detail ?? 'Что-то пошло не так. Попробуйте ещё раз.', response.status);
   }
   return payload as T;
 }

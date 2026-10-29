@@ -16,9 +16,11 @@ export function SiteHeader({ context, variant = 'default', cabinet }: Props) {
         <Link to={cabinet ? '/hotelier' : '/'} className={styles.logo}>
           Островок{cabinet && <span className={styles.logoSuffix}> · Кабинет отельера</span>}
         </Link>
-        <span className={styles.demo} title={dataMode === 'api' ? 'Данные из FastAPI; цены и бронирование не подключены' : 'Демонстрационные данные без бэкенда'}>
-          {dataMode === 'api' ? 'Демо · API' : 'Демо'}
-        </span>
+        {dataMode === 'mock' && (
+          <span className={styles.demo} title="Демонстрационные отели и цены">
+            Демо
+          </span>
+        )}
         {context && <p className={styles.context}>{context}</p>}
         <nav className={styles.nav} aria-label="Разделы">
           {cabinet ? <Link to="/">Поиск отелей</Link> : <Link to="/hotelier">Кабинет отельера</Link>}

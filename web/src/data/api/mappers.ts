@@ -25,6 +25,7 @@ import type {
   SourceDto,
   Value,
 } from './contract';
+import { humanize, modelSourceName } from './humanize';
 
 interface FeatureCopy {
   /** Короткое имя для карточек и чипов. */
@@ -119,7 +120,7 @@ export function valueText(key: string, value: Value | null, definition: FeatureD
       return value === 0 ? 'без переходов' : `${value} ${plural(value, ['переход', 'перехода', 'переходов'])}`;
     }
     if (key === 'night_open_places_500m') {
-      return value === 0 ? 'не найдено в OSM' : `${value} ${plural(value, ['место', 'места', 'мест'])} в 500 м`;
+      return value === 0 ? 'не найдено рядом' : `${value} ${plural(value, ['место', 'места', 'мест'])} в 500 м`;
     }
     return String(value);
   }
@@ -129,13 +130,13 @@ export function valueText(key: string, value: Value | null, definition: FeatureD
 export function sourceText(source: SourceDto | undefined): string {
   switch (source?.type) {
     case 'openstreetmap':
-      return 'OpenStreetMap, расчёт по карте';
+      return 'Открытая карта OpenStreetMap';
     case 'geo_model':
-      return `Расчёт: ${source.name}`;
+      return modelSourceName(source.name);
     case 'hotelier':
-      return 'Ответ отельера. Независимо не проверено';
+      return 'Ответ представителя отеля. Независимо не проверено';
     case 'hotelier_simulated':
-      return 'Ответ отельера (демо-симулятор). Независимо не проверено';
+      return 'Ответ представителя отеля (тестовые данные). Независимо не проверено';
     case 'operator_decision':
       return 'Решение оператора по расхождению источников';
     default:
@@ -167,7 +168,7 @@ export function mapCriterion(c: CriterionDto, registry: FeatureRegistryDto, requ
   const source = evidence
     ? `${sourceText(evidence.evidence.source)} · уверенность ${CONFIDENCE[evidence.confidence_level]}`
     : definition?.provider === 'hotelier'
-      ? 'Нет ответа отельера'
+      ? 'Отель пока не ответил'
       : 'Нет данных в источниках';
   return {
     key: c.feature_key,
@@ -177,7 +178,7 @@ export function mapCriterion(c: CriterionDto, registry: FeatureRegistryDto, requ
     required: requiredKeys.has(c.feature_key),
     askable: definition?.provider === 'hotelier',
     source,
-    conflict: c.model_conflicts.map((m) => m.text).filter(Boolean).join(' ') || undefined,
+    conflict: humanize(c.model_conflicts.map((m) => m.text).filter(Boolean).join(' ')) || undefined,
   };
 }
 
@@ -186,10 +187,11 @@ export function evidenceLines(criteria: CriterionDto[], registry: FeatureRegistr
     const observation = c.evidence[0];
     const label = registry[c.feature_key]?.label ?? c.feature_key;
     if (!observation) {
-      return { title: label, text: c.explanation, note: 'Данных пока нет — значение не угадываем.' };
+      return { title: label, text: humanize(c.explanation), note: 'Данных пока нет — значение не угадываем.' };
     }
     const quote = observation.evidence.details.quote;
-    const text = typeof quote === 'string' && quote ? `«${quote}». ${c.explanation}` : c.explanation;
+    const explanation = humanize(c.explanation);
+    const text = typeof quote === 'string' && quote ? `«${quote}». ${explanation}` : explanation;
     return {
       title: label,
       text,
@@ -258,7 +260,7 @@ export function mapHotelResult(
   if (backendGroup === 'excluded') group = 'excluded';
   else if (backendGroup === 'matched' && criteria.every((c) => c.state !== 'unknown')) group = 'confirmed';
   const room = roomNumber(item.recommended_room_id);
-  const conflicts = item.criteria.flatMap((c) => c.model_conflicts.map((m) => m.text ?? '')).filter(Boolean);
+  const conflicts = item.criteria.flatMap((c) => c.model_conflicts.map((m) => humanize(m.text ?? ''))).filter(Boolean);
   return {
     id: item.hotel.id,
     name: item.hotel.name,
@@ -269,7 +271,7 @@ export function mapHotelResult(
     roomHint: room ? `Номер ${room}` : null,
     criteria,
     evidence: evidenceLines([...primary, ...item.criteria.filter((c) => companions.has(c.feature_key))], registry),
-    warnings: [...item.warnings, ...conflicts],
+    warnings: [...item.warnings.map((w) => humanize(w)), ...conflicts],
     pendingQuestion: item.pending_hotelier_question_ids.length > 0,
     photo: hotelPhoto(item.hotel.id, item.hotel.name),
     website: hotelWebsite(item.hotel.tags),
@@ -329,8 +331,8 @@ function questionNote(q: QuestionDto): string | null {
 export function mapQuestion(q: QuestionDto, hotelName: string, registry: FeatureRegistryDto): HotelierQuestion {
   const definition = registry[q.feature_key];
   const copy = FEATURE_COPY[q.feature_key];
-  const parts = sentences(q.text);
-  const ask = parts[0] ?? q.text;
+  const parts = sentences(humanize(q.text));
+  const ask = parts[0] ?? humanize(q.text);
   const label = definition?.label ?? q.feature_key;
   const short = copy?.name ?? label;
   const lower = short.toLowerCase();
@@ -345,7 +347,7 @@ export function mapQuestion(q: QuestionDto, hotelName: string, registry: Feature
     prompt: parts.slice(1).join(' ') || 'Укажите конкретные номера.',
     ask,
     why: copy?.question?.why ?? `Гости ищут «${label.toLowerCase()}». Пока это условие не подтверждено.`,
-    requestedBy: 'агент проверки данных',
+    requestedBy: 'из поиска гостей',
     status: q.status === 'answered' ? 'answered' : 'open',
     createdAt: q.created_at,
     answerHint:
@@ -385,8 +387,8 @@ export function mapFact(f: FactDto, registry: FeatureRegistryDto): HotelFact {
     value: capitalize(valueText(f.feature_key, f.value, definition)),
     status: f.reviewed_by_hotelier ? 'hotelier' : f.status,
     confidence: f.confidence_level,
-    explanation: f.explanation,
-    source: f.reviewed_by_hotelier ? 'Проверено отельером (демо)' : definition?.provider === 'hotelier' ? 'Ответ отельера' : 'Расчёт по открытым данным',
+    explanation: humanize(f.explanation),
+    source: f.reviewed_by_hotelier ? 'Подтверждено отелем' : definition?.provider === 'hotelier' ? 'Ответ отеля' : 'Расчёт по открытым данным',
     reviewedByHotelier: f.reviewed_by_hotelier,
   };
 }

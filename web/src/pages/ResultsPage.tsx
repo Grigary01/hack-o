@@ -119,7 +119,7 @@ export function ResultsPage() {
       )}
       {result && result.ignoredTerms.length > 0 && (
         <Notice tone="warning" className={styles.notice}>
-          Не учтено при подборе — система пока не знает этих характеристик: {result.ignoredTerms.join(', ')}.
+          Эти слова не удалось связать с характеристиками отелей, в подборе они не учитываются: {result.ignoredTerms.join(', ')}.
         </Notice>
       )}
 

@@ -67,7 +67,8 @@ export function CabinetLayout() {
           {hotels.data && hotels.data.length > 1 && (
             <SelectField
               className={styles.switcher}
-              label="Отель · демо без входа"
+              label="Отель"
+              hint="Вход для отелей не реализован в текущей версии"
               value={hotelId}
               onChange={(e) => navigate(`/hotelier/${encodeURIComponent(e.target.value)}/questions`)}
             >
