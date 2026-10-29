@@ -68,3 +68,19 @@ def test_source_archive_contains_shared_config_but_no_local_env():
     files = project_files()
     assert ROOT/'config/models.yaml' in files
     assert ROOT/'.env' not in files
+
+
+@pytest.mark.parametrize('think', [None, False])
+def test_ollama_think_flag_is_sent_only_when_configured(think):
+    expected = FixtureQueryParser().parse('Нужен номер без вида на море')
+    bodies = []
+
+    def handler(request):
+        bodies.append(json.loads(request.content))
+        return httpx.Response(200, json={'message': {'content': expected.model_dump_json()}})
+    with httpx.Client(transport=httpx.MockTransport(handler)) as http:
+        OllamaQueryParser(replace(settings, ollama_think=think), client=http).parse(expected.original_text)
+    # Gemma 3 не поддерживает thinking: при null поле не передаётся вовсе.
+    assert ('think' in bodies[0]) == (think is not None)
+    if think is not None:
+        assert bodies[0]['think'] is False

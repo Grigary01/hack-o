@@ -206,6 +206,10 @@ class OllamaQueryParser:
                         'num_ctx': self.config.ollama_num_ctx},
             'messages': query_messages(text, schema),
         }
+        if self.config.ollama_think is not None:
+            # Qwen3 по умолчанию сначала «рассуждает» текстом: это время и токены
+            # без пользы для извлечения полей. think=false — сразу ответ по схеме.
+            payload['think'] = self.config.ollama_think
 
         # Шаг 3. До двух попыток при невалидном контракте; отказ сети/сервиса — сразу.
         for attempt in range(2):
@@ -285,7 +289,7 @@ JSON-schema best-effort сохраняет необязательные поля
         # завершаются сразу: повторять исчерпанную квоту в цикле бессмысленно.
         for attempt in range(2):
             try:
-                response = self.client.post('https://api.groq.com/openai/v1/chat/completions',
+                response = self.client.post(self.config.cloud_base_url + '/chat/completions',
                     headers={'Authorization':'Bearer '+self.config.groq_api_key}, json=payload)
                 if response.is_error:
                     if response.status_code in (401, 403, 404, 408, 429) or response.status_code >= 500:

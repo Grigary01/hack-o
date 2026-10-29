@@ -20,6 +20,9 @@ class ModelConfig(BaseModel):
     temperature: float = Field(ge=0, le=2)
     max_output_tokens: int = Field(gt=0)
     ollama_num_ctx: int = Field(gt=0)
+    # Режим рассуждений у моделей с thinking (Qwen3): false — сразу JSON.
+    # null — поле не передаётся (модели без thinking, например Gemma 3).
+    ollama_think: bool | None = None
     parser_timeout_seconds: float = Field(gt=0)
     groq_reasoning_effort: Literal['low', 'medium', 'high']
     # hybrid: какая LLM разбирает то, что не поняли правила.
