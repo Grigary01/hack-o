@@ -15,7 +15,7 @@ CLOUD_LLM_MODEL=claude-opus-5
 GROQ_API_KEY=<ваш личный ключ>
 ```
 
-Docker: `compose.yaml` передаёт `PARSER_MODE`, `CLOUD_LLM_BASE_URL`, `CLOUD_LLM_MODEL`, `HYBRID_LLM`
+Docker: `docker-compose.yml` передаёт `PARSER_MODE`, `CLOUD_LLM_BASE_URL`, `CLOUD_LLM_MODEL`, `HYBRID_LLM`
 и `GROQ_API_KEY` из `.env` в сервис `backend`; после правки `.env` — `docker compose up -d`.
 Проверка: `curl localhost:8080/api/health` → `"parser_mode":"groq"`.
 

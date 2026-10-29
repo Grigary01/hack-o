@@ -7,7 +7,7 @@ docker compose up --build --detach --wait
 ```
 
 React: <http://localhost:8080>.
-API/Swagger: <http://localhost:8000/docs>. Готовность: <http://localhost:8000/api/health>.
+API/Swagger: <http://localhost:8080/docs>. Готовность: <http://localhost:8080/health>.
 
 Сервис `backend` собирается из `Dockerfile` и работает от пользователя `app`.
 Он сначала выполняет `scripts.migrate_db` и идемпотентный `scripts.seed_demo`,
@@ -49,11 +49,10 @@ docker compose exec backend python -m scripts.seed_demo --environment
 При необходимости скопируйте `.env.example` в `.env`. Compose передаёт
 выбранные настройки и ключи только backend; `.env` не попадает в образ.
 `DATABASE_URL` и `API_URL` из хостового `.env` не переопределяют контейнерные
-пути и адрес сервиса — они явно заданы в `compose.yaml`.
+пути и адрес сервиса — они явно заданы в `docker-compose.yml`.
 
 | Переменная | Значение по умолчанию | Назначение |
 |---|---|---|
-| `BACKEND_PORT` | `8000` | Порт API на localhost хоста |
 | `PARSER_MODE` | из YAML | Операционное переопределение: hybrid/offline/fixture/ollama/groq |
 | `REPLY_PARSER_MODE` | `rules` | Ответ отельера: rules/fixture/ollama/groq |
 | `DOCKER_OLLAMA_URL` | `http://host.docker.internal:11434` | Доступный из контейнера адрес Ollama |
@@ -89,7 +88,7 @@ UID 10001; `pip check`, целостность SQLite и контроль хос
 Имена моделей, контекст, температура, таймаут и лимит ответа находятся только в
 `config/models.yaml`; меняйте их там, затем пересобирайте образ.
 
-Вариант запуска один — корневой `compose.yaml` (`docker compose up --build`): `backend` (8000),
+Вариант запуска один — корневой `docker-compose.yml` (`docker compose up --build`): `backend` (8000),
 `web` — React (8080, проксирует `/api`, `/docs`, `/openapi.json`, `/health` в backend).
 Streamlit (`frontend/`, :8501) удалён 29.10.2026. Прежние `docker-compose.yml` + `docker-compose.web.yml` и `deploy/nginx.conf`
 удалены при привязке фронтенда к `development/adler-mvp`: они поднимали второй проект Compose со своим

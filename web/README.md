@@ -129,7 +129,7 @@ src/data/
 
 ```bash
 docker compose up --build
-# React: http://localhost:8080   API: http://localhost:8000/docs
+# React: http://localhost:8080   API/Swagger: http://localhost:8080/docs
 ```
 
 Сервис `web` собирается из `web/Dockerfile` (`VITE_DATA_MODE=api`), раздаёт статику через nginx

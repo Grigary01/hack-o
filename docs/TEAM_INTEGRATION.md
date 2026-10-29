@@ -7,14 +7,14 @@
 | `development/adler-mvp` (= `main`, `geo/viewshed`) | Geo: маршруты от контура здания, тихая сторона по фасадам, облегчённый поиск |
 | `ml/hybrid-parser` | Гибридный разбор запроса, промпт с `query_hint`, наборы оценки v2/v3 |
 | `grisha_hack` | Backend: миграции Alembic, жизненный цикл вопросов отельеру, разбор ответов, конфликты, Docker Compose |
-| `frontend/mvp` | React-интерфейс `web/`, сервис `web` в `compose.yaml` |
+| `frontend/mvp` | React-интерфейс `web/`, сервис `web` в `docker-compose.yml` |
 
 ## Как запускать
 
 ```bash
 # Backend + React
 docker compose up --build
-# React: http://localhost:8080, API: http://localhost:8000/docs
+# React: http://localhost:8080, API/Swagger: http://localhost:8080/docs
 ```
 
 Без Docker: backend по README, затем в `web/` — `npm ci && npm run dev:api`
@@ -42,7 +42,7 @@ docker compose up --build
 - Бэкенд, тесты, данные и docs взяты из `development/adler-mvp` без изменений, кроме
   `blackout_curtains` в реестре: алиас «blackout» и шаблон «шторы blackout» — иначе ответ
   «В номерах 301–305 есть шторы blackout» не разбирается, а «шторами» уходит в «не учтено».
-- Docker: один `compose.yaml` с сервисами `backend` и `web` (React, :8080);
+- Docker: один `docker-compose.yml` с сервисами `backend` и `web` (React, :8080);
   `docker-compose.yml`, `docker-compose.web.yml`, `deploy/nginx.conf` удалены.
 - React: `GET /api/hotelier/answers/{id}`, фильтры `GET /api/hotelier/questions?hotel_id=&status=`,
   `context` вопроса (почему открыт, ссылка «Вернуться к проверке»), ошибки `{code, detail}`
