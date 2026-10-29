@@ -170,15 +170,15 @@ def rank_variant(
     eligible = False if False in outcomes else None if None in outcomes else True
     warnings = []
     if any(criterion.status == 'estimated' for criterion in criteria):
-        warnings.append('Соответствие рассчитано по оценкам; входы и доступность на местности не подтверждены.')
+        warnings.append('Часть условий оценена по расчёту и на месте не проверялась.')
     if any(criterion.model_conflicts for criterion in criteria):
-        warnings.append('Ответ отельера расходится с расчётом по зданию; нужна перепроверка.')
+        warnings.append('Ответ отеля расходится с расчётом по зданию — нужна перепроверка.')
     if any(
         observation.evidence.source.type == 'hotelier_simulated'
         for criterion in criteria
         for observation in criterion.evidence
     ):
-        warnings.append('Использованы симулированные ответы: это демонстрация, не реальные свойства отеля.')
+        warnings.append('Учтены тестовые ответы отеля: в текущей версии это пример, а не подтверждённые свойства отеля.')
 
     # uncertainty здесь — 1 - coverage мягких пожеланий, НЕ вероятность ошибки.
     # Числовая сортировочная оценка 0 допустима, даже если отображаемый score=None.
