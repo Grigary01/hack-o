@@ -5,6 +5,7 @@ from app.schemas.search import ParseRequest, SearchRequest, SearchResponse
 from app.schemas.query import ParsedHotelQuery
 from app.ml.ranking import rank_hotels
 from app.ml.companions import expand
+from app.ml import needs
 from app.schemas.errors import ERROR_RESPONSES
 
 router = APIRouter(prefix='/api',tags=['search'], responses=ERROR_RESPONSES)
@@ -34,11 +35,15 @@ def search(payload: SearchRequest,request: Request,repo=Depends(repository)):
     parser = request.app.state.parser
     parsed = payload.parsed.model_copy(deep=True) if payload.parsed else parser.parse(payload.text)
     mode = 'structured_input' if payload.parsed else parser.mode
+    # Каждая часть запроса — потребность с цитатой; ничего не теряется молча.
+    parsed = needs.complete_needs(parsed)
     if parsed.region != 'Adler' or parsed.unknown_or_ambiguous or parsed.clarification_question:
         return SearchResponse(parsed=parsed,parser_mode=mode,status='needs_clarification',
                               ranking_method=payload.ranking_method,balance=payload.balance)
     if payload.include_simulated and not request.app.state.config.demo_mode:
         raise HTTPException(403,'Симуляция доступна только в DEMO_MODE')
+    # Расплывчатое («вид из окна») → все варианты или выбранный гостем; без нового разбора текста.
+    parsed = needs.resolve_concepts(parsed, payload.choices)
     # Расчётные спутники («вид на море» → вид из окон здания) добавляются до весов:
     # их тоже можно настроить слайдером. Повторный вызов с parsed их не дублирует.
     parsed = expand(parsed)

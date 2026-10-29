@@ -16,8 +16,10 @@ from app.features.service import resolve_feature
 from app.features.cross_check import model_disagreements
 from app.schemas.hotel import Hotel, Observation
 from app.schemas.query import ParsedHotelQuery, SoftPreference
-from app.schemas.search import CriterionResult, HotelSearchResult
+from app.schemas.search import CriterionResult, HotelSearchResult, NeedResult
 from app.ml.multicriteria import curve_match, aggregate, mark_dominated
+from app.ml.needs import any_of_groups
+from app.features.concepts import get_concept
 
 # Whitelist математических операций. Например, OPS['<='](319.8, 500) → True.
 # eval строк пользователя/модели здесь не нужен и не используется.
@@ -74,6 +76,80 @@ def describe(definition, state, fallback):
     return text + (f' Уверенность: {confidence}.' if confidence and detail else '')
 
 
+def short_value(definition, value) -> str:
+    """Значение для строки «ваша просьба → что нашли»: «≈ 320 м», «широкий вид»."""
+    if value is None:
+        return 'нет данных'
+    if definition.unit == 'm' and isinstance(value, (int, float)):
+        return f'≈ {round(value / 10) * 10:.0f} м'
+    if definition.unit == 'floor' and isinstance(value, (int, float)):
+        return f'с {value:g}-го этажа'
+    return str(definition.display(value))
+
+
+def _detail(criterion):
+    """Человеческое объяснение расчёта («Море: широкий вид из окон стороны З, с 3-го этажа»)."""
+    for observation in sorted(criterion.evidence, key=lambda o: o.collected_at, reverse=True):
+        details = observation.evidence.details
+        if isinstance(details, dict) and details.get('explanation') and observation.value == criterion.actual:
+            return details['explanation']
+    return None
+
+
+def need_results(parsed: ParsedHotelQuery, criteria: list[CriterionResult]) -> list[NeedResult]:
+    """Ответ по словам гостя: для каждой части запроса — что нашлось у отеля.
+
+    Строгое нарушение или нулевое совпадение — violated; нет данных — unknown;
+    частичное совпадение или часть признаков неизвестна — partial; непроверяемое — unchecked.
+    """
+    registry = get_registry()
+    by_key = {}
+    for criterion in criteria:  # строгие условия идут первыми — они важнее мягких
+        by_key.setdefault(criterion.feature_key, criterion)
+    results = []
+    for need in parsed.needs:
+        base = dict(quote=need.quote, kind=need.kind, features=list(need.features))
+        if need.kind == 'unsupported':
+            results.append(NeedResult(**base, outcome='unchecked', text=f'не проверяем: {need.topic}'))
+            continue
+        members = [by_key[k] for k in need.features if k in by_key]
+        if need.kind == 'any_of':
+            concept = get_concept(need.concept)
+            known = [c for c in members if c.actual is not None and c.match is not None]
+            if not known:
+                results.append(NeedResult(**base, outcome='unknown', text='нет данных'))
+                continue
+            best = max(known, key=lambda c: c.match)
+            option = next(o for o in concept.options if o.feature_key == best.feature_key)
+            outcome = 'matched' if best.match >= .75 else 'partial' if best.match > 0 else 'violated'
+            text = f'{option.label.lower()}: {short_value(registry.get(best.feature_key), best.actual)}'
+            results.append(NeedResult(**base, outcome=outcome, text=text, detail=_detail(best),
+                                      best_option=option.key, best_feature=best.feature_key))
+            continue
+        if not members:
+            results.append(NeedResult(**base, outcome='unknown', text='нет данных'))
+            continue
+        known = [c for c in members if c.actual is not None]
+        violated = any(c.outcome == 'violated' or (c.outcome == 'preference' and c.match == 0) for c in members)
+        if not known:
+            # Номер не подтверждён отельером, но есть расчёт по зданию («вид на море» → вид из окон).
+            companions = [by_key[c.feature_key] for k in need.features for c in registry.get(k).companions
+                          if c.feature_key in by_key and by_key[c.feature_key].actual is not None]
+            if companions:
+                best = max(companions, key=lambda c: c.match or 0)
+                results.append(NeedResult(**base, outcome='partial', detail=_detail(best), best_feature=best.feature_key,
+                    text=f'по расчёту: {short_value(registry.get(best.feature_key), best.actual)} · номер не подтверждён'))
+            else:
+                results.append(NeedResult(**base, outcome='unknown', text='нет данных'))
+            continue
+        weak = len(known) < len(members) or any(c.outcome == 'preference' and (c.match or 0) < .75 for c in known)
+        outcome = 'violated' if violated else 'partial' if weak else 'matched'
+        text = '; '.join(short_value(registry.get(c.feature_key), c.actual) for c in known)
+        results.append(NeedResult(**base, outcome=outcome, text=text, detail=_detail(known[0]),
+                                  best_feature=known[0].feature_key))
+    return results
+
+
 def rank_variant(
     hotel: Hotel,
     room_id: str | None,
@@ -90,6 +166,8 @@ def rank_variant(
     resolve_feature занимается датами/конфликтами/симуляцией; ranker получает
     только разрешённое текущее значение. История прикладывается к объяснению.
     """
+    any_groups = any_of_groups(parsed)
+    any_member = {key for keys in any_groups.values() for key in keys}
     criteria = []  # Подробные объяснения по каждому условию для frontend.
     outcomes = []  # True / False / None для строгих условий.
     total_weight = 0.  # Все активные мягкие пожелания, включая неизвестные.
@@ -132,12 +210,14 @@ def rank_variant(
             continue
         subject = hotel.id if preference.scope == 'hotel' else room_id
         state = resolve_feature(observations, subject, preference.feature_key, include_simulated, conflicts=conflicts)
-        total_weight += preference.importance
         match = None if state.value is None else soft_match(state.value, preference)
         matches[preference.feature_key] = match
-        if match is not None:
-            known_weight += preference.importance
-            score_sum += preference.importance * match
+        # Варианты «любой из» («вид из окна») учитываются ниже одной группой — лучшим вариантом.
+        if preference.feature_key not in any_member:
+            total_weight += preference.importance
+            if match is not None:
+                known_weight += preference.importance
+                score_sum += preference.importance * match
 
         definition = get_registry().get(preference.feature_key)
         model_reviews = model_disagreements(observations, hotel.id, subject, preference.feature_key, include_simulated, conflicts=conflicts) \
@@ -157,6 +237,18 @@ def rank_variant(
             evidence=state.observations,
             model_conflicts=model_reviews,
         ))
+
+    # Расплывчатое пожелание гостя: вес — один раз, польза — лучший известный вариант.
+    for concept, keys in any_groups.items():
+        prefs = [p for p in parsed.soft_preferences if p.feature_key in keys and p.importance > 0]
+        if not prefs:
+            continue
+        weight = max(p.importance for p in prefs)
+        known = [matches[p.feature_key] for p in prefs if matches.get(p.feature_key) is not None]
+        total_weight += weight
+        if known:
+            known_weight += weight
+            score_sum += weight * max(known)
 
     # Блок C. Считаем две отдельные величины; score без coverage вводил бы в заблуждение.
     # Пример: тишина high (вес .9), вид неизвестен (вес .6).
@@ -188,7 +280,8 @@ def rank_variant(
     if ranking_method == 'balanced_v2':
         # Группировка и слабая группа влияют только на ранжирование; hard result
         # не меняется. Интервал отражает отсутствие фактов, не вероятность.
-        summary = aggregate(parsed.soft_preferences,matches,balance)
+        summary = aggregate(parsed.soft_preferences,matches,balance,any_of=any_groups,
+                            labels={c: get_concept(c).label for c in any_groups})
         coverage,score = summary['coverage'],summary['score']
         ranking_score = summary['lower']
         interval = (round(summary['lower'],4),round(summary['upper'],4))
@@ -202,6 +295,7 @@ def rank_variant(
         ranking_score=round(ranking_score, 4),
         uncertainty=round(1 - coverage, 4),
         criteria=criteria,
+        needs=need_results(parsed, criteria),
         warnings=warnings,
         ranking_method=ranking_method,ranking_interval=interval,group_scores=group_scores,
     )

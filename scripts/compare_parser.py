@@ -51,6 +51,11 @@ def normalize(raw):
     # Разметка v2/v3 хранит неподдержанные темы в unknown_or_ambiguous; с появлением
     # поля unsupported считаем отмеченным условием и то, и другое.
     result['unknown_or_ambiguous'] = result['unknown_or_ambiguous'] + result.pop('unsupported', [])
+    # Расплывчатое пожелание, распознанное как понятие any_of («вид из окна» → любой из видов),
+    # — это тоже отмеченная неоднозначность: парсер её увидел, но не блокирует поиск, а ищет по вариантам.
+    result['unknown_or_ambiguous'] += [f"any_of:{n['concept']}" for n in result.get('needs', []) if n['kind'] == 'any_of']
+    # Потребности (needs) — разметка ответа гостю; в эталонах v2/v3 их пока нет, в сравнение не входят.
+    result.pop('needs', None)
     for key in ('hard_constraints', 'soft_preferences', 'unknown_or_ambiguous'):
         result[key] = sorted(result[key], key=token)
     return result
@@ -170,7 +175,8 @@ def summarize(cases):
     # Текст уточнения не сравниваем: правильных формулировок много.
     labelled = [c for c in cases if 'expected' in c]
     summary['ambiguity_accuracy'] = sum(bool(c['expected']['unknown_or_ambiguous'])
-                                        == bool((c['actual'] or {}).get('unknown_or_ambiguous') or (c['actual'] or {}).get('unsupported'))
+                                        == bool((c['actual'] or {}).get('unknown_or_ambiguous') or (c['actual'] or {}).get('unsupported')
+                                                 or any(n.get('kind') == 'any_of' for n in (c['actual'] or {}).get('needs', [])))
                                         for c in labelled)/len(labelled) if labelled else None
     return summary
 

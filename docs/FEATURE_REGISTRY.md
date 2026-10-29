@@ -24,6 +24,7 @@
 | night_open_places_500m | number count / hotel | night_amenities | 90 дней | .5 |
 | nearest_night_pharmacy_m | number m / hotel | night_amenities | 90 дней | .5 |
 | quiet_side_potential | low/medium/high / hotel | facade_noise | 90 дней | .6 |
+| view_obstruction_risk | low/medium/high / hotel | view_robustness | 180 дней | .5 |
 
 Горы — те же лучи viewshed, цель — видимый рельеф выше 300 м в пределах 20 км (главный хребет дальше
 не моделируется). Путь до пляжа — тот же маршрут, что для расстояния: набор высоты туда/обратно по
@@ -125,3 +126,10 @@ Ollama/Groq получают обновлённые описания, aliases и
 Расширение этим способом проверено `tests/test_feature_agent.py`. Для нового способа вычисления
 необходим реальный calculator, его ToolSpec и тесты; текст YAML не создаёт геоданные.
 Пример такого calculator — `viewshed` (выше): четыре YAML-ключа + один provider.
+
+## Расплывчатые пожелания (`app/features/concepts.yaml`)
+
+«Вид из окна» без уточнения — понятие `window_view`: поиск проверяет вид на море, горы и закат
+и берёт лучший; над выдачей гость может уточнить. Понятие описывается только в YAML
+(варианты — признаки отеля из этого реестра). `view_obstruction_risk` («без деревьев») выводится из
+сценариев viewshed без новых геоданных. Подробно: [NEEDS_SEARCH](NEEDS_SEARCH.md).

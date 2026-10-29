@@ -10,6 +10,8 @@ export function searchToQuery(params: SearchParams): string {
   if (params.checkOut) query.set('out', params.checkOut);
   query.set('guests', String(params.guests));
   if (params.skipUnclear) query.set('relax', '1');
+  const picks = Object.entries(params.choices ?? {}).filter(([, v]) => v && v !== 'any');
+  if (picks.length) query.set('pick', picks.map(([k, v]) => `${k}:${v}`).join(','));
   return query.toString();
 }
 
@@ -22,7 +24,20 @@ export function searchFromQuery(query: URLSearchParams, defaults: SearchParams):
     checkOut: query.get('out') ?? defaults.checkOut,
     guests: Number.isInteger(guests) && guests > 0 && guests <= 12 ? guests : defaults.guests,
     skipUnclear: query.get('relax') === '1',
+    choices: parsePicks(query.get('pick')),
   };
+}
+
+/** «window_view:sea,…» → { window_view: 'sea' }; мусор в адресе игнорируется. */
+function parsePicks(raw: string | null): Record<string, string> | undefined {
+  if (!raw) return undefined;
+  const picks = Object.fromEntries(
+    raw
+      .split(',')
+      .map((pair) => pair.split(':'))
+      .filter((p): p is [string, string] => p.length === 2 && /^[a-z_]+$/.test(p[0]!) && /^[a-z_]+$/.test(p[1]!)),
+  );
+  return Object.keys(picks).length ? picks : undefined;
 }
 
 export function hasSearch(query: URLSearchParams): boolean {

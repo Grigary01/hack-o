@@ -24,6 +24,8 @@ class FeatureAgent:
             ToolSpec('route_quality',self._compute),
             ToolSpec('night_amenities',self._compute),
             ToolSpec('facade_noise',self._compute),
+            # Выводится из сохранённых сценариев расчёта вида, без новых геоданных.
+            ToolSpec('view_robustness',self._derive_view_robustness),
             ToolSpec('hotelier',lambda p:ask_hotelier(repo,p.hotel_id,p.feature_key)),
         ],max_calls=max_calls)
 
@@ -31,6 +33,13 @@ class FeatureAgent:
         if self.geo is None:
             self.geo = GeoService()
         observation = self.geo.compute(self.repo.hotel(params.hotel_id),params.feature_key)
+        self.repo.save_observation(observation)
+        return {'observation_id':observation.id,'status':observation.status,
+                'snapshot_expired':observation.expires_at<=now_utc()}
+
+    def _derive_view_robustness(self,params):
+        from app.features.view_robustness import compute
+        observation = compute(self.repo, params.hotel_id)
         self.repo.save_observation(observation)
         return {'observation_id':observation.id,'status':observation.status,
                 'snapshot_expired':observation.expires_at<=now_utc()}

@@ -2,6 +2,7 @@ import { lazy, Suspense, useMemo, useState } from 'react';
 import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { GuestLayout } from '../components/layout/GuestLayout';
 import { Filters } from '../components/results/Filters';
+import { RefinementBar } from '../components/results/RefinementBar';
 import { DEFAULT_FILTERS, type FilterState } from '../components/results/filterState';
 import { HotelCard } from '../components/results/HotelCard';
 import type { MapPin } from '../components/SchematicMap';
@@ -116,6 +117,9 @@ export function ResultsPage() {
             <Link to={`/?${searchToQuery({ ...params, skipUnclear: false })}`}>изменить запрос</Link>.
           </p>
         </Notice>
+      )}
+      {result && result.refinements.length > 0 && (
+        <RefinementBar refinements={result.refinements} params={params} busy={search.isFetching} />
       )}
       {result && result.ignoredTerms.length > 0 && (
         <Notice tone="warning" className={styles.notice}>

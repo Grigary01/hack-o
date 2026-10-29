@@ -10,6 +10,7 @@ import type {
   HotelierRoom,
   PublishConflict,
   PublishResult,
+  Refinement,
   SearchParams,
   SearchResult,
 } from '../types';
@@ -71,31 +72,58 @@ export function unclearItems(parsed: SearchResponseDto['parsed']): string[] {
   return parsed.clarification_question ? [parsed.clarification_question] : [];
 }
 
+function choicesKey(choices: Record<string, string> | undefined): string {
+  return Object.entries(choices ?? {})
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([k, v]) => `${k}=${v}`)
+    .join(',');
+}
+
 async function runSearch(params: SearchParams, fresh = false): Promise<SearchOutcome> {
   const text = params.text.trim();
-  const key = `${text}|${params.skipUnclear ? 'relax' : ''}`;
+  const refine = choicesKey(params.choices);
+  const key = `${text}|${params.skipUnclear ? 'relax' : ''}|${refine}`;
   const cached = searchCache.get(key);
   if (!fresh && cached && Date.now() - cached.at < SEARCH_TTL_MS) return cached.promise;
   const promise = (async (): Promise<SearchOutcome> => {
     const health = await loadHealth();
     // Демо-ответы отельера участвуют в подборе только в DEMO_MODE бэкенда и помечаются в источниках.
     const options = { include_simulated: health.demo_mode, ranking_method: 'balanced_v2' as const };
-    if (!params.skipUnclear) {
+    if (!params.skipUnclear && !refine) {
       const body: SearchRequestDto = { text, ...options };
       return { ...(await post<SearchResponseDto>('/search', body)), skipped: [] };
     }
-    // Гость согласился искать без непроверяемых условий. Берём уже полученный разбор (без
-    // повторного вызова LLM), убираем то, что система проверить не может, и ищем по остальному.
-    const first = await runSearch({ ...params, skipUnclear: false });
-    if (first.status !== 'needs_clarification' || first.parsed.region !== 'Adler') return first;
-    const parsed = { ...first.parsed, unknown_or_ambiguous: [], clarification_question: null };
-    const second = await post<SearchResponseDto>('/search', { parsed, ...options });
-    return { ...second, skipped: unclearItems(first.parsed) };
+    // Уточнения и «искать без условия» не разбирают текст заново: берём уже полученный
+    // разбор (из кэша, без повторного вызова LLM) и отправляем его как parsed.
+    const first = await runSearch({ ...params, skipUnclear: false, choices: undefined });
+    const relax = Boolean(params.skipUnclear) && first.status === 'needs_clarification' && first.parsed.region === 'Adler';
+    if (first.status === 'needs_clarification' && !relax) return first;
+    // Уточнять можно только понятия, которые есть в запросе (адрес мог устареть).
+    const concepts = new Set((first.parsed.needs ?? []).filter((n) => n.kind === 'any_of').map((n) => n.concept));
+    const choices = Object.fromEntries(Object.entries(params.choices ?? {}).filter(([concept]) => concepts.has(concept)));
+    if (!relax && !Object.keys(choices).length) return first;
+    const parsed = relax ? { ...first.parsed, unknown_or_ambiguous: [], clarification_question: null } : first.parsed;
+    const body: SearchRequestDto = { parsed, ...options, ...(Object.keys(choices).length ? { choices } : {}) };
+    const response = await post<SearchResponseDto>('/search', body);
+    return { ...response, skipped: relax ? unclearItems(first.parsed) : [] };
   })();
   searchCache.set(key, { at: Date.now(), promise });
-  if (searchCache.size > 6) searchCache.delete(searchCache.keys().next().value!);
+  if (searchCache.size > 8) searchCache.delete(searchCache.keys().next().value!);
   promise.catch(() => searchCache.delete(key));
   return promise;
+}
+
+/** Кнопки «Какой вид важнее?» над выдачей — по расплывчатым пожеланиям из запроса. */
+export function refinementsOf(parsed: SearchResponseDto['parsed']): Refinement[] {
+  return (parsed.needs ?? [])
+    .filter((n) => n.kind === 'any_of' && n.concept && n.options.length > 1)
+    .map((n) => ({
+      concept: n.concept!,
+      quote: n.quote,
+      question: n.question ?? `Уточнить «${n.quote}»`,
+      options: n.options.map((o) => ({ key: o.key, label: o.label })),
+      chosen: n.chosen,
+    }));
 }
 
 function mapAnswer(dto: AnswerDto): HotelierAnswer {
@@ -215,6 +243,7 @@ export function createApiSource(): DataSource {
         notes,
         canSearchAnyway: response.status === 'needs_clarification' && response.parsed.region === 'Adler',
         skipped: response.skipped,
+        refinements: response.status === 'ok' ? refinementsOf(response.parsed) : [],
       };
       return result;
     },
@@ -249,6 +278,7 @@ export function createApiSource(): DataSource {
         price: null,
         roomHint: null,
         criteria: [],
+        needRows: [],
         evidence: [],
         warnings: [],
         pendingQuestion: false,

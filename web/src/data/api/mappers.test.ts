@@ -165,3 +165,44 @@ it('темы без поддержки видны как «не учтено», 
   const chips = requestChips({ ...parsed, ignored_terms: [], unsupported: ['цена'] }, registry);
   expect(chips).toContainEqual({ label: 'Не учтено: цена', kind: 'unsupported' });
 });
+
+it('ответ строится по словам гостя: строка на каждую часть запроса', async () => {
+  const { mapNeedRows } = await import('./mappers');
+  const rows = mapNeedRows(
+    [
+      { quote: 'вид из окна', kind: 'any_of', outcome: 'matched', text: 'на море: широкий вид', detail: 'Море: широкий вид из окон стороны З', features: ['sea_view_potential'], best_option: 'sea', best_feature: 'sea_view_potential' },
+      { quote: 'дешево', kind: 'unsupported', outcome: 'unchecked', text: 'не проверяем: цена', detail: null, features: [], best_option: null, best_feature: null },
+    ],
+    new Set(),
+    registry,
+  );
+  expect(rows.map((r) => [r.text, r.state])).toEqual([
+    ['Вид из окна — на море: широкий вид', 'met'],
+    ['Дешево — не проверяем: цена', 'unchecked'],
+  ]);
+});
+
+it('чипы запроса — части запроса гостя, «любой» для расплывчатого вида', () => {
+  const chips = requestChips(
+    {
+      ...parsed,
+      ignored_terms: [],
+      needs: [
+        { quote: 'вид из окна', kind: 'any_of', features: [], concept: 'window_view', topic: null, options: [], chosen: null, question: 'Какой вид важнее?' },
+        { quote: 'дешево', kind: 'unsupported', features: [], concept: null, topic: 'цена', options: [], chosen: null, question: null },
+      ],
+    },
+    registry,
+  );
+  expect(chips).toEqual([
+    { label: 'Вид из окна · любой', kind: 'preference' },
+    { label: 'Не учтено: цена', kind: 'unsupported' },
+  ]);
+});
+
+it('цитату капсом показываем обычным регистром', async () => {
+  const { prettyQuote } = await import('./mappers');
+  expect(prettyQuote('ТИХО НОЧЬЮ')).toBe('Тихо ночью');
+  expect(prettyQuote('вид из окна')).toBe('Вид из окна');
+  expect(prettyQuote('WiFi')).toBe('WiFi');
+});

@@ -84,6 +84,31 @@ export interface SoftPreferenceDto {
   derived_from: string | null;
 }
 
+/** Часть запроса гостя с цитатой (app/schemas/query.py:Need). */
+export interface NeedDto {
+  quote: string;
+  kind: 'feature' | 'any_of' | 'unsupported';
+  features: string[];
+  concept: string | null;
+  topic: string | null;
+  /** Варианты уточнения расплывчатого пожелания — заполняет backend. */
+  options: { key: string; label: string; feature_key: string }[];
+  chosen: string | null;
+  question: string | null;
+}
+
+/** Что нашлось у отеля по одной части запроса (app/schemas/search.py:NeedResult). */
+export interface NeedResultDto {
+  quote: string;
+  kind: NeedDto['kind'];
+  outcome: 'matched' | 'partial' | 'unknown' | 'violated' | 'unchecked';
+  text: string;
+  detail: string | null;
+  features: string[];
+  best_option: string | null;
+  best_feature: string | null;
+}
+
 export interface ParsedQueryDto {
   region: string;
   hard_constraints: HardConstraintDto[];
@@ -94,6 +119,7 @@ export interface ParsedQueryDto {
   ignored_terms?: string[];
   /** Темы без поддержки (цена, бассейн…): поиск идёт без них, гостю — «не учтено». */
   unsupported?: string[];
+  needs?: NeedDto[];
 }
 
 export interface CriterionDto {
@@ -120,12 +146,15 @@ export interface HotelSearchResultDto {
   criteria: CriterionDto[];
   warnings: string[];
   pending_hotelier_question_ids: string[];
+  needs?: NeedResultDto[];
 }
 
 export interface SearchRequestDto {
   /** Ровно одно из двух: text (разберёт парсер) или parsed (уже разобранный запрос). */
   text?: string;
   parsed?: ParsedQueryDto;
+  /** Уточнение расплывчатого пожелания без нового разбора: {"window_view": "sea"}. */
+  choices?: Record<string, string>;
   include_simulated: boolean;
   ranking_method: 'weighted_v1' | 'balanced_v2';
 }

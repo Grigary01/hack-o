@@ -215,6 +215,7 @@ function summarize(hotel: MockHotel, w: Wishes, state: MockState): HotelSummary 
     price: money(hotel.pricePerNight),
     roomHint: w.blackout && positive ? roomTitle(positive.category) : null,
     criteria,
+    needRows: [],
     evidence: evidenceFor(hotel, w),
     warnings: [],
     pendingQuestion: state.questions.some((q) => q.hotelId === hotel.id && q.status === 'open'),
@@ -355,6 +356,7 @@ export function createMockSource(): DataSource & { resetDemo(): Promise<void> } 
         // Демо-разбор не блокирует поиск: непонятое уходит в «Не учтено».
         canSearchAnyway: false,
         skipped: [],
+        refinements: [],
       };
     },
 
