@@ -14,7 +14,7 @@ walking_distance_to_beach_m:
   companions:
     - {feature_key: beach_route_busy_crossings, desired: near, weight_factor: 0.6}
     - {feature_key: beach_route_climb_m, desired: near, weight_factor: 0.4}
-  query_patterns: ['пляж\w*', '\bмор(е|я|ю|ем)\b', 'перв\w* (берегов\w* )?лини\w*', 'набережн\w*', 'берег\w*']
+  query_patterns: ['пляж\w*', '\bмор(е|я|ю|ем)\b', 'перв\w* (берегов\w* )?лини\w*', 'набережн\w*', 'берег\w*', '\bbeach(es)?\b', '\bseaside\b', '\bsea\b']
   query_desired: near
 quietness_proxy:
   label: Потенциал тишины снаружи
@@ -28,8 +28,9 @@ quietness_proxy:
   ttl_days: 90
   default_weight: 0.9
   aliases: [тихо, тишина, тихий]
-  query_patterns: ['тих\w*', 'тишин\w*', 'спокойн\w*', 'высп\w*', 'безшумн\w*', 'бесшумн\w*']
-  query_negative_patterns: ['шумн\w*', 'громк\w*', 'оживл[её]нн\w*', '\bшум(а|ом|у|е)?\b']
+  # Окончания перечислены явно: «тихоокеанский» — не про тишину.
+  query_patterns: ['\bтих(ий|ая|ое|ие|ого|ой|ом|им|ую|их|ими|о|ую|ее|ее|ше|онько)\b', 'тишин\w*', 'спокойн\w*', 'высп\w*', 'безшумн\w*', 'бесшумн\w*', '\bquiet\w*', '\bpeaceful\b', '\bsilent\b']
+  query_negative_patterns: ['шумн\w*', 'громк\w*', 'оживл[её]нн\w*', '\bшум(а|ом|у|е)?\b', '\bnoisy\b', '\blively\b']
   query_desired: high
   ordinal: true
   choice_labels: {low: низкий, medium: средний, high: высокий}
@@ -48,7 +49,8 @@ nightlife_distance_m:
   default_weight: 0.7
   aliases: [не рядом с барами, подальше от клубов]
   scale: 500
-  query_patterns: ['\bбар(ы|ов|ам|ами|ах|а|е|у)?\b', 'клуб\w*', 'ночн\w* жизн\w*', 'тусов\w*', 'дискотек\w*', 'паб\w*']
+  # «клубника», «клубный пиджак», «барбекю» — не бары: только формы самих слов.
+  query_patterns: ['\bбар(ы|ов|ам|ами|ах|а|е|у)?\b', '\bклуб(ы|ов|ам|ами|ах|а|е|у|ом)?\b', 'ночн\w* клуб\w*', 'ночн\w* жизн\w*', 'тусов\w*', 'дискотек\w*', '\bпаб(ы|ов|а|е|ам|ами|ах)?\b', '\bbars?\b', '\bpubs?\b', '\b(night)?clubs?\b', '\bnightlife\b']
   query_desired: near
 sea_view:
   label: Вид на море из номера
@@ -62,7 +64,7 @@ sea_view:
   default_weight: 0.6
   aliases: [вид на море, море из окна]
   question: В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.
-  query_patterns: ['вид\w* на мор\w*', 'мор\w* из окн\w*', 'видн\w* мор\w*', 'окн\w* на мор\w*', 'панорам\w* мор\w*', 'морск\w* вид\w*', 'видовой']
+  query_patterns: ['вид\w* на мор\w*', 'мор\w* из окн\w*', 'видн\w* мор\w*', 'окн\w* на мор\w*', 'панорам\w* мор\w*', 'морск\w* вид\w*', 'видовой', '\b(sea|ocean) views?\b', '\bview (of|on) the (sea|ocean)\b']
   query_desired: true
   companions:
     - {feature_key: sea_view_potential, desired_if_true: wide}
@@ -93,7 +95,8 @@ sunset_view:
   default_weight: 0.6
   aliases: [вид на закат, закат из окна]
   question: Из каких конкретно номеров виден закат? Для сложных условий по месяцам нужна ручная проверка.
-  query_patterns: ['закат\w*', 'заход\w* солнц\w*']
+  # «закатать рукава» — не закат.
+  query_patterns: ['\bзакат(ы|а|ом|е|ов|ами|ах|у)?\b', 'заход\w* солнц\w*', '\bsunsets?\b']
   query_desired: true
   companions:
     - {feature_key: sunset_view_potential, desired_if_true: year_round}
@@ -171,7 +174,8 @@ aircraft_path_distance_m:
   default_weight: 0.7
   aliases: [подальше от самолётов, далеко от аэропорта]
   scale: 1000
-  query_patterns: ['самол[её]т\w*', 'авиашум\w*', 'аэропорт\w*', 'взл[её]т\w*', 'авиаци\w*']
+  # «игрушечный самолётик» — не про шум.
+  query_patterns: ['\bсамол[её]т(ы|а|ов|ам|ами|ах|е|у|ом)?\b', 'авиашум\w*', 'аэропорт\w*', '\bвзл[её]т(ы|а|ов|е|ом|ами)?\b', 'авиаци\w*', '\b(air)?planes?\b', '\baircraft\b', '\bairport\b']
   query_desired: far
 beach_route_climb_m:
   label: Подъёмы по пути к пляжу (расчёт)
@@ -230,7 +234,8 @@ nearest_night_pharmacy_m:
   default_weight: 0.5
   aliases: [аптека рядом]
   scale: 500
-  query_patterns: ['аптек\w*', 'лекарств\w*']
+  # «аптекарь» — не аптека.
+  query_patterns: ['\bаптек(а|и|е|у|ой|ам|ами|ах)?\b', 'лекарств\w*', '\bpharmac(y|ies)\b']
   query_desired: near
 mountain_view_potential:
   label: Вид на горы из окон (расчёт)
@@ -246,7 +251,7 @@ mountain_view_potential:
   aliases: [вид на горы]
   ordinal: true
   choice_labels: {none: гор не видно, partial: горы в просвете, wide: широкий вид}
-  query_patterns: ['вид\w* на гор(ы|у|ах)\b', '\bгор(ы|ах|ам)\b', 'горн\w* (вид|пейзаж|панорам)\w*', 'панорам\w* гор\w*']
+  query_patterns: ['вид\w* на гор(ы|у|ах)\b', '\bгор(ы|ах|ам)\b', 'горн\w* (вид|пейзаж|панорам)\w*', 'панорам\w* гор\w*', '\bmountain views?\b', '\bmountains\b']
   query_desired: wide
 mountain_view_min_floor:
   label: Горы видны с этажа (расчёт)

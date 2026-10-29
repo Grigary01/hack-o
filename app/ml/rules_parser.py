@@ -19,11 +19,14 @@ from app.schemas.query import ParsedHotelQuery, HardConstraint, SoftPreference, 
 
 WALK_M_PER_MINUTE = 80  # ~4.8 км/ч; «5 минут пешком» → 400 м
 WORD = re.compile(r'[a-zа-я0-9]+(?:[.,][0-9]+)?')
-NEGATIONS = {'не', 'без', 'нет', 'никаких', 'никакого', 'никакой', 'ни'}
+# Грубые формы тоже отрицание: «нахуй бары» — бары не нужны. Английские — для простых запросов без LLM.
+NEGATIONS = {'не', 'без', 'нет', 'никаких', 'никакого', 'никакой', 'ни', 'нахуй', 'нахер', 'нафиг', 'нафик', 'долой',
+             'no', 'not', 'without', 'never'}
 # «не» перед этими словами — оператор («не дальше 500 м»), а не отрицание желания.
 OPERATOR_AFTER_NE = re.compile(r'^(дальше|далее|более|больше|ближе|менее|меньше|выше|ниже)$')
-NEAR_WORDS = re.compile(r'^(рядом|поближе|ближе|недалеко|близко|возле|около|вблизи|шаговой|самого|берегу|у|к|до)$')
-FAR_WORDS = re.compile(r'^(подальше|далеко|вдали|вдалеке|дальше|далее)$')
+NEAR_WORDS = re.compile(r'^(рядом|поближе|ближе|недалеко|близко|возле|около|вблизи|шаговой|самого|берегу|у|к|до|'
+                        r'near|nearby|close|next)$')
+FAR_WORDS = re.compile(r'^(подальше|далеко|вдали|вдалеке|дальше|далее|far|away)$')
 AFTER_DIRECTION = re.compile(r'^\s*[—-]?\s*(не\s+)?(подальше|далеко|поближе|рядом|близко|недалеко)\b')
 HARD_MARKERS = re.compile(r'\b(обязател\w*|только|строго|непременно|точно|гарантированно|исключительно|никак\w*)\b')
 SOFT_MARKERS = re.compile(r'\b(желательно|хотелось бы|по возможности|неплохо бы|было бы|можно|не обязател\w*|необязател\w*|если получится)\b')
@@ -48,10 +51,37 @@ FILLER = set('''хочу хотим хотелось хотела хотел н�
 жить пожить остановиться адлер адлере адлера сочи район районе района место места месте где который которая
 которые чтоб тоже также просто всего более менее минимум максимум ровно примерно около пешком минут минуты метров
 метра километр километра километре километров дорога дороги путь пути нас мне меня нам себя хорошо хороший хорошая
-будет было бы лучше самый самая самое так этот эта это'''.split())
+будет было бы лучше самый самая самое так этот эта это хачу хочю хачю
+hotel hotels room rooms with the and for want need would like please very from that this some just'''.split())
+LONGEST_TERM = 30  # длиннее — мусор вроде «аааа…», в «не учтено» не показываем
+MAX_DISTANCE_M = 50_000  # дальше 50 км — уже не прибрежный Адлер, число скорее ошибочно
+
+# Модерация: такие слова не показываются гостю в «не учтено». Запрещённые темы — вежливый отказ
+# в этом условии (unknown_or_ambiguous), остальной запрос не разбирается молча.
+PROFANITY = re.compile(
+    r'\b(ху[йеёяию]\w*|нахуй\w*|похуй\w*|пизд\w*|(по|за|на|от|вы|у|при|раз)?еб(а|у|и|л|ё)\w*|'
+    r'бля\w*|сук[аи]\b|сучк\w*|мудак\w*|мудил\w*|пидор\w*|пидар\w*|гандон\w*|(по|за|на|от|вы|пере)?трах\w*|дерьм\w*|говн\w*|'
+    r'жоп\w*|залуп\w*|нахер\w*|fuck\w*|shit\w*|bitch\w*)')
+BLOCKED = {
+    'sex': (r'\b(проститут\w*|шлюх\w*|эскорт\w*|бордел\w*|интим-?услуг\w*|секс(а|ом|у)?\b|sex\b|escort\w*|prostitut\w*)',
+            'Интим-услуги и подобные условия в подборе не участвуют'),
+    'drugs': (r'\b(травк\w*|закладк\w*|нарко\w*|кокаин\w*|героин\w*|мефедрон\w*|гашиш\w*|марихуан\w*|спайс\w*|'
+              r'weed\b|drugs?\b|cocaine\b)',
+              'Поиск запрещённых веществ не поддерживается'),
+    'documents': (r'без паспорт\w*|не провер\w* паспорт\w*|без документ\w*|без регистрац\w*',
+                  'Заселение без документов не поддерживается: отели обязаны их проверять'),
+    'discrimination': (r'\b(без|кроме|только для|не для|никаких|чтобы не было|запрет\w*)\s+(\w+\s+)?'
+                       r'(кавказц|славян|армян|грузин|чечен|дагестан|узбек|таджик|киргиз|евре|цыган|азиат|'
+                       r'мусульман|христиан|негр|черн(ых|ые|ым)\b|иностран|приезж)\w*|'
+                       r'\b(чурк\w*|хачи\b|хачей\b|хачам\b|жид(ы|ов|ам|ами|ах|а|у|ом)?\b|негр(ы|ов|ам|ами|ах|а|у|ом)?\b|nigg\w*)',
+                       'Подбор по национальности, вере или происхождению гостей не выполняется'),
+}
+NEGATIVE_NUMBER = re.compile(r'(?<!\w)[-−–]\s?\d+(?:[.,]\d+)?\s*(км|километр\w*|метр\w*|м\b)')
+SCIENTIFIC_NUMBER = re.compile(r'\d[eе][+-]?\d')
 # Запятая/точка внутри числа («1,2 км») фразу не делят.
 CLAUSE_SPLIT = re.compile(r'(?:[;!?\n]|(?<!\d)[,.]|[,.](?!\d))+|\s(?:но|однако|зато|а также)\s')
-NUMBER = re.compile(r'(\d+(?:[.,]\d+)?)\s*(км|километр\w*|метр\w*|м\b|мин\w*)|(полкилометра|километр[еау]?\b|полчаса)')
+# Число не должно быть хвостом другого токена: «1e9 м» — не «9 м», «-500 м» — не «500 м».
+NUMBER = re.compile(r'(?<![\w.,\-−–])(\d+(?:[.,]\d+)?)\s*(км|километр\w*|метр\w*|м\b|мин\w*)|(полкилометра|километр[еау]?\b|полчаса)')
 RANGE = re.compile(r'(между|от)\s+(\d+(?:[.,]\d+)?)\s*(км|м|метр\w*|километр\w*)?\s+(и|до)\s+(\d+(?:[.,]\d+)?)\s*(км|километр\w*|метр\w*|м\b)')
 OPERATORS = [  # проверяются на тексте между предыдущим и текущим числом; длинные формы раньше
     (re.compile(r'не\s+(дальше|далее|более|больше)|максимум|в пределах|не превыша\w*|\bдо\s*$'), '<='),
@@ -84,7 +114,7 @@ UNSUPPORTED = {
     'магазины и кафе рядом днём': r'магазин\w*|супермаркет\w*|\bкафе\b|ресторан\w*|столов\w*',
     'расстояние по прямой': r'по прямой',
 }
-GENERAL = re.compile(r'отел\w*|гостиниц\w*|гостев\w*|покажи|подбери|найди|ищу|вариант\w*|жиль\w*|номер\w*|адлер\w*')
+GENERAL = re.compile(r'отел\w*|гостиниц\w*|гостев\w*|покажи|подбери|найди|ищу|вариант\w*|жиль\w*|номер\w*|адлер\w*|\bhotels?\b')
 
 
 def normalize(text):
@@ -111,6 +141,13 @@ class RulesQueryParser:
         if OTHER_REGIONS.search(lowered):
             region = 'other'
             unknown.append('Поддерживается только прибрежный Адлер')
+        for pattern, message in BLOCKED.values():
+            if re.search(pattern, lowered) and message not in unknown:
+                unknown.append(message)
+        if NEGATIVE_NUMBER.search(lowered):
+            unknown.append('Отрицательное расстояние не имеет смысла — уточните число')
+        if SCIENTIFIC_NUMBER.search(lowered):
+            unknown.append('Число вида 1e9 не разбираем — напишите его цифрами')
         mentions = self._find_mentions(lowered)
         sunset = any(m['key'] == 'sunset_view' for m in mentions)
         for topic, pattern in UNSUPPORTED.items():
@@ -147,12 +184,14 @@ class RulesQueryParser:
     def _ignored_terms(self, lowered, mentions):
         """Содержательные слова вне найденных характеристик, модификаторов и неподдерживаемых тем."""
         covered = [(m['start'], m['end']) for m in mentions]
-        for pattern in list(UNSUPPORTED.values()) + [OTHER_REGIONS.pattern, NUMBER.pattern, RANGE.pattern]:
+        hidden = list(UNSUPPORTED.values()) + [p for p, _ in BLOCKED.values()] + [PROFANITY.pattern]
+        for pattern in hidden + [OTHER_REGIONS.pattern, NUMBER.pattern, RANGE.pattern]:
             covered += [(m.start(), m.end()) for m in re.finditer(pattern, lowered)]
         result = []
         for m in WORD.finditer(lowered):
             word = m.group()
-            if (len(word) < 4 or word.isdigit() or word in FILLER or word in NEGATIONS or NEAR_WORDS.match(word)
+            if (len(word) < 4 or len(word) > LONGEST_TERM or word.isdigit() or word in FILLER or word in NEGATIONS
+                    or NEAR_WORDS.match(word)
                     or FAR_WORDS.match(word) or HARD_MARKERS.match(word) or SOFT_MARKERS.match(word)
                     or any(a <= m.start() < b for a, b in covered) or word in result):
                 continue
@@ -254,7 +293,7 @@ class RulesQueryParser:
         span = RANGE.search(clause)
         if span:
             unit = span[6]
-            low, high = to_m(span[2], span[3] or unit), to_m(span[5], unit)
+            low, high = sorted((to_m(span[2], span[3] or unit), to_m(span[5], unit)))
             return [HardConstraint(feature_key=key, operator='>=', value=clean(low), unit=definition.unit,
                                    scope=definition.scope),
                     HardConstraint(feature_key=key, operator='<=', value=clean(high), unit=definition.unit,
@@ -271,6 +310,10 @@ class RulesQueryParser:
                     unknown.append('Время в пути без «пешком» неоднозначно')
                     return [None]
                 value *= WALK_M_PER_MINUTE
+            if value > MAX_DISTANCE_M:
+                km = f'{value / 1000:,.0f}'.replace(',', ' ')
+                unknown.append(f'Расстояние {km} км выходит за район поиска — уточните число')
+                return [None]
             prefix = clause[previous_end:match.start()]
             previous_end = match.end()
             operator = next((op for pattern, op in OPERATORS if pattern.search(prefix[-40:])), None)
@@ -280,6 +323,9 @@ class RulesQueryParser:
             if operator:
                 result.append(HardConstraint(feature_key=key, operator=operator, value=clean(value),
                                              unit=definition.unit, scope=definition.scope))
+            elif not result and value == 0:
+                # «0 метров до пляжа» — просто «как можно ближе»; кривая с нулевым допуском невозможна.
+                result.append(SoftPreference(feature_key=key, desired='near', scope=definition.scope))
             elif not result:
                 # Число без оператора — пожелание, а не запрет: идеально до N, к 2N уже неудобно.
                 result.append(SoftPreference(feature_key=key, desired='near', scope=definition.scope,
