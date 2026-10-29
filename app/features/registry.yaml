@@ -1,6 +1,6 @@
 walking_distance_to_beach_m:
   label: Путь до пляжа
-  description: Длина пути по walking graph OSM с оценочными отрезками привязки. Доступ входов требует проверки.
+  description: Пешеходный маршрут по карте до ближайшего пляжа. Входы на пляж на месте не проверялись.
   type: number
   unit: m
   scope: hotel
@@ -17,8 +17,8 @@ walking_distance_to_beach_m:
   query_patterns: ['пляж\w*', '\bмор(е|я|ю|ем)\b', 'перв\w* (берегов\w* )?лини\w*', 'набережн\w*', 'берег\w*']
   query_desired: near
 quietness_proxy:
-  label: Потенциал тишины снаружи
-  description: Эвристика дорог, железной дороги и ночных заведений. Не дБ и не тишина в номере.
+  label: Тишина вокруг отеля
+  description: Оценка по близости дорог, железной дороги и ночных заведений. Это не замер шума в номере.
   type: category
   choices: [low, medium, high]
   unit: null
@@ -37,8 +37,8 @@ quietness_proxy:
   companions:
     - {feature_key: aircraft_path_distance_m, desired: far, weight_factor: 0.8}
 nightlife_distance_m:
-  label: До отмеченного в OSM бара или клуба по прямой
-  description: До ближайшего известного заведения; неполнота OSM не доказывает отсутствие баров.
+  label: До ближайшего бара или клуба
+  description: По прямой до ближайшего бара или клуба, отмеченного на карте. На карте отмечены не все заведения.
   type: number
   unit: m
   scope: hotel
@@ -52,7 +52,7 @@ nightlife_distance_m:
   query_desired: near
 sea_view:
   label: Вид на море из номера
-  description: Утверждение отельера о конкретных номерах, независимо не проверено.
+  description: Со слов отеля о конкретных номерах, независимо не проверено.
   type: boolean
   unit: null
   scope: room
@@ -69,7 +69,7 @@ sea_view:
   model_check: {potential: sea_view_potential, none_value: none, min_floor: sea_view_min_floor}
 soundproofing:
   label: Шумоизоляция номера
-  description: Утверждение отельера, не акустическое измерение.
+  description: Со слов отеля; это не акустический замер.
   type: boolean
   unit: null
   scope: room
@@ -83,7 +83,7 @@ soundproofing:
   query_desired: true
 sunset_view:
   label: Вид на закат из номера
-  description: Утверждение отельера; модель рельефа и ориентация окон пока не рассчитываются.
+  description: Со слов отеля о конкретных номерах, независимо не проверено.
   type: boolean
   unit: null
   scope: room
@@ -100,7 +100,7 @@ sunset_view:
   model_check: {potential: sunset_view_potential, none_value: none, min_floor: sunset_view_min_floor}
 sea_view_potential:
   label: Вид на море из окон (расчёт)
-  description: Видимость моря по рельефу Copernicus и высотам зданий OSM для точек фасада по этажам. Где именно окна, не проверено; деревья не учтены.
+  description: Видно ли море с разных этажей с учётом рельефа и высоты соседних зданий. Где именно окна конкретных номеров, не проверено.
   type: category
   choices: [none, partial, wide]
   unit: null
@@ -113,7 +113,7 @@ sea_view_potential:
   choice_labels: {none: моря не видно, partial: море в просвете, wide: широкий вид}
 sea_view_min_floor:
   label: Море видно с этажа (расчёт)
-  description: Самый низкий этаж, с которого на каком-либо фасаде открыто ≥3% обзора окна на море. Этажность из OSM или допущение.
+  description: Самый низкий этаж, с которого видно море хотя бы с одной стороны здания. Этажность — по карте или оценка.
   type: number
   unit: floor
   scope: hotel
@@ -124,7 +124,7 @@ sea_view_min_floor:
   scale: 3
 sunset_view_potential:
   label: Закат из окон (расчёт)
-  description: Видно ли низкое солнце (ниже 3°) по месяцам с учётом горизонта по рельефу и домам. Сезонно — меньше 10 месяцев.
+  description: Видно ли заходящее солнце из окон по месяцам с учётом гор и домов на горизонте. «По сезонам» — меньше 10 месяцев в году.
   type: category
   choices: [none, seasonal, year_round]
   unit: null
@@ -147,8 +147,8 @@ sunset_view_min_floor:
   aliases: [с какого этажа закат]
   scale: 3
 aircraft_noise_exposure:
-  label: Воздействие авиашума (расчёт)
-  description: По наклонному расстоянию до продолженных осей ВПП Сочи с глиссадой 3°. high < 800 м, medium < 2 км. Не дБ; реальные треки и загрузка полос не учтены.
+  label: Шум самолётов (расчёт)
+  description: По расстоянию до траектории взлёта и посадки аэропорта Сочи. Это не замер шума — реальные маршруты и расписание полётов не учтены.
   type: category
   choices: [low, medium, high]
   unit: null
@@ -161,7 +161,7 @@ aircraft_noise_exposure:
   choice_labels: {low: слабое, medium: заметное, high: сильное}
 aircraft_path_distance_m:
   label: До траектории самолётов (расчёт)
-  description: Кратчайшее наклонное расстояние от 3-го этажа до траектории захода/взлёта по продолжению оси ВПП.
+  description: Кратчайшее расстояние от окна 3-го этажа до траектории взлёта и посадки самолётов.
   type: number
   unit: m
   scope: hotel
@@ -175,7 +175,7 @@ aircraft_path_distance_m:
   query_desired: far
 beach_route_climb_m:
   label: Подъёмы по пути к пляжу (расчёт)
-  description: Набор высоты туда или обратно (что больше) по пешему маршруту, рельеф Copernicus GLO-30. Погрешность 2–4 м.
+  description: Сколько метров подъёма по дороге к пляжу или обратно (что больше), по карте рельефа. Точность 2–4 м.
   type: number
   unit: m
   scope: hotel
@@ -189,8 +189,8 @@ beach_route_climb_m:
   query_desired: near
   query_negation_keeps: true
 beach_route_busy_crossings:
-  label: Переходы через трассы по пути к пляжу (расчёт)
-  description: Сколько раз пеший маршрут пересекает trunk/primary/secondary в одном уровне; тип перехода по OSM.
+  label: Переходы через оживлённые дороги к пляжу (расчёт)
+  description: Сколько раз пеший маршрут к пляжу пересекает оживлённые дороги и есть ли там светофор или переход.
   type: number
   unit: count
   scope: hotel
@@ -204,8 +204,8 @@ beach_route_busy_crossings:
   query_desired: near
   query_negation_keeps: true
 night_open_places_500m:
-  label: Открыто ночью в 500 м (OSM)
-  description: Аптеки, магазины, кафе, АЗС в 500 м по прямой, открытые в 01:00 все 7 дней по opening_hours OSM. Заведения без часов не учтены.
+  label: Открыто ночью в 500 м
+  description: Аптеки, магазины, кафе и заправки в 500 м по прямой, открытые в час ночи каждый день, — по часам работы на карте. Заведения без указанных часов не учтены.
   type: number
   unit: count
   scope: hotel
@@ -219,8 +219,8 @@ night_open_places_500m:
   query_desired: far
   query_negation_keeps: true
 nearest_night_pharmacy_m:
-  label: До аптеки, открытой ночью (OSM)
-  description: Ближайшая аптека, открытая в 01:00 все дни, по прямой. Отсутствие в OSM не доказывает отсутствие аптеки.
+  label: До ночной аптеки
+  description: Ближайшая аптека, открытая в час ночи каждый день, по прямой. На карте отмечены не все аптеки.
   type: number
   unit: m
   scope: hotel
@@ -234,7 +234,7 @@ nearest_night_pharmacy_m:
   query_desired: near
 mountain_view_potential:
   label: Вид на горы из окон (расчёт)
-  description: Видимость рельефа выше 300 м (отроги Кавказа, Ахун) в пределах 20 км по Copernicus и зданиям OSM. Главный хребет дальше 20 км не моделируется.
+  description: Видны ли горы (отроги Кавказа, Ахун) в пределах 20 км с учётом рельефа и соседних зданий.
   type: category
   choices: [none, partial, wide]
   unit: null
@@ -250,7 +250,7 @@ mountain_view_potential:
   query_desired: wide
 mountain_view_min_floor:
   label: Горы видны с этажа (расчёт)
-  description: Самый низкий этаж, с которого на каком-либо фасаде открыто ≥3% обзора окна на рельеф выше 300 м.
+  description: Самый низкий этаж, с которого видны горы хотя бы с одной стороны здания.
   type: number
   unit: floor
   scope: hotel
@@ -261,7 +261,7 @@ mountain_view_min_floor:
   scale: 3
 quiet_side_potential:
   label: Тихая сторона здания (расчёт)
-  description: Потенциал тишины снаружи на самой тихой стене здания — с экранированием своим и соседними домами. Те же веса и пороги, что у потенциала тишины; не дБ.
+  description: Есть ли сторона здания, где тише, — учитываем дороги, бары и то, как само здание и соседние дома закрывают от шума. Это не замер шума.
   type: category
   choices: [low, medium, high]
   unit: null
@@ -277,7 +277,7 @@ quiet_side_potential:
   query_desired: high
 view_obstruction_risk:
   label: Деревья и дома перед окнами (расчёт)
-  description: Насколько вид на море, закат или горы зависит от высоты деревьев и соседних домов — по сценариям расчёта вида (деревья 0 / 0,6 / 1,0 от измеренной). Деревья вплотную к фасаду и листва по сезонам не учтены.
+  description: Насколько вид на море, закат или горы зависит от высоты деревьев и соседних домов. Деревья вплотную к окнам и листва по сезонам не учтены.
   type: category
   choices: [low, medium, high]
   unit: null
@@ -294,7 +294,7 @@ view_obstruction_risk:
   query_negation_keeps: true
 blackout_curtains:
   label: Плотные шторы
-  description: Утверждение отельера о плотных шторах в конкретном номере, независимо не проверено.
+  description: Со слов отеля о конкретных номерах, независимо не проверено.
   type: boolean
   unit: null
   scope: room

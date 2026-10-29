@@ -25,7 +25,7 @@ export function CabinetIndex() {
     return (
       <GuestLayout>
         <EmptyState title="Отелей пока нет">
-          <p>База пуста. Для API выполните python -m scripts.seed_demo.</p>
+          <p>Каталог отелей пока пуст. Попробуйте зайти позже.</p>
         </EmptyState>
       </GuestLayout>
     );

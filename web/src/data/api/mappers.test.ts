@@ -119,7 +119,7 @@ describe('API mappers', () => {
   it('показывает непонятые слова запроса как неучтённые', () => {
     const chips = requestChips(parsed, registry);
     expect(chips).toContainEqual({ label: 'До пляжа ≤ 500\u00a0м · обязательно', kind: 'required' });
-    expect(chips).toContainEqual({ label: 'Не учтено: blackout', kind: 'unsupported' });
+    expect(chips).toContainEqual({ label: 'Не распознано: blackout', kind: 'unsupported' });
     expect(chips.some((c) => c.label.includes('расчёт'))).toBe(false);
   });
 
@@ -163,7 +163,7 @@ describe('API mappers', () => {
 
 it('темы без поддержки видны как «не учтено», но не мешают', () => {
   const chips = requestChips({ ...parsed, ignored_terms: [], unsupported: ['цена'] }, registry);
-  expect(chips).toContainEqual({ label: 'Не учтено: цена', kind: 'unsupported' });
+  expect(chips).toContainEqual({ label: 'Не реализовано: цена', kind: 'unsupported' });
 });
 
 it('ответ строится по словам гостя: строка на каждую часть запроса', async () => {
@@ -171,14 +171,14 @@ it('ответ строится по словам гостя: строка на 
   const rows = mapNeedRows(
     [
       { quote: 'вид из окна', kind: 'any_of', outcome: 'matched', text: 'на море: широкий вид', detail: 'Море: широкий вид из окон стороны З', features: ['sea_view_potential'], best_option: 'sea', best_feature: 'sea_view_potential' },
-      { quote: 'дешево', kind: 'unsupported', outcome: 'unchecked', text: 'не проверяем: цена', detail: null, features: [], best_option: null, best_feature: null },
+      { quote: 'дешево', kind: 'unsupported', outcome: 'unchecked', text: 'не реализовано в текущей версии (цена)', detail: null, features: [], best_option: null, best_feature: null },
     ],
     new Set(),
     registry,
   );
   expect(rows.map((r) => [r.text, r.state])).toEqual([
     ['Вид из окна — на море: широкий вид', 'met'],
-    ['Дешево — не проверяем: цена', 'unchecked'],
+    ['Дешево — не реализовано в текущей версии (цена)', 'unchecked'],
   ]);
 });
 
@@ -196,7 +196,7 @@ it('чипы запроса — части запроса гостя, «любо
   );
   expect(chips).toEqual([
     { label: 'Вид из окна · любой', kind: 'preference' },
-    { label: 'Не учтено: цена', kind: 'unsupported' },
+    { label: 'Не реализовано: цена', kind: 'unsupported' },
   ]);
 });
 
@@ -205,4 +205,15 @@ it('цитату капсом показываем обычным регистр
   expect(prettyQuote('ТИХО НОЧЬЮ')).toBe('Тихо ночью');
   expect(prettyQuote('вид из окна')).toBe('Вид из окна');
   expect(prettyQuote('WiFi')).toBe('WiFi');
+});
+
+it('технические пояснения расчётов показываются обычным языком', async () => {
+  const { humanize, modelSourceName } = await import('./humanize');
+  expect(humanize('Оживлённые дороги на пути к пляжу переходить не нужно (по OSM).')).toBe('Оживлённые дороги на пути к пляжу переходить не нужно.');
+  expect(humanize('Море: широкий вид из окон стороны ЮЗ (азимут 236°), с 1-го этажа')).toBe('Море: широкий вид из окон стороны ЮЗ, с 1-го этажа');
+  expect(humanize('Траектория захода/взлёта по оси ВПП 06/24 (посадочный курс 64°) проходит ≈ в 1070 м')).toBe(
+    'Траектория захода/взлёта вдоль взлётной полосы проходит ≈ в 1070 м',
+  );
+  expect(humanize('У 56 заведений рядом часы в OSM не указаны.')).toBe('У 56 заведений рядом часы на карте не указаны.');
+  expect(modelSourceName('OSM здания и coastline + Copernicus DEM GLO-30')).toBe('Расчёт по карте зданий, берега и рельефа');
 });

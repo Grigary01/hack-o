@@ -110,7 +110,11 @@ def need_results(parsed: ParsedHotelQuery, criteria: list[CriterionResult]) -> l
     for need in parsed.needs:
         base = dict(quote=need.quote, kind=need.kind, features=list(need.features))
         if need.kind == 'unsupported':
-            results.append(NeedResult(**base, outcome='unchecked', text=f'не проверяем: {need.topic}'))
+            topic = (need.topic or '').strip()
+            # «Бассейн — не реализовано…», «Недорого — не реализовано… (цена)»: тему не повторяем, если она и есть цитата.
+            same = not topic or topic.lower() in need.quote.lower()
+            results.append(NeedResult(**base, outcome='unchecked',
+                                      text='не реализовано в текущей версии' + ('' if same else f' ({topic})')))
             continue
         members = [by_key[k] for k in need.features if k in by_key]
         if need.kind == 'any_of':
@@ -262,15 +266,15 @@ def rank_variant(
     eligible = False if False in outcomes else None if None in outcomes else True
     warnings = []
     if any(criterion.status == 'estimated' for criterion in criteria):
-        warnings.append('Соответствие рассчитано по оценкам; входы и доступность на местности не подтверждены.')
+        warnings.append('Часть условий оценена по расчёту и на месте не проверялась.')
     if any(criterion.model_conflicts for criterion in criteria):
-        warnings.append('Ответ отельера расходится с расчётом по зданию; нужна перепроверка.')
+        warnings.append('Ответ отеля расходится с расчётом по зданию — нужна перепроверка.')
     if any(
         observation.evidence.source.type == 'hotelier_simulated'
         for criterion in criteria
         for observation in criterion.evidence
     ):
-        warnings.append('Использованы симулированные ответы: это демонстрация, не реальные свойства отеля.')
+        warnings.append('Учтены тестовые ответы отеля: в текущей версии это пример, а не подтверждённые свойства отеля.')
 
     # uncertainty здесь — 1 - coverage мягких пожеланий, НЕ вероятность ошибки.
     # Числовая сортировочная оценка 0 допустима, даже если отображаемый score=None.

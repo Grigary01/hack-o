@@ -81,7 +81,7 @@ export function HotelPage() {
                     )}
                     {hotel.data.hotel.sourceUrl && (
                       <a href={hotel.data.hotel.sourceUrl} target="_blank" rel="noreferrer">
-                        Отель в OpenStreetMap<span className="visually-hidden"> (откроется в новой вкладке)</span>
+                        Отель на карте OpenStreetMap<span className="visually-hidden"> (откроется в новой вкладке)</span>
                       </a>
                     )}
                   </p>
@@ -105,7 +105,7 @@ export function HotelPage() {
                         <p className={styles.demoNote}>Демонстрационная цена</p>
                       </div>
                     ) : (
-                      <p className={styles.muted}>Цены не подключены к API.</p>
+                      <p className={styles.muted}>Цены не реализованы в текущей версии.</p>
                     )}
                   </>
                 ) : (
@@ -123,7 +123,7 @@ export function HotelPage() {
                   </Notice>
                 ) : (
                   <p id="booking-note" className={styles.muted}>
-                    Оформление бронирования пока не подключено
+                    Бронирование не реализовано в текущей версии
                   </p>
                 )}
               </Card>

@@ -46,13 +46,13 @@ def describe_family(label, definition, scenarios, potential, risk, floors):
     base = definition.display(scenarios['base'][potential])
     high = definition.display(scenarios['high'][potential])
     if risk == 'high':
-        return f'{label}: {base} по базовому расчёту, но при высоких деревьях и домах вида нет'
+        return f'{label}: {base} по основному расчёту, но при высоких деревьях и домах вида нет'
     if risk == 'low':
-        return f'{label}: {base} во всех сценариях высоты деревьев и домов'
+        return f'{label}: {base} при любой высоте деревьев и домов'
     floor_note = ''
     if floors[0] is not None and floors[2] is not None and floors[2] > floors[0]:
         floor_note = f', нужен этаж выше: с {floors[2]}-го вместо {floors[0]}-го'
-    return f'{label}: {base} по базовому расчёту, при высоких деревьях — {high}{floor_note}'
+    return f'{label}: {base} по основному расчёту, при высоких деревьях — {high}{floor_note}'
 
 
 def compute(repo, hotel_id: str) -> Observation:
@@ -75,7 +75,7 @@ def compute(repo, hotel_id: str) -> Observation:
                          'high': scenarios['high'].get(potential), 'min_floor': floors}
         lines.append(describe_family(label, registry.get(potential), scenarios, potential, risk, floors))
     value = min((f['risk'] for f in families.values()), key=RISK_ORDER.index) if families else None
-    explanation = ('; '.join(lines) + '.') if lines else 'Вида на море, закат или горы нет ни в одном сценарии — закрывать нечего.'
+    explanation = ('; '.join(lines) + '.') if lines else 'Вида на море, закат или горы нет при любой высоте деревьев — закрывать нечего.'
     details = {'explanation': explanation, 'families': families, 'source_observation_id': source.id,
                'method_note': 'Сравнение сценариев low/base/high расчёта вида: высота деревьев 0/0,6/1,0 '
                               'от измеренной и неизвестных соседних домов.'}
@@ -90,6 +90,6 @@ def compute(repo, hotel_id: str) -> Observation:
                            'деревья вплотную к фасаду и листва по сезонам не учтены.'),
         quality_flags=['derived_from_viewshed_scenarios', 'vegetation_from_dsm_30m_coarse',
                        'street_trees_near_facade_not_modeled'],
-        evidence=Evidence(source=Source(type='geo_model', name='Расчёт вида: сценарии деревьев и домов',
+        evidence=Evidence(source=Source(type='geo_model', name='Расчёт вида с учётом деревьев и домов',
                                         ref=source.id, url=source.evidence.source.url),
                           method='view_scenario_robustness_v1', details=details))

@@ -31,10 +31,10 @@ function QuestionCard({ question, href, base }: { question: HotelierQuestion; hr
       </div>
       <dl className={c.meta}>
         <div className={styles.metaRow}>
-          <dt>Признак:</dt> <dd>{question.featureLabel.toLowerCase()}</dd>
+          <dt>Тема:</dt> <dd>{question.featureLabel.toLowerCase()}</dd>
         </div>
         <div className={styles.metaRow}>
-          <dt>Источник запроса:</dt> <dd>{question.requestedBy}</dd>
+          <dt>Откуда вопрос:</dt> <dd>{question.requestedBy}</dd>
         </div>
       </dl>
       <div className={styles.actions}>

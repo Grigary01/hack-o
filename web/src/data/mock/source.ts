@@ -75,7 +75,7 @@ function chipsFor(w: Wishes): RequestChip[] {
     );
   }
   if (w.quiet) chips.push({ label: 'Низкий уровень шума', kind: 'preference' });
-  for (const term of w.ignored) chips.push({ label: `Не учтено: ${term}`, kind: 'unsupported' });
+  for (const term of w.ignored) chips.push({ label: `Не распознано: ${term}`, kind: 'unsupported' });
   return chips;
 }
 
@@ -249,7 +249,7 @@ function questionView(state: MockState, id: string): HotelierQuestion {
     prompt: FEATURE_COPY.prompt,
     ask: FEATURE_COPY.ask,
     why: FEATURE_COPY.why,
-    requestedBy: 'агент проверки данных',
+    requestedBy: 'из поиска гостей',
     status: q.status,
     createdAt: q.createdAt,
     answerHint: FEATURE_COPY.hint,

@@ -137,7 +137,7 @@ function Review({ answerId }: { answerId: string }) {
       )}
 
       {!caps.editClaims && answer.claims.length > 0 && (
-        <p className={c.small}>Если строка разобрана неверно, нажмите «Изменить ответ» и переформулируйте — правка отдельных строк пока не поддержана API.</p>
+        <p className={c.small}>Если строка разобрана неверно, нажмите «Изменить ответ» и переформулируйте — правка отдельных строк не реализована в текущей версии.</p>
       )}
 
       {answer.unparsed.length > 0 && (
@@ -155,7 +155,7 @@ function Review({ answerId }: { answerId: string }) {
         <h2 className={c.cardTitle}>Источник: ответ представителя отеля</h2>
         <p className={c.cardText}>
           Сведения сохранятся как заявление отельера, без независимой проверки.
-          {dataSource.mode === 'api' && ' В этом демо-кабинете ответ помечается как симуляция (hotelier_simulated).'}
+          {dataSource.mode === 'api' && ' В текущей версии такие ответы отмечаются как тестовые.'}
         </p>
       </Card>
 

@@ -44,7 +44,7 @@ export function Filters({ value, onChange, pricesAvailable, hiddenCount, onReset
           suffix={pricesAvailable && value.priceTo ? '₽' : undefined}
           onChange={(e) => onChange({ ...value, priceTo: digits(e.target.value) })}
         />
-        <p className={styles.hint}>{pricesAvailable ? 'Демо-цены: тарифов в API пока нет.' : 'Цены не подключены к API — фильтр недоступен.'}</p>
+        <p className={styles.hint}>{pricesAvailable ? 'Цены демонстрационные.' : 'Фильтр по цене не реализован в текущей версии.'}</p>
       </fieldset>
 
       <Checkbox
