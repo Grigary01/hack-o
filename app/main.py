@@ -25,6 +25,10 @@ def create_app(engine=None,parser=None,config=settings,*,reply_parser=None):
                   description='Доказательный подбор; локальный демонстрационный кабинет отельера.')
     api.state.engine = engine if engine is not None else create_db(config.database_url)
     api.state.parser = parser or make_parser(config)
+    if parser is None and hasattr(api.state.parser, 'warm_up'):
+        # Фоном: старт API не ждёт загрузку Gemma, а первый запрос гостя — уже да.
+        import threading
+        threading.Thread(target=api.state.parser.warm_up, daemon=True, name='llm-warm-up').start()
     api.state.reply_parser = reply_parser if reply_parser is not None else make_reply_parser(config)
     api.state.config = config
     api.include_router(search.router)

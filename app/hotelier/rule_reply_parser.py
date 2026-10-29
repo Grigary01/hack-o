@@ -19,7 +19,9 @@ def parse_hotelier_reply(feature_key, text):
     result = ReplyExtraction()
     # 1. Разделяем простые предложения. Несколько групп номеров в одном
     # предложении могут иметь разные свойства — такой случай не угадываем.
-    for clause in re.split(r'[;.!?\n]+', text):
+    # «…201–203 есть вид на море, в 101 нет» — запятая перед «а/но/в/у» тоже граница:
+    # иначе «нет» из второй части приписывалось номерам 201–203.
+    for clause in re.split(r'[;.!?\n]+|,\s*(?=(?:а|но|в|во|у)\s)', text, flags=re.I):
         if not clause.strip():
             continue
         normalized = clause.lower().replace('ё','е').replace('вида','вид').replace('шумоизоляции','шумоизоляция')
@@ -29,7 +31,11 @@ def parse_hotelier_reply(feature_key, text):
             for alias in definition.aliases
         )
         uncertain = re.search(r'\b(?:возможно|наверно|кажется|если|кроме|но|частично|будет|будут|летом|зимой)\b|\b(?:планиру|апрел|август|июн|июл)',normalized)
-        if len(matches)!=1 or not mentions_feature or uncertain:
+        # Номер вне распознанной группы («…есть, а 101 нет» без слова «номер») —
+        # значение нельзя честно отнести к группе: отдаём человеку.
+        span = matches[0].span() if len(matches) == 1 else (0, 0)
+        stray = [m for m in re.finditer(r'(?<![\d-])\d{3,5}(?![\d])', clause) if not span[0] <= m.start() < span[1]]
+        if len(matches)!=1 or not mentions_feature or uncertain or stray:
             result.unparsed.append(clause.strip())
             continue
         numbers = []

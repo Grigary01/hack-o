@@ -2,7 +2,7 @@
 # Сборка React-фронта и раздача статики через nginx. /api проксируется на сервис api из docker-compose.yml.
 # Режим данных фиксируется при сборке: --build-arg VITE_DATA_MODE=mock|api (по умолчанию api).
 
-FROM node:22.12-alpine AS build
+FROM node:22.14-alpine AS build
 WORKDIR /web
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund

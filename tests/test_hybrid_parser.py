@@ -77,12 +77,73 @@ def test_prompt_examples_follow_contract_and_only_query_features():
         assert keys <= allowed, text
 
 
-def test_unmatched_words_stay_visible_when_llm_adds_nothing():
-    """«ХАЧУ …, тихий отель» — LLM ничего нового не нашла, «не учтено» не пропадает."""
-    rules = HybridQueryParser(llm=FakeLLM({})).offline.parse('Хочу абракадабру, тихий отель')
+QUIET = {'feature_key': 'quietness_proxy', 'desired': 'high'}
+
+
+def test_unmatched_words_stay_visible_when_llm_did_not_cover_them():
+    """«ХАЧУ …, тихий отель»: LLM ничего не поняла — «не учтено» не пропадает."""
+    text = 'Хочу абракадабру, тихий отель'
+    rules = HybridQueryParser(llm=FakeLLM({})).offline.parse(text)
     assert rules.ignored_terms
     parser = HybridQueryParser(llm=FakeLLM({}))
-    parsed = parser.parse('Хочу абракадабру, тихий отель')
+    parsed = parser.parse(text)
     assert parser.last_source == 'llm' and parsed.ignored_terms == rules.ignored_terms
+    unsure = {'soft_preferences': [QUIET], 'unknown_or_ambiguous': ['Непонятный запрос']}
+    assert HybridQueryParser(llm=FakeLLM(unsure)).parse(text).ignored_terms == rules.ignored_terms
+
+
+def test_llm_confirmation_hides_leftover_words():
+    """«…чтобы самолёты не мешали спать»: LLM подтвердила разбор — шум «мешали, спать» не нужен."""
+    text = 'Хочу абракадабру, тихий отель'
+    assert HybridQueryParser(llm=FakeLLM({'soft_preferences': [QUIET]})).parse(text).ignored_terms == []
     answer = {'soft_preferences': [{'feature_key': 'sea_view', 'desired': True, 'scope': 'room'}]}
-    assert HybridQueryParser(llm=FakeLLM(answer)).parse('Хочу абракадабру, тихий отель').ignored_terms == []
+    assert HybridQueryParser(llm=FakeLLM(answer)).parse(text).ignored_terms == []
+
+
+def test_vague_llm_question_does_not_block_search_found_by_rules():
+    """Коляска → подъёмы найдены правилами; «уточните способ измерения» от LLM не блокирует."""
+    vague = {'soft_preferences': [QUIET], 'unknown_or_ambiguous': ['Необходимо уточнить способ измерения'],
+             'clarification_question': 'Как измерять?'}
+    parsed = HybridQueryParser(llm=FakeLLM(vague)).parse('Хочу абракадабру, тихий отель')
+    assert parsed.unknown_or_ambiguous == [] and parsed.clarification_question is None
+    assert parsed.ignored_terms  # но гость видит, что часть слов не учтена
+
+
+def test_warm_up_loads_gemma_and_survives_missing_ollama():
+    import httpx
+    from app.core.config import settings
+    from app.ml.query_parser import OllamaQueryParser
+    calls = []
+
+    def handler(request):
+        calls.append((request.url.path, request.read()))
+        return httpx.Response(200, json={})
+    with httpx.Client(transport=httpx.MockTransport(handler)) as http:
+        HybridQueryParser(llm=OllamaQueryParser(settings, client=http)).warm_up()
+    assert calls[0][0] == '/api/generate' and b'keep_alive' in calls[0][1]
+    assert calls[1][0] == '/api/chat'  # пробный разбор прогревает кэш промпта
+
+    def down(request):
+        raise httpx.ConnectError('нет Ollama')
+    with httpx.Client(transport=httpx.MockTransport(down)) as http:
+        HybridQueryParser(llm=OllamaQueryParser(settings, client=http)).warm_up()  # не падает
+
+
+def test_scope_and_unit_come_from_registry_not_from_the_model():
+    import httpx, json
+    from app.core.config import settings
+    from app.ml.query_parser import OllamaQueryParser
+    answer = {'soft_preferences': [{'feature_key': 'quietness_proxy', 'desired': 'high', 'scope': 'room',
+                                    'importance': 0.9, 'weight_source': 'default', 'utility': None}],
+              'hard_constraints': [{'feature_key': 'walking_distance_to_beach_m', 'operator': '<=', 'value': 0.4,
+                                    'unit': 'km', 'scope': 'room'}]}
+    calls = []
+
+    def handler(request):
+        calls.append(1)
+        return httpx.Response(200, json={'message': {'content': json.dumps(answer)}})
+    with httpx.Client(transport=httpx.MockTransport(handler)) as http:
+        parsed = OllamaQueryParser(settings, client=http).parse('Тихий номер, до пляжа не дальше 0,4 км')
+    assert len(calls) == 1  # без повторной попытки
+    assert parsed.soft_preferences[0].scope == 'hotel'
+    assert (parsed.hard_constraints[0].value, parsed.hard_constraints[0].unit) == (400, 'm')

@@ -111,8 +111,9 @@ def test_ollama_repair_receives_validation_reason_without_gold():
     calls = []
     valid = {'hard_constraints': [{'feature_key': 'sea_view', 'operator': '=',
                                   'value': True, 'scope': 'room'}]}
+    # scope/unit подставляются из реестра без повтора; повтор нужен для смысла, например типа.
     invalid = {'hard_constraints': [{'feature_key': 'sea_view', 'operator': '=',
-                                    'value': True, 'scope': 'hotel'}]}
+                                    'value': 'да', 'scope': 'room'}]}
     def handler(request):
         payload = json.loads(request.content)
         calls.append(payload)
@@ -121,7 +122,7 @@ def test_ollama_repair_receives_validation_reason_without_gold():
     result = parser.parse('Обязателен вид на море')
     assert len(calls) == 2 and result.hard_constraints[0].scope == 'room'
     feedback = calls[1]['messages'][-1]['content']
-    assert 'Неверные scope или unit' in feedback
+    assert 'Недопустимое значение sea_view' in feedback
     assert 'expected' not in feedback
     assert feedback.endswith(json.dumps('Обязателен вид на море', ensure_ascii=False))
     assert json.loads(calls[1]['messages'][-2]['content']) == invalid

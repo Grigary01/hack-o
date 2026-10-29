@@ -37,6 +37,7 @@ class Settings:
     parser_timeout_seconds: float = MODEL_CONFIG.parser_timeout_seconds
     ollama_num_ctx: int = MODEL_CONFIG.ollama_num_ctx
     ollama_think: bool | None = MODEL_CONFIG.ollama_think
+    ollama_keep_alive: str = MODEL_CONFIG.ollama_keep_alive
     temperature: float = MODEL_CONFIG.temperature
     max_output_tokens: int = MODEL_CONFIG.max_output_tokens
     groq_reasoning_effort: str = MODEL_CONFIG.groq_reasoning_effort

@@ -23,6 +23,9 @@ class ModelConfig(BaseModel):
     # Режим рассуждений у моделей с thinking (Qwen3): false — сразу JSON.
     # null — поле не передаётся (модели без thinking, например Gemma 3).
     ollama_think: bool | None = None
+    # Сколько Ollama держит модель в памяти после запроса. По умолчанию Ollama — 5 мин:
+    # после паузы первый запрос гостя ждал загрузку Gemma 12B (~30 с).
+    ollama_keep_alive: str = '30m'
     parser_timeout_seconds: float = Field(gt=0)
     groq_reasoning_effort: Literal['low', 'medium', 'high']
     # hybrid: какая LLM разбирает то, что не поняли правила.
