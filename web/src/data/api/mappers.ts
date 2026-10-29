@@ -198,6 +198,22 @@ export function evidenceLines(criteria: CriterionDto[], registry: FeatureRegistr
   });
 }
 
+/**
+ * Номер не подтверждён отельером, но есть расчёт по зданию («вид на море» → вид из окон здания):
+ * показываем расчётное значение с пометкой вместо «нет данных». Иначе отель с широким видом
+ * по расчёту выглядит хуже отеля с единственным ответом отельера и уходит ниже в выдаче.
+ */
+function withEstimate(criterion: Criterion, companion: CriterionDto, registry: FeatureRegistryDto): Criterion {
+  const evidence = companion.evidence[0];
+  const confidence = evidence ? ` · уверенность ${CONFIDENCE[evidence.confidence_level]}` : '';
+  return {
+    ...criterion,
+    text: `${criterion.name} — ${valueText(companion.feature_key, companion.actual, registry[companion.feature_key])} (расчёт по зданию)`,
+    state: criterionState(companion),
+    source: `Расчёт по геоданным, номер отельер ещё не подтвердил${confidence}`,
+  };
+}
+
 export function companionKeys(parsed: ParsedQueryDto): Set<string> {
   return new Set(parsed.soft_preferences.filter((p) => p.weight_source === 'companion').map((p) => p.feature_key));
 }
@@ -218,7 +234,18 @@ export function mapHotelResult(
   const companions = companionKeys(parsed);
   const required = new Set(parsed.hard_constraints.map((h) => h.feature_key));
   const primary = item.criteria.filter((c) => !companions.has(c.feature_key));
-  const criteria = primary.map((c) => mapCriterion(c, registry, required));
+  const byKey = new Map(item.criteria.map((c) => [c.feature_key, c]));
+  const estimateFor = new Map(
+    parsed.soft_preferences
+      .filter((p) => p.weight_source === 'companion' && p.derived_from)
+      .map((p) => [p.derived_from as string, p.feature_key]),
+  );
+  const criteria = primary.map((c) => {
+    const mapped = mapCriterion(c, registry, required);
+    const companion = byKey.get(estimateFor.get(c.feature_key) ?? '');
+    if (mapped.state !== 'unknown' || !companion || companion.actual === null) return mapped;
+    return withEstimate(mapped, companion, registry);
+  });
   // «Условия подтверждены» только если по каждому пожеланию гостя есть данные.
   let group: ResultGroup = 'partial';
   if (backendGroup === 'excluded') group = 'excluded';

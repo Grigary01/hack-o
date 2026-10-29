@@ -63,11 +63,12 @@ async function runSearch(params: SearchParams, fresh = false): Promise<SearchRes
   const key = params.text.trim();
   const cached = searchCache.get(key);
   if (!fresh && cached && Date.now() - cached.at < SEARCH_TTL_MS) return cached.promise;
-  const health = await loadHealth();
   const body: SearchRequestDto = {
     text: key,
-    // Демо-ответы отельера участвуют в подборе только в DEMO_MODE бэкенда и помечаются в источниках.
-    include_simulated: health.demo_mode,
+    // Демо-ответы отельера из кабинета — учебные и по умолчанию в подбор гостя не идут (как и в API):
+    // иначе один тестовый ответ «в номере 301 вид на море» выглядит подтверждённым фактом
+    // и поднимает отель над более подходящими по данным.
+    include_simulated: false,
     ranking_method: 'balanced_v2',
   };
   const promise = post<SearchResponseDto>('/search', body);

@@ -57,7 +57,29 @@ describe('API mappers', () => {
     expect(valueText('sea_view', null, registry.sea_view)).toBe('нет данных');
   });
 
-  it('matched с неизвестным пожеланием — не «подтверждён», а частичный', () => {
+  it('matched с неизвестным пожеланием и без расчёта — не «подтверждён», а частичный', () => {
+    const hotel = mapHotelResult(
+      result([
+        criterion({}),
+        criterion({ feature_key: 'quietness_proxy', actual: 'high', outcome: 'preference', match: 1 }),
+        criterion({ feature_key: 'sea_view', actual: null, outcome: 'unknown', subject_id: null }),
+        criterion({ feature_key: 'sea_view_potential', actual: null, outcome: 'unknown' }),
+      ]),
+      'matched',
+      parsed,
+      registry,
+    );
+    expect(hotel.group).toBe('partial');
+    expect(hotel.price).toBeNull();
+    // Расчётный спутник (companion) отдельной строкой не показывается, но остаётся в источниках.
+    expect(hotel.criteria.map((c) => c.key)).toEqual(['walking_distance_to_beach_m', 'quietness_proxy', 'sea_view']);
+    expect(hotel.evidence).toHaveLength(4);
+    expect(hotel.criteria[0]).toMatchObject({ required: true, state: 'met' });
+    expect(hotel.criteria[2]).toMatchObject({ state: 'unknown', askable: true });
+    expect(hotel.pendingQuestion).toBe(true);
+  });
+
+  it('номер не подтверждён, но есть расчёт по зданию — показываем расчёт, а не «нет данных»', () => {
     const hotel = mapHotelResult(
       result([
         criterion({}),
@@ -69,14 +91,15 @@ describe('API mappers', () => {
       parsed,
       registry,
     );
-    expect(hotel.group).toBe('partial');
-    expect(hotel.price).toBeNull();
-    // Расчётный спутник (companion) не показывается в карточке, но остаётся в источниках.
-    expect(hotel.criteria.map((c) => c.key)).toEqual(['walking_distance_to_beach_m', 'quietness_proxy', 'sea_view']);
-    expect(hotel.evidence).toHaveLength(4);
-    expect(hotel.criteria[0]).toMatchObject({ required: true, state: 'met' });
-    expect(hotel.criteria[2]).toMatchObject({ state: 'unknown', askable: true });
-    expect(hotel.pendingQuestion).toBe(true);
+    expect(hotel.criteria[2]).toMatchObject({
+      key: 'sea_view',
+      state: 'met',
+      askable: true,
+      text: 'Вид на море — широкий вид (расчёт по зданию)',
+    });
+    expect(hotel.criteria[2]!.source).toContain('отельер ещё не подтвердил');
+    // Данные по всем пожеланиям есть — отель в одной группе с остальными, порядок задаёт рейтинг бэкенда.
+    expect(hotel.group).toBe('confirmed');
   });
 
   it('matched со всеми известными условиями — подтверждён', () => {

@@ -80,7 +80,7 @@ src/data/
 | Экран | Эндпоинты |
 |---|---|
 | Главная | `GET /api/demo-queries` |
-| Выдача | `POST /api/search` (`include_simulated` = `demo_mode` из `/api/health`), `GET /api/features` |
+| Выдача | `POST /api/search` (`include_simulated: false` — демо-ответы кабинета в подбор гостя не идут), `GET /api/features` |
 | Карточка отеля | `GET /api/hotels/{id}` + результат поиска |
 | «Запросить у отельера» | `POST /api/hotelier/questions` |
 | Кабинет: вопросы | `GET /api/hotels`, `GET /api/hotelier/questions?hotel_id=&status=` (+ `context`: почему вопрос открыт) |
