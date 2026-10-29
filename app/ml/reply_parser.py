@@ -42,6 +42,7 @@ class OllamaReplyParser(HTTPReplyParser):
                    'options': {'temperature': self.config.temperature,
                                'num_predict': self.config.max_output_tokens,
                                'num_ctx': self.config.ollama_num_ctx}}
+        payload['keep_alive'] = self.config.ollama_keep_alive
         if self.config.ollama_think is not None:
             payload['think'] = self.config.ollama_think
         response = self.post(self.config.ollama_url.rstrip('/') + '/api/chat', payload)

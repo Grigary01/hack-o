@@ -94,6 +94,27 @@ def llm_schema() -> dict:
     return schema
 
 
+def registry_fields(raw):
+    """scope и unit признака однозначно заданы реестром — не заставляем модель их угадывать.
+
+    Gemma на «Тихий номер…» ставила тишине scope=room: ответ отклонялся и повторялся
+    (+7 с). Подставляем значения из реестра; unit=km оставляем — контракт сам
+    переводит километры в метры. Неизвестный feature_key не трогаем: его отклонит Pydantic.
+    """
+    if not isinstance(raw, dict):
+        return raw
+    registry = get_registry().definitions
+    for kind in ('hard_constraints', 'soft_preferences'):
+        for item in raw.get(kind) or []:
+            definition = registry.get(item.get('feature_key')) if isinstance(item, dict) else None
+            if definition is None:
+                continue
+            item['scope'] = definition.scope
+            if kind == 'hard_constraints' and item.get('unit') != 'km':
+                item['unit'] = definition.unit
+    return raw
+
+
 def mentioned_numbers(text: str) -> set[float]:
     """Все величины, которые можно честно вывести из чисел запроса.
 
@@ -216,6 +237,7 @@ class OllamaQueryParser:
                         'num_ctx': self.config.ollama_num_ctx},
             'messages': query_messages(text, schema),
         }
+        payload['keep_alive'] = self.config.ollama_keep_alive
         if self.config.ollama_think is not None:
             # Qwen3 по умолчанию сначала «рассуждает» текстом: это время и токены
             # без пользы для извлечения полей. think=false — сразу ответ по схеме.
@@ -235,7 +257,7 @@ class OllamaQueryParser:
                 # feature_key, scope, единицы, диапазоны. Число вместо bool,
                 # неизвестный ключ и плохой JSON не проходят дальше.
                 content = response.json()['message']['content']
-                parsed = ParsedHotelQuery.model_validate_json(content)
+                parsed = ParsedHotelQuery.model_validate(registry_fields(json.loads(content)))
 
                 # Для аудита берём реальный ввод; не доверяем его пересказу LLM.
                 parsed.original_text = text
@@ -267,6 +289,20 @@ class OllamaQueryParser:
                         + '\nИсходный запрос (JSON-строка): ' + json.dumps(text, ensure_ascii=False)}])
                 time.sleep(.2)
         raise ParserError('unreachable')
+
+
+def warm_up_ollama(config, client) -> None:
+    """Загружает модель в память заранее: иначе первый запрос гостя ждёт ~30 с.
+
+    Пустой /api/generate только загружает веса (документированное поведение Ollama).
+    Ошибки молча игнорируются: без Ollama гибрид всё равно работает на правилах.
+    """
+    try:
+        client.post(config.ollama_url.rstrip('/') + '/api/generate',
+                    json={'model': config.model_name, 'keep_alive': config.ollama_keep_alive},
+                    timeout=httpx.Timeout(180, connect=5))
+    except Exception:
+        pass
 
 
 class GroqQueryParser:
@@ -308,7 +344,7 @@ JSON-schema best-effort сохраняет необязательные поля
                 raw = response.json()
                 if raw['choices'][0].get('finish_reason') != 'stop':
                     raise ValueError('Незавершённый ответ модели')
-                parsed = ParsedHotelQuery.model_validate_json(raw['choices'][0]['message']['content'])
+                parsed = ParsedHotelQuery.model_validate(registry_fields(json.loads(raw['choices'][0]['message']['content'])))
                 parsed.original_text = text
                 return drop_invented_numbers(parsed, text)
             except httpx.HTTPError as exc:
@@ -343,6 +379,17 @@ class HybridQueryParser:
         self.client = self.llm.client
         self.last_source = None  # 'rules' | 'llm' | 'rules_fallback' — для отчётов и отладки
 
+    def warm_up(self) -> None:
+        if isinstance(self.llm, OllamaQueryParser):
+            warm_up_ollama(self.llm.config, self.llm.client)
+            # Загрузки весов мало: первый разбор ещё ~30 с читает длинный промпт
+            # (реестр + примеры, ~5.5 тыс. токенов). Пробный разбор кладёт этот общий
+            # префикс в кэш Ollama — запросы гостей дальше идут за несколько секунд.
+            try:
+                self.llm.parse('Тихий отель у моря')
+            except Exception:
+                pass
+
     def rules_are_enough(self, parsed: ParsedHotelQuery) -> bool:
         return not parsed.ignored_terms and self.NOTHING_FOUND not in parsed.unknown_or_ambiguous
 
@@ -371,17 +418,22 @@ class HybridQueryParser:
         known = {c.feature_key for c in rules.hard_constraints} | {p.feature_key for p in rules.soft_preferences}
         hard = rules.hard_constraints + [c for c in llm.hard_constraints if c.feature_key not in known]
         soft = rules.soft_preferences + [p for p in llm.soft_preferences if p.feature_key not in known]
-        unknown = rules.unknown_or_ambiguous + [u for u in llm.unknown_or_ambiguous if u not in rules.unknown_or_ambiguous]
-        # Если LLM ничего не добавила, непонятые слова так и остались непонятыми:
-        # гость должен видеть «Не учтено: …», а не думать, что учтено всё.
+        # Вопросы LLM здесь поиск не блокируют: правила уже что-то нашли, а Gemma
+        # часто пишет расплывчатое «уточните способ измерения» к понятному запросу.
+        # Блокируют только точные пометки правил; расплывчатое («вид из окна») —
+        # потребность any_of, а не вопрос.
+        unknown = rules.unknown_or_ambiguous
         merged_needs = self.merge_needs(rules, llm, hard, soft)
-        added = len(hard) + len(soft) + len(unknown) + len(merged_needs) > (
-            len(rules.hard_constraints) + len(rules.soft_preferences) + len(rules.unknown_or_ambiguous) + len(rules.needs))
+        # Непонятые слова скрываем, только если LLM их «покрыла»: добавила признак,
+        # потребность или тему либо подтвердила разбор правил, ничего не оставив под
+        # сомнением. Иначе гость видит «Не учтено: …» и понимает, что часть запроса не учтена.
+        llm_keys = {c.feature_key for c in llm.hard_constraints} | {p.feature_key for p in llm.soft_preferences}
+        covered = bool(llm_keys or llm.needs or llm.unsupported) and not llm.unknown_or_ambiguous
         return ParsedHotelQuery(
             region=llm.region if rules.region == 'other' else rules.region,
             hard_constraints=hard, soft_preferences=soft, unknown_or_ambiguous=unknown,
-            clarification_question=rules.clarification_question or llm.clarification_question if unknown else None,
-            original_text=rules.original_text, ignored_terms=[] if added else rules.ignored_terms,
+            clarification_question=rules.clarification_question if unknown else None,
+            original_text=rules.original_text, ignored_terms=[] if covered else rules.ignored_terms,
             unsupported=rules.unsupported + [u for u in llm.unsupported if u not in rules.unsupported],
             needs=merged_needs)
 
