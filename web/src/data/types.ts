@@ -110,7 +110,10 @@ export interface SearchResult {
   clarification: string | null;
   contextLabel: string;
   chips: RequestChip[];
+  /** Слова запроса, которые не удалось связать ни с одной характеристикой. */
   ignoredTerms: string[];
+  /** Темы, которых нет в текущей версии (цена, бассейн): поиск идёт без них. */
+  unsupported: string[];
   hotels: HotelSummary[];
   /** Пояснения о качестве данных, общие для выдачи. */
   notes: string[];
