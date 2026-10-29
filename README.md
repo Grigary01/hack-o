@@ -81,9 +81,21 @@ COMPOSE_PROFILES=local-llm
 docker compose up --build        # или: make up-local
 ```
 
-Нужно ~12 ГБ свободной памяти и ~10 ГБ диска. В Docker без видеокарты модель работает на процессоре и отвечает
-медленно; на Mac быстрее своя Ollama с ускорением Metal: `ollama pull gemma3:12b`, затем в `.env`
-`LLM_PROVIDER=local` и `DOCKER_OLLAMA_URL=http://host.docker.internal:11434` (без `COMPOSE_PROFILES`).
+Нужно ~12 ГБ свободной памяти и ~10 ГБ диска; первая загрузка модели — около 20 минут при 6 МБ/с.
+
+Скорость зависит от железа. В Docker без видеокарты модель работает на процессоре: замер 29.10 на Mac
+(Apple Silicon, 14 CPU, Docker Desktop) — 0,27 токена/с, ответ не укладывается в лимит 90 с, и запрос разбирают
+правила (поиск работает, но пользы от модели нет). Docker на Mac не использует видеокарту Apple, поэтому на Mac
+запускайте Ollama на самом компьютере — с ускорением Metal:
+
+```bash
+ollama pull gemma3:12b
+# в .env (без COMPOSE_PROFILES):
+LLM_PROVIDER=local
+DOCKER_OLLAMA_URL=http://host.docker.internal:11434
+```
+
+Профиль `local-llm` в Docker имеет смысл на Linux с видеокартой или для проверки, что всё поднимается без установок.
 
 Какая модель используется сейчас — в логе (`docker compose logs backend`, строка «Разбор запросов: …»)
 и в `http://localhost:8080/api/health` (поле `llm`).
