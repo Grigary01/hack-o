@@ -56,7 +56,7 @@ docker compose up --build
 | `LLM_PROVIDER` | пусто → правила + локальная модель, если доступна | Модель для разбора запроса: `cloud`, `local` или `off` (см. «Модели») |
 | `CLOUD_LLM_BASE_URL` | пусто → Groq | Адрес OpenAI-совместимого API |
 | `CLOUD_LLM_MODEL` | пусто → из `config/models.yaml` | Модель облачной LLM |
-| `LLM_API_KEY` | пусто | Ключ облачной LLM (для жюри — в `secrets.env.age`) |
+| `LLM_API_KEY` | пусто | Ключ облачной LLM — заполняется самостоятельно (см. «Ключи») |
 | `COMPOSE_PROFILES` | пусто | `local-llm` — поднять Ollama в Docker и скачать локальную модель |
 | `DOCKER_OLLAMA_URL` | `http://ollama:11434` | Своя Ollama вместо контейнера, например `http://host.docker.internal:11434` |
 | `LOCAL_LLM_MODEL` | `gemma3:12b` | Локальная модель Ollama |
@@ -74,8 +74,8 @@ docker compose up --build
 | `local` | Gemma 3 12B (`gemma3:12b`) через Ollama | Правила разбирают запрос, модель дополняет то, что они не поняли. Пока модель не скачана — только правила |
 | `off` | — | Только правила |
 
-**Облако:** в `.env` задайте `LLM_PROVIDER=cloud`, `CLOUD_LLM_BASE_URL`, `CLOUD_LLM_MODEL`, `LLM_API_KEY`.
-Для жюри эти значения с отдельным ключом лежат в зашифрованном [`secrets.env.age`](#секреты).
+**Облако:** в `.env` задайте `LLM_PROVIDER=cloud`, `CLOUD_LLM_BASE_URL`, `CLOUD_LLM_MODEL` и свой `LLM_API_KEY`
+(подходит любой OpenAI-совместимый провайдер), см. [«Ключи»](#ключи).
 
 **Локально в Docker** (ничего ставить не нужно, модель ~8 ГБ скачается при первом запуске):
 
@@ -106,19 +106,22 @@ DOCKER_OLLAMA_URL=http://host.docker.internal:11434
 Какая модель используется сейчас — в логе (`docker compose logs backend`, строка «Разбор запросов: …»)
 и в `http://localhost:8080/api/health` (поле `llm`).
 
-## Секреты
+## Ключи
 
-Ключи в репозиторий не попадают: `.env` в `.gitignore`. Для жюри ключ облачной модели (отдельный, не основной)
-передаётся в `secrets.env.age` — это `.env`, зашифрованный публичным ключом организаторов
-(`age1932fu7f70rwyfhaxflyfszz4gf6avxwc95wc0yjwm6zns9tspycqpgdnc0`). Запуск с ним:
+Ключей в репозитории нет: `.env` в `.gitignore`, ключ к облачной модели мы не передаём.
+**Для запуска ключи не нужны** — без них запросы разбираются правилами, всё остальное работает так же.
+На развёрнутом сервисе https://o.devneli.ru модель уже подключена.
+
+Чтобы подключить облачную модель локально, заполните в `.env` (имена — в `.env.example`):
 
 ```bash
-age -d -i <закрытый ключ организаторов> -o .env secrets.env.age
-docker compose up --build
+LLM_PROVIDER=cloud
+CLOUD_LLM_BASE_URL=https://<провайдер>/v1   # любой OpenAI-совместимый API; у нас — https://cli.infra.skdtechai.com/v1
+CLOUD_LLM_MODEL=<модель>                   # у нас — claude-opus-5
+LLM_API_KEY=<ваш ключ>
 ```
 
-Для команды: заполните `.env.jury` (не коммитится) и выполните `make secrets` —
-он пересоздаст `secrets.env.age`.
+и перезапустите: `docker compose up -d`. Либо без ключей — локальная модель, см. «Модели».
 
 ## Сидирование
 

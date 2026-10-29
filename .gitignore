@@ -8,5 +8,3 @@ runtime/
 upstream/
 .DS_Store
 artifacts/
-# Открытый .env для жюри: в репозиторий попадает только зашифрованный secrets.env.age.
-.env.jury
