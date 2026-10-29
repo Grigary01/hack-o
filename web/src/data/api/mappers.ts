@@ -303,7 +303,9 @@ export function prettyQuote(quote: string): string {
 
 /** Ответ по словам гостя: «Вид из окна — на море: широкий вид». */
 export function mapNeedRows(needs: NeedResultDto[], required: Set<string>, registry: FeatureRegistryDto): Criterion[] {
-  return needs.map((need) => {
+  // Сначала то, что проверили; «не реализовано в текущей версии» — в конце карточки.
+  const ordered = [...needs.filter((n) => n.outcome !== 'unchecked'), ...needs.filter((n) => n.outcome === 'unchecked')];
+  return ordered.map((need) => {
     const name = prettyQuote(need.quote);
     return {
       key: `need:${need.kind}:${need.quote}`,

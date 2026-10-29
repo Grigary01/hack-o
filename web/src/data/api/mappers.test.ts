@@ -170,8 +170,8 @@ it('ответ строится по словам гостя: строка на 
   const { mapNeedRows } = await import('./mappers');
   const rows = mapNeedRows(
     [
-      { quote: 'вид из окна', kind: 'any_of', outcome: 'matched', text: 'на море: широкий вид', detail: 'Море: широкий вид из окон стороны З', features: ['sea_view_potential'], best_option: 'sea', best_feature: 'sea_view_potential' },
       { quote: 'дешево', kind: 'unsupported', outcome: 'unchecked', text: 'не реализовано в текущей версии (цена)', detail: null, features: [], best_option: null, best_feature: null },
+      { quote: 'вид из окна', kind: 'any_of', outcome: 'matched', text: 'на море: широкий вид', detail: 'Море: широкий вид из окон стороны З', features: ['sea_view_potential'], best_option: 'sea', best_feature: 'sea_view_potential' },
     ],
     new Set(),
     registry,
