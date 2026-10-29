@@ -115,3 +115,15 @@ it('уточнение «Какой вид важнее?» не разбирае
   expect(bodies[1]).toMatchObject({ parsed: { original_text: 'вид из окна' }, choices: { window_view: 'sea' } });
   expect(bodies[1]).not.toHaveProperty('text');
 });
+
+it('если языковая модель недоступна, гость видит пометку об упрощённом разборе', async () => {
+  const parsed = { region: 'Adler', hard_constraints: [], soft_preferences: [], original_text: 'тихо', ignored_terms: [], unknown_or_ambiguous: [], clarification_question: null, needs: [] };
+  vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+    if (url.endsWith('/health')) return new Response(JSON.stringify({ status: 'ok', demo_mode: false }));
+    if (url.endsWith('/features')) return new Response(JSON.stringify({}));
+    return new Response(JSON.stringify({ matched: [], needs_verification: [], excluded: [], parser_mode: 'rules_fallback', include_simulated: false, status: 'ok', parsed }));
+  }));
+  const { createApiSource } = await import('./source');
+  const result = await createApiSource().search({ text: 'тихо ' + Math.random(), destination: 'Адлер', checkIn: '', checkOut: '', guests: 2 });
+  expect(result.notes[0]).toMatch(/Языковая модель сейчас недоступна/);
+});

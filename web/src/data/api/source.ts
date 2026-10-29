@@ -230,6 +230,9 @@ export function createApiSource(): DataSource {
       const [response, registry] = await Promise.all([runSearch(params, true), loadRegistry()]);
       const notes = ['Цены, бронирование и учёт дат и числа гостей не реализованы в текущей версии.'];
       if (response.include_simulated) notes.push('Ответы отелей в текущей версии тестовые — они отмечены в источниках.');
+      if (response.parser_mode === 'rules_fallback') {
+        notes.unshift('Языковая модель сейчас недоступна — запрос разобран упрощённо, свободные формулировки могут быть поняты не полностью.');
+      }
       const result: SearchResult = {
         status: response.status,
         clarification: response.status === 'needs_clarification' ? clarificationText(response.parsed) : null,

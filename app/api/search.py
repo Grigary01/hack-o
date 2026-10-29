@@ -34,7 +34,8 @@ def parse_query(payload: ParseRequest,request: Request):
 def search(payload: SearchRequest,request: Request,repo=Depends(repository)):
     parser = request.app.state.parser
     parsed = payload.parsed.model_copy(deep=True) if payload.parsed else parser.parse(payload.text)
-    mode = 'structured_input' if payload.parsed else parser.mode
+    # current_mode(): облачный режим мог разобрать этот запрос правилами (модель недоступна).
+    mode = 'structured_input' if payload.parsed else (parser.current_mode() if hasattr(parser, 'current_mode') else parser.mode)
     # Каждая часть запроса — потребность с цитатой; ничего не теряется молча.
     parsed = needs.complete_needs(parsed)
     if parsed.region != 'Adler' or parsed.unknown_or_ambiguous or parsed.clarification_question:

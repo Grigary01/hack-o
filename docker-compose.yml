@@ -5,6 +5,12 @@
 #
 # Наружу публикуется только 8080. Backend (FastAPI, порт 8000) доступен лишь внутри сети compose.
 # Настройки — в .env (см. .env.example); общие параметры модели — в config/models.yaml.
+#
+# Модель для разбора запросов — переменная LLM_PROVIDER в .env:
+#   cloud — облачная модель через OpenAI-совместимое API (ключ в LLM_API_KEY);
+#   local — gemma3:12b через Ollama. С COMPOSE_PROFILES=local-llm Ollama поднимается здесь же
+#           и сама скачивает модель (~8 ГБ); либо укажите свою Ollama в DOCKER_OLLAMA_URL;
+#   off / пусто без ключа — только правила, модель не нужна.
 
 services:
   backend:
@@ -24,7 +30,12 @@ services:
       PARSER_MODE: ${PARSER_MODE:-}
       REPLY_PARSER_MODE: ${REPLY_PARSER_MODE:-}
       DEMO_MODE: ${DEMO_MODE:-true}
-      OLLAMA_URL: ${DOCKER_OLLAMA_URL:-http://host.docker.internal:11434}
+      LLM_PROVIDER: ${LLM_PROVIDER:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LOCAL_LLM_MODEL: ${LOCAL_LLM_MODEL:-}
+      # По умолчанию — сервис ollama ниже (профиль local-llm); своя Ollama на хосте —
+      # DOCKER_OLLAMA_URL=http://host.docker.internal:11434.
+      OLLAMA_URL: ${DOCKER_OLLAMA_URL:-http://ollama:11434}
       GROQ_API_KEY: ${GROQ_API_KEY:-}
       CLOUD_LLM_BASE_URL: ${CLOUD_LLM_BASE_URL:-}
       CLOUD_LLM_MODEL: ${CLOUD_LLM_MODEL:-}
@@ -64,5 +75,34 @@ services:
       retries: 6
       start_period: 10s
 
+  # Локальная модель. Запускается только с профилем: COMPOSE_PROFILES=local-llm в .env
+  # (или docker compose --profile local-llm up). Модель скачивается при первом старте в том
+  # ollama-models и дальше берётся оттуда. Backend её не ждёт: пока модель не готова,
+  # запросы разбираются правилами.
+  ollama:
+    image: ollama/ollama:0.40.13
+    profiles: ["local-llm"]
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >
+        ollama serve & pid=$$!;
+        until ollama list >/dev/null 2>&1; do sleep 1; done;
+        echo "Скачиваю модель $${LOCAL_LLM_MODEL}…";
+        ollama pull "$${LOCAL_LLM_MODEL}" && touch /tmp/model-ready && echo "Модель $${LOCAL_LLM_MODEL} готова";
+        wait $$pid
+    environment:
+      LOCAL_LLM_MODEL: ${LOCAL_LLM_MODEL:-gemma3:12b}
+      OLLAMA_KEEP_ALIVE: 30m
+    volumes:
+      - ollama-models:/root/.ollama
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/model-ready"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 1800s
+
 volumes:
   adler-data:
+  ollama-models:

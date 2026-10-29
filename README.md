@@ -47,23 +47,60 @@ docker compose up --build
 |---|---|---|
 | `WEB_PORT` | `8080` | Порт интерфейса на хосте |
 | `DEMO_MODE` | `true` | Учитывать тестовые ответы отелей из демо-набора (в интерфейсе они помечены) |
-| `PARSER_MODE` | пусто → `hybrid` из [`config/models.yaml`](config/models.yaml) | Разбор запроса: `hybrid` (правила + LLM), `offline` (только правила), `groq` (облачная LLM) |
-| `GROQ_API_KEY` | пусто | Ключ OpenAI-совместимого API для облачной LLM |
+| `LLM_PROVIDER` | пусто → правила + локальная модель, если доступна | Модель для разбора запроса: `cloud`, `local` или `off` (см. «Модели») |
 | `CLOUD_LLM_BASE_URL` | пусто → Groq | Адрес OpenAI-совместимого API |
 | `CLOUD_LLM_MODEL` | пусто → из `config/models.yaml` | Модель облачной LLM |
-| `HYBRID_LLM` | пусто → `ollama` | Какая LLM дополняет правила в `hybrid`: `ollama` или `groq` |
-| `DOCKER_OLLAMA_URL` | `http://host.docker.internal:11434` | Локальная Ollama на хосте, если есть |
-| `REPLY_PARSER_MODE` | пусто → `rules` | Разбор ответов отельера |
+| `LLM_API_KEY` | пусто | Ключ облачной LLM (для жюри — в `secrets.env.age`) |
+| `COMPOSE_PROFILES` | пусто | `local-llm` — поднять Ollama в Docker и скачать локальную модель |
+| `DOCKER_OLLAMA_URL` | `http://ollama:11434` | Своя Ollama вместо контейнера, например `http://host.docker.internal:11434` |
+| `LOCAL_LLM_MODEL` | `gemma3:12b` | Локальная модель Ollama |
 
-Без LLM всё работает: запрос разбирается правилами. LLM (облачная через OpenAI-совместимое API или
-локальная Ollama) лучше понимает свободные формулировки. Например, для облачной модели в `.env`:
+Служебные переменные для разработчиков (`PARSER_MODE`, `HYBRID_LLM`, `REPLY_PARSER_MODE`) описаны в `.env.example`.
+
+## Модели
+
+Модель нужна только для разбора свободного текста запроса; без неё всё работает на правилах.
+Выбор — одна переменная `LLM_PROVIDER` в `.env`:
+
+| `LLM_PROVIDER` | Провайдер и модель | Как работает |
+|---|---|---|
+| `cloud` | Claude `claude-opus-5` (Anthropic) через OpenAI-совместимый прокси `cli.infra.skdtechai.com` | Запрос целиком разбирает модель. Если она недоступна (сеть, квота), запрос разбирают правила, а гость видит пометку |
+| `local` | Gemma 3 12B (`gemma3:12b`) через Ollama | Правила разбирают запрос, модель дополняет то, что они не поняли. Пока модель не скачана — только правила |
+| `off` | — | Только правила |
+
+**Облако:** в `.env` задайте `LLM_PROVIDER=cloud`, `CLOUD_LLM_BASE_URL`, `CLOUD_LLM_MODEL`, `LLM_API_KEY`.
+Для жюри эти значения с отдельным ключом лежат в зашифрованном [`secrets.env.age`](#секреты).
+
+**Локально в Docker** (ничего ставить не нужно, модель ~8 ГБ скачается при первом запуске):
 
 ```bash
-PARSER_MODE=groq
-CLOUD_LLM_BASE_URL=https://<провайдер>/v1
-CLOUD_LLM_MODEL=<модель>
-GROQ_API_KEY=<ключ>
+# в .env:
+LLM_PROVIDER=local
+COMPOSE_PROFILES=local-llm
+# затем, как обычно:
+docker compose up --build        # или: make up-local
 ```
+
+Нужно ~12 ГБ свободной памяти и ~10 ГБ диска. В Docker без видеокарты модель работает на процессоре и отвечает
+медленно; на Mac быстрее своя Ollama с ускорением Metal: `ollama pull gemma3:12b`, затем в `.env`
+`LLM_PROVIDER=local` и `DOCKER_OLLAMA_URL=http://host.docker.internal:11434` (без `COMPOSE_PROFILES`).
+
+Какая модель используется сейчас — в логе (`docker compose logs backend`, строка «Разбор запросов: …»)
+и в `http://localhost:8080/api/health` (поле `llm`).
+
+## Секреты
+
+Ключи в репозиторий не попадают: `.env` в `.gitignore`. Для жюри ключ облачной модели (отдельный, не основной)
+передаётся в `secrets.env.age` — это `.env`, зашифрованный публичным ключом организаторов
+(`age1932fu7f70rwyfhaxflyfszz4gf6avxwc95wc0yjwm6zns9tspycqpgdnc0`). Запуск с ним:
+
+```bash
+age -d -i <закрытый ключ организаторов> -o .env secrets.env.age
+docker compose up --build
+```
+
+Для команды: заполните `.env.jury` (не коммитится) и выполните `make secrets` —
+он пересоздаст `secrets.env.age`.
 
 ## Сидирование
 

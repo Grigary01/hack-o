@@ -20,11 +20,31 @@ def error_response(status, code, detail, headers=None):
                         content=APIError(code=code, detail=detail).model_dump(mode='json'))
 
 
+def describe_llm(config) -> str:
+    """Человекочитаемо, какая модель разбирает запрос (для /api/health и лога старта)."""
+    mode, hybrid = config.parser_mode, config.hybrid_llm
+    if mode in ('offline', 'fixture'):
+        return 'нет (только правила)'
+    cloud = f'облако: {config.groq_model} через {config.cloud_base_url}'
+    local = f'локально: {config.model_name} через Ollama {config.ollama_url}'
+    if mode == 'groq':
+        return cloud + (' (если недоступна — правила)' if getattr(config, 'cloud_rules_fallback', False) else '')
+    if mode == 'ollama':
+        return local
+    return 'правила + ' + (cloud if hybrid == 'groq' else local)
+
+
 def create_app(engine=None,parser=None,config=settings,*,reply_parser=None):
     api = FastAPI(title='О!дин шаг · Адлер',version='0.1.0',
                   description='Доказательный подбор; локальный демонстрационный кабинет отельера.')
     api.state.engine = engine if engine is not None else create_db(config.database_url)
     api.state.parser = parser or make_parser(config)
+    if parser is None:
+        import logging
+        logging.getLogger('uvicorn.error').info('Разбор запросов: %s', describe_llm(config))
+        if config.parser_mode in ('groq',) or (config.parser_mode == 'hybrid' and config.hybrid_llm == 'groq'):
+            if not config.groq_api_key:
+                logging.getLogger('uvicorn.error').warning('LLM_API_KEY не задан: облачная модель работать не будет')
     if parser is None and hasattr(api.state.parser, 'warm_up'):
         # Фоном: старт API не ждёт загрузку Gemma, а первый запрос гостя — уже да.
         import threading
@@ -81,7 +101,7 @@ def create_app(engine=None,parser=None,config=settings,*,reply_parser=None):
     def health(repo=Depends(repository)):
         count = len(repo.hotels())
         return {'status':'ok' if count else 'needs_seed','database':'ok','hotels':count,
-                'parser_mode':api.state.parser.mode,'reply_parser_mode':getattr(api.state.reply_parser,'mode','injected'),
+                'parser_mode':api.state.parser.mode,'llm':describe_llm(config),'reply_parser_mode':getattr(api.state.reply_parser,'mode','injected'),
                 'demo_mode':config.demo_mode,
                 'external_services_checked':False}
 

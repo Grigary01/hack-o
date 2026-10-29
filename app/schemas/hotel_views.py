@@ -23,6 +23,8 @@ class HealthResponse(Contract):
     database: Literal['ok']
     hotels: int
     parser_mode: str
+    # Какая языковая модель разбирает запросы: «облако: claude-opus-5», «локально: gemma3:12b», «нет».
+    llm: str | None = None
     reply_parser_mode: str
     demo_mode: bool
     external_services_checked: Literal[False] = False

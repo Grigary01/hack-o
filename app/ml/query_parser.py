@@ -393,6 +393,10 @@ class HybridQueryParser:
             except Exception:
                 pass
 
+    def current_mode(self) -> str:
+        """'rules_fallback', если LLM была нужна, но недоступна: интерфейс покажет пометку."""
+        return 'rules_fallback' if self.last_source == 'rules_fallback' else self.mode
+
     def rules_are_enough(self, parsed: ParsedHotelQuery) -> bool:
         return not parsed.ignored_terms and self.NOTHING_FOUND not in parsed.unknown_or_ambiguous
 
@@ -463,6 +467,40 @@ class HybridQueryParser:
         return needs
 
 
+class CloudWithRulesFallback:
+    """LLM_PROVIDER=cloud: разбор облачной моделью, а при её недоступности — правилами.
+
+    Облако может отказать в любой момент (сеть, квота, отозванный ключ, сбой прокси);
+    поиск при этом не должен превращаться в ошибку. Подмены нет: разбор правил
+    детерминирован, а current_mode() == 'rules_fallback' показывает интерфейсу,
+    что запрос понят упрощённо, — гость видит пометку. Явный PARSER_MODE=groq
+    (оценка модели, отладка) по-прежнему возвращает ошибку без подстраховки.
+    """
+    mode = 'groq'
+
+    def __init__(self, llm, rules=None):
+        import threading
+        self.llm = llm
+        self.rules = rules or OfflineQueryParser()
+        self.examples = self.rules.examples
+        self.client = llm.client
+        self._local = threading.local()
+
+    def current_mode(self) -> str:
+        return getattr(self._local, 'mode', self.mode)
+
+    def parse(self, text: str) -> ParsedHotelQuery:
+        try:
+            parsed = self.llm.parse(text)
+        except ParserError as exc:
+            import logging
+            logging.getLogger(__name__).warning('Облачная модель недоступна, разбор правилами: %s', exc)
+            self._local.mode = 'rules_fallback'
+            return self.rules.parse(text)
+        self._local.mode = self.mode
+        return parsed
+
+
 def make_parser(config=settings) -> QueryParser:
     """Фабрика выбирает провайдер один раз при создании FastAPI-приложения."""
     if config.parser_mode == 'offline':
@@ -472,6 +510,8 @@ def make_parser(config=settings) -> QueryParser:
     if config.parser_mode == 'ollama':
         return OllamaQueryParser(config)
     if config.parser_mode == 'groq':
+        if getattr(config, 'cloud_rules_fallback', False):
+            return CloudWithRulesFallback(GroqQueryParser(config))
         return GroqQueryParser(config)
     if config.parser_mode == 'hybrid':
         return HybridQueryParser(config)
