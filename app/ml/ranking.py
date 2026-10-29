@@ -8,6 +8,8 @@
 (Maxim, MIT). Исправлены нулевое расстояние, unknown и разделение hard/soft.
 """
 import operator
+from collections.abc import Sequence
+from app.schemas.conflicts import Conflict
 
 from app.features.registry import get_registry
 from app.features.service import resolve_feature
@@ -80,6 +82,7 @@ def rank_variant(
     include_simulated: bool,
     ranking_method: str = 'weighted_v1',
     balance: float = .25,
+    *, conflicts: Sequence[Conflict] = (),
 ) -> HotelSearchResult:
     """Оценивает одну комбинацию «отель + конкретный номер».
 
@@ -98,7 +101,7 @@ def rank_variant(
     # Нарушение «не дальше 500 м» нельзя компенсировать хорошим видом.
     for hard in parsed.hard_constraints:
         subject = hotel.id if hard.scope == 'hotel' else room_id
-        state = resolve_feature(observations, subject, hard.feature_key, include_simulated)
+        state = resolve_feature(observations, subject, hard.feature_key, include_simulated, conflicts=conflicts)
 
         # Важно именно `is None`, не `if not state.value`:
         # 0 метров и False («нет вида») — полноценные известные значения.
@@ -106,7 +109,7 @@ def rank_variant(
         outcome = 'unknown' if result is None else 'matched' if result else 'violated'
         outcomes.append(result)
         definition = get_registry().get(hard.feature_key)
-        conflicts = model_disagreements(observations, hotel.id, subject, hard.feature_key, include_simulated) \
+        disagreements = model_disagreements(observations, hotel.id, subject, hard.feature_key, include_simulated) \
             if hard.scope == 'room' else []
         explanation = describe(definition, state, 'нет надёжных данных') + \
             f' Условие: {hard.operator} {definition.display(hard.value)} {hard.unit or ""}.'.rstrip()
@@ -117,9 +120,9 @@ def rank_variant(
             outcome=outcome,
             status=state.status,
             subject_id=subject,
-            explanation=explanation + ''.join(' ⚠ ' + c['text'] for c in conflicts),
+            explanation=explanation + ''.join(' ⚠ ' + c['text'] for c in disagreements),
             evidence=state.observations,
-            model_conflicts=conflicts,
+            model_conflicts=disagreements,
         ))
 
     # Блок B. Мягкие пожелания задают порядок среди кандидатов.
@@ -128,7 +131,7 @@ def rank_variant(
         if preference.importance == 0:
             continue
         subject = hotel.id if preference.scope == 'hotel' else room_id
-        state = resolve_feature(observations, subject, preference.feature_key, include_simulated)
+        state = resolve_feature(observations, subject, preference.feature_key, include_simulated, conflicts=conflicts)
         total_weight += preference.importance
         match = None if state.value is None else soft_match(state.value, preference)
         matches[preference.feature_key] = match
@@ -137,7 +140,7 @@ def rank_variant(
             score_sum += preference.importance * match
 
         definition = get_registry().get(preference.feature_key)
-        conflicts = model_disagreements(observations, hotel.id, subject, preference.feature_key, include_simulated) \
+        disagreements = model_disagreements(observations, hotel.id, subject, preference.feature_key, include_simulated) \
             if preference.scope == 'room' else []
         explanation = describe(definition, state, 'требует уточнения')
         if preference.derived_from:
@@ -150,9 +153,9 @@ def rank_variant(
             status=state.status,
             subject_id=subject,
             match=match,
-            explanation=explanation + ''.join(' ⚠ ' + c['text'] for c in conflicts),
+            explanation=explanation + ''.join(' ⚠ ' + c['text'] for c in disagreements),
             evidence=state.observations,
-            model_conflicts=conflicts,
+            model_conflicts=disagreements,
         ))
 
     # Блок C. Считаем две отдельные величины; score без coverage вводил бы в заблуждение.
@@ -210,6 +213,7 @@ def rank_hotels(
     include_simulated: bool = False,
     ranking_method: str = 'weighted_v1',
     balance: float = .25,
+    *, conflicts: Sequence[Conflict] = (),
 ) -> dict[str, list[HotelSearchResult]]:
     """Для каждого отеля выбирает лучший допустимый номер и распределяет по группам.
 
@@ -235,7 +239,8 @@ def rank_hotels(
         })
         candidate_room_ids = (rooms or [None]) if room_requested else [None]
         variants = [
-            rank_variant(hotel, room_id, observations, parsed, include_simulated, ranking_method, balance)
+            rank_variant(hotel, room_id, observations, parsed, include_simulated, ranking_method, balance,
+                         conflicts=conflicts)
             for room_id in candidate_room_ids
         ]
 

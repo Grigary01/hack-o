@@ -83,14 +83,16 @@ src/data/
 | Выдача | `POST /api/search` (`include_simulated` = `demo_mode` из `/api/health`), `GET /api/features` |
 | Карточка отеля | `GET /api/hotels/{id}` + результат поиска |
 | «Запросить у отельера» | `POST /api/hotelier/questions` |
-| Кабинет: вопросы | `GET /api/hotels`, `GET /api/hotelier/questions` |
-| Ответ → проверка | `POST /api/hotelier/questions/{qid}/answer` |
+| Кабинет: вопросы | `GET /api/hotels`, `GET /api/hotelier/questions?hotel_id=&status=` (+ `context`: почему вопрос открыт) |
+| Ответ → проверка | `POST /api/hotelier/questions/{qid}/answer`, `GET /api/hotelier/answers/{aid}` |
 | «Подтвердить и опубликовать» / «Изменить ответ» | `POST /api/hotelier/answers/{aid}/confirm` (`accept: true/false`) |
+| Результат публикации после перезагрузки | `GET /api/hotelier/answers/{aid}`, `GET /api/hotelier/conflicts?hotel_id=&status=open` |
 | Характеристики | `GET /api/hotelier/hotels/{id}/facts` |
 | Номера | `GET /api/hotels/{id}` (наблюдения уровня `room`) |
 
 В api-режиме выдача — реальные отели Адлера из OSM, ответы отельера — номера комнат
-(«В номерах 301–305 есть вид на море»), как того требует bounded-парсер бэкенда.
+(«В номерах 301–305 есть шторы blackout»), как того требует bounded-парсер бэкенда.
+Ошибки API приходят как `{code, detail}`; `409 state_conflict` показывается как «состояние уже изменилось».
 
 ## Демо-сценарий (mock)
 
@@ -112,12 +114,16 @@ src/data/
 
 ## Docker
 
-Основной `docker-compose.yml` не меняется. React-фронт добавляется override-файлом:
+Всё приложение — бэкенд, React и Streamlit — поднимается из корня репозитория одной командой:
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.web.yml up --build
-# React (api): http://localhost:8081, Streamlit как раньше: http://localhost:8080
+docker compose up --build
+# React: http://localhost:8080   Streamlit: http://localhost:8501   API: http://localhost:8000/docs
 ```
+
+Сервис `web` собирается из `web/Dockerfile` (`VITE_DATA_MODE=api`), раздаёт статику через nginx
+и проксирует `/api`, `/docs`, `/openapi.json`, `/health` в сервис `backend` (`web/nginx.conf`).
+Порт меняется переменной `WEB_PORT` в корневом `.env`.
 
 Только демо, без бэкенда:
 
@@ -126,7 +132,7 @@ docker build --build-arg VITE_DATA_MODE=mock -t ostrovok-web:mock web
 docker run --rm -p 8082:8080 ostrovok-web:mock     # http://localhost:8082
 ```
 
-`web/` и `frontend/design/` исключены из контекста сборки образа бэкенда (`.dockerignore`).
+`web/` не входит в контекст сборки образа бэкенда (allowlist в корневом `.dockerignore`).
 
 ## Что ждёт контракта бэкенда
 
@@ -139,21 +145,22 @@ docker run --rm -p 8082:8080 ostrovok-web:mock     # http://localhost:8082
 | **Направления кроме Адлера** (Батуми из макета) | `region` только `Adler`, иначе `needs_clarification` | mock: только Батуми; api: поле направления заблокировано |
 | **Даты и гости** | `SearchRequest` их не принимает | mock: ночи и сумма; api: подпись «Пока не влияет на подбор» |
 | **Категории номеров** («Улучшенный», «Стандартный») | только номера комнат (`room_number` = цифры) | mock: категории; api: «Номера 301–303» |
-| **Blackout / затемнение** | ключа `blackout_curtains` нет в `app/features/registry.yaml` (в `docs/FEATURE_REGISTRY.md` — только пример добавления); `POST /api/hotelier/questions` → 422 «Неизвестная характеристика»; офлайн-разбор кладёт «blackout», «шторами» в `ignored_terms` | mock: сценарий из макета; api: чип «Не учтено: blackout» |
+| **Blackout по категориям** | `blackout_curtains` есть в реестре (вопрос, поиск, разбор ответа), но только по номерам комнат | api: «Шторы blackout — есть в номере 301»; категории — только в mock |
 | **«Магазин 24/7»** | есть `night_open_places_500m` (любые места, открытые в 01:00) и `nearest_night_pharmacy_m`, отдельного «магазина» нет | api: «Открыто ночью рядом — N мест» |
 | **Время пешком** | только метры | фронт считает ≈ минуты при 80 м/мин |
-| **Получить ответ по id** | нет `GET /api/hotelier/answers/{id}` | ответ, созданный во вкладке, хранится в `sessionStorage` |
 | **Правка строки разбора** перед публикацией | `ConfirmRequest` = только `accept` | mock: «Есть · изменить»; api: «Изменить ответ» отклоняет pending и возвращает текст в редактор |
 | **Черновики ответа** | нет | `localStorage` браузера, с подписью «сохранён в этом браузере» |
 | **Фото к ответу** | нет загрузки | превью только локально + предупреждение, что не отправляется |
 | **Уведомить гостя об ответе** | нет подписки | mock: «Запросить и уведомить»; api: «Запросить у отельера» (только вопрос) |
 | **Авторизация отельера** | кабинет — симулятор в `DEMO_MODE`, без привязки к отелю | выбор отеля в боковой панели «демо без входа» |
 | **Фото, адрес, звёзды, рейтинг отелей** | только OSM-теги | SVG-иллюстрации, подпись «фото не подключены» |
-| **Фильтр вопросов по отелю** | `GET /api/hotelier/questions` отдаёт все | фильтрация на клиенте |
 | **Карта с подложкой** | координаты есть, тайлов нет (офлайн-демо) | схема по координатам, море схематично |
 
+Уже закрыто бэкендом: `blackout_curtains`, `GET /api/hotelier/answers/{id}`, фильтры очереди вопросов.
+
 Есть в API, но пока не вынесено в этот UI: проверка расчётных фактов отельером
-(`POST /api/hotelier/facts/review`), разрешение конфликтов оператором (`POST /api/hotelier/conflicts/{id}/resolve`),
+(`POST /api/hotelier/facts/review`), разрешение конфликтов оператором (`GET /api/hotelier/conflicts`,
+`POST /api/hotelier/conflicts/{id}/resolve`),
 веса пожеланий и `ranking_method`, отчёты среды (`/api/hotels/{id}/environment`). Они доступны в Streamlit.
 
 ## Доступность и адаптивность

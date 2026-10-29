@@ -1,6 +1,6 @@
 /**
  * Формы ответов FastAPI. Сверено с app/api/*, app/schemas/* и /openapi.json
- * (ветка development/adler-mvp, 2026-10-29). При изменении бэкенда правится
+ * (слияние main + grisha_hack, 2026-10-29). При изменении бэкенда правится
  * только этот файл и mappers.ts — компоненты не зависят от DTO.
  */
 
@@ -137,14 +137,27 @@ export interface SearchResponseDto {
 export interface HotelDetailDto {
   hotel: HotelDto;
   observations: ObservationDto[];
-  conflicts: unknown[];
+  conflicts: ConflictDto[];
 }
 
 export interface HealthDto {
   status: 'ok' | 'needs_seed';
   hotels: number;
   parser_mode: string;
+  reply_parser_mode: string;
   demo_mode: boolean;
+}
+
+/** Ошибка API: { code, detail }; detail совместим с прежним форматом FastAPI. */
+export interface ApiErrorDto {
+  code: 'not_found' | 'invalid_request' | 'state_conflict' | 'service_unavailable' | 'invalid_model_output' | 'forbidden' | 'http_error';
+  detail: unknown;
+}
+
+export interface QuestionContextDto {
+  reasons: ('unknown' | 'stale' | 'conflicted' | 'pending_answer' | 'unparsed_answer' | 'rejected_answer')[];
+  subject_ids: string[];
+  review_answer_id: string | null;
 }
 
 export interface QuestionDto {
@@ -152,8 +165,32 @@ export interface QuestionDto {
   hotel_id: string;
   feature_key: string;
   text: string;
-  status: 'open' | 'answered' | string;
+  status: 'open' | 'answered';
   created_at: string;
+  updated_at: string;
+  context: QuestionContextDto;
+}
+
+export interface ConflictDto {
+  id: string;
+  hotel_id: string;
+  subject_id: string;
+  feature_key: string;
+  left_id: string;
+  right_id: string;
+  created_at: string;
+  /** withhold_and_ask_hotelier — два ответа противоречат; review:<причина> — ответ против расчёта. */
+  policy: string;
+  status: 'open' | 'resolved';
+  resolution: { selected_observation_id: string; reason: string; resolved_at: string; operator_id: string } | null;
+}
+
+export interface ModelReviewDto {
+  room_id: string;
+  reason: 'model_sees_none' | 'below_model_min_floor';
+  text: string;
+  hotelier_observation_id: string;
+  model_observation_id: string;
 }
 
 export interface RoomClaimDto {
@@ -177,11 +214,12 @@ export interface AnswerDto {
 export interface ConfirmResponseDto {
   answer_id: string;
   status: 'confirmed' | 'rejected';
-  idempotent?: boolean;
-  observation_ids?: string[];
-  model_review?: { room_id: string; reason?: string; text?: string }[];
-  conflicts?: unknown[];
-  source_type?: string;
+  idempotent: boolean;
+  observation_ids: string[];
+  conflicts: ConflictDto[];
+  source_type: 'hotelier_simulated' | null;
+  question: QuestionDto;
+  model_review: ModelReviewDto[];
 }
 
 export interface FactDto {
@@ -199,5 +237,5 @@ export interface FactDto {
 
 export interface FactsResponseDto {
   facts: FactDto[];
-  conflicts: unknown[];
+  conflicts: ConflictDto[];
 }

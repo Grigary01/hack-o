@@ -24,6 +24,7 @@
 | night_open_places_500m | number count / hotel | night_amenities | 90 дней | .5 |
 | nearest_night_pharmacy_m | number m / hotel | night_amenities | 90 дней | .5 |
 | quiet_side_potential | low/medium/high / hotel | facade_noise | 90 дней | .6 |
+| blackout_curtains | boolean / room | hotelier | 180 дней | .5 |
 
 Горы — те же лучи viewshed, цель — видимый рельеф выше 300 м в пределах 20 км (главный хребет дальше
 не моделируется). Путь до пляжа — тот же маршрут, что для расстояния: набор высоты туда/обратно по
@@ -43,7 +44,7 @@ High quietness при risk<.25, medium при <.6, иначе low. Это экс
 
 `nightlife_distance_m` — по прямой в локальной проекции, до ближайшего **известного** заведения;
 не пеший путь. Отсутствие заведений в данных даёт unknown, не «баров нет».
-`sea_view`/`sunset_view`/`soundproofing` — утверждения отельера о конкретных номерах.
+`sea_view`/`sunset_view`/`soundproofing`/`blackout_curtains` — утверждения отельера о конкретных номерах.
 Расчётные `*_potential`/`*_min_floor` относятся к зданию целиком: «с какого этажа и с какой стороны
 в принципе видно». Номера комнат и реальные окна модель не знает — это и есть вопрос отельеру.
 
@@ -97,11 +98,13 @@ High quietness при risk<.25, medium при <.6, иначе low. Это экс
 
 ## Добавление без изменения Python-кода
 
-Добавьте в YAML (и перезапустите backend):
+`blackout_curtains` уже включён в основной реестр. Его полный путь описан в
+[REGISTRY_EXTENSION](REGISTRY_EXTENSION.md). Следующий boolean room-признак
+можно добавить в YAML, например:
 
 ```yaml
-blackout_curtains:
-  label: Плотные шторы
+reading_lamp:
+  label: Лампа для чтения
   description: Утверждение отельера о конкретном номере
   type: boolean
   scope: room
@@ -109,15 +112,22 @@ blackout_curtains:
   provider: hotelier
   ttl_days: 180
   default_weight: 0.5
-  aliases: [плотные шторы]
-  question: В каких конкретных номерах есть или нет плотных штор?
+  aliases: [лампа для чтения, лампы для чтения]
+  question: В каких конкретных номерах есть или нет лампы для чтения?
 ```
 
-Характеристика появится в `/api/features` и кабинете. Ответ «В номере 501 есть плотные шторы»
+Перезапустите backend и выполните `python -m scripts.seed_demo`, чтобы обновить
+снимок определений в БД; повторный seed сохраняет ответы. Характеристика появится
+в `/api/features` и кабинете. Ответ «В номере 501 есть лампа для чтения»
 разбирается существующим provider, сохраняется после confirmation. Structured search принимает новый ключ;
-Ollama получает обновлённый реестр. Для offline fixture-парсера добавьте отдельный явный пример запроса:
+Ollama/Groq получают обновлённые описания, aliases и JSON-схемы. Для offline fixture-парсера добавьте отдельный явный пример запроса:
 он сознательно не интерпретирует произвольный текст. Новый provider по имени сам не запускается — нужен whitelist.
 
-Расширение этим способом проверено `tests/test_feature_agent.py`. Для нового способа вычисления
+Rules-парсер ищет aliases по границам слов; «неплотные шторы» не совпадают с
+«плотные шторы». Неизвестные/условные фразы требуют уточнения; цитаты и claims
+проверяются перед сохранением и подтверждением. Синонимы и словоформы нужно указать явно.
+
+Расширение этим способом проверено `tests/test_feature_agent.py` (временный `reading_lamp`)
+и `tests/test_registry_extension.py` (полный путь `blackout_curtains`). Для нового способа вычисления
 необходим реальный calculator, его ToolSpec и тесты; текст YAML не создаёт геоданные.
 Пример такого calculator — `viewshed` (выше): четыре YAML-ключа + один provider.

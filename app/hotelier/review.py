@@ -3,7 +3,8 @@
 Ничего не перезаписывается. Подтверждение или исправление отельера — новое
 свидетельство (в демо — hotelier_simulated). Если оно расходится с расчётом,
 репозиторий фиксирует конфликт, и поиск не берёт ни одну версию, пока оператор
-не решит. Решение — тоже свидетельство (operator_decision) с выбранной версией,
+не решит. Решение записывается в таблицу решений по конфликтам (одно на конфликт) и,
+для review-расхождений, как свидетельство operator_decision с выбранной версией,
 отвергнутой версией и причиной; история остаётся целиком.
 """
 import uuid
@@ -74,7 +75,12 @@ def review_fact(repo, hotel_id, feature_key, verdict, value=None, comment=''):
             'conflicts': [c for c in repo.conflicts(hotel_id) if observation.id in (c['left_id'], c['right_id'])]}
 
 
-def resolve_conflict(repo, conflict_id, chosen_observation_id, reason):
+def record_operator_decision(repo, conflict_id, chosen_observation_id, reason):
+    """Свидетельство operator_decision для review-конфликта.
+
+    Выбор и идемпотентность проверяет repo.resolve_conflict (таблица решений);
+    здесь — значение, которое увидят поиск и кабинет.
+    """
     conflict = repo.conflict(conflict_id)
     if chosen_observation_id not in (conflict['left_id'], conflict['right_id']):
         raise ValueError('Выберите одну из двух версий этого конфликта')

@@ -252,6 +252,8 @@ function questionView(state: MockState, id: string): HotelierQuestion {
     createdAt: q.createdAt,
     answerHint: FEATURE_COPY.hint,
     answerPlaceholder: FEATURE_COPY.placeholder,
+    pendingAnswerId: null,
+    statusNote: null,
   };
 }
 

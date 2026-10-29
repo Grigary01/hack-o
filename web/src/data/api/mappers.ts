@@ -64,6 +64,14 @@ const FEATURE_COPY: Record<string, FeatureCopy> = {
       example: 'В номерах 401–405 есть вид на закат. В номере 102 нет вида на закат.',
     },
   },
+  blackout_curtains: {
+    name: 'Шторы blackout',
+    question: {
+      title: 'Есть ли в номерах шторы blackout?',
+      why: 'Гости ищут номер с затемнением. Пока это условие не подтверждено — его нельзя рассчитать по карте.',
+      example: 'В номерах 301–305 есть шторы blackout. В номере 101 нет штор blackout.',
+    },
+  },
   sea_view_potential: { name: 'Море из окон здания (расчёт)' },
   sea_view_min_floor: { name: 'Море видно с этажа' },
   sunset_view_potential: { name: 'Закат из окон здания (расчёт)' },
@@ -76,6 +84,7 @@ const FEATURE_COPY: Record<string, FeatureCopy> = {
   nearest_night_pharmacy_m: { name: 'Ночная аптека' },
   mountain_view_potential: { name: 'Вид на горы' },
   mountain_view_min_floor: { name: 'Горы видны с этажа' },
+  quiet_side_potential: { name: 'Тихая сторона здания' },
 };
 
 const OPERATORS: Record<HardConstraintDto['operator'], string> = {
@@ -265,6 +274,21 @@ function sentences(text: string): string[] {
     .filter(Boolean);
 }
 
+const REASON_NOTES: Partial<Record<QuestionDto['context']['reasons'][number], string>> = {
+  pending_answer: 'Ответ отправлен, но ещё не проверен',
+  unparsed_answer: 'Часть ответа не удалось разобрать',
+  rejected_answer: 'Прошлый разбор отклонён — нужен новый ответ',
+  conflicted: 'Источники расходятся — нужно уточнение',
+  stale: 'Сведения устарели — подтвердите заново',
+};
+
+function questionNote(q: QuestionDto): string | null {
+  for (const reason of ['unparsed_answer', 'pending_answer', 'rejected_answer', 'conflicted', 'stale'] as const) {
+    if (q.context.reasons.includes(reason)) return REASON_NOTES[reason] ?? null;
+  }
+  return null;
+}
+
 export function mapQuestion(q: QuestionDto, hotelName: string, registry: FeatureRegistryDto): HotelierQuestion {
   const definition = registry[q.feature_key];
   const copy = FEATURE_COPY[q.feature_key];
@@ -290,6 +314,8 @@ export function mapQuestion(q: QuestionDto, hotelName: string, registry: Feature
     answerHint:
       'Разбор ответа пока понимает простые предложения с номерами комнат. Категории, сезоны и условия («кроме», «летом») не распознаются — их нужно переформулировать.',
     answerPlaceholder: copy?.question?.example ?? `В номерах 301–305 есть ${lower}.`,
+    pendingAnswerId: q.context.reasons.includes('pending_answer') ? q.context.review_answer_id : null,
+    statusNote: questionNote(q),
   };
 }
 

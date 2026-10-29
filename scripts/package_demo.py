@@ -6,8 +6,9 @@ from app.core.config import ROOT
 
 
 ROOT_FILES = ('.env.example', '.gitignore', 'LICENSE', 'README.md', 'main.py',
-              'THIRD_PARTY_NOTICES.md', 'pyproject.toml', 'requirements.lock')
-PROJECT_DIRS = ('app', 'config', 'frontend', 'scripts', 'tests', 'data', 'docs', 'legacy')
+              'THIRD_PARTY_NOTICES.md', 'pyproject.toml', 'requirements.lock', 'alembic.ini',
+              'Dockerfile', '.dockerignore', 'compose.yaml')
+PROJECT_DIRS = ('app', 'config', 'frontend', 'scripts', 'tests', 'data', 'docs', 'legacy', 'migrations', 'docker', 'web')
 
 
 def project_files():
@@ -17,6 +18,7 @@ def project_files():
         files.extend(path for path in (ROOT / directory).rglob('*')
                      if path.is_file() and not path.is_symlink()
                      and '__pycache__' not in path.parts
+                     and not {'node_modules', 'dist'} & set(path.parts)
                      and path.name != '.DS_Store' and path.suffix not in ('.pyc', '.pyo')
                      and not path.name.startswith('.'))
     return sorted(files)

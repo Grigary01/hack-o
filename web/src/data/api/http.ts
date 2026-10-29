@@ -15,6 +15,7 @@ function detailText(detail: unknown): string | null {
       .filter(Boolean)
       .join('; ');
   }
+  if (detail && typeof detail === 'object' && 'message' in detail) return String((detail as { message: unknown }).message);
   return null;
 }
 
@@ -45,9 +46,16 @@ export async function request<T>(method: 'GET' | 'POST', path: string, body?: un
   }
 
   if (!response.ok) {
-    const detail =
-      payload && typeof payload === 'object' && 'detail' in payload ? detailText((payload as { detail: unknown }).detail) : null;
+    // Бэкенд отвечает { code, detail } (app/schemas/errors.py); detail — строка или список ошибок валидации.
+    const body = payload && typeof payload === 'object' ? (payload as { code?: string; detail?: unknown }) : null;
+    const detail = body && 'detail' in body ? detailText(body.detail) : null;
     if (response.status === 404) throw new DataError('not_found', detail ?? 'Не найдено', 404);
+    if (response.status === 409 || body?.code === 'state_conflict') {
+      throw new DataError('state_conflict', detail ?? 'Состояние уже изменилось — обновите страницу.', 409);
+    }
+    if (body?.code === 'service_unavailable') {
+      throw new DataError('network', detail ?? 'Сервис разбора временно недоступен.', response.status);
+    }
     // Vite-прокси отвечает 5xx без JSON-detail, если uvicorn не запущен.
     if (response.status >= 500 && !detail) {
       throw new DataError('network', 'Бэкенд не отвечает через прокси /api. Проверьте, что FastAPI запущен.', response.status);

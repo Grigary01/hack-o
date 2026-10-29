@@ -46,8 +46,8 @@ def test_confirm_keeps_value_correct_creates_conflict_and_operator_resolves(clie
     conflict = corrected['conflicts'][0]
     tick(clock)
     decision = client.post(f'/api/hotelier/conflicts/{conflict["id"]}/resolve', json={
-        'chosen_observation_id': corrected['observation_id'], 'reason': 'Деревья модель не учитывает'}).json()
-    assert decision['value'] == 'none'
+        'selected_observation_id': corrected['observation_id'], 'reason': 'Деревья модель не учитывает'}).json()
+    assert decision['current']['value'] == 'none' and decision['resolution']['reason'] == 'Деревья модель не учитывает'
     resolved = facts(client)['sea_view_potential']
     assert resolved['value'] == 'none' and resolved['status'] != 'conflicted'
     listed = client.get(f'/api/hotelier/hotels/{OFELIA}/facts').json()['conflicts']
@@ -69,9 +69,12 @@ def test_resolution_validates_choice_and_correction_needs_value(client):
     corrected = client.post('/api/hotelier/facts/review', json={
         'hotel_id': OFELIA, 'feature_key': 'sea_view_potential', 'verdict': 'correct', 'value': 'none'}).json()
     conflict = corrected['conflicts'][0]
-    other = client.post(f'/api/hotelier/conflicts/{conflict["id"]}/resolve',
-                        json={'chosen_observation_id': 'not-in-conflict', 'reason': 'ошибка'})
-    assert other.status_code == 422
+    path = f'/api/hotelier/conflicts/{conflict["id"]}/resolve'
+    missing = client.post(path, json={'selected_observation_id': 'not-in-conflict', 'reason': 'ошибка'})
+    assert missing.status_code == 404  # такого свидетельства нет вовсе
+    foreign = next(o['id'] for o in client.get(f'/api/hotels/{OFELIA}').json()['observations']
+                   if o['id'] not in (conflict['left_id'], conflict['right_id']))
+    assert client.post(path, json={'selected_observation_id': foreign, 'reason': 'ошибка'}).status_code == 422
 
 
 def test_operator_can_side_with_model_on_room_claim(client, after_viewshed_snapshot):
@@ -83,7 +86,7 @@ def test_operator_can_side_with_model_on_room_claim(client, after_viewshed_snaps
     model_id = next(i for i in (review['left_id'], review['right_id']) if not i.startswith(a['id']))
     tick(clock)
     decision = client.post(f'/api/hotelier/conflicts/{review["id"]}/resolve',
-                           json={'chosen_observation_id': model_id, 'reason': 'Со 2-го этажа море закрывает дом'}).json()
-    assert decision['value'] is False
+                           json={'selected_observation_id': model_id, 'reason': 'Со 2-го этажа море закрывает дом'}).json()
+    assert decision['current']['value'] is False  # утверждение о номере не подтверждено
     body = client.post('/api/search', json={'text': 'Нужен номер обязательно с видом на море', 'include_simulated': True}).json()
     assert OFELIA not in [r['hotel']['id'] for r in body['matched']]

@@ -112,7 +112,16 @@ describe('API mappers', () => {
 
   it('строит вопрос отельеру из текста бэкенда', () => {
     const q = mapQuestion(
-      { id: 'q1', hotel_id: 'h', feature_key: 'sea_view', text: 'В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.', status: 'open', created_at: '' },
+      {
+        id: 'q1',
+        hotel_id: 'h',
+        feature_key: 'sea_view',
+        text: 'В каких конкретно номерах есть или нет вида на море? Укажите номера и этаж, если известен.',
+        status: 'open',
+        created_at: '',
+        updated_at: '',
+        context: { reasons: ['pending_answer', 'unparsed_answer'], subject_ids: [], review_answer_id: 'a1' },
+      },
       'Островок',
       registry,
     );
@@ -120,5 +129,8 @@ describe('API mappers', () => {
     expect(q.ask).toBe('В каких конкретно номерах есть или нет вида на море?');
     expect(q.prompt).toBe('Укажите номера и этаж, если известен.');
     expect(q.featureShort).toBe('Вид на море');
+    // context вопроса: к неподтверждённому разбору можно вернуться, причина видна отельеру.
+    expect(q.pendingAnswerId).toBe('a1');
+    expect(q.statusNote).toBe('Часть ответа не удалось разобрать');
   });
 });

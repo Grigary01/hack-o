@@ -2,25 +2,31 @@
 
 Base URL: `http://127.0.0.1:8000`. OpenAPI: `/openapi.json`, Swagger: `/docs`.
 JSON-контракты: `app/schemas/*`; примеры фактических ответов — `docs/examples/`.
+Актуальные типы, коды ошибок и экран конфликтов:
+[API_FRONTEND_INTEGRATION](API_FRONTEND_INTEGRATION.md).
+Переносимые файлы: [OpenAPI](examples/backend_api_openapi.json),
+[JSON-примеры](examples/backend_api_examples.json).
 
 | Метод и путь | Вход | Результат |
 |---|---|---|
 | GET /health | — | 200 `{"status":"ok","hotels":N}` при заполненной базе, иначе 503 `needs_seed`; healthcheck compose |
 | GET /api/health | — | DB/seed count, parser_mode, demo_mode; внешние API не проверяет |
 | GET /api/features | — | декларации YAML |
-| GET /api/demo-queries | — | 14 demo-формулировок (свободный текст тоже разбирается в режиме offline) |
+| GET /api/demo-queries | — | 15 demo-формулировок (свободный текст тоже разбирается в режиме offline) |
 | POST /api/parse-query | `text` | ParsedHotelQuery |
 | POST /api/search | text **или** parsed, weights, include_simulated | matched / needs_verification / excluded + trace |
 | GET /api/hotels | — | список Hotel |
 | GET /api/hotels/{id} | OSM ID с префиксом `osm:type:id` | hotel, observations, conflicts |
 | GET /api/hotels/{id}/evidence | — | история, current_real/current_demo, conflicts |
-| GET /api/hotelier/questions | — | очередь вопросов |
+| GET /api/hotelier/questions | hotel_id?, status=open/answered? | очередь с context и updated_at; TTL пересчитывается до фильтра |
 | POST /api/hotelier/questions | hotel_id, feature_key | вопрос (идемпотентно) |
 | POST /api/hotelier/questions/{qid}/answer | text | pending answer + extraction |
-| POST /api/hotelier/answers/{aid}/confirm | accept: boolean | confirmed/rejected + IDs фактов, конфликты, `model_review` (расхождения с расчётом) |
+| GET /api/hotelier/answers/{aid} | — | сохранённый HotelierAnswer |
+| POST /api/hotelier/answers/{aid}/confirm | accept: boolean | AnswerConfirmation: статус, те же ID при повторе, конфликты, вопрос, `model_review` (расхождения с расчётом по зданию) |
 | GET /api/hotelier/hotels/{id}/facts | — | расчётные факты об отеле с объяснением + конфликты с решениями |
 | POST /api/hotelier/facts/review | hotel_id, feature_key, verdict confirm/correct, value?, comment | новое свидетельство отельера; расхождение → конфликт `review:hotelier_correction` |
-| POST /api/hotelier/conflicts/{id}/resolve | chosen_observation_id, reason | решение оператора (`operator_decision`), история сохраняется |
+| GET /api/hotelier/conflicts | hotel_id?, status=open/resolved? | ConflictDetail[] с обеими версиями и решением |
+| POST /api/hotelier/conflicts/{id}/resolve | selected_observation_id, reason | одно решение на конфликт (повтор идемпотентен, другой выбор — 409); для `review:*` дополнительно свидетельство `operator_decision` |
 
 ## Пример
 
@@ -48,16 +54,25 @@ score=1.0, coverage=.6, ranking_score=.6. Совпадение названия 
 - `status=needs_clarification` — нормальный HTTP 200, но списки результатов пусты. UI должен показать вопрос.
 - 422: невалидные типы, scope/unit, неизвестный key, некорректные веса, попытка подтвердить неполный разбор.
 - 404: отсутствующий hotel/question/answer.
-- 503: база не заполнена.
-- 502: недоступна Ollama или её результат не прошёл валидацию.
+- 409: несовместимое повторное решение или подтверждение.
+- 503: база не заполнена либо модель/ключ/сервис недоступны.
+- 502: результат модели не прошёл валидацию или провайдер отклонил контракт.
 - 403: кабинет/симуляция отключены в `DEMO_MODE=false`.
+
+Ошибки содержат `code` и прежний `detail` (строка или список ошибок Pydantic).
 
 Числа не принимают bool, NaN/Infinity запрещены. Boolean/category поддерживают только = и !=;
 числовые — <, <=, =, >=, >, !=. Км нормализуются в метры, другие единицы отвергаются.
 Вес можно менять только у soft preference из текущего запроса. Text и parsed одновременно запрещены.
 
-Локальный API не имеет авторизации, рассчитан на bind **127.0.0.1**. Production размещение,
-контроль владельца отеля и миграции БД — следующие задачи, не реализованные функции.
+Локальный API не имеет авторизации, рассчитан на bind **127.0.0.1**. Production размещение
+и контроль владельца отеля — следующие задачи. Миграции SQLite реализованы:
+[инструкция](MIGRATIONS.md). Контракт решения конфликтов, ошибки 404/409/422,
+JSON-примеры и заглушки для участников: [CONFLICT_INTEGRATION](CONFLICT_INTEGRATION.md).
+Жизненный цикл вопросов, причины открытия и клиент очереди:
+[QUESTION_INTEGRATION](QUESTION_INTEGRATION.md).
+Заменяемый обработчик ответа отельера, схема и ошибки 502/503:
+[REPLY_PARSER_INTEGRATION](REPLY_PARSER_INTEGRATION.md).
 
 ## Расширение 26 октября: среда, модели, ранжирование
 
@@ -68,11 +83,11 @@ score=1.0, coverage=.6, ranking_score=.6. Совпадение названия 
   при недоступности upstream — provider_error, без ложного «станций нет».
 - POST /api/search принимает ranking_method: balanced_v2 (default) или weighted_v1,
   balance в [0,1] (default .25). В ответе ranking_interval, group_scores,
-  pareto_dominated. Hard/unknown/same-room политика не изменена.
+  pareto_dominated; с этапа 5 также фактический balance. Hard/unknown/same-room политика не изменена.
 - SoftPreference.utility: null или {kind: lower|higher|target_range,
   ideal_min, ideal_max, tolerance}. Числа в единицах фичи, tolerance > 0.
-- PARSER_MODE=groq: облачный parser; его ошибки возвращаются как HTTP 502
-  с сообщением о первопричине, без подмены запроса fixture.
+- PARSER_MODE=groq: облачный parser; невалидный вывод — 502, отсутствие ключа,
+  отказ сети/модели/квоты — 503. Запрос не подменяется fixture.
 
 Схемы и примеры: [MODELS_AND_RANKING](MODELS_AND_RANKING.md),
 [ENVIRONMENT](ENVIRONMENT.md). HTTP-запуска произвольных Java-скриптов нет.

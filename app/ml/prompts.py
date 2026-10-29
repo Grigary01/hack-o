@@ -39,7 +39,7 @@ utility={kind:target_range,ideal_min:300,ideal_max:500,tolerance:200}, desired=n
     # 2. Динамический реестр даёт модели ключи, типы, scope, описания и default weights.
     # После расширения YAML не нужно поддерживать отдельный список фич в промпте.
     definitions = {k:{key:value for key,value in v.model_dump().items()
-                       if key in ('label','type','unit','scope','choices','default_weight')}
+                       if key in ('label','description','aliases','type','unit','scope','choices','default_weight')}
                    for k,v in get_registry().definitions.items()}
     # Схема уже передаётся в format/response_format. Не дублируем её в system:
     # это экономит входные токены ограниченной бесплатной квоты.

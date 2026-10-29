@@ -2,6 +2,8 @@
 import streamlit as st
 import streamlit.components.v1 as components
 from frontend.api_client import APIClient
+from frontend.hotelier_view import (render_question_state, render_conflicts,
+                                    finish_owner_action, render_owner_feedback)
 from frontend.map_view import MapEngine, get_routes, offline_map
 from frontend.environment_view import render_environment
 
@@ -125,9 +127,10 @@ with search_tab:
                     weights[key]=column.slider(definitions[key]['label'],0.,1.,float(pref['importance']),.1,key='weight_'+key)
                     if pref.get('derived_from'):
                         column.caption('Расчёт по геоданным к пожеланию «'+definitions[pref['derived_from']]['label'].lower()+'»')
-            signature=(tuple(sorted(weights.items())),simulated,ranking_method)
+            signature=(tuple(sorted(weights.items())),simulated,ranking_method,response.get('balance',.25))
             if signature!=st.session_state.get('weight_signature'):
-                updated=call(api.post,'/api/search',{'parsed':response['parsed'],'weights':weights,'include_simulated':simulated,'ranking_method':ranking_method})
+                updated=call(api.post,'/api/search',{'parsed':response['parsed'],'weights':weights,'include_simulated':simulated,
+                                                   'ranking_method':ranking_method,'balance':response.get('balance',.25)})
                 if updated:
                     response=updated
                     st.session_state['response']=updated
@@ -218,7 +221,8 @@ with owner_tab:
                     st.write('• '+describe(o))
                     st.caption(o['evidence']['details'].get('explanation') or o['evidence'].get('raw_excerpt') or '')
                 if conflict.get('resolution'):
-                    st.success(f'Решение: {conflict["resolution"]["value"]} — {conflict["resolution"]["reason"]}')
+                    selected=by_id.get(conflict['resolution']['selected_observation_id'])
+                    st.success(f'Решение: {selected["value"] if selected else "—"} — {conflict["resolution"]["reason"]}')
                 elif versions:
                     with st.form(f'resolve_{conflict["id"]}'):
                         shown={describe(o):o['id'] for o in versions}
@@ -226,24 +230,34 @@ with owner_tab:
                         reason=st.text_input('Причина решения')
                         if st.form_submit_button('Разрешить конфликт'):
                             if call(api.post,f'/api/hotelier/conflicts/{conflict["id"]}/resolve',
-                                    {'chosen_observation_id':chosen,'reason':reason}):
+                                    {'selected_observation_id':chosen,'reason':reason}):
                                 st.rerun()
     st.subheader('Вопросы агента о номерах')
     keys=[k for k,d in definitions.items() if d['provider']=='hotelier']
     feature_key=st.selectbox('О чём спросить',keys,format_func=lambda k:definitions[k]['label'])
     if st.button('Сформировать вопрос'):
-        call(api.post,'/api/hotelier/questions',{'hotel_id':hotel_id,'feature_key':feature_key})
+        created=call(api.post,'/api/hotelier/questions',{'hotel_id':hotel_id,'feature_key':feature_key})
+        if created:
+            st.session_state['owner_question_id']=created['id']
     questions=call(api.get,'/api/hotelier/questions') or []
+    evidence_hotel_id=hotel_id
     if questions:
-        qid=st.selectbox('Вопросы агента',[q['id'] for q in questions],format_func=lambda k:next(names[q['hotel_id']]+' · '+definitions[q['feature_key']]['label'] for q in questions if q['id']==k))
+        qid=st.selectbox('Вопросы агента',[q['id'] for q in questions],format_func=lambda k:next(names[q['hotel_id']]+' · '+definitions[q['feature_key']]['label'] for q in questions if q['id']==k),key='owner_question_id')
         question=next(q for q in questions if q['id']==qid)
+        evidence_hotel_id=question['hotel_id']
+        render_owner_feedback(evidence_hotel_id)
         st.write(question['text'])
+        render_question_state(question)
         reply=st.text_area('Ответ своими словами',placeholder='В номерах 301–305 вид на море, все на 3-м этаже.')
         if st.button('Разобрать ответ'):
+            st.session_state.pop('pending_answer',None)
             answer=call(api.post,f'/api/hotelier/questions/{qid}/answer',{'text':reply})
             if answer:
                 st.session_state['pending_answer']=answer
         answer=st.session_state.get('pending_answer')
+        if answer and (answer['question_id']!=qid or answer['text']!=reply):
+            st.session_state.pop('pending_answer',None)
+            answer=None
         if answer:
             st.write('**Проверьте извлечённые номера и значения**')
             st.json(answer['extraction'])
@@ -255,13 +269,19 @@ with owner_tab:
             if accepted or rejected:
                 result=call(api.post,f'/api/hotelier/answers/{answer["id"]}/confirm',{'accept':accepted})
                 if result:
-                    st.success('Решение сохранено. Повторите поиск с включённой симуляцией.')
-                    st.json(result,expanded=False)
                     del st.session_state['pending_answer']
-                    st.session_state['weight_signature']=None
-    with st.expander('История свидетельств выбранного отеля'):
+                    finish_owner_action(api,question['hotel_id'],result)
+    render_conflicts(api,evidence_hotel_id,names[evidence_hotel_id],definitions,call)
+    with st.expander('История свидетельств · '+names[evidence_hotel_id]):
         if st.button('Загрузить историю'):
-            st.json(call(api.get,f'/api/hotels/{hotel_id}/evidence'),expanded=False)
+            data=call(api.get,f'/api/hotels/{evidence_hotel_id}/evidence')
+            if data is not None:
+                cache=dict(st.session_state.get('owner_evidence',{}))
+                cache[evidence_hotel_id]=data
+                st.session_state['owner_evidence']=cache
+        data=st.session_state.get('owner_evidence',{}).get(evidence_hotel_id)
+        if data is not None:
+            st.json(data,expanded=False)
 
 st.caption('Данные: © OpenStreetMap contributors · ODbL. Расчёты оценочные; наличие отеля в OSM не подтверждает текущую работу или доступность номеров.')
 st.link_button('Лицензия и участники OSM','https://www.openstreetmap.org/copyright')

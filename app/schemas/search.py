@@ -65,3 +65,4 @@ class SearchResponse(Contract):
     trace: list[dict] = Field(default_factory=list)
     include_simulated: bool = False
     ranking_method: str = 'weighted_v1'
+    balance: float = Field(default=.25,ge=0,le=1)

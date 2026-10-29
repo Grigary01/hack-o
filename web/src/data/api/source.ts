@@ -8,13 +8,16 @@ import type {
   HotelSummary,
   HotelierAnswer,
   HotelierRoom,
+  PublishConflict,
   PublishResult,
   SearchParams,
   SearchResult,
 } from '../types';
 import type {
   AnswerDto,
+  ConflictDto,
   ConfirmResponseDto,
+  ModelReviewDto,
   FactsResponseDto,
   FeatureRegistryDto,
   HealthDto,
@@ -73,38 +76,6 @@ async function runSearch(params: SearchParams, fresh = false): Promise<SearchRes
   return promise;
 }
 
-/*
- * В API нет GET /api/hotelier/answers/{id}: ответ, созданный в этой вкладке,
- * держим в sessionStorage, чтобы экраны проверки и результата пережили перезагрузку.
- */
-interface StoredAnswer {
-  answer: AnswerDto;
-  publish?: PublishResult;
-}
-const ANSWERS_KEY = 'ostrovok.api.answers.v1';
-
-function readAnswers(): Record<string, StoredAnswer> {
-  try {
-    return JSON.parse(sessionStorage.getItem(ANSWERS_KEY) ?? '{}') as Record<string, StoredAnswer>;
-  } catch {
-    return {};
-  }
-}
-function writeAnswer(id: string, value: StoredAnswer) {
-  sessionStorage.setItem(ANSWERS_KEY, JSON.stringify({ ...readAnswers(), [id]: value }));
-}
-function storedAnswer(id: string): StoredAnswer {
-  const stored = readAnswers()[id];
-  if (!stored) {
-    throw new DataError(
-      'not_found',
-      'Ответ не найден в этой вкладке. API пока не отдаёт ответ по id — вернитесь к вопросу и отправьте ответ заново.',
-      404,
-    );
-  }
-  return stored;
-}
-
 function mapAnswer(dto: AnswerDto): HotelierAnswer {
   return {
     id: dto.id,
@@ -127,6 +98,37 @@ async function questionById(questionId: string) {
   const question = questions.find((q) => q.id === questionId);
   if (!question) throw new DataError('not_found', 'Вопрос не найден', 404);
   return mapQuestion(question, hotels.get(question.hotel_id)?.name ?? question.hotel_id, registry);
+}
+
+const getAnswerDto = (answerId: string) => get<AnswerDto>(`/hotelier/answers/${encodeURIComponent(answerId)}`);
+
+/** Что увидит гость и с чем разошёлся ответ — собирается из сохранённых данных, переживает перезагрузку. */
+async function buildPublishResult(answer: AnswerDto, review: ModelReviewDto[] | null): Promise<PublishResult> {
+  const question = await questionById(answer.question_id);
+  const claims = groupClaims(answer.extraction.claims);
+  const positive = claims.filter((c) => c.value).map((c) => c.subject.replace(/^Номера?/, '').trim());
+  let conflicts: PublishConflict[];
+  if (review) {
+    conflicts = review.map((item) => ({ subject: `Номер ${roomNumber(item.room_id) ?? item.room_id}`, reason: item.text }));
+  } else {
+    // После перезагрузки: review-конфликты, где одна из сторон — наблюдение из этого ответа.
+    const open = await get<ConflictDto[]>(`/hotelier/conflicts?hotel_id=${encodeURIComponent(question.hotelId)}&status=open`);
+    conflicts = open
+      .filter((c) => c.policy.startsWith('review:') && [c.left_id, c.right_id].some((id) => id.startsWith(`${answer.id}:`)))
+      .map((c) => ({ subject: `Номер ${roomNumber(c.subject_id) ?? c.subject_id}`, reason: 'Расходится с расчётом по зданию — проверит оператор.' }));
+  }
+  return {
+    answerId: answer.id,
+    questionId: question.id,
+    featureLabel: question.featureLabel,
+    featureShort: question.featureShort,
+    claims,
+    conflicts,
+    publishedAt: answer.created_at,
+    guestPreview: positive.length ? `${question.featureShort} — в номерах ${positive.join(', ')}` : `${question.featureShort} — нет в указанных номерах`,
+    sourceLabel: 'ответ представителя отеля (демо-симулятор)',
+    statusLabel: 'заявление отельера, без независимой проверки',
+  };
 }
 
 export function createApiSource(): DataSource {
@@ -306,23 +308,22 @@ export function createApiSource(): DataSource {
     },
 
     async listHotelierHotels() {
-      const [hotels, questions] = await Promise.all([get<HotelDto[]>('/hotels'), get<QuestionDto[]>('/hotelier/questions')]);
-      const open = new Map<string, number>();
-      for (const q of questions) if (q.status === 'open') open.set(q.hotel_id, (open.get(q.hotel_id) ?? 0) + 1);
+      const [hotels, open] = await Promise.all([get<HotelDto[]>('/hotels'), get<QuestionDto[]>('/hotelier/questions?status=open')]);
+      const counts = new Map<string, number>();
+      for (const q of open) counts.set(q.hotel_id, (counts.get(q.hotel_id) ?? 0) + 1);
       return hotels
-        .map((h) => ({ id: h.id, name: h.name, openQuestions: open.get(h.id) ?? 0 }))
+        .map((h) => ({ id: h.id, name: h.name, openQuestions: counts.get(h.id) ?? 0 }))
         .sort((a, b) => b.openQuestions - a.openQuestions || a.name.localeCompare(b.name, 'ru'));
     },
 
     async listQuestions(hotelId) {
       const [questions, registry, hotels] = await Promise.all([
-        get<QuestionDto[]>('/hotelier/questions'),
+        get<QuestionDto[]>(`/hotelier/questions?hotel_id=${encodeURIComponent(hotelId)}`),
         loadRegistry(),
         hotelsById(),
       ]);
       const name = hotels.get(hotelId)?.name ?? hotelId;
       return questions
-        .filter((q) => q.hotel_id === hotelId)
         .map((q) => mapQuestion(q, name, registry))
         .sort((a, b) => (a.status === b.status ? b.createdAt.localeCompare(a.createdAt) : a.status === 'open' ? -1 : 1));
     },
@@ -330,57 +331,30 @@ export function createApiSource(): DataSource {
     getQuestion: questionById,
 
     async submitAnswer(questionId, text) {
-      const dto = await post<AnswerDto>(`/hotelier/questions/${encodeURIComponent(questionId)}/answer`, { text });
-      writeAnswer(dto.id, { answer: dto });
-      return mapAnswer(dto);
+      return mapAnswer(await post<AnswerDto>(`/hotelier/questions/${encodeURIComponent(questionId)}/answer`, { text }));
     },
 
     async getAnswer(answerId) {
-      return mapAnswer(storedAnswer(answerId).answer);
+      return mapAnswer(await getAnswerDto(answerId));
     },
 
     async rejectAnswer(answerId) {
-      const stored = storedAnswer(answerId);
       await post<ConfirmResponseDto>(`/hotelier/answers/${encodeURIComponent(answerId)}/confirm`, { accept: false });
-      writeAnswer(answerId, { ...stored, answer: { ...stored.answer, status: 'rejected' } });
     },
 
     async publishAnswer(answerId, overrides) {
       if (Object.keys(overrides).length > 0) {
         throw new DataError('unsupported', 'API не принимает правки отдельных строк. Измените текст ответа и отправьте его заново.');
       }
-      const stored = storedAnswer(answerId);
       const response = await post<ConfirmResponseDto>(`/hotelier/answers/${encodeURIComponent(answerId)}/confirm`, { accept: true });
-      const question = await questionById(stored.answer.question_id);
-      const claims = groupClaims(stored.answer.extraction.claims);
-      const positive = claims.filter((c) => c.value).map((c) => c.subject.replace(/^Номера?/, '').trim());
-      const conflicts = (response.model_review ?? []).map((item) => ({
-        subject: `Номер ${roomNumber(item.room_id) ?? item.room_id}`,
-        reason: item.text ?? 'Расходится с расчётом по зданию — проверит оператор.',
-      }));
-      const publish: PublishResult = {
-        answerId,
-        questionId: question.id,
-        featureLabel: question.featureLabel,
-        featureShort: question.featureShort,
-        claims,
-        conflicts,
-        publishedAt: new Date().toISOString(),
-        guestPreview: positive.length
-          ? `${question.featureShort} — в номерах ${positive.join(', ')}`
-          : `${question.featureShort} — нет в указанных номерах`,
-        sourceLabel: sourceText({ type: 'hotelier_simulated', name: '', ref: '' }).split('.')[0]!,
-        statusLabel: 'заявление отельера, без независимой проверки',
-      };
-      writeAnswer(answerId, { answer: { ...stored.answer, status: 'confirmed' }, publish });
       searchCache.clear();
-      return publish;
+      return buildPublishResult(await getAnswerDto(answerId), response.idempotent ? null : response.model_review);
     },
 
     async getPublishResult(answerId) {
-      const stored = storedAnswer(answerId);
-      if (!stored.publish) throw new DataError('not_found', 'Ответ ещё не опубликован', 404);
-      return stored.publish;
+      const answer = await getAnswerDto(answerId);
+      if (answer.status !== 'confirmed') throw new DataError('not_found', 'Ответ ещё не опубликован', 404);
+      return buildPublishResult(answer, null);
     },
 
     async getFacts(hotelId) {

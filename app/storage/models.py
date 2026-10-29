@@ -1,7 +1,7 @@
 """Таблицы разделены по ответственности; payload хранит проверенный Pydantic DTO.
 
 JSON сохраняет полный контракт свидетельств. Индексируемые поля вынесены
-в колонки. Миграции схемы при развитии проекта — отдельная задача.
+в колонки. Версии схемы и миграции находятся в migrations/.
 """
 from sqlalchemy import JSON, ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -65,6 +65,15 @@ class ConflictRow(Base):
     policy: Mapped[str] = mapped_column(default='withhold_and_ask_hotelier')
 
 
+class ConflictResolutionRow(Base):
+    __tablename__ = 'conflict_resolutions'
+    conflict_id: Mapped[str] = mapped_column(ForeignKey('conflicts.id'), primary_key=True)
+    selected_observation_id: Mapped[str] = mapped_column(ForeignKey('observations.id'))
+    reason: Mapped[str]
+    resolved_at: Mapped[str]
+    operator_id: Mapped[str]
+
+
 class QuestionRow(Base):
     __tablename__ = 'hotelier_questions'
     __table_args__ = (UniqueConstraint('hotel_id','feature_key'),)
@@ -74,6 +83,8 @@ class QuestionRow(Base):
     text: Mapped[str]
     status: Mapped[str] = mapped_column(default='open')
     created_at: Mapped[str]
+    context: Mapped[dict] = mapped_column(JSON, default=dict)
+    updated_at: Mapped[str]
 
 
 class AnswerRow(Base):

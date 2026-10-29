@@ -3,8 +3,9 @@ from fastapi import APIRouter, Depends, Request
 from app.api.dependencies import repository
 from app.environment.air_quality import OpenAQProvider
 from app.environment.service import latest_reports, save_report
+from app.schemas.errors import ERROR_RESPONSES
 
-router = APIRouter(prefix='/api/hotels', tags=['environment'])
+router = APIRouter(prefix='/api/hotels', tags=['environment'], responses=ERROR_RESPONSES)
 
 
 @router.get('/{hotel_id}/environment')

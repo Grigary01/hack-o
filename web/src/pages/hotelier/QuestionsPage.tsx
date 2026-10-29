@@ -9,13 +9,16 @@ import { useCabinet } from './cabinetContext';
 import c from './cabinet.module.css';
 import styles from './QuestionsPage.module.css';
 
-function QuestionCard({ question, href }: { question: HotelierQuestion; href: string }) {
+function QuestionCard({ question, href, base }: { question: HotelierQuestion; href: string; base: string }) {
   const titleId = `q-${question.id}`;
   return (
     <Card as="article" padding="l" className={styles.card} aria-labelledby={titleId}>
-      <Badge tone="warning" className={styles.badge}>
-        Нужен ваш ответ
-      </Badge>
+      <div className={styles.status}>
+        <Badge tone="warning" className={styles.badge}>
+          Нужен ваш ответ
+        </Badge>
+        {question.statusNote && <p className={styles.note}>{question.statusNote}</p>}
+      </div>
       <div className={styles.text}>
         <h2 id={titleId} className={styles.title}>
           {question.title}
@@ -34,10 +37,15 @@ function QuestionCard({ question, href }: { question: HotelierQuestion; href: st
           <dt>Источник запроса:</dt> <dd>{question.requestedBy}</dd>
         </div>
       </dl>
-      <div>
+      <div className={styles.actions}>
         <ButtonLink to={href} className={styles.answer} aria-describedby={titleId}>
-          Ответить
+          {question.pendingAnswerId ? 'Ответить заново' : 'Ответить'}
         </ButtonLink>
+        {question.pendingAnswerId && (
+          <ButtonLink to={`${base}/answers/${encodeURIComponent(question.pendingAnswerId)}/review`} variant="secondary">
+            Вернуться к проверке
+          </ButtonLink>
+        )}
       </div>
     </Card>
   );
@@ -72,7 +80,7 @@ export function QuestionsPage() {
         <>
           <div className={styles.list}>
             {open.map((q) => (
-              <QuestionCard key={q.id} question={q} href={`${base}/questions/${encodeURIComponent(q.id)}`} />
+              <QuestionCard key={q.id} question={q} base={base} href={`${base}/questions/${encodeURIComponent(q.id)}`} />
             ))}
           </div>
           <p className={`${c.muted} ${styles.footnote}`}>Один ответ будет использован в будущих подборах.</p>

@@ -262,3 +262,16 @@ quiet_side_potential:
   choice_labels: {low: шумно со всех сторон, medium: умеренно, high: есть тихая сторона}
   query_patterns: ['тих\w* сторон\w*', 'окн\w* (выходят |смотрят )?во двор', '\bво двор\w*', 'окн\w* не на (улиц|дорог)\w*']
   query_desired: high
+blackout_curtains:
+  label: Плотные шторы
+  description: Утверждение отельера о плотных шторах в конкретном номере, независимо не проверено.
+  type: boolean
+  unit: null
+  scope: room
+  provider: hotelier
+  ttl_days: 180
+  default_weight: 0.5
+  aliases: [плотные шторы, плотных штор, плотными шторами, шторы блэкаут, штор блэкаут, блэкаут, blackout]
+  question: В каких конкретно номерах есть или нет плотных штор? Укажите номера и этаж, если известен.
+  query_patterns: ['штор\w* (blackout|бл[эе]каут\w*)', 'blackout', 'бл[эе]каут\w*', 'плотн\w* штор\w*', 'затемн\w*']
+  query_desired: true

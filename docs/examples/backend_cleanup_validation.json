@@ -1,0 +1,383 @@
+{
+  "checked_at": "2026-10-28T21:49:17.831488+00:00",
+  "removed": [
+    {
+      "path": "Островок",
+      "bytes": 24897275
+    },
+    {
+      "path": "runtime/backend-stage7-clean-yn062zpe",
+      "bytes": 502179606
+    },
+    {
+      "path": "runtime/backend-acceptance-mezc7myl",
+      "bytes": 0
+    },
+    {
+      "path": ".pytest_cache",
+      "bytes": 21289
+    },
+    {
+      "path": "app/__pycache__",
+      "bytes": 6782
+    },
+    {
+      "path": "app/core/__pycache__",
+      "bytes": 4764
+    },
+    {
+      "path": "app/features/__pycache__",
+      "bytes": 11212
+    },
+    {
+      "path": "app/geo/__pycache__",
+      "bytes": 30589
+    },
+    {
+      "path": "app/agent/__pycache__",
+      "bytes": 7434
+    },
+    {
+      "path": "app/schemas/__pycache__",
+      "bytes": 27048
+    },
+    {
+      "path": "app/storage/__pycache__",
+      "bytes": 33190
+    },
+    {
+      "path": "app/ml/__pycache__",
+      "bytes": 51123
+    },
+    {
+      "path": "app/environment/__pycache__",
+      "bytes": 37815
+    },
+    {
+      "path": "app/api/__pycache__",
+      "bytes": 16557
+    },
+    {
+      "path": "app/hotelier/__pycache__",
+      "bytes": 29900
+    },
+    {
+      "path": "frontend/__pycache__",
+      "bytes": 40103
+    },
+    {
+      "path": "scripts/__pycache__",
+      "bytes": 77042
+    },
+    {
+      "path": "tests/__pycache__",
+      "bytes": 561595
+    },
+    {
+      "path": "migrations/__pycache__",
+      "bytes": 1005
+    },
+    {
+      "path": "migrations/versions/__pycache__",
+      "bytes": 5231
+    }
+  ],
+  "removed_file_bytes": 528039560,
+  "old_nested_tracked_files_removed": 114,
+  "active_venv_preserved": true,
+  "protected_databases_unchanged": true,
+  "protected_database_sha256": {
+    "runtime/adler.db": "18177695cfc248a2bc068e4072bfe738605a016e3cd0ced423ddb313d9783b09",
+    "runtime/backend_baseline.db": "47c7d626bcb4a05ec3913dccb2a09810cce4abb0c9ef4f46e79dd3881fc83bb3",
+    "runtime/backend_stage4.db": "0b383338a337ca231581a16c685b93c04ba88c52b26e404532d12411e7b76b48",
+    "runtime/backend_stage5.db": "606befaa1c37f6cc1ffaa7c6cbe8ada3736b7d9ba87951b9c5dc9eb34ccdbc57",
+    "runtime/backend_stage6.db": "4fd4b3c0d8b67e9555da788f7828681329597e4ee7c961025c005939296932e3",
+    "runtime/backend_stage2.db": "4252549b29c56a86019cbf241698547f6858e68b3f73969553c519cd15636fb6",
+    "runtime/backend_stage3.db": "9284e073a19f855e9e0a989d87cc0559eb9b15348736354b041c3682405b8a2d",
+    "runtime/backups/backend_stage3.20261028T201525Z.b8c994a3.db": "f2ef8ae6345be9be7b5b243f25cad5a8c978c0ec9d1e36ec5547bc4c5997119e",
+    "runtime/backups/adler.20261028T194543Z.cfb8a38a.db": "109d8ee2b515565684d88ca10cd483c3094f629c34110271ab2f2ef950e630f2",
+    "runtime/backups/backend_baseline_20261028.db": "79fa8ba6a14e708a8a1514347efaf7802ea627401fcbcbcb7cf9a4a543a6d25e",
+    "runtime/backups/adler.20261028T194551Z.cfb15eef.db": "109d8ee2b515565684d88ca10cd483c3094f629c34110271ab2f2ef950e630f2",
+    "runtime/backups/adler.20261028T200718Z.8e1f7c8a.db": "10e39dcd945ce0d570f571261d606338722dc733bc35d9f94e46170973dcc732",
+    "runtime/backups/backend_stage2.20261028T195147Z.a2b5fce1.db": "79fa8ba6a14e708a8a1514347efaf7802ea627401fcbcbcb7cf9a4a543a6d25e",
+    "runtime/backups/adler.20261028T194442Z.7a17cbfd.db": "109d8ee2b515565684d88ca10cd483c3094f629c34110271ab2f2ef950e630f2",
+    "runtime/backend-acceptance-e3jvar0w/acceptance.db": "0f181a0d548313409337311744434b66a386ac739cca586519f526e27359f810",
+    "runtime/backend-acceptance-e3jvar0w/backups/acceptance.20261028T212947Z.f8c04b87.db": "8d34643726f56fb951c6178eca694715a2855d1cce78aec297c2ed8f99dd7eb5"
+  },
+  "pytest": {
+    "tests": 189,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "passed": 188,
+    "skip_reason": "External NoiseModelling is not configured"
+  },
+  "pip_check": "No broken requirements found.",
+  "data_validation": {
+    "checked_at": "2026-10-28T21:46:20.015931+00:00",
+    "hotels": 25,
+    "osm_elements": 4895,
+    "graph_nodes": 12188,
+    "graph_edges": 27002,
+    "observations": 75,
+    "routes_computed": 23,
+    "route_coverage": 0.92,
+    "unknown_routes": [
+      {
+        "hotel_id": "osm:node:2862997459",
+        "reason": "hotel_too_far_from_graph"
+      },
+      {
+        "hotel_id": "osm:node:7345928591",
+        "reason": "no_path"
+      }
+    ],
+    "all_observations_recomputed": true,
+    "graph_checksum_valid": true,
+    "confidence_levels": {
+      "low": 73,
+      "unknown": 2
+    },
+    "ground_truth_accuracy": null,
+    "field_survey_done": false,
+    "note": "Проверены происхождение и воспроизводимость, не существование/проходимость на местности."
+  },
+  "actual_http_ui_flow": {
+    "checked_at": "2026-10-28T21:48:20.029657+00:00",
+    "transport": "Streamlit AppTest -> actual HTTP -> isolated SQLite",
+    "real_model_used": false,
+    "run_directory": "/Users/grishaa/dev/hack_0/hack-o/runtime/backend-acceptance-q_hqbyen",
+    "migration": {
+      "revision": "0003_question_lifecycle",
+      "backup": null
+    },
+    "health": {
+      "status": "ok",
+      "database": "ok",
+      "hotels": 25,
+      "parser_mode": "fixture",
+      "reply_parser_mode": "bounded_rules",
+      "demo_mode": true,
+      "external_services_checked": false
+    },
+    "original_geo_search": {
+      "matched": 12,
+      "needs_verification": 2,
+      "excluded": 11
+    },
+    "ui_flow": {
+      "unknown_matches": 0,
+      "pending_matches": 0,
+      "confirmed_matches": 1,
+      "conflicted_matches": 0,
+      "resolved_matches": 1,
+      "explicit_selection_and_reason_required": true,
+      "automatic_search_refresh": true
+    },
+    "observations": [
+      {
+        "id": "9664e93f827d46638551d5b21de9af8c:501",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "room",
+        "subject_id": "osm:node:10058556917:room:501",
+        "feature_key": "blackout_curtains",
+        "value": true,
+        "unit": null,
+        "observed_at": "2026-10-28T21:48:23.063660Z",
+        "collected_at": "2026-10-28T21:48:23.063660Z",
+        "expires_at": "2027-04-26T21:48:23.063660Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+        "quality_flags": [
+          "simulated",
+          "hotelier_claim_not_independently_verified"
+        ],
+        "evidence": {
+          "source": {
+            "type": "hotelier_simulated",
+            "name": "Отельер (демо)",
+            "ref": "9664e93f827d46638551d5b21de9af8c",
+            "url": null
+          },
+          "method": "human_confirmed_extraction",
+          "raw_excerpt": "В номере 501 есть плотные шторы.",
+          "snapshot_path": null,
+          "details": {
+            "quote": "В номере 501 есть плотные шторы",
+            "floor": null,
+            "question_id": "f1eee4f1ee376a79abb75c6a"
+          }
+        }
+      },
+      {
+        "id": "285cf7380b0b47a4873846efe7e51f41:501",
+        "hotel_id": "osm:node:10058556917",
+        "subject_type": "room",
+        "subject_id": "osm:node:10058556917:room:501",
+        "feature_key": "blackout_curtains",
+        "value": false,
+        "unit": null,
+        "observed_at": "2026-10-28T21:48:23.416915Z",
+        "collected_at": "2026-10-28T21:48:23.416915Z",
+        "expires_at": "2027-04-26T21:48:23.416915Z",
+        "status": "estimated",
+        "confidence_level": "low",
+        "confidence": null,
+        "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+        "quality_flags": [
+          "simulated",
+          "hotelier_claim_not_independently_verified"
+        ],
+        "evidence": {
+          "source": {
+            "type": "hotelier_simulated",
+            "name": "Отельер (демо)",
+            "ref": "285cf7380b0b47a4873846efe7e51f41",
+            "url": null
+          },
+          "method": "human_confirmed_extraction",
+          "raw_excerpt": "В номере 501 нет плотных штор.",
+          "snapshot_path": null,
+          "details": {
+            "quote": "В номере 501 нет плотных штор",
+            "floor": null,
+            "question_id": "f1eee4f1ee376a79abb75c6a"
+          }
+        }
+      }
+    ],
+    "resolution": {
+      "conflict_id": "3026f2ad07ecb6e17ef64faac61a5946ffdbceaed5060a80b772d6585f50af70",
+      "status": "resolved",
+      "resolution": {
+        "selected_observation_id": "9664e93f827d46638551d5b21de9af8c:501",
+        "reason": "Приёмка: выбран исходный ответ о номере 501",
+        "conflict_id": "3026f2ad07ecb6e17ef64faac61a5946ffdbceaed5060a80b772d6585f50af70",
+        "resolved_at": "2026-10-28T21:48:23.874842Z",
+        "operator_id": "demo_operator"
+      },
+      "idempotent": true,
+      "current": {
+        "subject_id": "osm:node:10058556917:room:501",
+        "feature_key": "blackout_curtains",
+        "value": true,
+        "status": "estimated",
+        "observations": [
+          {
+            "id": "9664e93f827d46638551d5b21de9af8c:501",
+            "hotel_id": "osm:node:10058556917",
+            "subject_type": "room",
+            "subject_id": "osm:node:10058556917:room:501",
+            "feature_key": "blackout_curtains",
+            "value": true,
+            "unit": null,
+            "observed_at": "2026-10-28T21:48:23.063660Z",
+            "collected_at": "2026-10-28T21:48:23.063660Z",
+            "expires_at": "2027-04-26T21:48:23.063660Z",
+            "status": "estimated",
+            "confidence_level": "low",
+            "confidence": null,
+            "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+            "quality_flags": [
+              "simulated",
+              "hotelier_claim_not_independently_verified"
+            ],
+            "evidence": {
+              "source": {
+                "type": "hotelier_simulated",
+                "name": "Отельер (демо)",
+                "ref": "9664e93f827d46638551d5b21de9af8c",
+                "url": null
+              },
+              "method": "human_confirmed_extraction",
+              "raw_excerpt": "В номере 501 есть плотные шторы.",
+              "snapshot_path": null,
+              "details": {
+                "quote": "В номере 501 есть плотные шторы",
+                "floor": null,
+                "question_id": "f1eee4f1ee376a79abb75c6a"
+              }
+            }
+          },
+          {
+            "id": "285cf7380b0b47a4873846efe7e51f41:501",
+            "hotel_id": "osm:node:10058556917",
+            "subject_type": "room",
+            "subject_id": "osm:node:10058556917:room:501",
+            "feature_key": "blackout_curtains",
+            "value": false,
+            "unit": null,
+            "observed_at": "2026-10-28T21:48:23.416915Z",
+            "collected_at": "2026-10-28T21:48:23.416915Z",
+            "expires_at": "2027-04-26T21:48:23.416915Z",
+            "status": "estimated",
+            "confidence_level": "low",
+            "confidence": null,
+            "confidence_method": "Подтверждён разбор симуляции, не истинность свойства.",
+            "quality_flags": [
+              "simulated",
+              "hotelier_claim_not_independently_verified"
+            ],
+            "evidence": {
+              "source": {
+                "type": "hotelier_simulated",
+                "name": "Отельер (демо)",
+                "ref": "285cf7380b0b47a4873846efe7e51f41",
+                "url": null
+              },
+              "method": "human_confirmed_extraction",
+              "raw_excerpt": "В номере 501 нет плотных штор.",
+              "snapshot_path": null,
+              "details": {
+                "quote": "В номере 501 нет плотных штор",
+                "floor": null,
+                "question_id": "f1eee4f1ee376a79abb75c6a"
+              }
+            }
+          }
+        ],
+        "resolved_conflict_ids": [
+          "3026f2ad07ecb6e17ef64faac61a5946ffdbceaed5060a80b772d6585f50af70"
+        ]
+      }
+    },
+    "incompatible_repeat": {
+      "status_code": 409,
+      "body": {
+        "code": "state_conflict",
+        "detail": "Конфликт уже решён иначе; изменение решения не поддерживается"
+      }
+    },
+    "repeat_migration": {
+      "revision": "0003_question_lifecycle",
+      "backup": "/Users/grishaa/dev/hack_0/hack-o/runtime/backend-acceptance-q_hqbyen/backups/acceptance.20261028T214824Z.ff8fae9c.db"
+    },
+    "restart_seed_migration_preserve_history": true,
+    "database_integrity": "ok",
+    "streamlit_health": "ok",
+    "browser_visual_check": "not performed; AppTest checks behavior only",
+    "both_ranking_methods": "passed",
+    "status": "passed"
+  },
+  "generated_bytecode_caches_removed_after_checks": [
+    "app/__pycache__",
+    "app/core/__pycache__",
+    "app/features/__pycache__",
+    "app/geo/__pycache__",
+    "app/agent/__pycache__",
+    "app/schemas/__pycache__",
+    "app/storage/__pycache__",
+    "app/ml/__pycache__",
+    "app/environment/__pycache__",
+    "app/api/__pycache__",
+    "app/hotelier/__pycache__",
+    "frontend/__pycache__",
+    "scripts/__pycache__",
+    "migrations/__pycache__",
+    "migrations/versions/__pycache__"
+  ],
+  "historical_reports_preserved": true,
+  "status": "passed"
+}

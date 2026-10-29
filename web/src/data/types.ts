@@ -158,6 +158,10 @@ export interface HotelierQuestion {
   /** Подсказка, как сформулировать ответ, чтобы его разобрали. */
   answerHint: string;
   answerPlaceholder: string;
+  /** Неподтверждённый ответ, к проверке которого можно вернуться. */
+  pendingAnswerId: string | null;
+  /** Почему вопрос снова открыт: «ответ разобран не полностью», «источники расходятся»… */
+  statusNote: string | null;
 }
 
 export interface ParsedClaim {

@@ -7,7 +7,7 @@
 Исследован commit `45ad71a637f1c7bbf561934326cbd8854f27f118`.
 Оригинальная MIT-лицензия сохранена без изменений в корневом `LICENSE`.
 Неизменённые исходные файлы с лицензией: `legacy/agent_tool_map_45ad71a.zip`.
-Полный локальный git clone находится в `upstream/agent_tool_map`, исключён из дистрибутива как дубликат.
+Отдельный локальный git clone не требуется: исходники и лицензия сохранены в указанном архиве.
 
 Адаптированы идеи и фрагменты:
 - `OSMSearchEngine._execute_poi_search/_get_cache_key` → `app/geo/osm_provider.py`: union выборок, словарь тегов, SHA256. JSON вместо pickle, geometry и provenance, явные ошибки.

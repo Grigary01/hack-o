@@ -21,6 +21,7 @@ if PARSER_MODE not in ('ollama', 'groq', 'offline', 'fixture'):
 class Settings:
     database_url: str = os.getenv('DATABASE_URL', f'sqlite:///{ROOT / "runtime/adler.db"}')
     parser_mode: str = PARSER_MODE
+    reply_parser_mode: str = os.getenv('REPLY_PARSER_MODE', 'rules')
     model_name: str = MODEL_CONFIG.model_name
     ollama_url: str = os.getenv('OLLAMA_URL', 'http://127.0.0.1:11434')
     demo_mode: bool = os.getenv('DEMO_MODE', 'true').lower() == 'true'
@@ -38,6 +39,7 @@ class Settings:
     demo_dir: Path = ROOT / 'data/demo'
     environment_dir: Path = ROOT / 'data/environment'
     registry_path: Path = ROOT / 'app/features/registry.yaml'
+    reply_fixture_path: Path = ROOT / 'data/demo/hotelier_reply_fixtures.json'
     max_tool_calls: int = 100
 
 

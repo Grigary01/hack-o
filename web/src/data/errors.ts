@@ -1,4 +1,4 @@
-export type DataErrorKind = 'network' | 'http' | 'not_found' | 'unsupported' | 'invalid';
+export type DataErrorKind = 'network' | 'http' | 'not_found' | 'unsupported' | 'invalid' | 'state_conflict';
 
 /** Ошибка слоя данных с понятным пользователю текстом. Моки и API бросают один и тот же тип. */
 export class DataError extends Error {
