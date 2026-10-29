@@ -119,7 +119,7 @@ describe('API mappers', () => {
   it('показывает непонятые слова запроса как неучтённые', () => {
     const chips = requestChips(parsed, registry);
     expect(chips).toContainEqual({ label: 'До пляжа ≤ 500\u00a0м · обязательно', kind: 'required' });
-    expect(chips).toContainEqual({ label: 'Не учтено: blackout', kind: 'unsupported' });
+    expect(chips).toContainEqual({ label: 'Не распознано: blackout', kind: 'unsupported' });
     expect(chips.some((c) => c.label.includes('расчёт'))).toBe(false);
   });
 
