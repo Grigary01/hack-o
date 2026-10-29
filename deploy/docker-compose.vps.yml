@@ -20,7 +20,6 @@ services:
       - "443:443/udp"
     environment:
       DOMAIN: ${DOMAIN:?Укажите DOMAIN в .env, например o.devneli.ru}
-      ACME_EMAIL: ${ACME_EMAIL:-}
     volumes:
       - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data

@@ -1,8 +1,4 @@
-{
-	# Почта для Let's Encrypt (необязательно): ACME_EMAIL в .env.
-	email {$ACME_EMAIL}
-}
-
+# Сертификат Let's Encrypt для $DOMAIN Caddy получает и продлевает сам.
 {$DOMAIN} {
 	encode zstd gzip
 	reverse_proxy web:8080
