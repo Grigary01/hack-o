@@ -3,6 +3,9 @@
 #   docker compose up --build
 #   открыть http://localhost:8080  (интерфейс; /api, /docs, /health проксируются в backend)
 #
+# Образы фиксированы под linux/amd64 (требование организаторов): одинаковая сборка на любой машине;
+# на Apple Silicon Docker Desktop/OrbStack запускает их через эмуляцию (Rosetta).
+#
 # Наружу публикуется только 8080. Backend (FastAPI, порт 8000) доступен лишь внутри сети compose.
 # Настройки — в .env (см. .env.example); общие параметры модели — в config/models.yaml.
 #
@@ -14,6 +17,7 @@
 
 services:
   backend:
+    platform: linux/amd64
     build: .
     image: ostrovok-adler-backend:local
     init: true
@@ -56,6 +60,7 @@ services:
       start_period: 60s
 
   web:
+    platform: linux/amd64
     build:
       context: ./web
       args:
@@ -80,6 +85,7 @@ services:
   # ollama-models и дальше берётся оттуда. Backend её не ждёт: пока модель не готова,
   # запросы разбираются правилами.
   ollama:
+    platform: linux/amd64
     image: ollama/ollama:0.40.13
     profiles: ["local-llm"]
     restart: unless-stopped

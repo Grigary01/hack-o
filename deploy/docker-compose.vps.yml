@@ -12,6 +12,7 @@ services:
       - "127.0.0.1:${WEB_PORT:-8080}:8080"
 
   caddy:
+    platform: linux/amd64
     image: caddy:2.10.2-alpine
     restart: unless-stopped
     ports:
