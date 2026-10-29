@@ -160,3 +160,8 @@ describe('API mappers', () => {
     expect(q.statusNote).toBe('Часть ответа не удалось разобрать');
   });
 });
+
+it('темы без поддержки видны как «не учтено», но не мешают', () => {
+  const chips = requestChips({ ...parsed, ignored_terms: [], unsupported: ['цена'] }, registry);
+  expect(chips).toContainEqual({ label: 'Не учтено: цена', kind: 'unsupported' });
+});

@@ -48,6 +48,9 @@ def normalize(raw):
     result = ParsedHotelQuery.model_validate(raw).model_dump(mode='json')
     result.pop('original_text')
     result.pop('ignored_terms')
+    # Разметка v2/v3 хранит неподдержанные темы в unknown_or_ambiguous; с появлением
+    # поля unsupported считаем отмеченным условием и то, и другое.
+    result['unknown_or_ambiguous'] = result['unknown_or_ambiguous'] + result.pop('unsupported', [])
     for key in ('hard_constraints', 'soft_preferences', 'unknown_or_ambiguous'):
         result[key] = sorted(result[key], key=token)
     return result
@@ -166,7 +169,8 @@ def summarize(cases):
     # Верно ли решено, есть ли в запросе неподдержанное/неясное условие.
     # Текст уточнения не сравниваем: правильных формулировок много.
     labelled = [c for c in cases if 'expected' in c]
-    summary['ambiguity_accuracy'] = sum(bool(c['expected']['unknown_or_ambiguous']) == bool((c['actual'] or {}).get('unknown_or_ambiguous'))
+    summary['ambiguity_accuracy'] = sum(bool(c['expected']['unknown_or_ambiguous'])
+                                        == bool((c['actual'] or {}).get('unknown_or_ambiguous') or (c['actual'] or {}).get('unsupported'))
                                         for c in labelled)/len(labelled) if labelled else None
     return summary
 

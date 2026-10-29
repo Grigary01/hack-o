@@ -296,6 +296,9 @@ export function requestChips(parsed: ParsedQueryDto, registry: FeatureRegistryDt
   }
   // Только непонятые слова. Оговорки парсера (unknown_or_ambiguous) — не «неизвестная
   // характеристика», а просьба уточнить: их показывает экран needs_clarification.
+  for (const topic of parsed.unsupported ?? []) {
+    chips.push({ label: `Не учтено: ${topic}`, kind: 'unsupported' });
+  }
   for (const term of parsed.ignored_terms ?? []) {
     chips.push({ label: `Не учтено: ${term}`, kind: 'unsupported' });
   }

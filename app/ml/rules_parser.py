@@ -107,6 +107,7 @@ class RulesQueryParser:
     def parse(self, text: str) -> ParsedHotelQuery:
         lowered = normalize(text)
         unknown = []
+        unsupported = []  # темы без поддержки: не блокируют поиск, видны гостю как «не учтено»
         region = 'Adler'
         if OTHER_REGIONS.search(lowered):
             region = 'other'
@@ -121,7 +122,7 @@ class RulesQueryParser:
             if topic == 'расстояние по прямой' and not any(m['key'] == 'walking_distance_to_beach_m' for m in mentions):
                 continue  # до баров расстояние и так по прямой; не поддерживается только для пляжа
             if re.search(pattern, lowered):
-                unknown.append(f'Пока не поддерживается: {topic}')
+                unsupported.append(topic)
         hard, soft = [], []
         for mention in mentions:
             items = self._interpret(mention, unknown, lowered)
@@ -132,7 +133,7 @@ class RulesQueryParser:
         hard = [h for i, h in enumerate(hard) if h not in hard[:i]]
         soft = self._dedupe(soft, hard)
         self._relative_importance(lowered, mentions, soft)
-        if not hard and not soft and not unknown and not mentions and not GENERAL.search(lowered):
+        if not hard and not soft and not unknown and not unsupported and not mentions and not GENERAL.search(lowered):
             unknown.append('Не нашёл поддерживаемых пожеланий')
         ignored = self._ignored_terms(lowered, mentions)
         question = None
@@ -142,7 +143,7 @@ class RulesQueryParser:
                         'Сейчас система проверяет: ' + supported + '.')
         return ParsedHotelQuery(region=region, hard_constraints=hard, soft_preferences=soft,
                                 unknown_or_ambiguous=unknown, clarification_question=question, original_text=text,
-                                ignored_terms=ignored)
+                                ignored_terms=ignored, unsupported=unsupported)
 
     def _ignored_terms(self, lowered, mentions):
         """Содержательные слова вне найденных характеристик, модификаторов и неподдерживаемых тем."""

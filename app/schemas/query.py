@@ -126,14 +126,19 @@ class SoftPreference(Contract):
 class ParsedHotelQuery(Contract):
     """Полный результат parser: регион, hard/soft, непонятое и исходный текст.
 
-    unknown_or_ambiguous нужен, чтобы ограничение не исчезло молча.
-    Например, «до 5000 рублей» нельзя поддержать без цен — backend попросит уточнить.
+    Непроверяемое не исчезает молча, но и не блокирует поиск зря:
+    - unsupported — темы, которые система пока не умеет проверять (цена, бассейн,
+      питание…). Поиск идёт по остальным условиям, гостю они видны как «не учтено».
+    - unknown_or_ambiguous — то, без чего запрос нельзя понять верно (другой город,
+      минуты без способа передвижения, пустой запрос). Тогда backend просит уточнить.
     """
     region: str = 'Adler'
     hard_constraints: list[HardConstraint] = Field(default_factory=list, max_length=12)
     soft_preferences: list[SoftPreference] = Field(default_factory=list, max_length=12)
     unknown_or_ambiguous: list[str] = Field(default_factory=list)
     clarification_question: str | None = None
+    # Короткие названия тем без поддержки в реестре: «цена», «бассейн». Не блокируют поиск.
+    unsupported: list[str] = Field(default_factory=list, max_length=20)
     original_text: str = ''
     # Слова запроса, которые офлайн-разбор не сопоставил ни с одной характеристикой.
     # Не блокируют поиск, но показываются гостю: ничего не теряется молча.

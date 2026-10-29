@@ -369,7 +369,8 @@ class HybridQueryParser:
             region=llm.region if rules.region == 'other' else rules.region,
             hard_constraints=hard, soft_preferences=soft, unknown_or_ambiguous=unknown,
             clarification_question=rules.clarification_question or llm.clarification_question if unknown else None,
-            original_text=rules.original_text, ignored_terms=[] if added else rules.ignored_terms)
+            original_text=rules.original_text, ignored_terms=[] if added else rules.ignored_terms,
+            unsupported=rules.unsupported + [u for u in llm.unsupported if u not in rules.unsupported])
 
 
 def make_parser(config=settings) -> QueryParser:

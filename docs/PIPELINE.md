@@ -6,8 +6,9 @@
 2. `app/api/search.py` принимает **либо** text, **либо** typed parsed, optional weights и `include_simulated=false`.
 3. `app/ml/query_parser.py` выбирает provider из конфигурации. Fixture ищет известную формулировку;
    Ollama использует JSON Schema и Pydantic. Отрицания сохраняются, км переводятся в метры.
-4. Неподдерживаемый регион, неизвестное ограничение или clarification останавливают поиск с
-   `status=needs_clarification`. Нельзя незаметно проигнорировать бюджет/другой город.
+4. Неподдерживаемый регион, неясное условие (`unknown_or_ambiguous`) или clarification останавливают поиск
+   с `status=needs_clarification`. Темы без признака в реестре (бюджет, бассейн) идут в `unsupported`:
+   поиск продолжается по остальному, а гость видит «Не учтено: цена» — ничего не игнорируется молча.
 5. `FeatureAgent.ensure` для каждого запрошенного feature выбирает:
    - свежее известное свидетельство → `read_evidence`;
    - отсутствующий Geo-факт → whitelist calculator над локальным snapshot → запись Observation/Evidence;

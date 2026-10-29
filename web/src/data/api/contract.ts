@@ -92,6 +92,8 @@ export interface ParsedQueryDto {
   clarification_question: string | null;
   original_text: string;
   ignored_terms?: string[];
+  /** Темы без поддержки (цена, бассейн…): поиск идёт без них, гостю — «не учтено». */
+  unsupported?: string[];
 }
 
 export interface CriterionDto {

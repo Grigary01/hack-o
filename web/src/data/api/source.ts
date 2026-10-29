@@ -206,7 +206,7 @@ export function createApiSource(): DataSource {
         clarification: response.status === 'needs_clarification' ? clarificationText(response.parsed) : null,
         contextLabel: `Адлер · ${formatGuests(params.guests)}`,
         chips: requestChips(response.parsed, registry),
-        ignoredTerms: response.parsed.ignored_terms ?? [],
+        ignoredTerms: [...(response.parsed.unsupported ?? []), ...(response.parsed.ignored_terms ?? [])],
         hotels: [
           ...response.matched.map((h) => mapHotelResult(h, 'matched', response.parsed, registry)),
           ...response.needs_verification.map((h) => mapHotelResult(h, 'needs_verification', response.parsed, registry)),
