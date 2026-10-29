@@ -23,6 +23,8 @@ export function HotelCard({ hotel, hotelHref, active, onHover }: Props) {
   const request = useRequestCheck();
   const askable = hotel.criteria.filter((c) => c.state === 'unknown' && c.askable).map((c) => c.key);
   const tone = hotel.group === 'confirmed' ? 'confirmed' : 'muted';
+  // Ответ по словам гостя («Вид из окна — на море: широкий вид»), если бэкенд его построил.
+  const rows = hotel.needRows.length ? hotel.needRows : hotel.criteria;
 
   return (
     <article
@@ -59,8 +61,8 @@ export function HotelCard({ hotel, hotelHref, active, onHover }: Props) {
           )}
         </div>
 
-        {hotel.criteria.length > 0 ? (
-          <CriteriaList criteria={hotel.criteria} tone={tone} />
+        {rows.length > 0 ? (
+          <CriteriaList criteria={rows} tone={tone} />
         ) : (
           <p className={styles.area}>Пожелания не распознаны — показываем отель без проверки условий.</p>
         )}

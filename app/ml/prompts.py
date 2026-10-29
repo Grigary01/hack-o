@@ -28,10 +28,14 @@ def _soft(key, desired, importance=None, source='default'):
             'importance': d.default_weight if importance is None else importance}
 
 
-def _answer(hard=(), soft=(), unknown=()):
-    return {'region': 'Adler', 'hard_constraints': list(hard), 'soft_preferences': list(soft),
-            'unknown_or_ambiguous': list(unknown),
-            'clarification_question': 'Уточните или уберите неподдержанное условие.' if unknown else None}
+def _answer(hard=(), soft=(), unknown=(), unsupported=(), needs=None):
+    answer = {'region': 'Adler', 'hard_constraints': list(hard), 'soft_preferences': list(soft),
+              'unknown_or_ambiguous': list(unknown),
+              'clarification_question': 'Уточните или уберите неподдержанное условие.' if unknown else None,
+              'unsupported': list(unsupported)}
+    if needs is not None:
+        answer['needs'] = needs
+    return answer
 
 
 # Дополнительные УЧЕБНЫЕ примеры (не из оценочных наборов — это проверяет
@@ -50,7 +54,14 @@ EXTRA_EXAMPLES = [
      lambda: _answer(soft=[_soft('beach_route_climb_m', 'near'), _soft('beach_route_busy_crossings', 'near')])),
     ('Подальше от аэропорта, с видом на море и бассейном',
      lambda: _answer(soft=[_soft('aircraft_path_distance_m', 'far'), _soft('sea_view', True)],
-                     unknown=['Нет данных о бассейне'])),
+                     unsupported=['бассейн'])),
+    # Расплывчатый вид — понятие any_of, а не вопрос; цена — не проверяем, но и не блокируем.
+    ('Номер с красивым видом, недорого и чтобы деревья не закрывали',
+     lambda: _answer(soft=[_soft('view_obstruction_risk', 'low')], unsupported=['цена'], needs=[
+         {'quote': 'с красивым видом', 'kind': 'any_of', 'concept': 'window_view', 'features': [], 'topic': None},
+         {'quote': 'недорого', 'kind': 'unsupported', 'concept': None, 'features': [], 'topic': 'цена'},
+         {'quote': 'чтобы деревья не закрывали', 'kind': 'feature', 'concept': None,
+          'features': ['view_obstruction_risk'], 'topic': None}])),
     ('Ночная аптека в пределах 300 м и круглосуточные кафе рядом',
      lambda: _answer(hard=[_hard('nearest_night_pharmacy_m', '<=', 300)], soft=[_soft('night_open_places_500m', 'far')])),
     ('Непременно тишина и шумоизоляция',
@@ -58,6 +69,27 @@ EXTRA_EXAMPLES = [
     ('Хочу жить в оживлённом месте, вид на море не важен',
      lambda: _answer(soft=[_soft('quietness_proxy', 'low')])),
 ]
+
+
+def example_needs(text, answer):
+    """Разметка потребностей для учебного примера: цитаты гостя берём у правил.
+
+    Только потребности, согласованные с ответом примера; остальное дополнит backend
+    так же, как в настоящем поиске (app/ml/needs.py).
+    """
+    from app.ml.rules_parser import RulesQueryParser
+    keys = {c['feature_key'] for c in answer.get('hard_constraints', [])} | \
+           {p['feature_key'] for p in answer.get('soft_preferences', [])}
+    topics = set(answer.get('unsupported', []))
+    needs = []
+    for need in RulesQueryParser().parse(text).needs:
+        if (need.kind == 'feature' and set(need.features) <= keys) or (need.kind == 'unsupported' and need.topic in topics):
+            needs.append(need.model_dump(mode='json', exclude={'options', 'chosen', 'question'}))
+    covered = {k for n in needs for k in n['features']}
+    for key in sorted(keys - covered):
+        needs.append({'quote': get_registry().get(key).label.lower(), 'kind': 'feature', 'features': [key],
+                      'concept': None, 'topic': None})
+    return needs
 
 
 def query_features():
@@ -91,9 +123,20 @@ def query_messages(text, schema):
 2. Для КАЖДОЙ характеристики определи смысл отрицания и обязательность.
 3. Заполни hard_constraints и soft_preferences. Не добавляй неназванные
 характеристики: близость моря НЕ означает вид на море или тишину.
-4. Отдельно сохрани непонятные/неподдержанные условия в unknown_or_ambiguous
-и задай clarification_question. Остальные понятные условия всё равно извлеки.
-Если неизвестных условий нет, unknown_or_ambiguous=[], clarification_question=null.
+4. Условия, которые система не проверяет (их нет в реестре: цена, бюджет, бассейн,
+питание, парковка, звёзды, отзывы, даты), запиши коротко в unsupported («цена»,
+«бассейн») — поиск пойдёт без них, гость увидит «не учтено». Это НЕ повод для
+уточнения. В unknown_or_ambiguous и clarification_question — только то, без чего
+запрос нельзя понять верно: другой город, минуты без способа передвижения,
+противоречие. Остальные понятные условия всё равно извлеки.
+Если таких условий нет, unknown_or_ambiguous=[], clarification_question=null.
+5. Размечай ВЕСЬ запрос на потребности needs: каждая часть запроса — одна потребность
+с точной цитатой гостя в quote (его слова, не название признака).
+kind="feature" — features: признаки этой части из hard_constraints/soft_preferences;
+kind="any_of" — расплывчатое пожелание из ПОНЯТИЙ ниже (concept): варианты добавит
+сервер, их признаки в soft НЕ добавляй, это НЕ повод для clarification_question;
+kind="unsupported" — тема из unsupported (topic). Ни одна часть запроса не должна
+остаться без потребности; слова-связки («хочу», «отель») потребностью не являются.
 Пустые списки допустимы; нельзя заполнять их условиями из примеров.
 
 ОБЯЗАТЕЛЬНОСТЬ И ОТРИЦАНИЯ
@@ -158,7 +201,12 @@ utility={kind:target_range,ideal_min:250,ideal_max:450,tolerance:150}.
               and value not in (None, [])}
         for key, definition in query_features().items()
     }
-    messages = [{'role': 'system', 'content': system + '\nРеестр: ' + json.dumps(definitions, ensure_ascii=False)}]
+    from app.features.concepts import get_concepts
+    concepts = {key: {'label': c.label, 'когда': c.hint, 'варианты': [o.label for o in c.options]}
+                for key, c in get_concepts().items()}
+    messages = [{'role': 'system', 'content': system
+                 + '\nПонятия (для needs kind=any_of): ' + json.dumps(concepts, ensure_ascii=False)
+                 + '\nРеестр: ' + json.dumps(definitions, ensure_ascii=False)}]
     examples = json.loads((ROOT / 'data/demo/query_fixtures.json').read_text())
     for index in DEMO_INDICES:
         row = examples[index]
@@ -166,14 +214,17 @@ utility={kind:target_range,ideal_min:250,ideal_max:450,tolerance:150}.
         # и не даём смешать текущий текст с текстом примера.
         expected = {key: value for key, value in row['expected'].items()
                     if key not in ('original_text', 'ignored_terms')}
+        expected['needs'] = example_needs(row['text'], expected)
         messages.extend([
             {'role': 'user', 'content': row['text']},
             {'role': 'assistant', 'content': json.dumps(expected, ensure_ascii=False)},
         ])
     for example_text, answer in EXTRA_EXAMPLES:
+        expected = answer()
+        expected.setdefault('needs', example_needs(example_text, expected))
         messages.extend([
             {'role': 'user', 'content': example_text},
-            {'role': 'assistant', 'content': json.dumps(answer(), ensure_ascii=False)},
+            {'role': 'assistant', 'content': json.dumps(expected, ensure_ascii=False)},
         ])
     # Краткая памятка находится непосредственно рядом с новым вводом. Модель
     # не должна продолжать последний demo-диалог. JSON-строка явно отделяет
@@ -187,7 +238,9 @@ utility={kind:target_range,ideal_min:250,ideal_max:450,tolerance:150}.
 — «не хочу шумный район» — soft quietness_proxy high, не hard low;
 — обычная аптека и именно НОЧНАЯ аптека — разные условия: для первой
   нет отдельного признака, запроси уточнение, не подменяй ночной;
-— если признак не поддержан, сохрани его в unknown_or_ambiguous;
+— если признака нет в реестре (цена, бассейн…), запиши тему в unsupported, не в unknown_or_ambiguous;
+— расплывчатый вид («вид из окна», «с видом») — needs any_of window_view, не вопрос;
+— у каждой части запроса есть потребность в needs с цитатой гостя;
 — верни JSON, без исходного текста и без пояснений вне JSON.
 Запрос (JSON-строка): '''
     messages.append({'role': 'user', 'content': reminder + json.dumps(text, ensure_ascii=False)})

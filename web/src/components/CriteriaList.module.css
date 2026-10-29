@@ -45,6 +45,11 @@
   color: var(--c-text-muted);
 }
 
+.unchecked {
+  color: var(--c-text-muted);
+  font-style: italic;
+}
+
 .violated {
   color: var(--c-danger);
 }

@@ -54,12 +54,16 @@ export function HotelPage() {
                 {hotel.data.room && <p className={styles.muted}>{hotel.data.room.guests}</p>}
               </div>
 
-              {hotel.data.hotel.criteria.length > 0 && (
+              {(hotel.data.hotel.needRows.length > 0 || hotel.data.hotel.criteria.length > 0) && (
                 <section className={styles.section} aria-labelledby="match-title">
                   <h2 id="match-title" className={styles.sectionTitle}>
                     Соответствие вашим пожеланиям
                   </h2>
-                  <CriteriaList criteria={hotel.data.hotel.criteria} tone="confirmed" size="l" />
+                  <CriteriaList
+                    criteria={hotel.data.hotel.needRows.length ? hotel.data.hotel.needRows : hotel.data.hotel.criteria}
+                    tone="confirmed"
+                    size="l"
+                  />
                 </section>
               )}
 

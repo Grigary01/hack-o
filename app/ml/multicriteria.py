@@ -26,7 +26,8 @@ GROUPS = {'quietness_proxy':'quietness', 'nightlife_distance_m':'quietness',
           'mountain_view_potential':'view', 'mountain_view_min_floor':'view',
           'aircraft_noise_exposure':'quietness', 'aircraft_path_distance_m':'quietness',
           'beach_route_climb_m':'beach_access', 'beach_route_busy_crossings':'beach_access'}
-LABELS = {'quietness':'Тишина и сон','view':'Вид из номера','beach_access':'Доступ к пляжу'}
+LABELS = {'quietness':'Тишина и сон','view':'Вид из номера','beach_access':'Доступ к пляжу',
+          'view_obstruction_risk':'Деревья и дома перед окнами'}
 
 
 def curve_match(value, curve):
@@ -39,16 +40,30 @@ def curve_match(value, curve):
     return max(0., 1-distance/curve.tolerance)
 
 
-def aggregate(preferences, matches, balance=.25):
+def aggregate(preferences, matches, balance=.25, any_of=None, labels=None):
+    """any_of: {понятие: признаки} — расплывчатое пожелание гостя («вид из окна»),
+    где подходит ЛЮБОЙ вариант: польза группы — лучший из известных, не среднее."""
+    any_of, labels = any_of or {}, labels or {}
+    member = {key: concept for concept, keys in any_of.items() for key in keys}
     groups = defaultdict(list)
     for pref in preferences:
         if pref.importance > 0:
             # «Рядом с барами» — доступ к развлечениям, а не потребность в тишине.
-            group = ('nightlife_access' if pref.feature_key=='nightlife_distance_m' and pref.desired=='near'
+            group = ('any:' + member[pref.feature_key] if pref.feature_key in member
+                     else 'nightlife_access' if pref.feature_key=='nightlife_distance_m' and pref.desired=='near'
                      else GROUPS.get(pref.feature_key,pref.feature_key))
             groups[group].append(pref)
     result = []
     for group,prefs in groups.items():
+        if group.startswith('any:'):
+            known = [matches[p.feature_key] for p in prefs if matches[p.feature_key] is not None]
+            unknown = len(known) < len(prefs)
+            best = max(known) if known else 0.
+            # Нижняя граница — лучший известный вариант; неизвестный вариант мог бы быть идеальным.
+            result.append(dict(group=group,label=labels.get(group[4:],group[4:]),weight=max(p.importance for p in prefs),
+                               lower=best,upper=1. if unknown else best,coverage=1. if known else 0.,
+                               features=[p.feature_key for p in prefs]))
+            continue
         denominator = sum(p.importance for p in prefs)
         known = sum(p.importance for p in prefs if matches[p.feature_key] is not None)
         earned = sum(p.importance*matches[p.feature_key] for p in prefs if matches[p.feature_key] is not None)

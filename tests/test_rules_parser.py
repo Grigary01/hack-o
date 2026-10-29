@@ -66,8 +66,12 @@ def test_hard_soft_weights_and_relative_importance():
 def test_unsupported_and_other_region_are_not_dropped_silently():
     result, _, soft = parse('Недорогой отель с бассейном у моря')
     assert 'walking_distance_to_beach_m' in soft
-    assert {'Пока не поддерживается: цена', 'Пока не поддерживается: бассейн'} <= set(result.unknown_or_ambiguous)
-    assert 'бассейн' in result.clarification_question
+    # Непроверяемые темы видны гостю, но не блокируют поиск по остальному.
+    assert {'цена', 'бассейн'} <= set(result.unsupported)
+    assert not result.unknown_or_ambiguous and result.clarification_question is None
+    # Только непроверяемое — как «покажи отели»: все варианты и пометка «не учтено» (так же у LLM).
+    only_unsupported = RulesQueryParser().parse('Дешёвый отель с бассейном')
+    assert set(only_unsupported.unsupported) == {'цена', 'бассейн'} and not only_unsupported.unknown_or_ambiguous
     other = RulesQueryParser().parse('Отель в Геленджике')
     assert other.region != 'Adler' and other.unknown_or_ambiguous
     assert RulesQueryParser().parse('Хочу что-нибудь эдакое').unknown_or_ambiguous
@@ -118,3 +122,13 @@ def test_explicit_weight_for_distance_and_no_duplicate_hard():
     assert weights['walking_distance_to_beach_m'] == (0.2, 'explicit')
     parsed = RulesQueryParser().parse('Отель у моря: до пляжа пешком не больше 700 м')
     assert len(parsed.hard_constraints) == 1
+
+
+def test_unsupported_condition_does_not_block_search(engine):
+    """«Тихо ночью и дешево»: цены нет — ищем по тишине, цену показываем как «не учтено»."""
+    with TestClient(create_app(engine=engine, parser=OfflineQueryParser())) as client:
+        body = client.post('/api/search', json={'text': 'Хочу тихо ночью и дешево'}).json()
+        assert body['status'] == 'ok' and body['parsed']['unsupported'] == ['цена']
+        assert body['matched'] or body['needs_verification']
+        blocked = client.post('/api/search', json={'text': 'Тихий отель в Геленджике'}).json()
+        assert blocked['status'] == 'needs_clarification'  # другой город по-прежнему уточняем

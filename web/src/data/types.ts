@@ -40,6 +40,8 @@ export interface SearchParams {
   guests: number;
   /** Гость согласился искать без условий, которые система не умеет проверять (цена, бассейн…). */
   skipUnclear?: boolean;
+  /** Уточнения расплывчатых пожеланий: { window_view: 'sea' }. */
+  choices?: Record<string, string>;
 }
 
 export interface HealthInfo {
@@ -48,8 +50,8 @@ export interface HealthInfo {
   details?: string;
 }
 
-/** met — условие выполнено по имеющимся данным; weak — известно, но совпадает частично. */
-export type CriterionState = 'met' | 'weak' | 'unknown' | 'violated';
+/** met — выполнено по имеющимся данным; weak — совпадает частично; unchecked — проверить нечем (цена). */
+export type CriterionState = 'met' | 'weak' | 'unknown' | 'violated' | 'unchecked';
 
 export interface Criterion {
   key: string;
@@ -90,6 +92,8 @@ export interface HotelSummary {
   /** Какая категория/номер подходит: «Улучшенный номер» или «Номер 301». */
   roomHint: string | null;
   criteria: Criterion[];
+  /** Ответ по словам гостя: строка на каждую часть запроса. Пусто — показываем criteria. */
+  needRows: Criterion[];
   evidence: EvidenceLine[];
   warnings: string[];
   /** Агент уже отправил отельеру вопрос по неизвестной характеристике. */
@@ -106,7 +110,10 @@ export interface SearchResult {
   clarification: string | null;
   contextLabel: string;
   chips: RequestChip[];
+  /** Слова запроса, которые не удалось связать ни с одной характеристикой. */
   ignoredTerms: string[];
+  /** Темы, которых нет в текущей версии (цена, бассейн): поиск идёт без них. */
+  unsupported: string[];
   hotels: HotelSummary[];
   /** Пояснения о качестве данных, общие для выдачи. */
   notes: string[];
@@ -114,6 +121,17 @@ export interface SearchResult {
   canSearchAnyway: boolean;
   /** Условия, без которых искали по просьбе гостя; показываются как «не учтено». */
   skipped: string[];
+  /** Расплывчатые пожелания, которые можно уточнить одной кнопкой («Какой вид важнее?»). */
+  refinements: Refinement[];
+}
+
+export interface Refinement {
+  concept: string;
+  quote: string;
+  question: string;
+  options: { key: string; label: string }[];
+  /** Выбранный вариант или null — «любой». */
+  chosen: string | null;
 }
 
 export interface RoomOffer {

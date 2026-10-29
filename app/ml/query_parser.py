@@ -71,6 +71,16 @@ def llm_schema() -> dict:
     # Без required модель могла законно (по JSON Schema) опустить эти поля,
     # после чего тот же ответ отклонялся предметным валидатором Pydantic.
     schema['$defs']['HardConstraint']['required'] = list(schema['$defs']['HardConstraint']['properties'])
+    # Потребности: варианты понятий и выбор гостя заполняет backend, не модель.
+    from app.features.concepts import get_concepts
+    need = schema['$defs']['Need']['properties']
+    need.pop('options', None)
+    need.pop('chosen', None)
+    need.pop('question', None)
+    schema['$defs'].pop('NeedOption', None)
+    need['features']['items']['enum'] = list(query_features())
+    need['concept'] = {'anyOf': [{'type': 'string', 'enum': list(get_concepts())}, {'type': 'null'}]}
+    schema['$defs']['Need']['required'] = list(need)
     soft = schema['$defs']['SoftPreference']['properties']
     soft.pop('derived_from', None)
     schema['properties'].pop('ignored_terms', None)
@@ -93,6 +103,9 @@ def registry_fields(raw):
     """
     if not isinstance(raw, dict):
         return raw
+    # Вспомогательная разметка needs чинится отдельно — огрех в ней не роняет разбор.
+    from app.ml.needs import clean_llm_needs
+    clean_llm_needs(raw)
     registry = get_registry().definitions
     for kind in ('hard_constraints', 'soft_preferences'):
         for item in raw.get(kind) or []:
@@ -401,7 +414,8 @@ class HybridQueryParser:
         nothing = self.NOTHING_FOUND in rules.unknown_or_ambiguous
         if nothing:
             # Правила ничего не поняли — ответ LLM целиком (кроме пустого).
-            if not llm.hard_constraints and not llm.soft_preferences and not llm.unknown_or_ambiguous:
+            if (not llm.hard_constraints and not llm.soft_preferences and not llm.unknown_or_ambiguous
+                    and not llm.needs and not llm.unsupported):
                 return rules
             return llm
         known = {c.feature_key for c in rules.hard_constraints} | {p.feature_key for p in rules.soft_preferences}
@@ -409,18 +423,44 @@ class HybridQueryParser:
         soft = rules.soft_preferences + [p for p in llm.soft_preferences if p.feature_key not in known]
         # Вопросы LLM здесь поиск не блокируют: правила уже что-то нашли, а Gemma
         # часто пишет расплывчатое «уточните способ измерения» к понятному запросу.
-        # Блокируют только точные пометки правил («Пока не поддерживается: цена»).
+        # Блокируют только точные пометки правил; расплывчатое («вид из окна») —
+        # потребность any_of, а не вопрос.
         unknown = rules.unknown_or_ambiguous
-        # Непонятые слова скрываем, только если LLM их «покрыла»: добавила признак или
-        # подтвердила разбор правил, ничего не оставив под сомнением. Иначе гость
-        # видит «Не учтено: …» и понимает, что часть запроса не учтена.
+        merged_needs = self.merge_needs(rules, llm, hard, soft)
+        # Непонятые слова скрываем, только если LLM их «покрыла»: добавила признак,
+        # потребность или тему либо подтвердила разбор правил, ничего не оставив под
+        # сомнением. Иначе гость видит «Не учтено: …» и понимает, что часть запроса не учтена.
         llm_keys = {c.feature_key for c in llm.hard_constraints} | {p.feature_key for p in llm.soft_preferences}
-        covered = bool(llm_keys) and not llm.unknown_or_ambiguous
+        covered = bool(llm_keys or llm.needs or llm.unsupported) and not llm.unknown_or_ambiguous
         return ParsedHotelQuery(
             region=llm.region if rules.region == 'other' else rules.region,
             hard_constraints=hard, soft_preferences=soft, unknown_or_ambiguous=unknown,
             clarification_question=rules.clarification_question if unknown else None,
-            original_text=rules.original_text, ignored_terms=[] if covered else rules.ignored_terms)
+            original_text=rules.original_text, ignored_terms=[] if covered else rules.ignored_terms,
+            unsupported=rules.unsupported + [u for u in llm.unsupported if u not in rules.unsupported],
+            needs=merged_needs)
+
+    @staticmethod
+    def merge_needs(rules: ParsedHotelQuery, llm: ParsedHotelQuery, hard, soft):
+        """Потребности правил + новые от LLM (по признакам, понятиям и темам, которых правила не нашли)."""
+        keys = {c.feature_key for c in hard} | {p.feature_key for p in soft}
+        needs = list(rules.needs)
+        seen_features = {k for n in needs for k in n.features}
+        seen_concepts = {n.concept for n in needs if n.kind == 'any_of'}
+        seen_topics = {n.topic for n in needs if n.kind == 'unsupported'}
+        for need in llm.needs:
+            if need.kind == 'feature':
+                fresh = [k for k in need.features if k not in seen_features and k in keys]
+                if fresh:
+                    needs.append(need.model_copy(update={'features': fresh}))
+                    seen_features |= set(fresh)
+            elif need.kind == 'any_of' and need.concept not in seen_concepts:
+                needs.append(need)
+                seen_concepts.add(need.concept)
+            elif need.kind == 'unsupported' and need.topic not in seen_topics:
+                needs.append(need)
+                seen_topics.add(need.topic)
+        return needs
 
 
 def make_parser(config=settings) -> QueryParser:

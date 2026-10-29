@@ -87,3 +87,31 @@ it('«Искать без этого условия»: не разбирает �
   expect(bodies[1]).toMatchObject({ parsed: { unknown_or_ambiguous: [], clarification_question: null } });
   expect(bodies[1]).not.toHaveProperty('text');
 });
+
+it('уточнение «Какой вид важнее?» не разбирает текст заново: parsed + choices', async () => {
+  const parsed = {
+    region: 'Adler', hard_constraints: [], soft_preferences: [], original_text: 'вид из окна', ignored_terms: [],
+    unknown_or_ambiguous: [], clarification_question: null,
+    needs: [{ quote: 'вид из окна', kind: 'any_of', features: [], concept: 'window_view', topic: null, chosen: null,
+      question: 'Какой вид важнее?', options: [{ key: 'sea', label: 'На море', feature_key: 'sea_view_potential' }, { key: 'mountains', label: 'На горы', feature_key: 'mountain_view_potential' }] }],
+  };
+  const empty = { matched: [], needs_verification: [], excluded: [], parser_mode: 'groq', include_simulated: true, status: 'ok' };
+  const bodies: Record<string, unknown>[] = [];
+  vi.stubGlobal('fetch', vi.fn(async (url: string, init?: RequestInit) => {
+    if (url.endsWith('/health')) return new Response(JSON.stringify({ status: 'ok', demo_mode: true }));
+    if (url.endsWith('/features')) return new Response(JSON.stringify({}));
+    const body = JSON.parse(String(init?.body));
+    bodies.push(body);
+    return new Response(JSON.stringify({ ...empty, parsed: body.parsed ?? parsed }));
+  }));
+  const { createApiSource } = await import('./source');
+  const source = createApiSource();
+  const params = { text: 'вид из окна', destination: 'Адлер', checkIn: '', checkOut: '', guests: 2 };
+  const first = await source.search(params);
+  expect(first.refinements).toEqual([{ concept: 'window_view', quote: 'вид из окна', question: 'Какой вид важнее?',
+    options: [{ key: 'sea', label: 'На море' }, { key: 'mountains', label: 'На горы' }], chosen: null }]);
+  await source.search({ ...params, choices: { window_view: 'sea', stale_concept: 'x' } });
+  expect(bodies).toHaveLength(2);
+  expect(bodies[1]).toMatchObject({ parsed: { original_text: 'вид из окна' }, choices: { window_view: 'sea' } });
+  expect(bodies[1]).not.toHaveProperty('text');
+});

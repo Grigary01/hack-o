@@ -123,17 +123,65 @@ class SoftPreference(Contract):
         return self
 
 
+class NeedOption(Contract):
+    """Вариант уточнения расплывчатого пожелания (заполняет backend по concepts.yaml)."""
+    key: str
+    label: str
+    feature_key: str
+
+
+class Need(Contract):
+    """Одна часть запроса гостя — с цитатой, чтобы ответ строился по его словам.
+
+    feature — проверяется признаками реестра (features);
+    any_of — расплывчатое пожелание из concepts.yaml («вид из окна»): подходит любой вариант;
+    unsupported — проверить нечем (topic: «цена»); видно гостю как «не учтено».
+    Поля options/chosen заполняет backend при разрешении понятия, не парсер.
+    """
+    quote: str = Field(min_length=1, max_length=200)
+    kind: Literal['feature', 'any_of', 'unsupported']
+    features: list[str] = Field(default_factory=list, max_length=8)
+    concept: str | None = None
+    topic: str | None = Field(default=None, max_length=80)
+    options: list[NeedOption] = Field(default_factory=list)
+    chosen: str | None = None
+    question: str | None = None  # «Какой вид важнее?» — для кнопок уточнения
+
+    @model_validator(mode='after')
+    def coherent(self):
+        registry = get_registry()
+        for key in self.features:
+            registry.get(key)
+        if self.kind == 'feature' and not self.features:
+            raise ValueError('Потребность feature требует хотя бы один признак')
+        if self.kind == 'any_of':
+            from app.features.concepts import get_concept
+            if self.concept is None:
+                raise ValueError('Потребность any_of требует concept из concepts.yaml')
+            get_concept(self.concept)
+        if self.kind == 'unsupported' and not self.topic:
+            self.topic = self.quote
+        return self
+
+
 class ParsedHotelQuery(Contract):
     """Полный результат parser: регион, hard/soft, непонятое и исходный текст.
 
-    unknown_or_ambiguous нужен, чтобы ограничение не исчезло молча.
-    Например, «до 5000 рублей» нельзя поддержать без цен — backend попросит уточнить.
+    Непроверяемое не исчезает молча, но и не блокирует поиск зря:
+    - unsupported — темы, которые система пока не умеет проверять (цена, бассейн,
+      питание…). Поиск идёт по остальным условиям, гостю они видны как «не учтено».
+    - unknown_or_ambiguous — то, без чего запрос нельзя понять верно (другой город,
+      минуты без способа передвижения, пустой запрос). Тогда backend просит уточнить.
     """
     region: str = 'Adler'
     hard_constraints: list[HardConstraint] = Field(default_factory=list, max_length=12)
     soft_preferences: list[SoftPreference] = Field(default_factory=list, max_length=12)
     unknown_or_ambiguous: list[str] = Field(default_factory=list)
     clarification_question: str | None = None
+    # Короткие названия тем без поддержки в реестре: «цена», «бассейн». Не блокируют поиск.
+    unsupported: list[str] = Field(default_factory=list, max_length=20)
+    # Части запроса гостя с цитатами; ответ строится по ним (app/ml/needs.py дополняет пропущенное).
+    needs: list[Need] = Field(default_factory=list, max_length=16)
     original_text: str = ''
     # Слова запроса, которые офлайн-разбор не сопоставил ни с одной характеристикой.
     # Не блокируют поиск, но показываются гостю: ничего не теряется молча.

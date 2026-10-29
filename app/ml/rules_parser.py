@@ -15,7 +15,8 @@ ParsedHotelQuery, что у LLM, с той же проверкой Pydantic.
 """
 import re
 from app.features.registry import get_registry
-from app.schemas.query import ParsedHotelQuery, HardConstraint, SoftPreference, UtilityCurve
+from app.features.concepts import get_concepts
+from app.schemas.query import ParsedHotelQuery, HardConstraint, SoftPreference, UtilityCurve, Need
 
 WALK_M_PER_MINUTE = 80  # ~4.8 км/ч; «5 минут пешком» → 400 м
 WORD = re.compile(r'[a-zа-я0-9]+(?:[.,][0-9]+)?')
@@ -98,6 +99,14 @@ class RulesQueryParser:
 
     def __init__(self, registry=None):
         self.registry = registry or get_registry()
+        # Расплывчатые пожелания (concepts.yaml): «вид из окна» → любой из видов.
+        # Понятие не нужно, если гость уже назвал конкретный вид или его расчёт.
+        self.concepts = {}
+        for key, concept in get_concepts().items():
+            options = {o.feature_key for o in concept.options}
+            parents = {k for k, d in self.registry.definitions.items()
+                       if any(c.feature_key in options for c in d.companions)}
+            self.concepts[key] = ([re.compile(p) for p in concept.patterns], options | parents)
         self.compiled = {
             key: ([re.compile(p.replace('ё', 'е')) for p in d.query_patterns],
                   [re.compile(p.replace('ё', 'е')) for p in d.query_negative_patterns])
@@ -107,6 +116,7 @@ class RulesQueryParser:
     def parse(self, text: str) -> ParsedHotelQuery:
         lowered = normalize(text)
         unknown = []
+        unsupported = []  # темы без поддержки: не блокируют поиск, видны гостю как «не учтено»
         region = 'Adler'
         if OTHER_REGIONS.search(lowered):
             region = 'other'
@@ -121,20 +131,31 @@ class RulesQueryParser:
             if topic == 'расстояние по прямой' and not any(m['key'] == 'walking_distance_to_beach_m' for m in mentions):
                 continue  # до баров расстояние и так по прямой; не поддерживается только для пляжа
             if re.search(pattern, lowered):
-                unknown.append(f'Пока не поддерживается: {topic}')
-        hard, soft = [], []
-        for mention in mentions:
+                unsupported.append(topic)
+        hard, soft, needs = [], [], []
+        concept_spans = self._concepts(lowered, mentions, needs)
+        quotes = self._quotes(lowered, mentions, concept_spans)
+        for index, mention in enumerate(mentions):
             items = self._interpret(mention, unknown, lowered)
+            keys = []
             for item in items if isinstance(items, list) else [items]:
                 if item is not None:
                     (hard if isinstance(item, HardConstraint) else soft).append(item)
+                    keys.append(item.feature_key)
+            if keys:
+                self._add_need(needs, Need(quote=quotes[index], kind='feature', features=list(dict.fromkeys(keys))))
+        for topic, pattern in UNSUPPORTED.items():
+            if topic in unsupported:
+                found = re.search(pattern, lowered)
+                needs.append(Need(quote=found.group().strip() if found else topic, kind='unsupported', topic=topic))
         # Одно и то же условие, найденное по двум упоминаниям («у моря … до пляжа <= 700 м»), — один раз.
         hard = [h for i, h in enumerate(hard) if h not in hard[:i]]
         soft = self._dedupe(soft, hard)
         self._relative_importance(lowered, mentions, soft)
-        if not hard and not soft and not unknown and not mentions and not GENERAL.search(lowered):
+        if (not hard and not soft and not unknown and not unsupported and not mentions and not concept_spans
+                and not GENERAL.search(lowered)):
             unknown.append('Не нашёл поддерживаемых пожеланий')
-        ignored = self._ignored_terms(lowered, mentions)
+        ignored = self._ignored_terms(lowered, mentions + concept_spans)
         question = None
         if unknown:
             supported = ', '.join(sorted({self.registry.get(k).label.lower() for k in self.compiled}))
@@ -142,7 +163,53 @@ class RulesQueryParser:
                         'Сейчас система проверяет: ' + supported + '.')
         return ParsedHotelQuery(region=region, hard_constraints=hard, soft_preferences=soft,
                                 unknown_or_ambiguous=unknown, clarification_question=question, original_text=text,
-                                ignored_terms=ignored)
+                                ignored_terms=ignored, unsupported=unsupported, needs=needs)
+
+    def _quotes(self, lowered, mentions, concept_spans):
+        """Цитата для каждого упоминания — слова гостя, а не название признака.
+
+        Левая граница — конец предыдущего упоминания в той же фразе; справа добавляется
+        хвост с числом или направлением («до пляжа не более 500 м», «бары подальше»).
+        """
+        bounds = sorted([(m['start'], m['end']) for m in mentions] + [(c['start'], c['end']) for c in concept_spans])
+        quotes = []
+        for mention in mentions:
+            before, after, _ = self._clause(lowered, mention['start'], mention['end'])
+            left = mention['start'] - len(before)
+            right = mention['end'] + len(after)
+            left = max([left] + [e for s_, e in bounds if e <= mention['start']])
+            nxt = min([right] + [s_ for s_, e in bounds if s_ >= mention['end']])
+            tail = lowered[mention['end']:nxt]
+            # Хвост — только у последнего упоминания во фразе: иначе число соседа («500 м до пляжа») уйдёт не туда.
+            last_in_clause = nxt == right
+            end = (mention['end'] + len(tail) if last_in_clause
+                   and re.search(r'\d|пешком|подальше|поближе|рядом|далеко|близко', tail) else mention['end'])
+            quote = lowered[left:end].strip(' ,.;!?')
+            quote = re.sub(r'^(?:(?:и|а|но|ещё|еще|также|чтобы|чтоб|хочу|хотим|нужен|нужна|нужно|ищу|отель|номер|гостиница|с|со)\s+)+', '', quote)
+            quotes.append(quote[:80].strip() or lowered[mention['start']:mention['end']])
+        return quotes
+
+    @staticmethod
+    def _add_need(needs, need):
+        for existing in needs:
+            if set(existing.features) == set(need.features):
+                return
+        needs.append(need)
+
+    def _concepts(self, lowered, mentions, needs):
+        """«Вид из окна» без уточнения, какой вид, — потребность any_of; вид, названный прямо, важнее."""
+        spans = []
+        named = {m['key'] for m in mentions}
+        for key, (patterns, related) in self.concepts.items():
+            if named & related:
+                continue
+            for pattern in patterns:
+                found = pattern.search(lowered)
+                if found and not any(m['start'] < found.end() and found.start() < m['end'] for m in mentions):
+                    needs.insert(0, Need(quote=found.group().strip(), kind='any_of', concept=key))
+                    spans.append({'key': None, 'start': found.start(), 'end': found.end()})
+                    break
+        return spans
 
     def _ignored_terms(self, lowered, mentions):
         """Содержательные слова вне найденных характеристик, модификаторов и неподдерживаемых тем."""

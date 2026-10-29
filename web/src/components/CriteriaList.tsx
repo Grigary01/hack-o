@@ -17,7 +17,14 @@ function Icon({ state }: { state: Criterion['state'] }) {
       </svg>
     );
   }
-  if (state === 'weak') {
+  if (state === 'unchecked') {
+    return (
+      <svg className={styles.icon} width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+        <circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeDasharray="2 2" />
+      </svg>
+    );
+  }
+    if (state === 'weak') {
     return (
       <svg className={styles.icon} width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
         <path d="M3 7h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -36,6 +43,7 @@ const STATE_LABEL: Record<Criterion['state'], string> = {
   weak: 'выполнено частично',
   unknown: 'нет данных',
   violated: 'не выполнено',
+  unchecked: 'не проверяется',
 };
 
 export function CriteriaList({ criteria, tone, size = 'm' }: Props) {

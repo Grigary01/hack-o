@@ -18,6 +18,7 @@ import type {
   FeatureRegistryDto,
   HardConstraintDto,
   HotelSearchResultDto,
+  NeedResultDto,
   ObservationDto,
   ParsedQueryDto,
   QuestionDto,
@@ -186,11 +187,13 @@ export function evidenceLines(criteria: CriterionDto[], registry: FeatureRegistr
   return criteria.map((c) => {
     const observation = c.evidence[0];
     const label = registry[c.feature_key]?.label ?? c.feature_key;
+    // Объяснение бэкенда начинается с названия признака — заголовок строки его уже показывает.
+    const raw = humanize(c.explanation);
+    const explanation = raw.startsWith(`${label}: `) ? capitalize(raw.slice(label.length + 2)) : raw;
     if (!observation) {
-      return { title: label, text: humanize(c.explanation), note: 'Данных пока нет — значение не угадываем.' };
+      return { title: label, text: explanation, note: 'Данных пока нет — значение не угадываем.' };
     }
     const quote = observation.evidence.details.quote;
-    const explanation = humanize(c.explanation);
     const text = typeof quote === 'string' && quote ? `«${quote}». ${explanation}` : explanation;
     return {
       title: label,
@@ -255,10 +258,13 @@ export function mapHotelResult(
   const primary = item.criteria.filter((c) => !companions.has(c.feature_key));
   const byKey = new Map(item.criteria.map((c) => [c.feature_key, c]));
   const criteria = primary.map((c) => estimatedFromModel(mapCriterion(c, registry, required), c, byKey, registry));
+  const needRows = mapNeedRows(item.needs ?? [], required, registry);
   // «Условия подтверждены» только если по каждому пожеланию гостя есть данные.
+  // Если ответ построен по потребностям — судим по ним: «цена: не проверяем» не делает отель хуже.
+  const answered = needRows.length ? needRows : criteria;
   let group: ResultGroup = 'partial';
   if (backendGroup === 'excluded') group = 'excluded';
-  else if (backendGroup === 'matched' && criteria.every((c) => c.state !== 'unknown')) group = 'confirmed';
+  else if (backendGroup === 'matched' && answered.every((c) => c.state !== 'unknown')) group = 'confirmed';
   const room = roomNumber(item.recommended_room_id);
   const conflicts = item.criteria.flatMap((c) => c.model_conflicts.map((m) => humanize(m.text ?? ''))).filter(Boolean);
   return {
@@ -270,6 +276,7 @@ export function mapHotelResult(
     price: null,
     roomHint: room ? `Номер ${room}` : null,
     criteria,
+    needRows,
     evidence: evidenceLines([...primary, ...item.criteria.filter((c) => companions.has(c.feature_key))], registry),
     warnings: [...item.warnings.map((w) => humanize(w)), ...conflicts],
     pendingQuestion: item.pending_hotelier_question_ids.length > 0,
@@ -279,8 +286,59 @@ export function mapHotelResult(
   };
 }
 
+const NEED_STATE: Record<NeedResultDto['outcome'], CriterionState> = {
+  matched: 'met',
+  partial: 'weak',
+  unknown: 'unknown',
+  violated: 'violated',
+  unchecked: 'unchecked',
+};
+
+/** Цитата гостя для показа: «ТИХО НОЧЬЮ» → «Тихо ночью» (капс не повторяем как крик). */
+export function prettyQuote(quote: string): string {
+  const trimmed = quote.trim();
+  const shouting = /[А-ЯЁA-Z]{3}/.test(trimmed) && trimmed === trimmed.toUpperCase();
+  return capitalize(shouting ? trimmed.toLowerCase() : trimmed);
+}
+
+/** Ответ по словам гостя: «Вид из окна — на море: широкий вид». */
+export function mapNeedRows(needs: NeedResultDto[], required: Set<string>, registry: FeatureRegistryDto): Criterion[] {
+  // Сначала то, что проверили; «не реализовано в текущей версии» — в конце карточки.
+  const ordered = [...needs.filter((n) => n.outcome !== 'unchecked'), ...needs.filter((n) => n.outcome === 'unchecked')];
+  return ordered.map((need) => {
+    const name = prettyQuote(need.quote);
+    return {
+      key: `need:${need.kind}:${need.quote}`,
+      name,
+      text: `${name} — ${need.text}`,
+      state: NEED_STATE[need.outcome],
+      required: need.features.some((f) => required.has(f)),
+      askable: need.outcome === 'unknown' && need.features.some((f) => registry[f]?.provider === 'hotelier'),
+      source: need.detail ?? '',
+    };
+  });
+}
+
 export function requestChips(parsed: ParsedQueryDto, registry: FeatureRegistryDto): RequestChip[] {
   const chips: RequestChip[] = [];
+  if (parsed.needs?.length) {
+    // Чипы — части запроса словами гостя, а не названия признаков реестра.
+    const required = new Set(parsed.hard_constraints.map((h) => h.feature_key));
+    for (const need of parsed.needs) {
+      const quote = prettyQuote(need.quote);
+      if (need.kind === 'unsupported') {
+        chips.push({ label: `Не реализовано: ${need.topic ?? need.quote}`, kind: 'unsupported' });
+      } else if (need.kind === 'any_of') {
+        const chosen = need.options.find((o) => o.key === need.chosen);
+        chips.push({ label: `${quote} · ${chosen ? chosen.label.toLowerCase() : 'любой'}`, kind: 'preference' });
+      } else {
+        const hard = need.features.some((f) => required.has(f));
+        chips.push({ label: hard ? `${quote} · обязательно` : quote, kind: hard ? 'required' : 'preference' });
+      }
+    }
+    for (const term of parsed.ignored_terms ?? []) chips.push({ label: `Не распознано: ${term}`, kind: 'unsupported' });
+    return chips;
+  }
   for (const hard of parsed.hard_constraints) {
     const name = featureName(hard.feature_key, registry);
     const definition = registry[hard.feature_key];
@@ -298,6 +356,9 @@ export function requestChips(parsed: ParsedQueryDto, registry: FeatureRegistryDt
   }
   // Только непонятые слова. Оговорки парсера (unknown_or_ambiguous) — не «неизвестная
   // характеристика», а просьба уточнить: их показывает экран needs_clarification.
+  for (const topic of parsed.unsupported ?? []) {
+    chips.push({ label: `Не реализовано: ${topic}`, kind: 'unsupported' });
+  }
   for (const term of parsed.ignored_terms ?? []) {
     chips.push({ label: `Не распознано: ${term}`, kind: 'unsupported' });
   }

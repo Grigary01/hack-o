@@ -147,3 +147,12 @@ def test_scope_and_unit_come_from_registry_not_from_the_model():
     assert len(calls) == 1  # без повторной попытки
     assert parsed.soft_preferences[0].scope == 'hotel'
     assert (parsed.hard_constraints[0].value, parsed.hard_constraints[0].unit) == (400, 'm')
+
+
+def test_unsupported_topics_from_rules_and_llm_are_merged_and_do_not_block():
+    """Цену нашли правила, бассейн — LLM: оба видны гостю, но это не просьба уточнить."""
+    llm = FakeLLM({'soft_preferences': [{'feature_key': 'beach_route_climb_m', 'desired': 'near', 'scope': 'hotel'}],
+                   'unsupported': ['цена', 'бассейн']})
+    parsed = HybridQueryParser(llm=llm).parse('Недорого, тихо и чтобы бабушке не карабкаться к воде')
+    assert parsed.unsupported.count('цена') == 1 and 'бассейн' in parsed.unsupported
+    assert not parsed.unknown_or_ambiguous and parsed.clarification_question is None
