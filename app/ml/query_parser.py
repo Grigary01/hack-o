@@ -103,6 +103,9 @@ def registry_fields(raw):
     """
     if not isinstance(raw, dict):
         return raw
+    # Вспомогательная разметка needs чинится отдельно — огрех в ней не роняет разбор.
+    from app.ml.needs import clean_llm_needs
+    clean_llm_needs(raw)
     registry = get_registry().definitions
     for kind in ('hard_constraints', 'soft_preferences'):
         for item in raw.get(kind) or []:

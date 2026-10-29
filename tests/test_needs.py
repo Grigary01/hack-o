@@ -142,3 +142,30 @@ def test_hybrid_keeps_rules_needs_and_adds_llm_concept():
     kinds = [(n.kind, n.quote) for n in parsed.needs]
     assert ('any_of', 'чтоб глаз радовался') in kinds and sum(k == 'unsupported' for k, _ in kinds) == 1
     assert ('feature', 'тихо') in kinds
+
+
+def test_incomplete_llm_need_does_not_reject_the_whole_answer():
+    """«Хочу отель в Сочи у моря»: Claude отдал «в Сочи» как feature без признаков — раньше 502."""
+    import httpx, json
+    from app.core.config import settings
+    from app.ml.query_parser import GroqQueryParser
+    answer = {'region': 'other', 'hard_constraints': [], 'unknown_or_ambiguous': ['Сочи вне демо-зоны'],
+              'soft_preferences': [{'feature_key': 'walking_distance_to_beach_m', 'desired': 'near', 'scope': 'hotel'}],
+              'needs': [{'quote': 'в Сочи', 'kind': 'feature', 'features': [], 'concept': None, 'topic': None},
+                        {'quote': 'у моря', 'kind': 'feature', 'features': ['walking_distance_to_beach_m', 'no_such_key'],
+                         'concept': None, 'topic': None},
+                        {'quote': 'красиво', 'kind': 'any_of', 'features': [], 'concept': 'beauty', 'topic': None},
+                        {'quote': 'x' * 300, 'kind': 'unsupported', 'features': [], 'concept': None, 'topic': 'т' * 120}]}
+    calls = []
+
+    def handler(request):
+        calls.append(1)
+        return httpx.Response(200, json={'choices': [{'finish_reason': 'stop',
+                                                      'message': {'content': json.dumps(answer)}}]})
+    from dataclasses import replace
+    config = replace(settings, groq_api_key='test', cloud_base_url='http://llm.test/v1')
+    with httpx.Client(transport=httpx.MockTransport(handler)) as http:
+        parsed = GroqQueryParser(config, client=http).parse('Хочу отель в Сочи у моря')
+    assert len(calls) == 1
+    assert [(n.quote, n.features) for n in parsed.needs[:1]] == [('у моря', ['walking_distance_to_beach_m'])]
+    assert len(parsed.needs) == 2 and len(parsed.needs[1].quote) == 200 and len(parsed.needs[1].topic) == 80

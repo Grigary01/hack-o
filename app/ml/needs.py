@@ -9,11 +9,54 @@
 
 Функции идемпотентны: разобранный запрос из ответа можно отправить обратно.
 """
-from app.features.concepts import get_concept
+from app.features.concepts import get_concept, get_concepts
 from app.features.registry import get_registry
 from app.schemas.query import Need, NeedOption, ParsedHotelQuery, SoftPreference
 
 MAX_PREFERENCES = 12
+MAX_NEEDS = 16
+
+
+def clean_llm_needs(raw: dict) -> dict:
+    """Разметка needs от LLM — вспомогательная: её огрехи не должны ронять весь разбор.
+
+    Claude на «Хочу отель в Сочи у моря» отдал часть «в Сочи» как feature без признаков —
+    валидация отклоняла ответ целиком (дважды), и гость видел «невалидный контракт».
+    Здесь чиним или отбрасываем только неполные потребности: неизвестные признаки
+    убираем, feature без признаков и any_of с неизвестным понятием (без признаков)
+    выбрасываем, длинные цитаты и темы обрезаем. Условия hard/soft не трогаем —
+    они проверяются строго, как раньше. Выброшенное дополнит complete_needs().
+    """
+    needs = raw.get('needs')
+    if not isinstance(needs, list):
+        if 'needs' in raw:
+            raw['needs'] = []
+        return raw
+    registry = get_registry().definitions
+    concepts = get_concepts()
+    cleaned = []
+    for item in needs:
+        if not isinstance(item, dict):
+            continue
+        quote = str(item.get('quote') or '').strip()[:200]
+        if not quote:
+            continue
+        features = [k for k in item.get('features') or [] if isinstance(k, str) and k in registry][:8]
+        need = {'quote': quote, 'kind': item.get('kind'), 'features': features,
+                'concept': item.get('concept'), 'topic': item.get('topic')}
+        if isinstance(need['topic'], str):
+            need['topic'] = need['topic'].strip()[:80] or None
+        if need['kind'] == 'any_of' and need['concept'] not in concepts:
+            if not features:
+                continue
+            need.update(kind='feature', concept=None)
+        if need['kind'] == 'feature' and not features:
+            continue
+        if need['kind'] not in ('feature', 'any_of', 'unsupported'):
+            continue
+        cleaned.append(need)
+    raw['needs'] = cleaned[:MAX_NEEDS]
+    return raw
 
 
 def _primary_keys(parsed: ParsedHotelQuery) -> list[str]:
