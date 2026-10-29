@@ -8,7 +8,7 @@ from app.core.config import ROOT
 ROOT_FILES = ('.env.example', '.gitignore', 'LICENSE', 'README.md', 'main.py',
                'THIRD_PARTY_NOTICES.md', 'pyproject.toml', 'requirements.lock', 'alembic.ini',
                'Dockerfile', '.dockerignore', 'compose.yaml', 'Makefile')
-PROJECT_DIRS = ('app', 'config', 'frontend', 'scripts', 'tests', 'data', 'docs', 'legacy', 'migrations', 'docker', 'web')
+PROJECT_DIRS = ('app', 'config', 'scripts', 'tests', 'data', 'docs', 'legacy', 'migrations', 'docker', 'web')
 
 
 def project_files():

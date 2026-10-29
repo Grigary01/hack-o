@@ -4,14 +4,12 @@ import json
 import httpx
 import pytest
 from fastapi.testclient import TestClient
-from streamlit.testing.v1 import AppTest
 
-from app.core.config import ROOT, settings
+from app.core.config import settings
 from app.hotelier.reply_validation import parse_reply
 from app.main import create_app
 from app.ml.query_parser import FixtureQueryParser, OllamaQueryParser, GroqQueryParser
 from app.ml.reply_parser import OllamaReplyParser, GroqReplyParser
-from frontend.api_client import APIClient
 
 KEY = 'blackout_curtains'
 QUERY = 'Нужен номер с плотными шторами'
@@ -148,23 +146,3 @@ def test_reply_model_receives_the_new_feature_without_special_cases(provider):
         result = parse_reply(parser, feature_key=KEY, text=POSITIVE)
         assert result.claims[0].feature_key == KEY and not result.unparsed
 
-
-def test_existing_frontend_discovers_the_feature_and_updates_search_after_confirmation(client, monkeypatch):
-    def request(self, method, path, payload=None):
-        response = client.request(method, path, json=payload)
-        response.raise_for_status()
-        return response.json()
-    monkeypatch.setattr(APIClient, 'request', request)
-    ui = AppTest.from_file(ROOT / 'frontend/app.py', default_timeout=20).run()
-    next(s for s in ui.selectbox if s.label == 'Попробовать сценарий').set_value(QUERY).run()
-    next(c for c in ui.checkbox if c.label == 'Учитывать симулированные ответы отельера').set_value(True)
-    next(b for b in ui.button if b.label == 'Найти отели').click().run()
-    assert any('Соответствуют по имеющимся данным · 0' in h.value for h in ui.subheader)
-    next(s for s in ui.selectbox if s.label == 'О чём спросить').set_value(KEY).run()
-    next(b for b in ui.button if b.label == 'Сформировать вопрос').click().run()
-    next(t for t in ui.text_area if t.label == 'Ответ своими словами').set_value(POSITIVE)
-    next(b for b in ui.button if b.label == 'Разобрать ответ').click().run()
-    next(b for b in ui.button if b.label == 'Подтвердить разбор').click().run()
-    assert not ui.exception
-    assert any('Соответствуют по имеющимся данным · 1' in h.value for h in ui.subheader)
-    assert any('Плотные шторы: Да' in m.value for m in ui.markdown)

@@ -1,8 +1,8 @@
 # web — React-фронтенд «Островок · Демо подбора»
 
-Новый фронт по макету `frontend/design/Untitled.pdf`: поиск по пожеланиям, выдача с фильтрами и картой,
+Фронт по макету `docs/design/Untitled.pdf`: поиск по пожеланиям, выдача с фильтрами и картой,
 карточка отеля/номера и кабинет отельера от вопроса до опубликованного ответа.
-Streamlit (`frontend/`) не трогаем — оба фронта работают параллельно.
+Это единственный интерфейс проекта: прежний Streamlit (`frontend/`) удалён 29.10.2026.
 
 Стек: React 19, TypeScript, Vite, React Router, TanStack Query v5, CSS Modules + CSS-переменные.
 Внешних UI-библиотек и картинок из PDF нет: иллюстрации номера и схема карты нарисованы SVG.
@@ -114,11 +114,11 @@ src/data/
 
 ## Docker
 
-Всё приложение — бэкенд, React и Streamlit — поднимается из корня репозитория одной командой:
+Всё приложение — бэкенд и React — поднимается из корня репозитория одной командой:
 
 ```bash
 docker compose up --build
-# React: http://localhost:8080   Streamlit: http://localhost:8501   API: http://localhost:8000/docs
+# React: http://localhost:8080   API: http://localhost:8000/docs
 ```
 
 Сервис `web` собирается из `web/Dockerfile` (`VITE_DATA_MODE=api`), раздаёт статику через nginx
@@ -161,7 +161,7 @@ docker run --rm -p 8082:8080 ostrovok-web:mock     # http://localhost:8082
 Есть в API, но пока не вынесено в этот UI: проверка расчётных фактов отельером
 (`POST /api/hotelier/facts/review`), разрешение конфликтов оператором (`GET /api/hotelier/conflicts`,
 `POST /api/hotelier/conflicts/{id}/resolve`),
-веса пожеланий и `ranking_method`, отчёты среды (`/api/hotels/{id}/environment`). Они доступны в Streamlit.
+веса пожеланий и `ranking_method`, отчёты среды (`/api/hotels/{id}/environment`). Пока они доступны только через API (Swagger `/docs`).
 
 ## Доступность и адаптивность
 

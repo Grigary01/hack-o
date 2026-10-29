@@ -7,7 +7,7 @@ down:
 	docker compose down
 
 logs:
-	docker compose logs -f backend web frontend
+	docker compose logs -f backend web
 
 seed:
 	docker compose exec backend python -m scripts.seed_demo

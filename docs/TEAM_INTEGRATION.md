@@ -12,9 +12,9 @@
 ## Как запускать
 
 ```bash
-# Backend + React + Streamlit
+# Backend + React
 docker compose up --build
-# React: http://localhost:8080, Streamlit: http://localhost:8501, API: http://localhost:8000/docs
+# React: http://localhost:8080, API: http://localhost:8000/docs
 ```
 
 Без Docker: backend по README, затем в `web/` — `npm ci && npm run dev:api`
@@ -32,7 +32,7 @@ docker compose up --build
   признак, добавленный только в YAML (`blackout_curtains`), сразу доступен модели.
   Скрыты лишь расчётные спутники (`*_potential`, `*_min_floor`, `aircraft_noise_exposure`).
 - `.dockerignore`: белый список backend + добавлен `config/` (Dockerfile копирует его,
-  без этого сборка образа падала); `web/` и `frontend/design` исключены из backend-образа.
+  без этого сборка образа падала); `web/` исключён из backend-образа.
 - React API-слой переведён на `GET /api/hotels/{id}/evidence` (текущее знание с учётом
   TTL и конфликтов); проверки `scripts/verify_backend.py` больше не зашивают число
   отелей и признаков.
@@ -42,11 +42,20 @@ docker compose up --build
 - Бэкенд, тесты, данные и docs взяты из `development/adler-mvp` без изменений, кроме
   `blackout_curtains` в реестре: алиас «blackout» и шаблон «шторы blackout» — иначе ответ
   «В номерах 301–305 есть шторы blackout» не разбирается, а «шторами» уходит в «не учтено».
-- Docker: один `compose.yaml` с сервисами `backend`, `web` (React, :8080) и `frontend` (Streamlit, :8501);
+- Docker: один `compose.yaml` с сервисами `backend` и `web` (React, :8080);
   `docker-compose.yml`, `docker-compose.web.yml`, `deploy/nginx.conf` удалены.
 - React: `GET /api/hotelier/answers/{id}`, фильтры `GET /api/hotelier/questions?hotel_id=&status=`,
   `context` вопроса (почему открыт, ссылка «Вернуться к проверке»), ошибки `{code, detail}`
   (409 — «состояние изменилось»), текущее знание из `/evidence` сохранено.
+
+## Удаление Streamlit (29 октября)
+
+Прежний интерфейс `frontend/` (Streamlit), сервис `frontend` в compose, зависимости `streamlit`/`folium`
+и их транзитивные пакеты в `requirements.lock` удалены. Макет перенесён в `docs/design/`.
+Тесты, проверявшие только Streamlit-экраны и Python-клиенты `frontend/*_client.py`, удалены;
+бэкенд-тесты (контракт API, конфликты, вопросы, реестр) остаются. `scripts.verify_backend`
+проходит тот же сценарий кабинета прямыми HTTP-вызовами. Пока нет в React: экран оператора
+для конфликтов, проверка расчётных фактов отельером, веса пожеланий, отчёты среды — всё доступно через API.
 
 ## Проверки
 

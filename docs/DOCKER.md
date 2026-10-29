@@ -6,14 +6,13 @@
 docker compose up --build --detach --wait
 ```
 
-React: <http://localhost:8080>. Streamlit: <http://localhost:8501>.
+React: <http://localhost:8080>.
 API/Swagger: <http://localhost:8000/docs>. Готовность: <http://localhost:8000/api/health>.
 
-Сервисы `backend` и `frontend` собираются из одного Dockerfile и работают
-от пользователя `app`. Backend сначала выполняет `scripts.migrate_db`
-и идемпотентный `scripts.seed_demo`, затем запускает uvicorn.
-Frontend запускает текущий Streamlit и обращается к `http://backend:8000`
-по внутренней сети. Он ждёт healthcheck backend —
+Сервис `backend` собирается из `Dockerfile` и работает от пользователя `app`.
+Он сначала выполняет `scripts.migrate_db` и идемпотентный `scripts.seed_demo`,
+затем запускает uvicorn. `web` (React + nginx, `web/Dockerfile`) обращается к
+`http://backend:8000` по внутренней сети и ждёт healthcheck backend —
 [порядок запуска Compose](https://docs.docker.com/compose/how-tos/startup-order/).
 Образы работают на архитектуре хоста, включая Apple Silicon; отдельная
 эмуляция amd64 не задаётся.
@@ -26,7 +25,7 @@ SQLite и резервные копии находятся в именованн
 перезапуска или пересоздания контейнеров данные сохраняются:
 
 ```bash
-docker compose logs --follow backend web frontend
+docker compose logs --follow backend web
 docker compose ps
 docker compose down
 docker compose up --detach --wait
@@ -42,7 +41,7 @@ docker compose exec backend python -m scripts.seed_demo --environment
 `docker compose down --volumes`: эта команда удаляет volume и его историю.
 Обычный `down` том не удаляет.
 
-## Настройки frontend и ML
+## Настройки ML
 
 Без `.env` используются режимы из `config/models.yaml`: гостевой hybrid (правила + Gemma3 12B через Ollama; без Ollama — только правила), ответ отельера rules. Для работы без модели явно задайте `PARSER_MODE=offline` (правила) или `fixture` (готовые примеры). Docker не меняет контракты
 или распределение логики между backend и ML-слоем.
@@ -55,7 +54,6 @@ docker compose exec backend python -m scripts.seed_demo --environment
 | Переменная | Значение по умолчанию | Назначение |
 |---|---|---|
 | `BACKEND_PORT` | `8000` | Порт API на localhost хоста |
-| `FRONTEND_PORT` | `8501` | Порт Streamlit на localhost хоста |
 | `PARSER_MODE` | из YAML | Операционное переопределение: hybrid/offline/fixture/ollama/groq |
 | `REPLY_PARSER_MODE` | `rules` | Ответ отельера: rules/fixture/ollama/groq |
 | `DOCKER_OLLAMA_URL` | `http://host.docker.internal:11434` | Доступный из контейнера адрес Ollama |
@@ -92,7 +90,7 @@ UID 10001; `pip check`, целостность SQLite и контроль хос
 `config/models.yaml`; меняйте их там, затем пересобирайте образ.
 
 Вариант запуска один — корневой `compose.yaml` (`docker compose up --build`): `backend` (8000),
-`web` — React (8080, проксирует `/api`, `/docs`, `/openapi.json`, `/health` в backend) и `frontend` —
-Streamlit (8501). Прежние `docker-compose.yml` + `docker-compose.web.yml` и `deploy/nginx.conf`
+`web` — React (8080, проксирует `/api`, `/docs`, `/openapi.json`, `/health` в backend).
+Streamlit (`frontend/`, :8501) удалён 29.10.2026. Прежние `docker-compose.yml` + `docker-compose.web.yml` и `deploy/nginx.conf`
 удалены при привязке фронтенда к `development/adler-mvp`: они поднимали второй проект Compose со своим
 volume и путали сервисы (`api/ui/app/web` против `backend/frontend`).

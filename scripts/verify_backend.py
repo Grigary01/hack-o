@@ -1,4 +1,4 @@
-"""Offline-приёмка: Streamlit/AppTest → настоящий HTTP → отдельная SQLite.
+"""Offline-приёмка: настоящий HTTP к uvicorn → отдельная SQLite (сценарий кабинета отельера).
 
 Запуск: python -m scripts.verify_backend --output runtime/backend_acceptance.json
 Не использует LLM, не меняет рабочую БД. Логи и тестовая база остаются в runtime/.
@@ -17,9 +17,6 @@ import tempfile
 import time
 
 import httpx
-from streamlit.testing.v1 import AppTest
-
-from frontend.api_client import APIClient
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,6 +40,25 @@ def stop(process):
             process.wait(timeout=5)
 
 
+class API:
+    """Минимальный HTTP-клиент приёмки: ошибка API — исключение с кодом и телом."""
+
+    def __init__(self, base):
+        self.base = base.rstrip('/')
+
+    def request(self, method, path, payload=None):
+        response = httpx.request(method, self.base + path, json=payload, timeout=150, trust_env=False)
+        if response.is_error:
+            raise RuntimeError(f'API {response.status_code} {method} {path}: {response.text[:300]}')
+        return response.json()
+
+    def get(self, path):
+        return self.request('GET', path)
+
+    def post(self, path, payload):
+        return self.request('POST', path, payload)
+
+
 def wait_ready(process, url):
     for _ in range(100):
         if process.poll() is not None:
@@ -62,15 +78,14 @@ def verify(output):
     runtime.mkdir(exist_ok=True)
     directory = Path(tempfile.mkdtemp(prefix='backend-acceptance-', dir=runtime))
     database = directory / 'acceptance.db'
-    port, ui_port = free_port(), free_port()
-    while ui_port == port:
-        ui_port = free_port()
+    port = free_port()
     base = f'http://127.0.0.1:{port}'
+    # Облачные переменные из .env не должны попасть в приёмку: она без LLM.
     env = dict(os.environ, DATABASE_URL='sqlite:///' + str(database), API_URL=base,
                PARSER_MODE='fixture', REPLY_PARSER_MODE='rules', DEMO_MODE='true',
-               STREAMLIT_BROWSER_GATHER_USAGE_STATS='false')
+               GROQ_API_KEY='', CLOUD_LLM_BASE_URL='', CLOUD_LLM_MODEL='', HYBRID_LLM='')
     report = {'checked_at': datetime.now(timezone.utc).isoformat(),
-              'transport': 'Streamlit AppTest -> actual HTTP -> isolated SQLite',
+              'transport': 'actual HTTP -> uvicorn -> isolated SQLite',
               'real_model_used': False, 'run_directory': str(directory)}
     print('Приёмка:', directory, flush=True)
 
@@ -88,7 +103,6 @@ def verify(output):
 
     with ExitStack() as stack:
         backend_log = stack.enter_context((directory / 'backend.log').open('w'))
-        ui_log = stack.enter_context((directory / 'streamlit.log').open('w'))
 
         def start_backend():
             process = subprocess.Popen([sys.executable, '-m', 'uvicorn', 'app.main:app',
@@ -99,13 +113,7 @@ def verify(output):
             return process
 
         backend = start_backend()
-        streamlit = subprocess.Popen([sys.executable, '-m', 'streamlit', 'run',
-            'frontend/app.py', '--server.address', '127.0.0.1', '--server.port', str(ui_port),
-            '--server.headless', 'true', '--browser.gatherUsageStats', 'false'],
-            cwd=ROOT, env=env, stdout=ui_log, stderr=subprocess.STDOUT)
-        stack.callback(stop, streamlit)
-        wait_ready(streamlit, f'http://127.0.0.1:{ui_port}/_stcore/health')
-        api = APIClient(base)
+        api = API(base)
         report['health'] = api.get('/api/health')
         assert report['health']['status'] == 'ok' and report['health']['hotels'] == expected_hotels
         examples = api.get('/api/demo-queries')
@@ -116,71 +124,45 @@ def verify(output):
         assert initial['status'] == 'ok' and initial['matched']
         assert KEY in api.get('/api/features') and QUERY in examples
         hotel = api.get('/api/hotels')[0]
-        previous_api_url = os.environ.get('API_URL')
-        os.environ['API_URL'] = base
-        try:
-            ui = AppTest.from_file(ROOT / 'frontend/app.py', default_timeout=30).run()
 
-            def element(kind, label):
-                return next(item for item in getattr(ui, kind) if item.label == label)
+        def simulated_matches():
+            return len(api.post('/api/search', {'text': QUERY, 'include_simulated': True})['matched'])
 
-            def healthy():
-                assert not ui.exception, str(ui.exception)
-                assert not ui.error, str(ui.error)
+        # Сценарий кабинета: вопрос → ответ → проверка разбора → подтверждение.
+        assert simulated_matches() == 0
+        qid = api.post('/api/hotelier/questions', {'hotel_id': hotel['id'], 'feature_key': KEY})['id']
 
-            healthy()
-            element('selectbox', 'Попробовать сценарий').set_value(QUERY).run()
-            element('checkbox', 'Учитывать симулированные ответы отельера').set_value(True)
-            element('button', 'Найти отели').click().run()
-            healthy()
-            assert not ui.session_state['response']['matched']
-            element('selectbox', 'Отель').set_value(hotel['id']).run()
-            element('selectbox', 'О чём спросить').set_value(KEY).run()
-            element('button', 'Сформировать вопрос').click().run()
-            qid = ui.session_state['owner_question_id']
+        def submit(text):
+            answer = api.post(f'/api/hotelier/questions/{qid}/answer', {'text': text})
+            assert answer['status'] == 'pending' and answer['extraction']['claims']
+            assert api.get(f'/api/hotelier/answers/{answer["id"]}')['status'] == 'pending'
+            return answer
 
-            def submit(text):
-                element('text_area', 'Ответ своими словами').set_value(text)
-                element('button', 'Разобрать ответ').click().run()
-                healthy()
-                answer = dict(ui.session_state['pending_answer'])
-                assert answer['status'] == 'pending'
-                return answer
+        positive = submit('В номере 501 есть плотные шторы.')
+        assert simulated_matches() == 0  # до подтверждения факты не используются
+        first = api.post(f'/api/hotelier/answers/{positive["id"]}/confirm', {'accept': True})
+        assert first['status'] == 'confirmed' and not first['idempotent']
+        assert simulated_matches() == 1
+        confirmation = api.post(f'/api/hotelier/answers/{positive["id"]}/confirm', {'accept': True})
+        assert confirmation['idempotent'] and len(confirmation['observation_ids']) == 1
+        selected = confirmation['observation_ids'][0]
+        assert not api.post('/api/search', {'text': QUERY})['matched']  # симуляция не в реальном поиске
 
-            positive = submit('В номере 501 есть плотные шторы.')
-            assert not api.post('/api/search', {'text': QUERY, 'include_simulated': True})['matched']
-            element('button', 'Подтвердить разбор').click().run()
-            healthy()
-            assert len(ui.session_state['response']['matched']) == 1
-            confirmation = api.post(f'/api/hotelier/answers/{positive["id"]}/confirm', {'accept': True})
-            assert confirmation['idempotent'] and len(confirmation['observation_ids']) == 1
-            selected = confirmation['observation_ids'][0]
-            assert not api.post('/api/search', {'text': QUERY})['matched']
-
-            submit('В номере 501 нет плотных штор.')
-            element('button', 'Подтвердить разбор').click().run()
-            healthy()
-            assert not ui.session_state['response']['matched']
-            question = next(q for q in api.get('/api/hotelier/questions') if q['id'] == qid)
-            assert question['status'] == 'open' and 'conflicted' in question['context']['reasons']
-            conflict = api.get('/api/hotelier/conflicts?hotel_id=' + hotel['id'] + '&status=open')[0]
-            assert element('button', 'Сохранить решение').disabled
-            element('radio', 'Какую версию сохранить?').set_value(selected).run()
-            assert element('button', 'Сохранить решение').disabled
-            reason = 'Приёмка: выбран исходный ответ о номере 501'
-            element('text_area', 'Почему выбрана эта версия?').set_value(reason).run()
-            element('button', 'Сохранить решение').click().run()
-            healthy()
-            assert len(ui.session_state['response']['matched']) == 1
-            assert any('Подбор обновлён с прежними условиями' in msg.value for msg in ui.success)
-            report['ui_flow'] = {'unknown_matches': 0, 'pending_matches': 0,
-                'confirmed_matches': 1, 'conflicted_matches': 0, 'resolved_matches': 1,
-                'explicit_selection_and_reason_required': True, 'automatic_search_refresh': True}
-        finally:
-            if previous_api_url is None:
-                os.environ.pop('API_URL', None)
-            else:
-                os.environ['API_URL'] = previous_api_url
+        # Противоречивый ответ: конфликт, вопрос снова открыт, поиск не берёт ни одну версию.
+        negative = submit('В номере 501 нет плотных штор.')
+        api.post(f'/api/hotelier/answers/{negative["id"]}/confirm', {'accept': True})
+        assert simulated_matches() == 0
+        question = next(q for q in api.get('/api/hotelier/questions?hotel_id=' + hotel['id']) if q['id'] == qid)
+        assert question['status'] == 'open' and 'conflicted' in question['context']['reasons']
+        conflict = api.get('/api/hotelier/conflicts?hotel_id=' + hotel['id'] + '&status=open')[0]
+        reason = 'Приёмка: выбран исходный ответ о номере 501'
+        decision = api.post(f'/api/hotelier/conflicts/{conflict["id"]}/resolve',
+                            {'selected_observation_id': selected, 'reason': reason})
+        assert not decision['idempotent'] and decision['current']['value'] is True
+        assert simulated_matches() == 1
+        report['api_flow'] = {'unknown_matches': 0, 'pending_matches': 0,
+            'confirmed_matches': 1, 'conflicted_matches': 0, 'resolved_matches': 1,
+            'explicit_selection_and_reason_required': True}
 
         for method in ('weighted_v1', 'balanced_v2'):
             result = api.post('/api/search', {'text': QUERY, 'include_simulated': True,
@@ -222,7 +204,7 @@ def verify(output):
         backup = report['repeat_migration']['backup']
         assert backup and Path(backup).is_file()
         report.update(restart_seed_migration_preserve_history=True, database_integrity='ok',
-                      streamlit_health='ok', browser_visual_check='not performed; AppTest checks behavior only',
+                      browser_visual_check='not performed here; React UI is checked separately',
                       both_ranking_methods='passed', status='passed')
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')

@@ -2,7 +2,7 @@
 
 ## Online
 
-1. Streamlit (`frontend/app.py`) посылает `SearchRequest` через HTTP-клиент. БД из UI недоступна.
+1. React (`web/src/data/api/source.ts`) посылает `SearchRequest` через `/api`. БД из UI недоступна.
 2. `app/api/search.py` принимает **либо** text, **либо** typed parsed, optional weights и `include_simulated=false`.
 3. `app/ml/query_parser.py` выбирает provider из конфигурации. Fixture ищет известную формулировку;
    Ollama использует JSON Schema и Pydantic. Отрицания сохраняются, км переводятся в метры.

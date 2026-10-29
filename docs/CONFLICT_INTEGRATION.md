@@ -1,5 +1,8 @@
 # Этап 2: решение конфликтов и подключение frontend/ML
 
+> 29.10.2026 Streamlit (`frontend/`) удалён; интерфейс — React в `web/`. Упоминания Streamlit/AppTest ниже — история проверок того времени.
+
+
 Решение хранится отдельно от конфликта и наблюдений. Поиск, агент и evidence
 используют один `resolve_feature()`. Исходные ответы, даты, confidence, TTL и
 источник сохраняются. Решение не делает симуляцию реальным фактом.
@@ -63,30 +66,17 @@ GET возвращает массив `ConflictDetail`. В нём сохране
 Он явно помечен `fixture_only`; ответы о номере симулированы. JSON содержит
 открытый и решённый конфликт, запрос/ответ решения, отель и распознанный запрос.
 
-```python
-from frontend.conflict_client import ConflictClient
-from frontend.conflict_stub import StubConflictAPI
-
-stub = StubConflictAPI()
-client = ConflictClient(api=stub)
-conflict = client.list_conflicts(status='open')[0]
-request = stub.fixture['resolution_request']
-response = client.resolve_conflict(conflict['id'], **request)
-assert response['current']['value'] is True
-assert client.list_conflicts(status='open') == []
+```bash
+# Открытые конфликты отеля (обе версии, политика, решение)
+curl 'http://127.0.0.1:8000/api/hotelier/conflicts?hotel_id=<HOTEL_ID>&status=open'
+# Решение оператора: одна из двух версий и причина; повтор того же выбора идемпотентен, другой — 409
+curl -X POST http://127.0.0.1:8000/api/hotelier/conflicts/<CONFLICT_ID>/resolve \
+  -H 'content-type: application/json' \
+  -d '{"selected_observation_id": "<OBSERVATION_ID>", "reason": "Проверен исходный ответ"}'
 ```
 
-Для подключения к настоящему backend меняется только создание клиента:
-
-```python
-from frontend.api_client import APIClient
-client = ConflictClient(api=APIClient(base_url='http://127.0.0.1:8000'))
-```
-
-Заглушка поддерживает один заданный сценарий и повтор того же решения.
-Произвольный выбор/причину проверяйте с backend. Заглушка не включается
-автоматически, не пишет в SQLite и не участвует в настоящем поиске.
-Кнопка решения подключена в этапе 5: [экран и API-контракт](API_FRONTEND_INTEGRATION.md).
+Фикстура выше — снимок контракта для разработки экрана без сервера; в приложение она не подключается.
+Экрана оператора в React пока нет — решение через API (Swagger `/docs`). [API-контракт](API_FRONTEND_INTEGRATION.md).
 
 Для обновления JSON по фактическому API:
 

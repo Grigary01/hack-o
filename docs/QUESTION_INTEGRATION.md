@@ -1,5 +1,8 @@
 # Этап 3: жизненный цикл вопросов
 
+> 29.10.2026 Streamlit (`frontend/`) удалён; интерфейс — React в `web/`. Упоминания Streamlit/AppTest ниже — история проверок того времени.
+
+
 На пару `(hotel_id, feature_key)` по-прежнему хранится один вопрос. Его `id`,
 `created_at`, исходный текст и все ответы сохраняются. Меняются текущие
 `status`, `context` и `updated_at`; повторное открытие не создаёт новый вопрос.
@@ -71,42 +74,20 @@ TTL может истечь без записи новых данных. Поэ�
 Фильтры ошибок: неизвестный `hotel_id` — 404, неверный `status` — 422.
 Сохраняется ограничение `DEMO_MODE`; при его отключении кабинет возвращает 403.
 
-## Клиент и заглушка для разработки экрана
+## Подключение экрана
 
-```python
-from frontend.question_client import QuestionClient
-from frontend.question_stub import StubQuestionAPI
+React (`web/src/data/api/source.ts`) использует очередь так:
+`GET /api/hotelier/questions?hotel_id=&status=` — список с `context` (почему вопрос открыт),
+`POST /api/hotelier/questions/{id}/answer` → `GET /api/hotelier/answers/{id}` (проверка разбора)
+→ `POST /api/hotelier/answers/{id}/confirm` с `accept: true|false`.
 
-stub = StubQuestionAPI(scenario='reopened')
-client = QuestionClient(api=stub)
-questions = client.list_questions(status='open')
-stub.show('answered')
-assert client.list_questions(status='open') == []
-```
-
-Сценарии: `open`, `pending`, `answered`, `reopened`, `resolved`, `unparsed`,
-`rejected`, `stale`. Это снимки контракта, а не альтернативный backend.
-Отправку и подтверждение ответов заглушка не подменяет успешным результатом.
-Сценарий `stale` экспортирован с явно указанными тестовыми часами; остальные
-снимки получены обычными вызовами API в отдельной in-memory SQLite.
-
-Для настоящего backend меняется только создание клиента:
-
-```python
-from frontend.api_client import APIClient
-client = QuestionClient(api=APIClient(base_url='http://127.0.0.1:8000'))
-question = client.create_question(hotel_id, 'sea_view')
-answer = client.submit_answer(question['id'], 'В номере 301 есть вид на море.')
-result = client.confirm_answer(answer['id'], accept=True)
-```
-
-`hotel_id` в примере берётся из `/api/hotels`. После действия перечитывайте
-`client.list_questions(hotel_id=hotel_id)`. Текущий Streamlit продолжает работать
-через существующие ручки; новый редактор состояний пока не добавлен.
+Снимки состояний очереди для разработки экрана без сервера: сценарии `open`, `pending`, `answered`,
+`reopened`, `resolved`, `unparsed`, `rejected`, `stale` в
+[question_integration_fixture.json](examples/question_integration_fixture.json). Это снимки контракта,
+а не альтернативный backend; отправку и подтверждение ответов они не подменяют.
 
 Обновить снимки можно командой `python -m scripts.export_question_contract`.
 Она использует отдельную базу и `FixtureQueryParser`, без настоящей LLM.
-Заглушка не включается в приложении автоматически.
 
 ## Граница ML
 

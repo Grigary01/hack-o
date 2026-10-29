@@ -28,8 +28,6 @@ docker-compose.yml
 !config/**
 !app/
 !app/**
-!frontend/
-!frontend/**
 !scripts/
 !scripts/**
 !migrations/
@@ -42,6 +40,5 @@ docker-compose.yml
 **/*.pyc
 **/*.pyo
 **/.DS_Store
-# Веб-фронтенд собирается своим образом (web/Dockerfile); макеты дизайна в образ не нужны.
+# Веб-фронтенд собирается своим образом (web/Dockerfile).
 web
-frontend/design

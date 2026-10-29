@@ -66,8 +66,8 @@ OpenAQ допускает координаты Адлера, но **наличи
 ```bash
 python -m scripts.seed_demo --environment
 uvicorn app.main:app --host 127.0.0.1 --port 8000
-# Второй терминал:
-streamlit run frontend/app.py
+# Отчёты среды по отелю (экрана в React пока нет; Streamlit удалён 29.10.2026):
+curl http://127.0.0.1:8000/api/hotels/<HOTEL_ID>/environment
 ```
 
 Повторный seed идемпотентен и не обновляет даты старых данных. История отчётов

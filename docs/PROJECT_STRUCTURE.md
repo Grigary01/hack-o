@@ -95,11 +95,6 @@ ostrovok-adler-mvp/
 │   ├── REPO_AUDIT.md
 │   ├── TASKS.md
 │   └── VALIDATION.md
-├── frontend/
-│   ├── __init__.py
-│   ├── api_client.py
-│   ├── app.py
-│   └── map_view.py
 ├── legacy/
 │   ├── README.md
 │   └── agent_tool_map_45ad71a.zip
@@ -117,12 +112,10 @@ ostrovok-adler-mvp/
 │   ├── test_conflicts.py
 │   ├── test_evaluation.py
 │   ├── test_feature_agent.py
-│   ├── test_frontend.py
 │   ├── test_geo_routes.py
 │   ├── test_hotelier.py
 │   ├── test_query_parser.py
-│   ├── test_ranking.py
-│   └── test_streamlit_flow.py
+│   └── test_ranking.py
 ├── .env.example
 ├── .gitignore
 ├── LICENSE
@@ -208,10 +201,6 @@ ostrovok-adler-mvp/
 | [docs/inputs/ostrovok_adler_blueprint/PROMPT_CODING_AGENT.md](../docs/inputs/ostrovok_adler_blueprint/PROMPT_CODING_AGENT.md) | У3 · Backend/Agent/Storage | Неизменённое входное ТЗ/материал пользователя; хранение, не статус реализации. |
 | [docs/inputs/ostrovok_adler_blueprint/START_HERE.md](../docs/inputs/ostrovok_adler_blueprint/START_HERE.md) | У3 · Backend/Agent/Storage | Неизменённое входное ТЗ/материал пользователя; хранение, не статус реализации. |
 | [docs/inputs/ostrovok_adler_blueprint/TEAM_TASKS.md](../docs/inputs/ostrovok_adler_blueprint/TEAM_TASKS.md) | У3 · Backend/Agent/Storage | Неизменённое входное ТЗ/материал пользователя; хранение, не статус реализации. |
-| [frontend/__init__.py](../frontend/__init__.py) | У4 · Frontend | Объявляет Python-пакет; отдельной бизнес-логики нет. |
-| [frontend/api_client.py](../frontend/api_client.py) | У4 · Frontend | HTTP-клиент backend с явными ошибками. |
-| [frontend/app.py](../frontend/app.py) | У4 · Frontend | Streamlit UI: подбор, объяснения, сравнение и подтверждение ответов отельера. |
-| [frontend/map_view.py](../frontend/map_view.py) | У4 · Frontend | MapEngine: адаптация FeatureGroup/Marker/PolyLine из agent_tool_map (Maxim, MIT). |
 | [legacy/README.md](../legacy/README.md) | У3 · Backend/Agent/Storage | Как читать сохранённый upstream и почему он отдельно от приложения. |
 | [legacy/agent_tool_map_45ad71a.zip](../legacy/agent_tool_map_45ad71a.zip) | У3 · Backend/Agent/Storage | Неизменённые исходные файлы upstream без .git. |
 | [pyproject.toml](../pyproject.toml) | У3 · Backend/Agent/Storage | Python-пакет, зависимости, optional extras и конфигурация pytest. |
@@ -228,12 +217,15 @@ ostrovok-adler-mvp/
 | [tests/test_conflicts.py](../tests/test_conflicts.py) | У3 · Backend/Agent/Storage | Версии, конфликты, будущие/устаревшие и simulated свидетельства. |
 | [tests/test_evaluation.py](../tests/test_evaluation.py) | У1 · ML | Ошибки операторов, знаменатель метрик при сбое и типы отрицаний. |
 | [tests/test_feature_agent.py](../tests/test_feature_agent.py) | У3 · Backend/Agent/Storage | Выбор инструмента, бюджет, вычисления и расширение YAML. |
-| [tests/test_frontend.py](../tests/test_frontend.py) | У4 · Frontend | Экранирование внешнего текста на карте. |
 | [tests/test_geo_routes.py](../tests/test_geo_routes.py) | У2 · Geo/Data | Обходы, no path, private/access, барьеры и ошибки источника. |
 | [tests/test_hotelier.py](../tests/test_hotelier.py) | У3 · Backend/Agent/Storage | Номера/отрицания, неоднозначность и подтверждение. |
 | [tests/test_query_parser.py](../tests/test_query_parser.py) | У1 · ML | Контракты, gold, единицы, отрицания и адаптер Ollama. |
 | [tests/test_ranking.py](../tests/test_ranking.py) | У1 · ML | Строгие условия, веса, unknown и соответствие в одном номере. |
-| [tests/test_streamlit_flow.py](../tests/test_streamlit_flow.py) | У4 · Frontend | UI AppTest → API: поиск, веса, ответ и подтверждение. |
+
+## Интерфейс (У4)
+
+`web/` — React-интерфейс (Vite, TypeScript, CSS Modules); структура и владельцы — в [web/README.md](../web/README.md).
+Макет — `docs/design/Untitled.pdf`. Прежний Streamlit (`frontend/`) удалён 29.10.2026.
 
 ## Локальные и генерируемые каталоги
 
@@ -254,7 +246,6 @@ ostrovok-adler-mvp/
 - У3: app/environment/service.py, app/api/environment.py, scripts/environment.py,
   scripts/install_noisemodelling.py; изменения app/storage/models.py,
   app/core/config.py, app/main.py, scripts/seed_demo.py.
-- У4: frontend/environment_view.py; изменения frontend/app.py.
 - У1: app/ml/multicriteria.py; изменения ranking.py, query_parser.py, prompts.py,
   app/schemas/query.py, app/schemas/search.py и app/api/search.py (вместе с У3).
 - У1: scripts/benchmark_models.py, scripts/evaluate_parser.py,
@@ -263,8 +254,7 @@ ostrovok-adler-mvp/
 - У2: data/environment/osm_buildings.json, preparation_reports.json,
   adler_scenario.json, air_quality_status.json; docs/ENVIRONMENT.md.
 - У2/У3: tests/test_environment.py, tests/test_noise_engine.py;
-  У1: tests/test_multicriteria.py, tests/test_cloud_models.py;
-  У4: расширенный tests/test_streamlit_flow.py.
+  У1: tests/test_multicriteria.py, tests/test_cloud_models.py.
 - У3: docs/examples/environment_pytest_results.xml и итоговая документация.
 - Командный main.py с f/y сохранён как пришёл из GitHub; это учебные заглушки,
   не точка входа продукта. Точка входа backend — app.main:app.
