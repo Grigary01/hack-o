@@ -26,6 +26,9 @@ def _desired(companion, parent_value):
 def expand(parsed: ParsedHotelQuery) -> ParsedHotelQuery:
     registry = get_registry()
     result = parsed.model_copy(deep=True)
+    # Автоматические веса пересчитываем от актуального родителя. Явный выбор
+    # пользователя сохраняем, даже если этот признак первоначально добавлен нами.
+    result.soft_preferences = [p for p in result.soft_preferences if p.weight_source != 'companion']
     present = {p.feature_key for p in result.soft_preferences}
     parents = []
     for hard in result.hard_constraints:
@@ -33,7 +36,7 @@ def expand(parsed: ParsedHotelQuery) -> ParsedHotelQuery:
             value = hard.value if hard.operator == '=' else not hard.value
             parents.append((hard.feature_key, value, None))
     for pref in result.soft_preferences:
-        if pref.importance > 0 and pref.derived_from is None:
+        if pref.derived_from is None:
             parents.append((pref.feature_key, pref.desired, pref.importance))
     for key, value, importance in parents:
         for companion in registry.get(key).companions:

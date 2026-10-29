@@ -221,8 +221,8 @@ with owner_tab:
                     st.write('• '+describe(o))
                     st.caption(o['evidence']['details'].get('explanation') or o['evidence'].get('raw_excerpt') or '')
                 if conflict.get('resolution'):
-                    selected=by_id.get(conflict['resolution']['selected_observation_id'])
-                    st.success(f'Решение: {selected["value"] if selected else "—"} — {conflict["resolution"]["reason"]}')
+                    selected = by_id.get(conflict['resolution']['selected_observation_id'])
+                    st.success(f"Выбрана версия: {describe(selected) if selected else 'свидетельство недоступно'} — {conflict['resolution']['reason']}")
                 elif versions:
                     with st.form(f'resolve_{conflict["id"]}'):
                         shown={describe(o):o['id'] for o in versions}
@@ -230,7 +230,7 @@ with owner_tab:
                         reason=st.text_input('Причина решения')
                         if st.form_submit_button('Разрешить конфликт'):
                             if call(api.post,f'/api/hotelier/conflicts/{conflict["id"]}/resolve',
-                                    {'selected_observation_id':chosen,'reason':reason}):
+                                    {'chosen_observation_id':chosen,'reason':reason}):
                                 st.rerun()
     st.subheader('Вопросы агента о номерах')
     keys=[k for k,d in definitions.items() if d['provider']=='hotelier']

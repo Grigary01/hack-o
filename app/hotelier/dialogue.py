@@ -11,11 +11,11 @@ from app.schemas.hotelier import ReplyExtraction
 from app.schemas.hotel import Observation, Evidence, Source
 from app.storage.models import RoomRow, AnswerRow
 from app.storage.repository import now_utc, row_dict
-from app.features.cross_check import model_disagreements
 from app.hotelier.rule_reply_parser import parse_hotelier_reply
 from app.hotelier.reply_parser import BoundedRuleReplyParser
 from app.hotelier.reply_validation import validate_reply_extraction, parse_reply
 from app.core.errors import ReplyParserContractError, StateConflictError
+from app.features.cross_check import model_disagreements
 
 
 def ask_hotelier(repo,hotel_id,feature_key):
@@ -50,17 +50,24 @@ def submit_answer(repo,qid,text,*,reply_parser=None):
     return row_dict(row)
 
 
-def confirmation_result(repo, answer, *, idempotent=False, model_review=()):
+def confirmation_result(repo, answer, *, idempotent=False):
     question = repo.question(answer.question_id)
     repo.refresh_existing_question(question.hotel_id, question.feature_key)
     accepted = answer.status == 'confirmed'
     ids = sorted(o.id for o in repo.observations(question.hotel_id)
                  if accepted and o.evidence.source.ref == answer.id
                  and o.evidence.source.type == 'hotelier_simulated')
-    return {'answer_id': answer.id, 'status': answer.status, 'idempotent': idempotent,
+    review = []
+    if accepted:
+        observations = repo.observations(question.hotel_id)
+        subjects = {o.subject_id for o in observations if o.id in ids}
+        for subject in sorted(subjects):
+            review.extend(item | {'room_id': subject} for item in model_disagreements(
+                observations, question.hotel_id, subject, question.feature_key,
+                include_simulated=True, conflicts=repo.conflict_records(question.hotel_id)))
+    return {'model_review': review, 'answer_id': answer.id, 'status': answer.status, 'idempotent': idempotent,
             'observation_ids': ids, 'conflicts': repo.conflicts(question.hotel_id) if accepted else [],
-            'source_type': 'hotelier_simulated' if accepted else None, 'question': row_dict(question),
-            'model_review': list(model_review)}
+            'source_type': 'hotelier_simulated' if accepted else None, 'question': row_dict(question)}
 
 
 def confirm_answer(repo,answer_id,accept):
@@ -113,14 +120,13 @@ def confirm_answer(repo,answer_id,accept):
         repo.save_observation(observation)
     repo.refresh_existing_question(question.hotel_id, question.feature_key)
     repo.session.flush()
-    # Сверка с расчётом по зданию: значение отельера остаётся, расхождение помечается
-    # review-конфликтом, который разбирает оператор (POST /conflicts/{id}/resolve).
+    # Сверка с расчётом по зданию: значение отельера остаётся, расхождение помечается.
     observations = repo.observations(question.hotel_id)
     review = []
     for room_id in sorted({f'{question.hotel_id}:room:{c.room_number}' for c in extraction.claims}):
         for item in model_disagreements(observations, question.hotel_id, room_id, question.feature_key,
-                                        include_simulated=True):
+                                        include_simulated=True, conflicts=repo.conflict_records(question.hotel_id)):
             repo.add_review_conflict(question.hotel_id, room_id, question.feature_key,
                                      item['hotelier_observation_id'], item['model_observation_id'], item['reason'])
             review.append(item | {'room_id': room_id})
-    return confirmation_result(repo, answer, model_review=review)
+    return confirmation_result(repo, answer) | {'model_review': review}

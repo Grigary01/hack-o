@@ -140,6 +140,23 @@ export interface HotelDetailDto {
   conflicts: ConflictDto[];
 }
 
+/** Текущее знание вычисляет backend с учётом TTL, конфликтов и режима демо. */
+export interface CurrentFeatureDto {
+  subject_id: string;
+  feature_key: string;
+  value: Value | null;
+  status: ObservationDto['status'];
+  observations: ObservationDto[];
+  resolved_conflict_ids: string[];
+}
+
+export interface HotelEvidenceDto {
+  observations: ObservationDto[];
+  conflicts: ConflictDto[];
+  current_real: CurrentFeatureDto[];
+  current_demo: CurrentFeatureDto[];
+}
+
 export interface HealthDto {
   status: 'ok' | 'needs_seed';
   hotels: number;

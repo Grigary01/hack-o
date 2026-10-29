@@ -6,19 +6,11 @@
 docker compose up --build --detach --wait
 ```
 
-React-интерфейс: <http://localhost:8080>. Streamlit: <http://localhost:8501>.
-API/Swagger: <http://localhost:8000/docs> (и <http://localhost:8080/docs> через прокси web).
-Готовность: <http://localhost:8000/api/health>.
-
-| Сервис | Образ | Порт на хосте |
-|---|---|---|
-| `backend` | `Dockerfile` (FastAPI) | `127.0.0.1:8000` (`BACKEND_PORT`) |
-| `web` | `web/Dockerfile` (React + nginx, `/api` → backend) | `127.0.0.1:8080` (`WEB_PORT`) |
-| `frontend` | `Dockerfile` (Streamlit) | `127.0.0.1:8501` (`FRONTEND_PORT`) |
+React: <http://localhost:8080>. Streamlit: <http://localhost:8501>.
+API/Swagger: <http://localhost:8000/docs>. Готовность: <http://localhost:8000/api/health>.
 
 Сервисы `backend` и `frontend` собираются из одного Dockerfile и работают
-от пользователя `app` (UID 10001). `web` — nginx-unprivileged со статикой React,
-собранной в режиме `VITE_DATA_MODE=api`; он тоже ждёт healthcheck backend. Backend сначала выполняет `scripts.migrate_db`
+от пользователя `app`. Backend сначала выполняет `scripts.migrate_db`
 и идемпотентный `scripts.seed_demo`, затем запускает uvicorn.
 Frontend запускает текущий Streamlit и обращается к `http://backend:8000`
 по внутренней сети. Он ждёт healthcheck backend —
@@ -52,8 +44,7 @@ docker compose exec backend python -m scripts.seed_demo --environment
 
 ## Настройки frontend и ML
 
-Без `.env` разбор запроса работает правилами без LLM (`PARSER_MODE=offline`),
-ответ отельера — `REPLY_PARSER_MODE=rules`. Docker не меняет контракты
+Без `.env` используются режимы из `config/models.yaml`: гостевой hybrid (правила + Gemma3 12B через Ollama; без Ollama — только правила), ответ отельера rules. Для работы без модели явно задайте `PARSER_MODE=offline` (правила) или `fixture` (готовые примеры). Docker не меняет контракты
 или распределение логики между backend и ML-слоем.
 
 При необходимости скопируйте `.env.example` в `.env`. Compose передаёт
@@ -63,18 +54,14 @@ docker compose exec backend python -m scripts.seed_demo --environment
 
 | Переменная | Значение по умолчанию | Назначение |
 |---|---|---|
-| `WEB_PORT` | `8080` | Порт React-интерфейса на localhost хоста |
 | `BACKEND_PORT` | `8000` | Порт API на localhost хоста |
 | `FRONTEND_PORT` | `8501` | Порт Streamlit на localhost хоста |
-| `DOCKER_PARSER_MODE` | `offline` | Гостевой parser в контейнере: offline/fixture/ollama/groq |
+| `PARSER_MODE` | из YAML | Операционное переопределение: hybrid/offline/fixture/ollama/groq |
 | `REPLY_PARSER_MODE` | `rules` | Ответ отельера: rules/fixture/ollama/groq |
 | `DOCKER_OLLAMA_URL` | `http://host.docker.internal:11434` | Доступный из контейнера адрес Ollama |
 | `GROQ_API_KEY` | пусто | Ключ облачного провайдера |
 
-Имена моделей и параметры генерации — в `config/models.yaml` (входит в образ;
-после правки нужен `--build`).
-
-Для Ollama на хосте задайте `DOCKER_PARSER_MODE=ollama` и/или
+Для Ollama на хосте задайте `PARSER_MODE=ollama` и/или
 `REPLY_PARSER_MODE=ollama`. `localhost` внутри контейнера означает сам контейнер;
 используется [host.docker.internal/host-gateway](https://docs.docker.com/compose/how-tos/networking/).
 Ollama должна слушать адрес, доступный контейнеру; если она работает на другой
@@ -91,8 +78,6 @@ Ollama должна слушать адрес, доступный контейн
 
 ## Проверка
 
-Слияние React-фронта и бэкенда (29.10.2026): см. раздел «Docker» в `web/README.md`.
-
 29.10.2026 образы действительно собраны и запущены на Linux ARM64 в Docker Desktop.
 Проверены healthcheck обоих сервисов, frontend → API по внутреннему DNS,
 исходный поиск 12/2/11, pending → подтверждение → поиск номера и исключение
@@ -102,3 +87,12 @@ UID 10001; `pip check`, целостность SQLite и контроль хос
 Изолированный тестовый проект и его volume удалены после проверки.
 Регрессия: **188 passed, 1 skipped** (внешний NoiseModelling).
 [Фактический отчёт](examples/docker_compose_validation.json).
+
+Имена моделей, контекст, температура, таймаут и лимит ответа находятся только в
+`config/models.yaml`; меняйте их там, затем пересобирайте образ.
+
+Вариант запуска один — корневой `compose.yaml` (`docker compose up --build`): `backend` (8000),
+`web` — React (8080, проксирует `/api`, `/docs`, `/openapi.json`, `/health` в backend) и `frontend` —
+Streamlit (8501). Прежние `docker-compose.yml` + `docker-compose.web.yml` и `deploy/nginx.conf`
+удалены при привязке фронтенда к `development/adler-mvp`: они поднимали второй проект Compose со своим
+volume и путали сервисы (`api/ui/app/web` против `backend/frontend`).

@@ -57,6 +57,9 @@ class FeatureDefinition(BaseModel):
     query_desired: str | bool | None = None
     # True: отрицание не переворачивает желание («без подъёмов» — тоже поменьше подъёмов).
     query_negation_keeps: bool = False
+    # Текстовая подсказка LLM-парсеру: как гости называют признак и как заполнить desired.
+    # Какие признаки видит LLM, решает app/ml/prompts.py:query_features.
+    query_hint: str | None = None
 
     @model_validator(mode='after')
     def coherent(self):

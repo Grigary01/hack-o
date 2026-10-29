@@ -109,7 +109,7 @@ def rank_variant(
         outcome = 'unknown' if result is None else 'matched' if result else 'violated'
         outcomes.append(result)
         definition = get_registry().get(hard.feature_key)
-        disagreements = model_disagreements(observations, hotel.id, subject, hard.feature_key, include_simulated) \
+        model_reviews = model_disagreements(observations, hotel.id, subject, hard.feature_key, include_simulated, conflicts=conflicts) \
             if hard.scope == 'room' else []
         explanation = describe(definition, state, 'нет надёжных данных') + \
             f' Условие: {hard.operator} {definition.display(hard.value)} {hard.unit or ""}.'.rstrip()
@@ -120,9 +120,9 @@ def rank_variant(
             outcome=outcome,
             status=state.status,
             subject_id=subject,
-            explanation=explanation + ''.join(' ⚠ ' + c['text'] for c in disagreements),
+            explanation=explanation + ''.join(' ⚠ ' + c['text'] for c in model_reviews),
             evidence=state.observations,
-            model_conflicts=disagreements,
+            model_conflicts=model_reviews,
         ))
 
     # Блок B. Мягкие пожелания задают порядок среди кандидатов.
@@ -140,7 +140,7 @@ def rank_variant(
             score_sum += preference.importance * match
 
         definition = get_registry().get(preference.feature_key)
-        disagreements = model_disagreements(observations, hotel.id, subject, preference.feature_key, include_simulated) \
+        model_reviews = model_disagreements(observations, hotel.id, subject, preference.feature_key, include_simulated, conflicts=conflicts) \
             if preference.scope == 'room' else []
         explanation = describe(definition, state, 'требует уточнения')
         if preference.derived_from:
@@ -153,9 +153,9 @@ def rank_variant(
             status=state.status,
             subject_id=subject,
             match=match,
-            explanation=explanation + ''.join(' ⚠ ' + c['text'] for c in disagreements),
+            explanation=explanation + ''.join(' ⚠ ' + c['text'] for c in model_reviews),
             evidence=state.observations,
-            model_conflicts=disagreements,
+            model_conflicts=model_reviews,
         ))
 
     # Блок C. Считаем две отдельные величины; score без coverage вводил бы в заблуждение.

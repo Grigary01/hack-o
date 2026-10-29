@@ -249,7 +249,7 @@ export function requestChips(parsed: ParsedQueryDto, registry: FeatureRegistryDt
     const definition = registry[hard.feature_key];
     const value =
       typeof hard.value === 'boolean'
-        ? ''
+        ? ((hard.operator === '!=' ? !hard.value : hard.value) ? ': да' : ': нет')
         : ` ${OPERATORS[hard.operator]} ${typeof hard.value === 'number' && definition?.unit === 'm' ? formatMeters(hard.value) : valueText(hard.feature_key, hard.value, definition)}`;
     chips.push({ label: `${name}${value} · обязательно`, kind: 'required' });
   }

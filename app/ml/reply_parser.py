@@ -39,7 +39,9 @@ class OllamaReplyParser(HTTPReplyParser):
         payload = {'model': self.config.model_name, 'stream': False,
                    'format': reply_schema(feature_key, self.mode),
                    'messages': reply_messages(feature_key, text),
-                   'options': {'temperature': 0, 'num_predict': 3000, 'num_ctx': self.config.ollama_num_ctx}}
+                   'options': {'temperature': self.config.temperature,
+                               'num_predict': self.config.max_output_tokens,
+                               'num_ctx': self.config.ollama_num_ctx}}
         response = self.post(self.config.ollama_url.rstrip('/') + '/api/chat', payload)
         try:
             data = response.json()
@@ -57,8 +59,9 @@ class GroqReplyParser(HTTPReplyParser):
         if not self.config.groq_api_key:
             raise ReplyParserUnavailable('Настройте GROQ_API_KEY на backend; обработчик ответа не подключён.')
         payload = {'model': self.config.groq_model,
-                   'messages': reply_messages(feature_key, text), 'temperature': 0,
-                   'max_completion_tokens': 3000,
+                   'messages': reply_messages(feature_key, text), 'temperature': self.config.temperature,
+                   'max_completion_tokens': self.config.max_output_tokens,
+                   'reasoning_effort': self.config.groq_reasoning_effort,
                    'response_format': {'type': 'json_schema', 'json_schema': {
                        'name': 'hotelier_reply', 'strict': False, 'schema': reply_schema(feature_key, self.mode)}}}
         response = self.post('https://api.groq.com/openai/v1/chat/completions', payload,

@@ -5,6 +5,7 @@ walking_distance_to_beach_m:
   unit: m
   scope: hotel
   provider: pedestrian_distance
+  query_hint: 'У моря, рядом с пляжем, первая линия, близко к морю, не хочется далеко ходить → soft near. Число с «пешком» → hard в метрах. По прямой — не этот признак.'
   ttl_days: 90
   default_weight: 0.8
   aliases: [пляж, море рядом, пешком до моря]
@@ -23,6 +24,7 @@ quietness_proxy:
   unit: null
   scope: hotel
   provider: quietness
+  query_hint: 'Тихо, тишина, спокойно, выспаться, без шума вокруг → high. Шумный, оживлённый, в гуще событий → low. Это шум снаружи, не шумоизоляция номера.'
   ttl_days: 90
   default_weight: 0.9
   aliases: [тихо, тишина, тихий]
@@ -41,6 +43,7 @@ nightlife_distance_m:
   unit: m
   scope: hotel
   provider: nightlife_distance
+  query_hint: 'Бары, клубы, пабы, ночная жизнь. Хочет поближе → near; подальше, не рядом, не хочу рядом → far. Число — hard в метрах по прямой.'
   ttl_days: 60
   default_weight: 0.7
   aliases: [не рядом с барами, подальше от клубов]
@@ -54,6 +57,7 @@ sea_view:
   unit: null
   scope: room
   provider: hotelier
+  query_hint: 'Видеть море из окна или номера, морской вид, панорама моря. Близость пляжа — другой признак.'
   ttl_days: 90
   default_weight: 0.6
   aliases: [вид на море, море из окна]
@@ -61,7 +65,7 @@ sea_view:
   query_patterns: ['вид\w* на мор\w*', 'мор\w* из окн\w*', 'видн\w* мор\w*', 'окн\w* на мор\w*', 'панорам\w* мор\w*', 'морск\w* вид\w*', 'видовой']
   query_desired: true
   companions:
-    - {feature_key: sea_view_potential, desired_if_true: wide, desired_if_false: none}
+    - {feature_key: sea_view_potential, desired_if_true: wide}
   model_check: {potential: sea_view_potential, none_value: none, min_floor: sea_view_min_floor}
 soundproofing:
   label: Шумоизоляция номера
@@ -70,6 +74,7 @@ soundproofing:
   unit: null
   scope: room
   provider: hotelier
+  query_hint: 'Шумоизоляция, звукоизоляция, не слышно улицы или соседей в номере. Тишина района — другой признак.'
   ttl_days: 180
   default_weight: 0.7
   aliases: [шумоизоляция, звукоизоляция]
@@ -83,6 +88,7 @@ sunset_view:
   unit: null
   scope: room
   provider: hotelier
+  query_hint: 'Закат, заход солнца из окна, номера или балкона.'
   ttl_days: 90
   default_weight: 0.6
   aliases: [вид на закат, закат из окна]
@@ -90,7 +96,7 @@ sunset_view:
   query_patterns: ['закат\w*', 'заход\w* солнц\w*']
   query_desired: true
   companions:
-    - {feature_key: sunset_view_potential, desired_if_true: year_round, desired_if_false: none}
+    - {feature_key: sunset_view_potential, desired_if_true: year_round}
   model_check: {potential: sunset_view_potential, none_value: none, min_floor: sunset_view_min_floor}
 sea_view_potential:
   label: Вид на море из окон (расчёт)
@@ -160,6 +166,7 @@ aircraft_path_distance_m:
   unit: m
   scope: hotel
   provider: aircraft_noise
+  query_hint: 'Самолёты, аэропорт, взлётная полоса, авиашум. Желание удалиться → far. Число до траектории самолётов — hard >= в метрах.'
   ttl_days: 365
   default_weight: 0.7
   aliases: [подальше от самолётов, далеко от аэропорта]
@@ -173,6 +180,7 @@ beach_route_climb_m:
   unit: m
   scope: hotel
   provider: route_quality
+  query_hint: 'Подъёмы, в гору, горка, лестницы, перепад высот, коляска, ровная дорога к пляжу → near (меньше подъёма). Число метров подъёма — hard <=.'
   ttl_days: 365
   default_weight: 0.5
   aliases: [без подъёмов, ровная дорога]
@@ -187,6 +195,7 @@ beach_route_busy_crossings:
   unit: count
   scope: hotel
   provider: route_quality
+  query_hint: 'Переходить трассу, дорогу или магистраль по пути к пляжу, светофоры → near (меньше переходов). Число переходов — hard <=, unit=count.'
   ttl_days: 180
   default_weight: 0.6
   aliases: [без перехода трассы]
@@ -201,6 +210,7 @@ night_open_places_500m:
   unit: count
   scope: hotel
   provider: night_amenities
+  query_hint: 'Круглосуточные магазины, кафе, АЗС рядом (24/7). Хочет такие места → desired far: здесь far значит БОЛЬШЕ заведений. Обычные дневные кафе не поддерживаются.'
   ttl_days: 90
   default_weight: 0.5
   aliases: [круглосуточно рядом]
@@ -215,6 +225,7 @@ nearest_night_pharmacy_m:
   unit: m
   scope: hotel
   provider: night_amenities
+  query_hint: 'Ночная или круглосуточная аптека рядом → near. Число — hard <= в метрах. Обычная дневная аптека не поддерживается.'
   ttl_days: 90
   default_weight: 0.5
   aliases: [аптека рядом]
@@ -229,6 +240,7 @@ mountain_view_potential:
   unit: null
   scope: hotel
   provider: viewshed
+  query_hint: 'Вид на горы, горный пейзаж из окна → wide. Обязательно — hard = wide.'
   ttl_days: 180
   default_weight: 0.5
   aliases: [вид на горы]
@@ -255,6 +267,7 @@ quiet_side_potential:
   unit: null
   scope: hotel
   provider: facade_noise
+  query_hint: 'Окна во двор, тихая сторона здания, окна не на улицу или дорогу → high. Тишина района в целом — quietness_proxy.'
   ttl_days: 90
   default_weight: 0.6
   aliases: [окна во двор, тихая сторона]
@@ -271,7 +284,9 @@ blackout_curtains:
   provider: hotelier
   ttl_days: 180
   default_weight: 0.5
-  aliases: [плотные шторы, плотных штор, плотными шторами, шторы блэкаут, штор блэкаут, блэкаут, blackout]
-  question: В каких конкретно номерах есть или нет плотных штор? Укажите номера и этаж, если известен.
-  query_patterns: ['штор\w* (blackout|бл[эе]каут\w*)', 'blackout', 'бл[эе]каут\w*', 'плотн\w* штор\w*', 'затемн\w*']
   query_desired: true
+  # «шторы blackout» целиком, чтобы слово «шторами» не уходило в «не учтено» (макет: «со шторами blackout»).
+  query_patterns: ['штор\w* (blackout|бл[эе]каут\w*)', 'плотн\w* штор\w*', 'бл[эе]каут\w*', '\bblackout\b']
+  # Латинское blackout — как пишут отельеры: «В номерах 301–305 есть шторы blackout».
+  aliases: [плотные шторы, плотных штор, плотными шторами, шторы блэкаут, штор блэкаут, блэкаут, шторы blackout, штор blackout, blackout]
+  question: В каких конкретно номерах есть или нет плотных штор? Укажите номера и этаж, если известен.

@@ -100,3 +100,21 @@ def test_unmatched_content_words_are_reported_not_dropped():
     assert result.ignored_terms == ['уютный', 'семейный', 'балконом']
     assert not result.unknown_or_ambiguous  # не блокирует поиск
     assert RulesQueryParser().parse('Тихий отель у моря, без баров').ignored_terms == []
+
+
+@pytest.mark.parametrize('text,expected', [
+    ('бары подальше', ('nightlife_distance_m', 'far')),
+    ('бары не рядом', ('nightlife_distance_m', 'far')),
+    ('пляж рядом, тишина желательна', ('walking_distance_to_beach_m', 'near')),
+])
+def test_direction_word_after_feature(text, expected):
+    soft = RulesQueryParser().parse(text).soft_preferences
+    assert (soft[0].feature_key, soft[0].desired) == expected
+
+
+def test_explicit_weight_for_distance_and_no_duplicate_hard():
+    parsed = RulesQueryParser().parse('Горы — вес 0,7, море рядом — вес 0,2')
+    weights = {p.feature_key: (p.importance, p.weight_source) for p in parsed.soft_preferences}
+    assert weights['walking_distance_to_beach_m'] == (0.2, 'explicit')
+    parsed = RulesQueryParser().parse('Отель у моря: до пляжа пешком не больше 700 м')
+    assert len(parsed.hard_constraints) == 1

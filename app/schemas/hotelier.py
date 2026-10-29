@@ -59,14 +59,6 @@ class HotelierAnswer(Contract):
     created_at: AwareDatetime
 
 
-class ModelReview(Contract):
-    room_id: str
-    reason: Literal['model_sees_none', 'below_model_min_floor']
-    text: str
-    hotelier_observation_id: str
-    model_observation_id: str
-
-
 class AnswerConfirmation(Contract):
     answer_id: str
     status: Literal['confirmed', 'rejected']
@@ -75,8 +67,7 @@ class AnswerConfirmation(Contract):
     conflicts: list[Conflict]
     source_type: Literal['hotelier_simulated'] | None
     question: HotelierQuestion
-    # Расхождения ответа о номере с расчётом по зданию (registry.model_check).
-    model_review: list[ModelReview] = Field(default_factory=list)
+    model_review: list[dict] = Field(default_factory=list)
 
 
 class ReviewRequest(Contract):
@@ -86,3 +77,9 @@ class ReviewRequest(Contract):
     verdict: Literal['confirm', 'correct']
     value: StrictBool | StrictInt | StrictFloat | StrictStr | None = None
     comment: str = Field(default='', max_length=1000)
+
+
+class ResolveRequest(Contract):
+    """Оператор выбирает одну из версий конфликта и объясняет почему."""
+    chosen_observation_id: str
+    reason: str = Field(min_length=3, max_length=1000)

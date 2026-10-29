@@ -1,0 +1,109 @@
+{
+  "weight_roundtrip": {
+    "first_status": 200,
+    "second_status": 200,
+    "third_status": 422,
+    "updated_preferences": [
+      {
+        "feature_key": "quietness_proxy",
+        "desired": "high",
+        "importance": 0.0,
+        "weight_source": "explicit",
+        "scope": "hotel",
+        "utility": null,
+        "derived_from": null
+      },
+      {
+        "feature_key": "sea_view",
+        "desired": true,
+        "importance": 0.6,
+        "weight_source": "explicit",
+        "scope": "room",
+        "utility": null,
+        "derived_from": null
+      },
+      {
+        "feature_key": "aircraft_path_distance_m",
+        "desired": "far",
+        "importance": 0.72,
+        "weight_source": "explicit",
+        "scope": "hotel",
+        "utility": null,
+        "derived_from": "quietness_proxy"
+      },
+      {
+        "feature_key": "sea_view_potential",
+        "desired": "wide",
+        "importance": 0.6,
+        "weight_source": "explicit",
+        "scope": "hotel",
+        "utility": null,
+        "derived_from": "sea_view"
+      }
+    ],
+    "third_error": {
+      "detail": [
+        {
+          "type": "value_error",
+          "loc": [
+            "body",
+            "parsed",
+            "soft_preferences",
+            2
+          ],
+          "msg": "Value error, companion-вес требует derived_from, и наоборот",
+          "input": {
+            "feature_key": "aircraft_path_distance_m",
+            "desired": "far",
+            "importance": 0.72,
+            "weight_source": "explicit",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": "quietness_proxy"
+          },
+          "ctx": {
+            "error": {}
+          }
+        },
+        {
+          "type": "value_error",
+          "loc": [
+            "body",
+            "parsed",
+            "soft_preferences",
+            3
+          ],
+          "msg": "Value error, companion-вес требует derived_from, и наоборот",
+          "input": {
+            "feature_key": "sea_view_potential",
+            "desired": "wide",
+            "importance": 0.6,
+            "weight_source": "explicit",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": "sea_view"
+          },
+          "ctx": {
+            "error": {}
+          }
+        }
+      ]
+    }
+  },
+  "tiny_weight": {
+    "weights": [
+      1,
+      0.001
+    ],
+    "A_matches": [
+      1,
+      0
+    ],
+    "B_matches": [
+      0.9,
+      1
+    ],
+    "A_score": 0.7492507492507494,
+    "B_score": 0.9000749250749251
+  }
+}

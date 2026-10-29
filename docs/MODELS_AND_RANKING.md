@@ -1,5 +1,8 @@
 # Модели и многокритериальное ранжирование v2
 
+Обновление 29 октября: гостевой парсер по умолчанию — `hybrid` (правила + LLM на
+непонятом). См. [TEAM_INTEGRATION](TEAM_INTEGRATION.md).
+
 Обновление 28 октября: общая конфигурация — [`config/models.yaml`](../config/models.yaml),
 основной режим — Gemma 12B через Ollama. См. [инструкцию для команды](MODEL_CONFIGURATION.md).
 

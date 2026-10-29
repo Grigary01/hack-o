@@ -1,11 +1,11 @@
 # Всё приложение одной командой:
 #   docker compose up --build
-#   React-фронт (основной):  http://localhost:8080        (/api, /docs → backend)
+#   React-фронт (основной):  http://localhost:8080        (/api, /docs, /health → backend)
 #   Streamlit (прежний UI):  http://localhost:8501
 #   FastAPI напрямую:        http://localhost:8000/docs
-# Порты и режим разбора переопределяются в .env (см. .env.example).
+# Порты и режимы переопределяются в .env (см. .env.example); модель — в config/models.yaml.
 
-x-backend-image: &backend-image
+x-app: &app
   build: .
   image: ostrovok-adler:local
   init: true
@@ -13,15 +13,13 @@ x-backend-image: &backend-image
 
 services:
   backend:
-    <<: *backend-image
-    # Миграции (с резервной копией SQLite) → идемпотентный seed демо-данных → uvicorn.
+    <<: *app
     entrypoint: ["sh", "/app/docker/backend-entrypoint.sh"]
     command: ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
     environment:
       DATABASE_URL: sqlite:////app/runtime/adler.db
-      # Модель и параметры генерации — в config/models.yaml; здесь только режим и адреса.
-      PARSER_MODE: ${DOCKER_PARSER_MODE:-offline}
-      REPLY_PARSER_MODE: ${REPLY_PARSER_MODE:-rules}
+      PARSER_MODE: ${PARSER_MODE:-}
+      REPLY_PARSER_MODE: ${REPLY_PARSER_MODE:-}
       DEMO_MODE: ${DEMO_MODE:-true}
       OLLAMA_URL: ${DOCKER_OLLAMA_URL:-http://host.docker.internal:11434}
       GROQ_API_KEY: ${GROQ_API_KEY:-}
@@ -40,8 +38,8 @@ services:
         - "import json, urllib.request; r=json.load(urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)); assert r['status'] == 'ok'"
       interval: 10s
       timeout: 5s
-      retries: 6
-      start_period: 40s
+      retries: 5
+      start_period: 30s
 
   web:
     build:
@@ -62,7 +60,7 @@ services:
       retries: 6
 
   frontend:
-    <<: *backend-image
+    <<: *app
     command:
       - python
       - -m

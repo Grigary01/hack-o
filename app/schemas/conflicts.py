@@ -1,6 +1,6 @@
 """Общий контракт backend/frontend/ML. Не зависит от ORM и HTTP-клиента."""
 from typing import Annotated, Literal
-from pydantic import AwareDatetime, Field, StringConstraints
+from pydantic import AliasChoices, AwareDatetime, Field, StringConstraints
 from app.schemas.query import Contract, Value
 from app.schemas.hotel import Observation
 
@@ -8,7 +8,7 @@ Reason = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, m
 
 
 class ResolveConflictRequest(Contract):
-    selected_observation_id: str = Field(min_length=1)
+    selected_observation_id: str = Field(min_length=1, validation_alias=AliasChoices('selected_observation_id', 'chosen_observation_id'))
     reason: Reason
 
 
@@ -51,3 +51,7 @@ class ResolveConflictResponse(Contract):
     resolution: ConflictResolution
     idempotent: bool
     current: CurrentFeature
+
+    # Совместимость с кабинетом Geo: новое API также возвращает полный current.
+    decision_observation_id: str | None = None
+    value: Value | None = None

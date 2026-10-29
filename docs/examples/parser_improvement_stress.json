@@ -1,0 +1,1922 @@
+{
+  "created_at": "2026-10-28T21:42:29.384899+00:00",
+  "status": "complete",
+  "source": "ollama",
+  "generation_model": "gemma3:12b",
+  "profile": null,
+  "split": "held_out",
+  "model_config": {
+    "parser_mode": "ollama",
+    "model_name": "gemma3:12b",
+    "groq_model": "openai/gpt-oss-120b",
+    "temperature": 0.0,
+    "max_output_tokens": 3000,
+    "ollama_num_ctx": 8192,
+    "parser_timeout_seconds": 90.0,
+    "groq_reasoning_effort": "low"
+  },
+  "embedding_model": null,
+  "model_config_sha256": "a4e344180ac6809efdef71c2d5a0e15cdfc736ed1fd4fde909dedf37c0100cb3",
+  "prompt_sha256": "3ef7c74a9c0f05286180f990487a57c32f35314942b48890c0f2bdfe441a6313",
+  "scorer_sha256": "6b839a406453274bb13ccda615c91acba11c6d95ff1eea36011a848c8b43970f",
+  "dataset_sha256": "8045df9ac5be30f9b6106b782889d49279cccae5c535b924cf559acef4659c55",
+  "prediction_sha256": null,
+  "warning": "Synthetic default labels require human review. Cosine is not correctness or probability.",
+  "cases": [
+    {
+      "text": "Непременно звукоизолированный номер, желательно видеть море.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "soundproofing",
+            "operator": "=",
+            "value": true,
+            "unit": null,
+            "scope": "room"
+          }
+        ],
+        "soft_preferences": [
+          {
+            "feature_key": "sea_view",
+            "desired": true,
+            "importance": 0.6,
+            "weight_source": "default",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "soundproofing",
+            "operator": "=",
+            "value": true,
+            "unit": null,
+            "scope": "room"
+          }
+        ],
+        "soft_preferences": [
+          {
+            "feature_key": "sea_view",
+            "desired": true,
+            "importance": 0.6,
+            "weight_source": "default",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 5.886847832938656,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 7,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "От баров не менее 450 м, до пляжа пешком максимум 900 м.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "nightlife_distance_m",
+            "operator": ">=",
+            "value": 450,
+            "unit": "m",
+            "scope": "hotel"
+          },
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": "<=",
+            "value": 900,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "nightlife_distance_m",
+            "operator": ">=",
+            "value": 450,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 3.7316695000045,
+      "metrics": {
+        "exact_match": false,
+        "hard_exact_match": false,
+        "fields": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 4
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 1
+        },
+        "field_cosine": 0.7071067811865475,
+        "requirement_cosine": 0.7071067811865475,
+        "operators": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 1
+        },
+        "numbers": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 1
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Видеть закат из номера обязательно, близость пляжа желательна.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "sunset_view",
+            "operator": "=",
+            "value": true,
+            "unit": null,
+            "scope": "room"
+          }
+        ],
+        "soft_preferences": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "desired": "near",
+            "importance": 0.8,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "sunset_view",
+            "operator": "=",
+            "value": true,
+            "unit": null,
+            "scope": "room"
+          }
+        ],
+        "soft_preferences": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "desired": "near",
+            "importance": 0.8,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 6.188414250034839,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 7,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Шумоизоляция важнее вида на закат.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "soundproofing",
+            "desired": true,
+            "importance": 1.0,
+            "weight_source": "relative_inferred",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "sunset_view",
+            "desired": true,
+            "importance": 0.5,
+            "weight_source": "relative_inferred",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "sunset_view",
+            "desired": false,
+            "importance": 0.5,
+            "weight_source": "relative_inferred",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "soundproofing",
+            "desired": true,
+            "importance": 1.0,
+            "weight_source": "relative_inferred",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 6.102125457953662,
+      "metrics": {
+        "exact_match": false,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 7,
+          "fp": 1,
+          "fn": 1
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 1,
+          "fn": 1
+        },
+        "field_cosine": 0.875,
+        "requirement_cosine": 0.5,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Для вида на море вес 0,35, для тишины вес 0,65.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "quietness_proxy",
+            "desired": "high",
+            "importance": 0.65,
+            "weight_source": "explicit",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "sea_view",
+            "desired": true,
+            "importance": 0.35,
+            "weight_source": "explicit",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "quietness_proxy",
+            "desired": "high",
+            "importance": 0.65,
+            "weight_source": "explicit",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "sea_view",
+            "desired": true,
+            "importance": 0.35,
+            "weight_source": "explicit",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 6.15404691605363,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 8,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Пешком до пляжа строго меньше 650 метров.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": "<",
+            "value": 650,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": "<",
+            "value": 650,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 3.854260207968764,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Мне подходит только номер без вида на море.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "sea_view",
+            "operator": "=",
+            "value": false,
+            "unit": null,
+            "scope": "room"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "sea_view",
+            "operator": "=",
+            "value": false,
+            "unit": null,
+            "scope": "room"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 3.3411878329934552,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Вид на море не важен, хочется быть поближе к пляжу.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "desired": "near",
+            "importance": 0.8,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "desired": "near",
+            "importance": 0.8,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 4.235262333997525,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "От пляжа максимум 250 метров по прямой.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [
+          "Расстояние по прямой до пляжа не поддерживается"
+        ],
+        "clarification_question": "Уточните неподдержанное условие."
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": "<=",
+            "value": 250,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 3.8220092919655144,
+      "metrics": {
+        "exact_match": false,
+        "hard_exact_match": false,
+        "fields": {
+          "tp": 0,
+          "fp": 4,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0
+        },
+        "field_cosine": null,
+        "requirement_cosine": null,
+        "operators": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Хотелось бы жить подальше от самолётов.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "aircraft_path_distance_m",
+            "desired": "far",
+            "importance": 0.7,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "aircraft_path_distance_m",
+            "desired": "far",
+            "importance": 0.7,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 4.2304581250064075,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "До пляжа пешком не более 0,85 км.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": "<=",
+            "value": 850,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": "<=",
+            "value": 850,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 3.942562500014901,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Расстояние до пляжа пешком от 150 до 950 метров.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": "<=",
+            "value": 950,
+            "unit": "m",
+            "scope": "hotel"
+          },
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": ">=",
+            "value": 150,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": "<=",
+            "value": 950,
+            "unit": "m",
+            "scope": "hotel"
+          },
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": ">=",
+            "value": 150,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 5.920471625053324,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 8,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Вид на закат с весом 0, вид на море с весом 0,45.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "sea_view",
+            "desired": true,
+            "importance": 0.45,
+            "weight_source": "explicit",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "sunset_view",
+            "desired": true,
+            "importance": 0.0,
+            "weight_source": "explicit",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "sea_view",
+            "desired": true,
+            "importance": 0.45,
+            "weight_source": "explicit",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "sunset_view",
+            "desired": true,
+            "importance": 0.0,
+            "weight_source": "explicit",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 5.704293332993984,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 8,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Близость ночных клубов важнее близости пляжа.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "nightlife_distance_m",
+            "desired": "near",
+            "importance": 1.0,
+            "weight_source": "relative_inferred",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "desired": "near",
+            "importance": 0.5,
+            "weight_source": "relative_inferred",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "desired": "far",
+            "importance": 0.5,
+            "weight_source": "relative_inferred",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "nightlife_distance_m",
+            "desired": "near",
+            "importance": 1.0,
+            "weight_source": "relative_inferred",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 6.584724250016734,
+      "metrics": {
+        "exact_match": false,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 7,
+          "fp": 1,
+          "fn": 1
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 1,
+          "fn": 1
+        },
+        "field_cosine": 0.875,
+        "requirement_cosine": 0.5,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Хочу тихое место и завтрак в номер.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "quietness_proxy",
+            "desired": "high",
+            "importance": 0.9,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [
+          "Нет данных о завтраке в номер"
+        ],
+        "clarification_question": "Уточните неподдержанное условие."
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "quietness_proxy",
+            "desired": "high",
+            "importance": 0.9,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "beach_route_climb_m",
+            "desired": "near",
+            "importance": 0.5,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 6.253035541973077,
+      "metrics": {
+        "exact_match": false,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 4,
+          "fp": 4,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 1,
+          "fn": 0
+        },
+        "field_cosine": 0.7071067811865475,
+        "requirement_cosine": 0.7071067811865475,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Нужен номер обязательно без вида на закат и с шумоизоляцией.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "soundproofing",
+            "operator": "=",
+            "value": true,
+            "unit": null,
+            "scope": "room"
+          },
+          {
+            "feature_key": "sunset_view",
+            "operator": "=",
+            "value": false,
+            "unit": null,
+            "scope": "room"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "sea_view",
+            "operator": "=",
+            "value": false,
+            "unit": null,
+            "scope": "room"
+          }
+        ],
+        "soft_preferences": [
+          {
+            "feature_key": "soundproofing",
+            "desired": true,
+            "importance": 0.7,
+            "weight_source": "default",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 5.331016208045185,
+      "metrics": {
+        "exact_match": false,
+        "hard_exact_match": false,
+        "fields": {
+          "tp": 0,
+          "fp": 7,
+          "fn": 6
+        },
+        "requirements": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 2
+        },
+        "field_cosine": 0.0,
+        "requirement_cosine": 0.0,
+        "operators": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 2
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 1
+        }
+      }
+    },
+    {
+      "text": "До пляжа идеально от 350 до 550 м пешком, допустимое отклонение 100 м.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "desired": "near",
+            "importance": 0.8,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": {
+              "kind": "target_range",
+              "ideal_min": 350.0,
+              "ideal_max": 550.0,
+              "tolerance": 100.0
+            },
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "desired": "near",
+            "importance": 0.8,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": {
+              "kind": "target_range",
+              "ideal_min": 350.0,
+              "ideal_max": 550.0,
+              "tolerance": 100.0
+            },
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 12.869334249990061,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Идеально до 180 м пешком к пляжу, к 480 м уже неудобно.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "desired": "near",
+            "importance": 0.8,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": {
+              "kind": "lower",
+              "ideal_min": null,
+              "ideal_max": 180.0,
+              "tolerance": 300.0
+            },
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": "<=",
+            "value": 180,
+            "unit": "m",
+            "scope": "hotel"
+          },
+          {
+            "feature_key": "walking_distance_to_beach_m",
+            "operator": "<=",
+            "value": 480,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 6.035322666051798,
+      "metrics": {
+        "exact_match": false,
+        "hard_exact_match": false,
+        "fields": {
+          "tp": 0,
+          "fp": 8,
+          "fn": 5
+        },
+        "requirements": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 1
+        },
+        "field_cosine": 0.0,
+        "requirement_cosine": 0.0,
+        "operators": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "В одном номере непременно вид на море и вид на закат.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "sea_view",
+            "operator": "=",
+            "value": true,
+            "unit": null,
+            "scope": "room"
+          },
+          {
+            "feature_key": "sunset_view",
+            "operator": "=",
+            "value": true,
+            "unit": null,
+            "scope": "room"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "sea_view",
+            "operator": "=",
+            "value": true,
+            "unit": null,
+            "scope": "room"
+          },
+          {
+            "feature_key": "sunset_view",
+            "operator": "=",
+            "value": true,
+            "unit": null,
+            "scope": "room"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 4.733915582997724,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 6,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Посоветуй гостиницу в Адлере.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 2.0819361250614747,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": null,
+        "requirement_cosine": null,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "До моря десять минут на автобусе.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [
+          "Неподдержанный способ измерения расстояния"
+        ],
+        "clarification_question": "Уточните неподдержанное условие."
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [
+          "Необходимо уточнить способ измерения расстояния до моря (пешком, на транспорте и т.д.)."
+        ],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 3.4414298329502344,
+      "metrics": {
+        "exact_match": false,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": null,
+        "requirement_cosine": null,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Хочу отель подальше от клубов, шумоизоляция желательна.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "nightlife_distance_m",
+            "desired": "far",
+            "importance": 0.7,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "soundproofing",
+            "desired": true,
+            "importance": 0.7,
+            "weight_source": "default",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "nightlife_distance_m",
+            "desired": "far",
+            "importance": 0.7,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          },
+          {
+            "feature_key": "soundproofing",
+            "desired": true,
+            "importance": 0.7,
+            "weight_source": "default",
+            "scope": "room",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 5.973720374982804,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 8,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "До бара строго больше 350 метров по прямой.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "nightlife_distance_m",
+            "operator": ">",
+            "value": 350,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [
+          {
+            "feature_key": "nightlife_distance_m",
+            "operator": ">",
+            "value": 350,
+            "unit": "m",
+            "scope": "hotel"
+          }
+        ],
+        "soft_preferences": [],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 3.683408083044924,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    },
+    {
+      "text": "Мне безразличен вид на море, главное — желательно тихий район.",
+      "split": "held_out",
+      "expected": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "quietness_proxy",
+            "desired": "high",
+            "importance": 0.9,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "actual": {
+        "region": "Adler",
+        "hard_constraints": [],
+        "soft_preferences": [
+          {
+            "feature_key": "quietness_proxy",
+            "desired": "high",
+            "importance": 0.9,
+            "weight_source": "default",
+            "scope": "hotel",
+            "utility": null,
+            "derived_from": null
+          }
+        ],
+        "unknown_or_ambiguous": [],
+        "clarification_question": null
+      },
+      "error": null,
+      "latency_seconds": 3.9852965839672834,
+      "metrics": {
+        "exact_match": true,
+        "hard_exact_match": true,
+        "fields": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0
+        },
+        "requirements": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "field_cosine": 1.0,
+        "requirement_cosine": 1.0,
+        "operators": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "numbers": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "negations": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0
+        }
+      }
+    }
+  ],
+  "summary": {
+    "queries": 24,
+    "error_rate": 0.0,
+    "exact_match": 0.6666666666666666,
+    "hard_exact_match": 0.8333333333333334,
+    "fields": {
+      "tp": 106,
+      "fp": 25,
+      "fn": 17,
+      "precision": 0.8091603053435115,
+      "recall": 0.8617886178861789,
+      "f1": 0.8346456692913385
+    },
+    "requirements": {
+      "tp": 26,
+      "fp": 8,
+      "fn": 6,
+      "precision": 0.7647058823529411,
+      "recall": 0.8125,
+      "f1": 0.7878787878787878
+    },
+    "operators": {
+      "tp": 11,
+      "fp": 4,
+      "fn": 3,
+      "precision": 0.7333333333333333,
+      "recall": 0.7857142857142857,
+      "f1": 0.7586206896551724
+    },
+    "numbers": {
+      "tp": 6,
+      "fp": 3,
+      "fn": 1,
+      "precision": 0.6666666666666666,
+      "recall": 0.8571428571428571,
+      "f1": 0.75
+    },
+    "negations": {
+      "tp": 2,
+      "fp": 2,
+      "fn": 1,
+      "precision": 0.5,
+      "recall": 0.6666666666666666,
+      "f1": 0.5714285714285714
+    },
+    "field_cosine": {
+      "mean": 0.864962550589195,
+      "evaluated_pairs": 21
+    },
+    "requirement_cosine": {
+      "mean": 0.8292482648749093,
+      "evaluated_pairs": 21
+    },
+    "semantic_cosine": {
+      "mean": null,
+      "evaluated_pairs": 0
+    },
+    "latency": {
+      "measured_queries": 24,
+      "median_seconds": 5.0324658955214545,
+      "p95_seconds": 6.584724250016734
+    },
+    "embedding_errors": 0
+  }
+}

@@ -756,7 +756,6 @@
           "hotelier demo"
         ],
         "summary": "Resolve Conflict",
-        "description": "Одно решение оператора на конфликт; повтор с тем же выбором идемпотентен, другой выбор — 409.\n\nreview:* (номер против расчёта по зданию, поправка отельера к расчёту) дополнительно\nсохраняет свидетельство operator_decision: его учитывают поиск и кабинет.",
         "operationId": "resolve_conflict_api_hotelier_conflicts__conflict_id__resolve_post",
         "parameters": [
           {
@@ -1361,185 +1360,6 @@
         }
       }
     },
-    "/api/hotelier/hotels/{hotel_id}/facts": {
-      "get": {
-        "tags": [
-          "hotelier demo"
-        ],
-        "summary": "Facts",
-        "operationId": "facts_api_hotelier_hotels__hotel_id__facts_get",
-        "parameters": [
-          {
-            "name": "hotel_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Hotel Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            },
-            "description": "Unprocessable Entity"
-          },
-          "502": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            },
-            "description": "Bad Gateway"
-          },
-          "503": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            },
-            "description": "Service Unavailable"
-          }
-        }
-      }
-    },
-    "/api/hotelier/facts/review": {
-      "post": {
-        "tags": [
-          "hotelier demo"
-        ],
-        "summary": "Review",
-        "operationId": "review_api_hotelier_facts_review_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReviewRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unprocessable Entity",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Bad Gateway",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Service Unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/hotels/{hotel_id}/environment": {
       "get": {
         "tags": [
@@ -1720,23 +1540,6 @@
         }
       }
     },
-    "/health": {
-      "get": {
-        "summary": "Liveness",
-        "description": "Проверка для docker compose и жюри: 200 {\"status\":\"ok\"} только при живой и заполненной базе.",
-        "operationId": "liveness_health_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/health": {
       "get": {
         "summary": "Health",
@@ -1907,13 +1710,6 @@
           },
           "question": {
             "$ref": "#/components/schemas/HotelierQuestion"
-          },
-          "model_review": {
-            "items": {
-              "$ref": "#/components/schemas/ModelReview"
-            },
-            "type": "array",
-            "title": "Model Review"
           }
         },
         "additionalProperties": false,
@@ -1944,88 +1740,6 @@
           "text"
         ],
         "title": "AnswerRequest"
-      },
-      "Companion": {
-        "properties": {
-          "feature_key": {
-            "type": "string",
-            "title": "Feature Key"
-          },
-          "desired": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Desired"
-          },
-          "desired_if_true": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Desired If True"
-          },
-          "desired_if_false": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Desired If False"
-          },
-          "weight_factor": {
-            "type": "number",
-            "maximum": 1.0,
-            "exclusiveMinimum": 0.0,
-            "title": "Weight Factor",
-            "default": 1.0
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "feature_key"
-        ],
-        "title": "Companion",
-        "description": "Расчётная характеристика-спутник. desired — для любого желания родителя;\ndesired_if_true/false — для boolean-родителя («с видом» / «без вида»)."
       },
       "ConfirmRequest": {
         "properties": {
@@ -2284,14 +1998,6 @@
             },
             "type": "array",
             "title": "Evidence"
-          },
-          "model_conflicts": {
-            "items": {
-              "additionalProperties": true,
-              "type": "object"
-            },
-            "type": "array",
-            "title": "Model Conflicts"
           }
         },
         "additionalProperties": false,
@@ -2494,68 +2200,6 @@
             "exclusiveMinimum": 0.0,
             "title": "Scale",
             "default": 1000
-          },
-          "ordinal": {
-            "type": "boolean",
-            "title": "Ordinal",
-            "default": false
-          },
-          "choice_labels": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "type": "object",
-            "title": "Choice Labels"
-          },
-          "companions": {
-            "items": {
-              "$ref": "#/components/schemas/Companion"
-            },
-            "type": "array",
-            "title": "Companions"
-          },
-          "model_check": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ModelCheck"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "query_patterns": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Query Patterns"
-          },
-          "query_negative_patterns": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Query Negative Patterns"
-          },
-          "query_desired": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Query Desired"
-          },
-          "query_negation_keeps": {
-            "type": "boolean",
-            "title": "Query Negation Keeps",
-            "default": false
           }
         },
         "additionalProperties": false,
@@ -3040,75 +2684,6 @@
         ],
         "title": "HotelierQuestion"
       },
-      "ModelCheck": {
-        "properties": {
-          "potential": {
-            "type": "string",
-            "title": "Potential"
-          },
-          "none_value": {
-            "type": "string",
-            "title": "None Value"
-          },
-          "min_floor": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Min Floor"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "potential",
-          "none_value"
-        ],
-        "title": "ModelCheck",
-        "description": "Сверка утверждения отельера о номере с расчётом по зданию."
-      },
-      "ModelReview": {
-        "properties": {
-          "room_id": {
-            "type": "string",
-            "title": "Room Id"
-          },
-          "reason": {
-            "type": "string",
-            "enum": [
-              "model_sees_none",
-              "below_model_min_floor"
-            ],
-            "title": "Reason"
-          },
-          "text": {
-            "type": "string",
-            "title": "Text"
-          },
-          "hotelier_observation_id": {
-            "type": "string",
-            "title": "Hotelier Observation Id"
-          },
-          "model_observation_id": {
-            "type": "string",
-            "title": "Model Observation Id"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "room_id",
-          "reason",
-          "text",
-          "hotelier_observation_id",
-          "model_observation_id"
-        ],
-        "title": "ModelReview"
-      },
       "Observation": {
         "properties": {
           "id": {
@@ -3311,14 +2886,6 @@
             "type": "string",
             "title": "Original Text",
             "default": ""
-          },
-          "ignored_terms": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "maxItems": 30,
-            "title": "Ignored Terms"
           }
         },
         "additionalProperties": false,
@@ -3466,61 +3033,6 @@
           "current"
         ],
         "title": "ResolveConflictResponse"
-      },
-      "ReviewRequest": {
-        "properties": {
-          "hotel_id": {
-            "type": "string",
-            "title": "Hotel Id"
-          },
-          "feature_key": {
-            "type": "string",
-            "title": "Feature Key"
-          },
-          "verdict": {
-            "type": "string",
-            "enum": [
-              "confirm",
-              "correct"
-            ],
-            "title": "Verdict"
-          },
-          "value": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Value"
-          },
-          "comment": {
-            "type": "string",
-            "maxLength": 1000,
-            "title": "Comment",
-            "default": ""
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "hotel_id",
-          "feature_key",
-          "verdict"
-        ],
-        "title": "ReviewRequest",
-        "description": "Отельер подтверждает или исправляет расчётный факт об отеле."
       },
       "RoomClaim": {
         "properties": {
@@ -3734,8 +3246,7 @@
             "enum": [
               "default",
               "explicit",
-              "relative_inferred",
-              "companion"
+              "relative_inferred"
             ],
             "title": "Weight Source",
             "default": "default"
@@ -3758,17 +3269,6 @@
                 "type": "null"
               }
             ]
-          },
-          "derived_from": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Derived From"
           }
         },
         "additionalProperties": false,
@@ -3786,10 +3286,8 @@
             "type": "string",
             "enum": [
               "openstreetmap",
-              "geo_model",
               "hotelier",
-              "hotelier_simulated",
-              "operator_decision"
+              "hotelier_simulated"
             ],
             "title": "Type"
           },

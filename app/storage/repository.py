@@ -93,6 +93,17 @@ class Repository:
         self.session.flush()
         return conflict_id
 
+    def conflict(self, conflict_id):
+        row = self.session.get(ConflictRow, conflict_id)
+        if row is None:
+            raise LookupError('Конфликт не найден')
+        return row_dict(row)
+
+    def observation(self, observation_id):
+        row = self.session.get(ObservationRow, observation_id)
+        if row is None:
+            raise LookupError('Свидетельство не найдено')
+        return Observation.model_validate(row.payload)
     def conflict_records(self, hotel_id=None, status=None):
         query = select(ConflictRow, ConflictResolutionRow).outerjoin(
             ConflictResolutionRow, ConflictResolutionRow.conflict_id == ConflictRow.id)
@@ -124,15 +135,14 @@ class Repository:
         conflict = self.session.get(ConflictRow, conflict_id)
         if conflict is None:
             raise NotFoundError('Конфликт не найден')
+        is_review = conflict.policy.startswith('review:')
         selected = self.session.get(ObservationRow, payload.selected_observation_id)
         if selected is None:
             raise NotFoundError('Наблюдение не найдено')
-        # review:* — расхождение разных источников (номер против расчёта по зданию):
-        # стороны могут относиться к разным субъектам и признакам, но к одному отелю.
-        review = conflict.policy.startswith('review:')
-        expected = (conflict.hotel_id,) if review else (conflict.hotel_id, conflict.subject_id, conflict.feature_key)
-        actual = (selected.hotel_id,) if review else (selected.hotel_id, selected.subject_id, selected.feature_key)
-        if selected.id not in (conflict.left_id, conflict.right_id) or actual != expected:
+        if (selected.id not in (conflict.left_id, conflict.right_id)
+                or selected.hotel_id != conflict.hotel_id
+                or (not is_review and (selected.subject_id, selected.feature_key)
+                    != (conflict.subject_id, conflict.feature_key))):
             raise ValueError('Наблюдение не принадлежит этому конфликту, отелю, номеру и характеристике')
         # Проверяем и payload: нельзя применить решение к несовместимому факту.
         fact = Observation.model_validate(selected.payload)
@@ -148,24 +158,13 @@ class Repository:
         if (resolution.selected_observation_id, resolution.reason) != (
                 payload.selected_observation_id, payload.reason):
             raise StateConflictError('Конфликт уже решён иначе; изменение решения не поддерживается')
+        if is_review and result.rowcount:
+            # Geo-сравнение может сопоставлять номер с моделью всего здания.
+            # Отдельный факт сохраняет выбор оператора и принадлежность демо-миру.
+            from app.hotelier.review import record_review_decision
+            record_review_decision(self, conflict_id, selected_observation_id, payload.reason)
         self.refresh_existing_question(conflict.hotel_id, conflict.feature_key)
         return ConflictResolution.model_validate(row_dict(resolution)), result.rowcount == 0
-
-    def conflict(self, conflict_id):
-        row = self.session.get(ConflictRow, conflict_id)
-        if row is None:
-            raise NotFoundError('Конфликт не найден')
-        return row_dict(row)
-
-    def conflict_resolution(self, conflict_id):
-        row = self.session.get(ConflictResolutionRow, conflict_id)
-        return None if row is None else ConflictResolution.model_validate(row_dict(row))
-
-    def observation(self, observation_id):
-        row = self.session.get(ObservationRow, observation_id)
-        if row is None:
-            raise NotFoundError('Свидетельство не найдено')
-        return Observation.model_validate(row.payload)
 
     def ensure_question(self, hotel_id, feature_key, text):
         self.hotel(hotel_id)

@@ -137,7 +137,7 @@ def measure(rows, parser) -> dict:
 
 def main():
     args = argparse.ArgumentParser()
-    args.add_argument('--mode', choices=['offline', 'fixture', 'ollama', 'groq'], default=settings.parser_mode)
+    args.add_argument('--mode', choices=['offline', 'fixture', 'ollama', 'groq', 'hybrid'], default=settings.parser_mode)
     mode = args.parse_args().mode
     parser = make_parser(replace(settings, parser_mode=mode))
     path = ROOT / 'data/evaluation/queries_gold.jsonl'

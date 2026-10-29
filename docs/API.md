@@ -12,7 +12,7 @@ JSON-контракты: `app/schemas/*`; примеры фактических 
 | GET /health | — | 200 `{"status":"ok","hotels":N}` при заполненной базе, иначе 503 `needs_seed`; healthcheck compose |
 | GET /api/health | — | DB/seed count, parser_mode, demo_mode; внешние API не проверяет |
 | GET /api/features | — | декларации YAML |
-| GET /api/demo-queries | — | 15 demo-формулировок (свободный текст тоже разбирается в режиме offline) |
+| GET /api/demo-queries | — | 13 поддерживаемых demo-формулировок |
 | POST /api/parse-query | `text` | ParsedHotelQuery |
 | POST /api/search | text **или** parsed, weights, include_simulated | matched / needs_verification / excluded + trace |
 | GET /api/hotels | — | список Hotel |
@@ -22,11 +22,9 @@ JSON-контракты: `app/schemas/*`; примеры фактических 
 | POST /api/hotelier/questions | hotel_id, feature_key | вопрос (идемпотентно) |
 | POST /api/hotelier/questions/{qid}/answer | text | pending answer + extraction |
 | GET /api/hotelier/answers/{aid} | — | сохранённый HotelierAnswer |
-| POST /api/hotelier/answers/{aid}/confirm | accept: boolean | AnswerConfirmation: статус, те же ID при повторе, конфликты, вопрос, `model_review` (расхождения с расчётом по зданию) |
-| GET /api/hotelier/hotels/{id}/facts | — | расчётные факты об отеле с объяснением + конфликты с решениями |
-| POST /api/hotelier/facts/review | hotel_id, feature_key, verdict confirm/correct, value?, comment | новое свидетельство отельера; расхождение → конфликт `review:hotelier_correction` |
+| POST /api/hotelier/answers/{aid}/confirm | accept: boolean | AnswerConfirmation: статус, те же ID при повторе, конфликты, вопрос |
 | GET /api/hotelier/conflicts | hotel_id?, status=open/resolved? | ConflictDetail[] с обеими версиями и решением |
-| POST /api/hotelier/conflicts/{id}/resolve | selected_observation_id, reason | одно решение на конфликт (повтор идемпотентен, другой выбор — 409); для `review:*` дополнительно свидетельство `operator_decision` |
+| POST /api/hotelier/conflicts/{id}/resolve | selected_observation_id, reason | решение, idempotent, текущее demo-состояние |
 
 ## Пример
 

@@ -1,5 +1,7 @@
 # Готовность и распределение работы
 
+Актуальный итог объединения веток: [TEAM_INTEGRATION](TEAM_INTEGRATION.md). Ниже исторические этапы; числа тестов относятся к указанным этапам.
+
 Имена участников не предоставлены. Закрепление: **У1 ML**, **У2 Geo/Data**, **У3 Backend/Agent/Storage**,
 **У4 Frontend**. QA/интеграцию совместно выполняют У3 и У4; метрики проверяют владельцы модулей.
 Пофайловое закрепление — PROJECT_STRUCTURE.md. Статусы относятся к коду в этой папке, не к исходному blueprint.
@@ -12,7 +14,7 @@
 | 2. Диалог с отельером | DONE (MVP) | `app/hotelier/dialogue.py`, `app/api/hotelier.py`, UI; range/negation, confirmation, persist | Симуляция; bounded grammar, сложный текст требует уточнения |
 | 3. Хранение и достоверность | DONE (MVP) | `app/storage/*`, `app/features/service.py`; source/date/confidence, TTL, явное решение и повторное открытие вопроса | Реальной авторизации нет; качество реального свободного текста ещё не проверено |
 | 4. Расширяемость | DONE (MVP) | YAML boolean room feature + existing hotelier provider; [полный путь blackout_curtains](REGISTRY_EXTENSION.md), тест следующего ключа reading_lamp | Новая геоматематика требует calculator; fixture-запрос добавляется отдельно |
-| 5. Поиск по запросу | DONE для demo; IN_PROGRESS для качества свободного NLP | 13 offline формулировок, typed filters/ranking; Ollama schema adapter | Реальная модель не запускалась; универсальное качество не подтверждено |
+| 5. Поиск по запросу | DONE для demo; IN_PROGRESS для качества свободного NLP | 15 fixture-примеров, offline правила, Ollama/Groq и типизированное ранжирование | Gemma проверялась; 90% на независимом человеческом gold не подтверждено |
 
 ## Уже сделано дополнительно
 
@@ -41,7 +43,7 @@
 
 ## Следующие задачи с критериями приёмки
 
-- **P0 / У1 / TODO** — Запустить локальную Ollama с выбранной моделью и evaluator на 32 held-out случаях.
+- **P0 / У1 / IN_PROGRESS** — Повторно оценить итоговый prompt после интеграции на новом независимом тесте. 32 исходных запроса уже использованы для исправления ошибок и стали development-набором; см. PARSER_IMPROVEMENT.md.
   Файлы `app/ml/prompts.py`, `scripts/evaluate_parser.py`. Готово, когда сохранены фактические метрики,
   разобраны ошибки чисел/отрицаний/городов, улучшения не проверяются только на few-shot примерах.
 - **P0 / У2 / TODO** — Ручная проверка входов/ограждений и проходов на пляж для 5–10 маршрутов.
@@ -51,8 +53,7 @@
   `frontend/app.py`. Готово, когда просмотрены реальные экраны; AppTest не заменяет визуальный QA.
 - **DONE (MVP) / У2+У3** — Расчётный вид/закат/авиашум в поиске (спутники из YAML, объяснение
   «с N-го этажа, стороны ЮЗ») и пометка расхождения ответа отельера с расчётом (`review:*`).
-- **P1 / У3 / DONE 28.10** — Разрешение конфликта оператором с причиной, выбранной версией и историей решений
-  (единый `POST /api/hotelier/conflicts/{id}/resolve`; для `review:*` ещё и `operator_decision`).
+- **P1 / У3 / DONE** — Разрешение конфликта оператором с причиной, выбранной версией и историей решений.
   `app/features/service.py`, `app/storage/models.py`, `app/api/hotelier.py`. Готово: конфликт не удаляется,
   выбранное значение возвращается в поиск только после явного решения, есть тесты.
   [API, заглушка frontend и контракт ML](CONFLICT_INTEGRATION.md).
@@ -62,9 +63,6 @@
 - **P1 / У1+У3 / TODO** — Ollama structured extractor свободных ответов отельера с условиями/сезонностью;
   `app/hotelier/dialogue.py`, `app/schemas/hotelier.py`. Готово: gold replies, сохранённые цитаты,
   scope/условия не теряются, confirmation остаётся обязательным.
-  Backend-часть этапа 4 DONE: ReplyParser, rules/fixture, HTTP-адаптеры,
-  валидация перед pending/confirm и ошибки 502/503. [Интеграция](REPLY_PARSER_INTEGRATION.md).
-  Реальный прогон и качество остаются TODO; сезонные условия пока требуют уточнения.
 - **P1 / У2 / DONE (MVP)** — Авиационный фактор: `app/geo/aircraft.py`, ВПП AER из OSM, глиссада 3°,
   `aircraft_noise_exposure` + `aircraft_path_distance_m`; сверка с отзывами в `viewshed_metrics.json`.
   Остаётся: реальные треки (ADS-B/AIP-схемы), загрузка полос, учёт в `quietness_proxy`; дБ не выдаются.
@@ -74,7 +72,6 @@
   `scripts/collect_adler_osm.py`, `app/storage/repository.py`. Сейчас TTL учитывается, но автоматической загрузки нет.
 - **P1 / У3 / TODO** — Авторизация реального отельера и ownership.
   `app/api/hotelier.py`, `app/storage/*`. Нельзя публиковать текущий симулятор как реальный кабинет.
-  Миграции SQLite, повторные и конкурентные решения конфликтов проверены в этапе 2.
 - **P2 / У2 / DONE (MVP)** — DEM/buildings/facade/floor viewshed: `app/geo/viewshed.py`, `app/geo/solar.py`,
   4 характеристики, 100 значений, `tests/test_viewshed.py`. Остаётся: сопоставление «вид на море/закат»
   в fixture-парсере с `*_potential`, конфликт «расчёт против отельера» и сверка с фото (routes_gold-аналог).

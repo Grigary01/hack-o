@@ -1,5 +1,21 @@
-# Контекст образа бэкенда — только исходники и демо-данные (allowlist).
-# web/ собирается своим контекстом (web/Dockerfile) и сюда не попадает.
+.git
+.gitignore
+.venv
+.env
+.claude
+.pytest_cache
+**/__pycache__
+*.egg-info
+runtime
+artifacts
+upstream
+legacy
+docs
+tests
+Островок
+Dockerfile
+docker-compose.yml
+# Build context contains runtime sources and demo data only.
 **
 !Dockerfile
 !pyproject.toml
@@ -8,10 +24,10 @@
 !README.md
 !LICENSE
 !THIRD_PARTY_NOTICES.md
-!app/
-!app/**
 !config/
 !config/**
+!app/
+!app/**
 !frontend/
 !frontend/**
 !scripts/
@@ -22,8 +38,10 @@
 !data/**
 !docker/
 !docker/**
-frontend/design/
 **/__pycache__/
 **/*.pyc
 **/*.pyo
 **/.DS_Store
+# Веб-фронтенд собирается своим образом (web/Dockerfile); макеты дизайна в образ не нужны.
+web
+frontend/design

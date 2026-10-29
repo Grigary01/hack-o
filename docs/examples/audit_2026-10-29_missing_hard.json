@@ -1,0 +1,15 @@
+{
+  "text": "Нужен обязательно шумоизолированный номер",
+  "parser_output": {
+    "region": "Adler",
+    "hard_constraints": [],
+    "soft_preferences": [],
+    "unknown_or_ambiguous": [],
+    "clarification_question": null
+  },
+  "search_http_status": 200,
+  "search_status": "ok",
+  "matched": 25,
+  "needs_verification": 0,
+  "excluded": 0
+}

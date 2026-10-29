@@ -4,11 +4,12 @@ from typing import Literal
 from app.api.dependencies import repository
 from app.hotelier.dialogue import ask_hotelier, submit_answer, confirm_answer
 from app.schemas.hotelier import (QuestionRequest, AnswerRequest, ConfirmRequest, HotelierQuestion,
-                                  HotelierAnswer, AnswerConfirmation, ReviewRequest)
+                                  HotelierAnswer, AnswerConfirmation)
 from app.schemas.errors import ERROR_RESPONSES
 from app.storage.repository import row_dict
 from app.schemas.conflicts import ConflictDetail, ResolveConflictRequest, ResolveConflictResponse
 from app.features.service import resolve_feature
+from app.schemas.hotelier import ReviewRequest
 
 
 def demo_only(request:Request):
@@ -30,27 +31,15 @@ def conflicts(hotel_id: str | None = None, status: Literal['open', 'resolved'] |
 
 @router.post('/conflicts/{conflict_id}/resolve', response_model=ResolveConflictResponse)
 def resolve_conflict(conflict_id: str, payload: ResolveConflictRequest, repo=Depends(repository)):
-    """Одно решение оператора на конфликт; повтор с тем же выбором идемпотентен, другой выбор — 409.
-
-    review:* (номер против расчёта по зданию, поправка отельера к расчёту) дополнительно
-    сохраняет свидетельство operator_decision: его учитывают поиск и кабинет.
-    """
-    conflict = repo.conflict(conflict_id)
-    if conflict['policy'].startswith('review:') and repo.conflict_resolution(conflict_id) is None:
-        from app.hotelier.review import record_operator_decision
-        # Сначала проверяем выбор (422/404), затем пишем решение и свидетельство атомарно.
-        repo.resolve_conflict(conflict_id, payload.selected_observation_id, payload.reason)
-        record_operator_decision(repo, conflict_id, payload.selected_observation_id, payload.reason)
-        resolution, idempotent = repo.conflict_resolution(conflict_id), False
-    else:
-        resolution, idempotent = repo.resolve_conflict(
-            conflict_id, payload.selected_observation_id, payload.reason)
+    resolution, idempotent = repo.resolve_conflict(
+        conflict_id, payload.selected_observation_id, payload.reason)
     records = repo.conflict_records()
     conflict = next(c for c in records if c.id == conflict_id)
     current = resolve_feature(repo.observations(conflict.hotel_id), conflict.subject_id,
         conflict.feature_key, include_simulated=True, conflicts=records)
     return {'conflict_id': conflict_id, 'resolution': resolution,
-            'idempotent': idempotent, 'current': asdict(current)}
+            'idempotent': idempotent, 'current': asdict(current), 'value': current.value,
+            'decision_observation_id': ('decision:' + conflict_id) if conflict.policy.startswith('review:') else None}
 
 
 @router.get('/questions', response_model=list[HotelierQuestion])
@@ -89,4 +78,3 @@ def facts(hotel_id:str,repo=Depends(repository)):
 def review(payload:ReviewRequest,repo=Depends(repository)):
     from app.hotelier.review import review_fact
     return review_fact(repo,payload.hotel_id,payload.feature_key,payload.verdict,payload.value,payload.comment)
-

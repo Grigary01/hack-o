@@ -12,17 +12,17 @@ MODEL_CONFIG = load_model_config(ROOT / 'config/models.yaml')
 # Единственное операционное переопределение ML-режима: участник frontend может
 # запустить PARSER_MODE=offline без загрузки весов и без правки общего YAML.
 # Названия моделей и параметры генерации берутся только из версионируемого YAML.
-PARSER_MODE = os.getenv('PARSER_MODE', MODEL_CONFIG.parser_mode)
-if PARSER_MODE not in ('ollama', 'groq', 'offline', 'fixture'):
-    raise ValueError('PARSER_MODE должен быть ollama, groq, offline или fixture')
+PARSER_MODE = (os.getenv('PARSER_MODE') or MODEL_CONFIG.parser_mode)
+if PARSER_MODE not in ('ollama', 'groq', 'offline', 'fixture', 'hybrid'):
+    raise ValueError('PARSER_MODE должен быть ollama, groq, offline, fixture или hybrid')
 
 
 @dataclass(frozen=True)
 class Settings:
     database_url: str = os.getenv('DATABASE_URL', f'sqlite:///{ROOT / "runtime/adler.db"}')
     parser_mode: str = PARSER_MODE
-    reply_parser_mode: str = os.getenv('REPLY_PARSER_MODE', 'rules')
     model_name: str = MODEL_CONFIG.model_name
+    reply_parser_mode: str = (os.getenv('REPLY_PARSER_MODE') or MODEL_CONFIG.reply_parser_mode)
     ollama_url: str = os.getenv('OLLAMA_URL', 'http://127.0.0.1:11434')
     demo_mode: bool = os.getenv('DEMO_MODE', 'true').lower() == 'true'
     overpass_url: str = os.getenv('OVERPASS_URL', 'https://overpass-api.de/api/interpreter')
@@ -36,6 +36,7 @@ class Settings:
     temperature: float = MODEL_CONFIG.temperature
     max_output_tokens: int = MODEL_CONFIG.max_output_tokens
     groq_reasoning_effort: str = MODEL_CONFIG.groq_reasoning_effort
+    hybrid_llm: str = MODEL_CONFIG.hybrid_llm
     demo_dir: Path = ROOT / 'data/demo'
     environment_dir: Path = ROOT / 'data/environment'
     registry_path: Path = ROOT / 'app/features/registry.yaml'

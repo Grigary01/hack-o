@@ -46,11 +46,10 @@ def search(payload: SearchRequest,request: Request,repo=Depends(repository)):
     if set(payload.weights)-preferences.keys():
         raise HTTPException(422,'Вес можно менять только у распознанного мягкого предпочтения')
     for key,weight in payload.weights.items():
-        preferences[key].importance = weight
-        # Спутник остаётся спутником (derived_from сохраняется): иначе parsed из ответа
-        # нельзя отправить повторно — контракт запрещает explicit с derived_from.
-        if preferences[key].weight_source != 'companion':
+        if preferences[key].importance != weight:
+            preferences[key].importance = weight
             preferences[key].weight_source = 'explicit'
+    parsed = expand(parsed)
     hotels = repo.hotels()
     if not hotels:
         raise HTTPException(503,'База пуста. Выполните python -m scripts.seed_demo')

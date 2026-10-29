@@ -60,14 +60,64 @@ def llm_schema() -> dict:
     Расчётных спутников (derived_from, weight_source=companion) добавляет
     app/ml/companions.py после разбора, модель их не выводит.
     """
+    from app.ml.prompts import query_features
     schema = ParsedHotelQuery.model_json_schema()
     for name in ('HardConstraint', 'SoftPreference'):
-        schema['$defs'][name]['properties']['feature_key']['enum'] = list(get_registry().definitions)
+        # Только признаки с query_hint: расчётные спутники и aircraft_noise_exposure
+        # модель путала с желаниями гостя (выбирала их вместо aircraft_path_distance_m).
+        schema['$defs'][name]['properties']['feature_key']['enum'] = list(query_features())
+    # Pydantic допускает unit=None/scope=hotel по умолчанию, но для числовой
+    # фичи валидатор требует unit=m, для признака номера — scope=room.
+    # Без required модель могла законно (по JSON Schema) опустить эти поля,
+    # после чего тот же ответ отклонялся предметным валидатором Pydantic.
+    schema['$defs']['HardConstraint']['required'] = list(schema['$defs']['HardConstraint']['properties'])
     soft = schema['$defs']['SoftPreference']['properties']
     soft.pop('derived_from', None)
     schema['properties'].pop('ignored_terms', None)
+    # Исходный текст уже есть у сервера. Просить LLM переписывать его лишнее.
+    schema['properties'].pop('original_text', None)
+    # Не разрешаем молча пропускать списки и источник веса: иначе default
+    # Pydantic скрывает пропуск и может затереть явный вес пользователя.
+    schema['required'] = list(schema['properties'])
+    schema['$defs']['SoftPreference']['required'] = list(soft)
     soft['weight_source']['enum'] = [v for v in soft['weight_source']['enum'] if v != 'companion']
     return schema
+
+
+def mentioned_numbers(text: str) -> set[float]:
+    """Все величины, которые можно честно вывести из чисел запроса.
+
+    Число N даёт N, N км → метры (N*1000) и N пеших минут (N*80 м). Слова
+    («двух», «полкилометра») нормализует тот же код, что и офлайн-правила.
+    """
+    import re
+    from app.ml.rules_parser import normalize as rules_normalize, WALK_M_PER_MINUTE
+    lowered = rules_normalize(text)
+    values = {500.0} if 'полкилометр' in lowered else set()
+    if re.search(r'\bкилометр', lowered):
+        values.add(1000.0)
+    for raw in re.findall(r'\d+(?:[.,]\d+)?', lowered):
+        number = float(raw.replace(',', '.'))
+        values |= {number, round(number * 1000, 6), number * WALK_M_PER_MINUTE}
+    return values
+
+
+def drop_invented_numbers(parsed: ParsedHotelQuery, text: str) -> ParsedHotelQuery:
+    """Убирает числа, которых нет в запросе: LLM иногда дописывала «пляж <= 500 м».
+
+    Hard-условие с выдуманным пределом удаляется целиком (гость его не ставил),
+    у soft выдуманная utility-кривая сбрасывается — само желание остаётся.
+    tolerance не проверяем: «к 500 м неудобно» при идеале 200 м законно даёт 300.
+    """
+    numbers = mentioned_numbers(text)
+    known = lambda value: any(abs(value - n) < 1e-6 for n in numbers)
+    parsed.hard_constraints = [c for c in parsed.hard_constraints
+                               if type(c.value) not in (int, float) or known(float(c.value))]
+    for preference in parsed.soft_preferences:
+        curve = preference.utility
+        if curve and not all(known(v) for v in (curve.ideal_min, curve.ideal_max) if v is not None):
+            preference.utility = None
+    return parsed
 
 
 class FixtureQueryParser:
@@ -175,7 +225,7 @@ class OllamaQueryParser:
 
                 # Для аудита берём реальный ввод; не доверяем его пересказу LLM.
                 parsed.original_text = text
-                return parsed
+                return drop_invented_numbers(parsed, text)
             except httpx.HTTPStatusError as exc:
                 status = exc.response.status_code
                 if status in (401, 403, 404, 408, 429) or status >= 500:
@@ -191,6 +241,16 @@ class OllamaQueryParser:
                         'Ollama недоступна или вернула невалидный контракт; '
                         'фильтры не подменены.'
                     ) from exc
+                if isinstance(exc, ValidationError):
+                    # Повтор того же запроса при temperature=0 часто повторяет
+                    # ту же ошибку. Даём модели адрес и причину нарушения схемы,
+                    # без секретов и без эталонных ответов из evaluation-набора.
+                    payload['messages'].extend([{'role': 'assistant', 'content': content},
+                        {'role': 'user', 'content':
+                        'Ответ не прошёл проверку контракта. Исправь JSON для того же запроса. '
+                        'Неподдержанное условие помести в unknown_or_ambiguous. Ошибки: '
+                        + json.dumps(exc.errors(include_url=False, include_context=False, include_input=False), ensure_ascii=False)
+                        + '\nИсходный запрос (JSON-строка): ' + json.dumps(text, ensure_ascii=False)}])
                 time.sleep(.2)
         raise ParserError('unreachable')
 
@@ -236,7 +296,7 @@ JSON-schema best-effort сохраняет необязательные поля
                     raise ValueError('Незавершённый ответ модели')
                 parsed = ParsedHotelQuery.model_validate_json(raw['choices'][0]['message']['content'])
                 parsed.original_text = text
-                return parsed
+                return drop_invented_numbers(parsed, text)
             except httpx.HTTPError as exc:
                 raise QueryParserUnavailable('Groq недоступен по сети; запрос не подменён.') from exc
             except (ValidationError, KeyError, TypeError, ValueError) as exc:
@@ -245,6 +305,63 @@ JSON-schema best-effort сохраняет необязательные поля
                 if attempt == 1:
                     raise ParserError('Groq вернул невалидный контракт; фильтры не подменены.') from exc
         raise ParserError('unreachable')
+
+
+class HybridQueryParser:
+    """Сначала правила, LLM — только для того, что правила не разобрали.
+
+    Правила детерминированы и не выдумывают условий, но знают лишь словарь
+    реестра. Если после них не осталось несопоставленных слов (ignored_terms)
+    и найдено хоть что-то, их ответ окончательный. Иначе вызывается LLM, но её
+    ответ НЕ заменяет правила: она лишь добавляет признаки, которых правила не
+    нашли. Замер 29.10: при полной замене Gemma на 9 из 36 запросов портила
+    верный разбор правил (переворачивала desired, теряла условия).
+    Недоступная LLM не ломает поиск: вернётся разбор правил, а несопоставленные
+    слова по-прежнему показываются гостю как «не учтено».
+    """
+    mode = 'hybrid'
+    NOTHING_FOUND = 'Не нашёл поддерживаемых пожеланий'
+
+    def __init__(self, config=settings, llm=None):
+        self.offline = OfflineQueryParser()
+        self.examples = self.offline.examples
+        self.llm = llm or (GroqQueryParser(config) if config.hybrid_llm == 'groq' else OllamaQueryParser(config))
+        self.client = self.llm.client
+        self.last_source = None  # 'rules' | 'llm' | 'rules_fallback' — для отчётов и отладки
+
+    def rules_are_enough(self, parsed: ParsedHotelQuery) -> bool:
+        return not parsed.ignored_terms and self.NOTHING_FOUND not in parsed.unknown_or_ambiguous
+
+    def parse(self, text: str) -> ParsedHotelQuery:
+        rules = self.offline.parse(text)
+        if self.rules_are_enough(rules):
+            self.last_source = 'rules'
+            return rules
+        try:
+            llm = self.llm.parse(text)
+        except ParserError:
+            self.last_source = 'rules_fallback'
+            return rules
+        self.last_source = 'llm'
+        return self.merge(rules, llm)
+
+    def merge(self, rules: ParsedHotelQuery, llm: ParsedHotelQuery) -> ParsedHotelQuery:
+        """Правила + новые признаки LLM. Признак, найденный правилами, LLM не трогает."""
+        nothing = self.NOTHING_FOUND in rules.unknown_or_ambiguous
+        if nothing:
+            # Правила ничего не поняли — ответ LLM целиком (кроме пустого).
+            if not llm.hard_constraints and not llm.soft_preferences and not llm.unknown_or_ambiguous:
+                return rules
+            return llm
+        known = {c.feature_key for c in rules.hard_constraints} | {p.feature_key for p in rules.soft_preferences}
+        hard = rules.hard_constraints + [c for c in llm.hard_constraints if c.feature_key not in known]
+        soft = rules.soft_preferences + [p for p in llm.soft_preferences if p.feature_key not in known]
+        unknown = rules.unknown_or_ambiguous + [u for u in llm.unknown_or_ambiguous if u not in rules.unknown_or_ambiguous]
+        return ParsedHotelQuery(
+            region=llm.region if rules.region == 'other' else rules.region,
+            hard_constraints=hard, soft_preferences=soft, unknown_or_ambiguous=unknown,
+            clarification_question=rules.clarification_question or llm.clarification_question if unknown else None,
+            original_text=rules.original_text, ignored_terms=[])
 
 
 def make_parser(config=settings) -> QueryParser:
@@ -257,4 +374,6 @@ def make_parser(config=settings) -> QueryParser:
         return OllamaQueryParser(config)
     if config.parser_mode == 'groq':
         return GroqQueryParser(config)
-    raise ValueError('PARSER_MODE должен быть offline, fixture, ollama или groq')
+    if config.parser_mode == 'hybrid':
+        return HybridQueryParser(config)
+    raise ValueError('PARSER_MODE должен быть offline, fixture, ollama, groq или hybrid')

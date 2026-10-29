@@ -1,0 +1,131 @@
+{
+  "model": "gemma3:12b",
+  "model_weights_changed": false,
+  "scorer_changed": false,
+  "old_labels_changed": false,
+  "no_fixture_fallback": true,
+  "old_split_now": "development (32 cases used to tune prompt)",
+  "stress_labels": "24 synthetic assistant-authored labels, frozen before generation; no human review",
+  "file_sha256": {
+    "app/ml/prompts.py": "3ef7c74a9c0f05286180f990487a57c32f35314942b48890c0f2bdfe441a6313",
+    "app/ml/query_parser.py": "7f0ed29ebe53853fc0a7baf147d1583b8d968b990f735783df1e4662e780850a",
+    "app/schemas/query.py": "27a4f90332aaf9cc49d7ce22526c1b0797d68f633f492b9d227259bbd21ce26c",
+    "data/demo/query_fixtures.json": "e6a70d064af844c39a97e417848ee3f575b436474028bf01c0932982512bb873",
+    "data/evaluation/queries_gold.jsonl": "df9a2af028a1cf73bd97b2010bbce8b76bb1588e410cf490d2b01b6d7f4d881f",
+    "data/evaluation/parser_stress_2026-10-29.jsonl": "8045df9ac5be30f9b6106b782889d49279cccae5c535b924cf559acef4659c55",
+    "config/models.yaml": "a4e344180ac6809efdef71c2d5a0e15cdfc736ed1fd4fde909dedf37c0100cb3",
+    "scripts/compare_parser.py": "6b839a406453274bb13ccda615c91acba11c6d95ff1eea36011a848c8b43970f"
+  },
+  "experiments": [
+    {
+      "report": "runtime/parser_improvement/gemma_final_dev.json",
+      "status": "complete",
+      "evaluated_queries": 32,
+      "requirements": {
+        "tp": 34,
+        "fp": 3,
+        "fn": 2,
+        "precision": 0.918918918918919,
+        "recall": 0.9444444444444444,
+        "f1": 0.9315068493150684
+      },
+      "error_rate": 0.0,
+      "prompt_sha256": "3ef7c74a9c0f05286180f990487a57c32f35314942b48890c0f2bdfe441a6313"
+    },
+    {
+      "report": "runtime/parser_improvement/gemma_final_stress.json",
+      "status": "complete",
+      "evaluated_queries": 24,
+      "requirements": {
+        "tp": 26,
+        "fp": 8,
+        "fn": 6,
+        "precision": 0.7647058823529411,
+        "recall": 0.8125,
+        "f1": 0.7878787878787878
+      },
+      "error_rate": 0.0,
+      "prompt_sha256": "3ef7c74a9c0f05286180f990487a57c32f35314942b48890c0f2bdfe441a6313"
+    },
+    {
+      "report": "runtime/parser_improvement/gemma_prompt_v2.json",
+      "status": "complete",
+      "evaluated_queries": 32,
+      "requirements": {
+        "tp": 33,
+        "fp": 6,
+        "fn": 3,
+        "precision": 0.8461538461538461,
+        "recall": 0.9166666666666666,
+        "f1": 0.88
+      },
+      "error_rate": 0.03125,
+      "prompt_sha256": "4caa0ef514195fb33f1d78333275cfdde4c61a6d69cb29c3f069ab426fc2f3ed"
+    },
+    {
+      "report": "runtime/parser_improvement/gemma_prompt_v3.json",
+      "status": "complete",
+      "evaluated_queries": 32,
+      "requirements": {
+        "tp": 34,
+        "fp": 5,
+        "fn": 2,
+        "precision": 0.8717948717948718,
+        "recall": 0.9444444444444444,
+        "f1": 0.9066666666666666
+      },
+      "error_rate": 0.0,
+      "prompt_sha256": "3ef7c74a9c0f05286180f990487a57c32f35314942b48890c0f2bdfe441a6313"
+    },
+    {
+      "report": "runtime/parser_improvement/gemma_prompt_v4.json",
+      "status": "complete",
+      "evaluated_queries": 32,
+      "requirements": {
+        "tp": 33,
+        "fp": 5,
+        "fn": 3,
+        "precision": 0.868421052631579,
+        "recall": 0.9166666666666666,
+        "f1": 0.8918918918918919
+      },
+      "error_rate": 0.0,
+      "prompt_sha256": "a251e51f0b1847534f1c033f377f1d78716cb5998744e581d047eafb5f23545b"
+    },
+    {
+      "report": "runtime/parser_improvement/gemma_prompt_v5_zero_shot.json",
+      "status": "aborted",
+      "evaluated_queries": 6,
+      "requirements": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 6,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "error_rate": 1.0,
+      "prompt_sha256": "7bcc0d7252d47467ccd253b0fc6d6b317780c818ed8327279d84d7367f4f82ac"
+    },
+    {
+      "report": "runtime/parser_improvement/gemma_prompt_v6_zero_shot.json",
+      "status": "complete",
+      "evaluated_queries": 32,
+      "requirements": {
+        "tp": 27,
+        "fp": 8,
+        "fn": 9,
+        "precision": 0.7714285714285715,
+        "recall": 0.75,
+        "f1": 0.7605633802816901
+      },
+      "error_rate": 0.0625,
+      "prompt_sha256": "7bcc0d7252d47467ccd253b0fc6d6b317780c818ed8327279d84d7367f4f82ac"
+    }
+  ],
+  "quality_target_90_on_new_queries_achieved": false,
+  "code_tests": {
+    "passed": 148,
+    "skipped": 1
+  }
+}

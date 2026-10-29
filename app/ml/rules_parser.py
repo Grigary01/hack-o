@@ -24,6 +24,7 @@ NEGATIONS = {'не', 'без', 'нет', 'никаких', 'никакого', '
 OPERATOR_AFTER_NE = re.compile(r'^(дальше|далее|более|больше|ближе|менее|меньше|выше|ниже)$')
 NEAR_WORDS = re.compile(r'^(рядом|поближе|ближе|недалеко|близко|возле|около|вблизи|шаговой|самого|берегу|у|к|до)$')
 FAR_WORDS = re.compile(r'^(подальше|далеко|вдали|вдалеке|дальше|далее)$')
+AFTER_DIRECTION = re.compile(r'^\s*[—-]?\s*(не\s+)?(подальше|далеко|поближе|рядом|близко|недалеко)\b')
 HARD_MARKERS = re.compile(r'\b(обязател\w*|только|строго|непременно|точно|гарантированно|исключительно|никак\w*)\b')
 SOFT_MARKERS = re.compile(r'\b(желательно|хотелось бы|по возможности|неплохо бы|было бы|можно|не обязател\w*|необязател\w*|если получится)\b')
 POST_NEGATION = re.compile(r'^\s*(\S+\s+){0,2}?не\s+(надо|хочу|хотим|интересн\w*|люблю)')
@@ -127,6 +128,8 @@ class RulesQueryParser:
             for item in items if isinstance(items, list) else [items]:
                 if item is not None:
                     (hard if isinstance(item, HardConstraint) else soft).append(item)
+        # Одно и то же условие, найденное по двум упоминаниям («у моря … до пляжа <= 700 м»), — один раз.
+        hard = [h for i, h in enumerate(hard) if h not in hard[:i]]
         soft = self._dedupe(soft, hard)
         self._relative_importance(lowered, mentions, soft)
         if not hard and not soft and not unknown and not mentions and not GENERAL.search(lowered):
@@ -202,6 +205,12 @@ class RulesQueryParser:
                 near, far = (False, True) if prev_ne else (True, False)
             elif FAR_WORDS.match(word):
                 near, far = (True, False) if prev_ne else (False, True)
+        if not near and not far:
+            # «бары подальше», «пляж рядом», «бары не рядом» — наречие после признака.
+            post = AFTER_DIRECTION.match(after)
+            if post:
+                near = (post[2] in ('поближе', 'рядом', 'близко', 'недалеко')) != bool(post[1])
+                far = not near
         if near and VERB_NEGATION.search(before):
             near, far = False, True
         if far or near:
@@ -221,6 +230,9 @@ class RulesQueryParser:
             if key == 'aircraft_path_distance_m' and desired == 'near':
                 unknown.append('Близость к аэропорту ради трансфера пока не поддерживается')
                 return None
+            if weight:  # «пляж рядом с весом 0.3»
+                return SoftPreference(feature_key=key, desired=desired, scope=definition.scope,
+                                      importance=float(weight[2].replace(',', '.')), weight_source='explicit')
             return SoftPreference(feature_key=key, desired=desired, scope=definition.scope)
         if definition.type == 'boolean':
             value = positive

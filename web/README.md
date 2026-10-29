@@ -88,7 +88,7 @@ src/data/
 | «Подтвердить и опубликовать» / «Изменить ответ» | `POST /api/hotelier/answers/{aid}/confirm` (`accept: true/false`) |
 | Результат публикации после перезагрузки | `GET /api/hotelier/answers/{aid}`, `GET /api/hotelier/conflicts?hotel_id=&status=open` |
 | Характеристики | `GET /api/hotelier/hotels/{id}/facts` |
-| Номера | `GET /api/hotels/{id}` (наблюдения уровня `room`) |
+| Номера | `GET /api/hotels/{id}/evidence` (текущее знание уровня `room`) |
 
 В api-режиме выдача — реальные отели Адлера из OSM, ответы отельера — номера комнат
 («В номерах 301–305 есть шторы blackout»), как того требует bounded-парсер бэкенда.

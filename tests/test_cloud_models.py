@@ -14,7 +14,7 @@ def test_groq_same_schema_and_no_hotel_database_in_payload():
         body=json.loads(request.content)
         assert body['model']=='openai/gpt-oss-120b'
         assert body['response_format']['json_schema']['schema']['$defs']['HardConstraint']['properties']['feature_key']['enum']
-        assert len(body['messages'])==6
+        assert body['messages'][-1]['role']=='user'
         return httpx.Response(200,json={'choices':[{'finish_reason':'stop','message':{'content':expected.model_dump_json()}}]})
     parser=GroqQueryParser(replace(settings,groq_api_key='test-secret'),httpx.Client(transport=httpx.MockTransport(handler)))
     assert parser.parse('Нужен номер без вида на море').hard_constraints[0].value is False

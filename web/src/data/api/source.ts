@@ -22,6 +22,7 @@ import type {
   FeatureRegistryDto,
   HealthDto,
   HotelDetailDto,
+  HotelEvidenceDto,
   HotelDto,
   QuestionDto,
   SearchRequestDto,
@@ -191,9 +192,11 @@ export function createApiSource(): DataSource {
     },
 
     async getHotel(hotelId, params) {
-      const [detail, registry] = await Promise.all([
+      const [detail, registry, evidence, health] = await Promise.all([
         get<HotelDetailDto>(`/hotels/${encodeURIComponent(hotelId)}`),
         loadRegistry(),
+        get<HotelEvidenceDto>(`/hotels/${encodeURIComponent(hotelId)}/evidence`),
+        loadHealth(),
       ]);
       let summary: HotelSummary | null = null;
       if (params?.text.trim()) {
@@ -228,8 +231,10 @@ export function createApiSource(): DataSource {
       // Подтверждённые отельером номера — из наблюдений уровня room.
       const caveats: string[] = [];
       const roomClaims = new Map<string, { yes: string[]; no: string[] }>();
-      for (const o of detail.observations) {
-        if (o.subject_type !== 'room' || typeof o.value !== 'boolean') continue;
+      // История не равна текущему знанию: устаревшие и конфликтующие утверждения
+      // не показываем гостю как действующие характеристики номера.
+      for (const o of health.demo_mode ? evidence.current_demo : evidence.current_real) {
+        if (!o.subject_id.includes(':room:') || typeof o.value !== 'boolean') continue;
         const number = roomNumber(o.subject_id);
         if (!number) continue;
         const entry = roomClaims.get(o.feature_key) ?? { yes: [], no: [] };
@@ -362,21 +367,32 @@ export function createApiSource(): DataSource {
         get<FactsResponseDto>(`/hotelier/hotels/${encodeURIComponent(hotelId)}/facts`),
         loadRegistry(),
       ]);
-      return { facts: response.facts.map((f) => mapFact(f, registry)), conflicts: response.conflicts.length };
+      return { facts: response.facts.map((f) => mapFact(f, registry)), conflicts: response.conflicts.filter((c) => c.status === 'open').length };
     },
 
     async getRooms(hotelId) {
-      const [detail, registry] = await Promise.all([get<HotelDetailDto>(`/hotels/${encodeURIComponent(hotelId)}`), loadRegistry()]);
+      const [evidence, registry] = await Promise.all([
+        get<HotelEvidenceDto>(`/hotels/${encodeURIComponent(hotelId)}/evidence`),
+        loadRegistry(),
+      ]);
       const rooms = new Map<string, HotelierRoom>();
-      for (const o of detail.observations) {
-        if (o.subject_type !== 'room') continue;
+      // Кабинет — демо-мир: текущее значение с учётом симулированных ответов, TTL и решений по конфликтам.
+      for (const state of evidence.current_demo) {
+        if (!state.subject_id.includes(':room:')) continue;
+        const o = [...state.observations].sort((a, b) => b.collected_at.localeCompare(a.collected_at))[0];
+        if (!o) continue;
         const number = roomNumber(o.subject_id) ?? o.subject_id;
         const room = rooms.get(o.subject_id) ?? { id: o.subject_id, title: `Номер ${number}`, note: null, facts: [] };
         const floor = o.evidence.details.floor;
         if (typeof floor === 'number') room.note = `${floor}-й этаж`;
         room.facts.push({
           label: featureName(o.feature_key, registry),
-          value: valueText(o.feature_key, o.value, registry[o.feature_key]),
+          value:
+            state.value === null
+              ? state.status === 'conflicted'
+                ? 'Конфликт — нужна проверка'
+                : 'Нет актуальных данных'
+              : valueText(o.feature_key, state.value, registry[o.feature_key]),
           source: `${sourceText(o.evidence.source)} · ${formatDay(o.collected_at)}`,
         });
         rooms.set(o.subject_id, room);
