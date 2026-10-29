@@ -132,6 +132,14 @@ async function buildPublishResult(answer: AnswerDto, review: ModelReviewDto[] | 
   };
 }
 
+/** Почему поиск просит уточнения: вопрос парсера, непонятые места или регион вне Адлера. */
+export function clarificationText(parsed: SearchResponseDto['parsed']): string {
+  if (parsed.clarification_question) return parsed.clarification_question;
+  if (parsed.unknown_or_ambiguous.length) return `Уточните: ${parsed.unknown_or_ambiguous.join('; ')}`;
+  if (parsed.region !== 'Adler') return 'Сейчас поддерживается только прибрежный Адлер.';
+  return 'Уточните запрос.';
+}
+
 export function createApiSource(): DataSource {
   return {
     mode: 'api',
@@ -174,13 +182,10 @@ export function createApiSource(): DataSource {
       if (response.include_simulated) notes.push('Учитываются демо-ответы отельеров — они помечены в источниках.');
       const result: SearchResult = {
         status: response.status,
-        clarification:
-          response.status === 'needs_clarification'
-            ? (response.parsed.clarification_question ?? 'Уточните запрос: сейчас поддерживается только прибрежный Адлер.')
-            : null,
+        clarification: response.status === 'needs_clarification' ? clarificationText(response.parsed) : null,
         contextLabel: `Адлер · ${formatGuests(params.guests)}`,
         chips: requestChips(response.parsed, registry),
-        ignoredTerms: [...(response.parsed.ignored_terms ?? []), ...response.parsed.unknown_or_ambiguous],
+        ignoredTerms: response.parsed.ignored_terms ?? [],
         hotels: [
           ...response.matched.map((h) => mapHotelResult(h, 'matched', response.parsed, registry)),
           ...response.needs_verification.map((h) => mapHotelResult(h, 'needs_verification', response.parsed, registry)),

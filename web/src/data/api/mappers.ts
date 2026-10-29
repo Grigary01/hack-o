@@ -259,7 +259,9 @@ export function requestChips(parsed: ParsedQueryDto, registry: FeatureRegistryDt
     const negative = soft.desired === false;
     chips.push({ label: negative ? `Без: ${name.toLowerCase()}` : name, kind: 'preference' });
   }
-  for (const term of [...(parsed.ignored_terms ?? []), ...parsed.unknown_or_ambiguous]) {
+  // Только непонятые слова. Оговорки парсера (unknown_or_ambiguous) — не «неизвестная
+  // характеристика», а просьба уточнить: их показывает экран needs_clarification.
+  for (const term of parsed.ignored_terms ?? []) {
     chips.push({ label: `Не учтено: ${term}`, kind: 'unsupported' });
   }
   return chips;

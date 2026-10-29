@@ -34,6 +34,9 @@ docker compose up --build
 Режим разбора запроса берётся из `config/models.yaml` (`hybrid`: правила + LLM на непонятом).
 Без Ollama гибрид возвращает разбор правил; чтобы LLM не вызывалась вовсе, задайте `PARSER_MODE=offline`
 в `.env`. Для LLM: `ollama pull gemma3:12b` на хосте (адрес — `DOCKER_OLLAMA_URL`).
+Облачный Claude (`claude-opus-5`) вместо локальной модели: в `.env` задайте `PARSER_MODE=groq`,
+`CLOUD_LLM_BASE_URL`, `CLOUD_LLM_MODEL` и ключ в `GROQ_API_KEY` — compose передаёт их в `backend`;
+подробно и с замерами — [CLAUDE_PARSER](docs/CLAUDE_PARSER.md). Ключ только в `.env`, не в Git и не в образе.
 
 ## Зависимости и переменные окружения
 

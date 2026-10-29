@@ -42,6 +42,8 @@ class OllamaReplyParser(HTTPReplyParser):
                    'options': {'temperature': self.config.temperature,
                                'num_predict': self.config.max_output_tokens,
                                'num_ctx': self.config.ollama_num_ctx}}
+        if self.config.ollama_think is not None:
+            payload['think'] = self.config.ollama_think
         response = self.post(self.config.ollama_url.rstrip('/') + '/api/chat', payload)
         try:
             data = response.json()
@@ -64,7 +66,7 @@ class GroqReplyParser(HTTPReplyParser):
                    'reasoning_effort': self.config.groq_reasoning_effort,
                    'response_format': {'type': 'json_schema', 'json_schema': {
                        'name': 'hotelier_reply', 'strict': False, 'schema': reply_schema(feature_key, self.mode)}}}
-        response = self.post('https://api.groq.com/openai/v1/chat/completions', payload,
+        response = self.post(self.config.cloud_base_url + '/chat/completions', payload,
                              headers={'Authorization': 'Bearer ' + self.config.groq_api_key})
         try:
             choice = response.json()['choices'][0]

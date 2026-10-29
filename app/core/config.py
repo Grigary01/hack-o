@@ -30,13 +30,17 @@ class Settings:
     noisemodelling_home: str = os.getenv('NOISEMODELLING_HOME', '')
     noise_java_home: str = os.getenv('NOISE_JAVA_HOME', '')
     groq_api_key: str = os.getenv('GROQ_API_KEY', '')
-    groq_model: str = MODEL_CONFIG.groq_model
+    # Любой OpenAI-совместимый провайдер вместо Groq: адрес и модель — локальное
+    # переопределение из .env (ключ — в GROQ_API_KEY). По умолчанию — Groq и YAML.
+    cloud_base_url: str = (os.getenv('CLOUD_LLM_BASE_URL') or 'https://api.groq.com/openai/v1').rstrip('/')
+    groq_model: str = (os.getenv('CLOUD_LLM_MODEL') or MODEL_CONFIG.groq_model)
     parser_timeout_seconds: float = MODEL_CONFIG.parser_timeout_seconds
     ollama_num_ctx: int = MODEL_CONFIG.ollama_num_ctx
+    ollama_think: bool | None = MODEL_CONFIG.ollama_think
     temperature: float = MODEL_CONFIG.temperature
     max_output_tokens: int = MODEL_CONFIG.max_output_tokens
     groq_reasoning_effort: str = MODEL_CONFIG.groq_reasoning_effort
-    hybrid_llm: str = MODEL_CONFIG.hybrid_llm
+    hybrid_llm: str = (os.getenv('HYBRID_LLM') or MODEL_CONFIG.hybrid_llm)
     demo_dir: Path = ROOT / 'data/demo'
     environment_dir: Path = ROOT / 'data/environment'
     registry_path: Path = ROOT / 'app/features/registry.yaml'

@@ -46,3 +46,12 @@ it('чип сохраняет смысл обязательного отрица
   }, {});
   expect(chips[0]?.label).toContain(': нет');
 });
+
+it('просьба уточнить показывает, что именно непонятно, а не регион', async () => {
+  const { clarificationText } = await import('./source');
+  const base = { region: 'Adler', hard_constraints: [], soft_preferences: [], original_text: '', clarification_question: null };
+  expect(clarificationText({ ...base, unknown_or_ambiguous: ['10 минут пешком — нужен темп ходьбы'] })).toBe(
+    'Уточните: 10 минут пешком — нужен темп ходьбы',
+  );
+  expect(clarificationText({ ...base, region: 'Batumi', unknown_or_ambiguous: [] })).toContain('Адлер');
+});
